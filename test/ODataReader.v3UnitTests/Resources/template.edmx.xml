@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <edmx:DataServices DataServicesVersion="3.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+    <Schema Namespace="namespace" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <EnumType Name="name" UnderlyingType="namespace.name" IsFlags="true">
+        <Member Name="name" Value="0"/>
+      </EnumType>
+      <ComplexType Name="name" BaseType="namespace.name" Abstract="true" OpenType="true">
+        <Property Name="name" Type="namespace.name" Nullable="true" />
+      </ComplexType>
+      <EntityType Name="name" BaseType="namespace.name" Abstract="true" HasStream="true" OpenType="true">
+        <Key>
+          <PropertyRef Name="name" />
+        </Key>
+        <Property Name="name" Type="namespace.name" Nullable="true" />
+        <NavigationProperty Name="name" Relationship="namespace.name" FromRole="name" ToRole="name" ContainsTarget="true" />
+      </EntityType>
+      <Association Name="name">
+        <End Type="namespace.name" Multiplicity="*" Role="name" />
+      </Association>
+      <EntityContainer Name="name">
+        <EntitySet Name="name" EntityType="namespace.name" />
+        <AssociationSet Name="name" Association="namespace.name">
+          <End Role="name" EntitySet="name" />
+        </AssociationSet>
+        <FunctionImport Name="name" EntitySet="name" ReturnType="namespace.name" IsSideEffecting="true" IsBindable="true" IsComposable="true">
+          <Parameter Name="name" Type="namespace.name" Nullable="true" />
+        </FunctionImport>
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

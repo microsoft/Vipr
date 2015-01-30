@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="Microsoft.OneNote.Api" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityType Name="Notebook">
+        <Key>
+          <PropertyRef Name="id" />
+        </Key>
+        <Property Name="isDefault" Type="Edm.Boolean" />
+        <Property Name="userRole" Type="Microsoft.OneNote.Api.UserRole" />
+        <Property Name="isShared" Type="Edm.Boolean" />
+        <Property Name="sectionsUrl" Type="Edm.String" />
+        <Property Name="sectionGroupsUrl" Type="Edm.String" />
+        <Property Name="links" Type="Microsoft.OneNote.Api.NotebookLinks" />
+        <Property Name="name" Type="Edm.String" />
+        <Property Name="createdBy" Type="Edm.String" />
+        <Property Name="lastModifiedBy" Type="Edm.String" />
+        <Property Name="lastModifiedTime" Type="Edm.DateTimeOffset" />
+        <Property Name="id" Type="Edm.String" Nullable="false" />
+        <Property Name="self" Type="Edm.String" />
+        <Property Name="createdTime" Type="Edm.DateTimeOffset" />
+        <NavigationProperty Name="sections" Type="Collection(Microsoft.OneNote.Api.Section)" />
+        <NavigationProperty Name="sectionGroups" Type="Collection(Microsoft.OneNote.Api.SectionGroup)" />
+      </EntityType>
+      <EntityType Name="SectionGroup">
+        <Key>
+          <PropertyRef Name="id" />
+        </Key>
+        <Property Name="sectionsUrl" Type="Edm.String" />
+        <Property Name="sectionGroupsUrl" Type="Edm.String" />
+        <Property Name="name" Type="Edm.String" />
+        <Property Name="createdBy" Type="Edm.String" />
+        <Property Name="lastModifiedBy" Type="Edm.String" />
+        <Property Name="lastModifiedTime" Type="Edm.DateTimeOffset" />
+        <Property Name="id" Type="Edm.String" Nullable="false" />
+        <Property Name="self" Type="Edm.String" />
+        <Property Name="createdTime" Type="Edm.DateTimeOffset" />
+        <NavigationProperty Name="parentNotebook" Type="Microsoft.OneNote.Api.Notebook" />
+        <NavigationProperty Name="parentSectionGroup" Type="Microsoft.OneNote.Api.SectionGroup" />
+        <NavigationProperty Name="sections" Type="Collection(Microsoft.OneNote.Api.Section)" />
+        <NavigationProperty Name="sectionGroups" Type="Collection(Microsoft.OneNote.Api.SectionGroup)" />
+      </EntityType>
+      <EntityType Name="Section">
+        <Key>
+          <PropertyRef Name="id" />
+        </Key>
+        <Property Name="isDefault" Type="Edm.Boolean" />
+        <Property Name="pagesUrl" Type="Edm.String" />
+        <Property Name="name" Type="Edm.String" />
+        <Property Name="createdBy" Type="Edm.String" />
+        <Property Name="lastModifiedBy" Type="Edm.String" />
+        <Property Name="lastModifiedTime" Type="Edm.DateTimeOffset" />
+        <Property Name="id" Type="Edm.String" Nullable="false" />
+        <Property Name="self" Type="Edm.String" />
+        <Property Name="createdTime" Type="Edm.DateTimeOffset" />
+        <NavigationProperty Name="parentNotebook" Type="Microsoft.OneNote.Api.Notebook" />
+        <NavigationProperty Name="parentSectionGroup" Type="Microsoft.OneNote.Api.SectionGroup" />
+        <NavigationProperty Name="pages" Type="Collection(Microsoft.OneNote.Api.Page)" />
+      </EntityType>
+      <EntityType Name="Page" HasStream="true">
+        <Key>
+          <PropertyRef Name="id" />
+        </Key>
+        <Property Name="title" Type="Edm.String" />
+        <Property Name="createdByAppId" Type="Edm.String" />
+        <Property Name="links" Type="Microsoft.OneNote.Api.PageLinks" />
+        <Property Name="contentUrl" Type="Edm.String" />
+        <Property Name="content" Type="Edm.Stream" />
+        <Property Name="id" Type="Edm.String" Nullable="false" />
+        <Property Name="self" Type="Edm.String" />
+        <Property Name="createdTime" Type="Edm.DateTimeOffset" />
+        <NavigationProperty Name="parentSection" Type="Microsoft.OneNote.Api.Section" />
+        <NavigationProperty Name="parentNotebook" Type="Microsoft.OneNote.Api.Notebook" />
+      </EntityType>
+      <EntityType Name="Resource" HasStream="true">
+        <Key>
+          <PropertyRef Name="id" />
+        </Key>
+        <Property Name="id" Type="Edm.String" Nullable="false" />
+        <Property Name="self" Type="Edm.String" />
+        <Property Name="content" Type="Edm.Stream" />
+        <Property Name="contentUrl" Type="Edm.String" />
+      </EntityType>
+      <ComplexType Name="NotebookLinks">
+        <Property Name="oneNoteClientUrl" Type="Microsoft.OneNote.Api.ExternalLink" />
+        <Property Name="oneNoteWebUrl" Type="Microsoft.OneNote.Api.ExternalLink" />
+      </ComplexType>
+      <ComplexType Name="PageLinks">
+        <Property Name="oneNoteClientUrl" Type="Microsoft.OneNote.Api.ExternalLink" />
+        <Property Name="oneNoteWebUrl" Type="Microsoft.OneNote.Api.ExternalLink" />
+      </ComplexType>
+      <ComplexType Name="ExternalLink">
+        <Property Name="href" Type="Edm.String" />
+      </ComplexType>
+      <ComplexType Name="Diagnostic">
+        <Property Name="message" Type="Edm.String" />
+        <Property Name="url" Type="Edm.String" />
+      </ComplexType>
+      <EnumType Name="UserRole">
+        <Member Name="Owner" Value="0" />
+        <Member Name="Contributor" Value="1" />
+        <Member Name="Reader" Value="2" />
+        <Member Name="None" Value="-1" />
+      </EnumType>
+      <EntityContainer Name="OneNoteApi">
+        <EntitySet Name="notebooks" EntityType="Microsoft.OneNote.Api.Notebook">
+          <NavigationPropertyBinding Path="sections" Target="sections" />
+          <NavigationPropertyBinding Path="sectionGroups" Target="sectionGroups" />
+        </EntitySet>
+        <EntitySet Name="sectionGroups" EntityType="Microsoft.OneNote.Api.SectionGroup">
+          <NavigationPropertyBinding Path="parentNotebook" Target="notebooks" />
+          <NavigationPropertyBinding Path="parentSectionGroup" Target="sectionGroups" />
+          <NavigationPropertyBinding Path="sections" Target="sections" />
+          <NavigationPropertyBinding Path="sectionGroups" Target="sectionGroups" />
+        </EntitySet>
+        <EntitySet Name="sections" EntityType="Microsoft.OneNote.Api.Section">
+          <NavigationPropertyBinding Path="parentNotebook" Target="notebooks" />
+          <NavigationPropertyBinding Path="parentSectionGroup" Target="sectionGroups" />
+          <NavigationPropertyBinding Path="pages" Target="pages" />
+        </EntitySet>
+        <EntitySet Name="pages" EntityType="Microsoft.OneNote.Api.Page">
+          <NavigationPropertyBinding Path="parentSection" Target="sections" />
+          <NavigationPropertyBinding Path="parentNotebook" Target="notebooks" />
+        </EntitySet>
+        <EntitySet Name="resources" EntityType="Microsoft.OneNote.Api.Resource" />
+      </EntityContainer>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

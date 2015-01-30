@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices>
+    <Schema Namespace="namespace" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EnumType Name="name" UnderlyingType="namespace.name" IsFlags="true">
+        <Member Name="name" Value="0"/>
+      </EnumType>
+      <ComplexType Name="name" BaseType="namespace.name" Abstract="true" OpenType="true">
+        <Property Name="name" Type="namespace.name" Nullable="true" />
+        <NavigationProperty Name="name" Type="namespace.name" Nullable="true" ContainsTarget="true" />
+      </ComplexType>
+      <EntityType Name="name" BaseType="namespace.name" Abstract="true" HasStream="true" OpenType="true">
+        <Key>
+          <PropertyRef Name="name" />
+        </Key>
+        <Property Name="name" Type="namespace.name" Nullable="true" />
+        <NavigationProperty Name="name" Type="namespace.name" Nullable="true" ContainsTarget="true" />
+      </EntityType>
+      <EntityContainer Name="name">
+        <Singleton Name="name" Type="namespace.name" />
+        <EntitySet Name="name" EntityType="namespace.name" />
+        <FunctionImport Name="name" Function="namespace.name" />
+        <ActionImport Name="name" Action="namespace.name" />
+      </EntityContainer>
+      <Action Name="name" IsBound="true">
+        <Parameter Name="name" Type="namespace.name" Nullable="true" />
+        <ReturnType Type="namespace.name" Nullable="true" />
+      </Action>
+      <Function Name="name" IsBound="true" IsComposable="true">
+        <Parameter Name="name" Type="namespace.name" Nullable="true" />
+        <ReturnType Type="namespace.name" />
+      </Function>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

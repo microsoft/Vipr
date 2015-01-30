@@ -1,0 +1,105 @@
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using FluentAssertions;
+using Microsoft.Its.Recipes;
+using ODataReader.v4;
+using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
+using Vipr.Core.CodeModel;
+using Xunit;
+
+namespace ODataReader.v4UnitTests
+{
+    public class Given_a_valid_edmx_element_when_passed_to_the_ODataReader
+    {
+        private ODataReader.v4.Reader reader;
+
+        public Given_a_valid_edmx_element_when_passed_to_the_ODataReader()
+        {
+            reader = new Reader();
+        }
+
+        [Fact]
+        public void It_returns_an_odcm_model()
+        {
+            var edmxElement =
+                Any.Edmx(edmx => edmx.Add(
+                    Any.DataServices(dataServices => dataServices.Add(
+                        Any.Schema(schema => schema.Add(
+                            Any.EntityContainer()))))));
+
+            var serviceMetadata = new Dictionary<string, string>()
+            {
+                {"$metadata", edmxElement.ToString()}
+            };
+            var odcmModel = reader.GenerateOdcmModel(serviceMetadata);
+            
+            odcmModel.Should().NotBeNull("because a valid edmx should yield a valid model");
+        }
+
+        [Fact]
+        public void It_results_an_OdcmNamespace_for_the_Schema()
+        {
+            var schemaNamespace = string.Empty;
+
+            var edmxElement =
+                Any.Edmx(edmx => edmx.Add(
+                    Any.DataServices(dataServices => dataServices.Add(
+                        Any.Schema(schema =>
+                        {
+                            schema.Add(
+                                Any.EntityContainer());
+                            schemaNamespace = schema.Attribute("Namespace").Value;
+                        })))));
+
+            var serviceMetadata = new Dictionary<string, string>()
+            {
+                {"$metadata", edmxElement.ToString()}
+            };
+            var odcmModel = reader.GenerateOdcmModel(serviceMetadata);
+
+            odcmModel.Namespaces.FindAll(
+                @namespace => @namespace.Name.Equals(schemaNamespace, StringComparison.InvariantCultureIgnoreCase))
+                .Count.Should()
+                .Be(1, "because only one namespace shoud be created per schema element");
+        }
+
+        [Fact]
+        public void It_results_in_an_OdcmClass_for_the_EntityContainer()
+        {
+            var schemaNamespace = string.Empty;
+            var entityContainerName = string.Empty;
+
+            var edmxElement =
+                Any.Edmx(edmx => edmx.Add(
+                    Any.DataServices(dataServices => dataServices.Add(
+                        Any.Schema(schema =>
+                        {
+                            schema.Add(
+                                Any.EntityContainer(entityContainer =>
+                                {
+                                    entityContainerName = entityContainer.Attribute("Name").Value;
+                                }));
+                            schemaNamespace = schema.Attribute("Namespace").Value;
+                        })))));
+
+            var serviceMetadata = new Dictionary<string, string>()
+            {
+                {"$metadata", edmxElement.ToString()}
+            };
+            var odcmModel = reader.GenerateOdcmModel(serviceMetadata);
+
+            OdcmType odcmClass;
+            odcmModel.TryResolveType(entityContainerName, schemaNamespace, out odcmClass)
+                .Should()
+                .BeTrue("because an EntityContainer should result in a matching OdcmType");
+            odcmClass.Should().BeOfType<OdcmClass>("because an EntityContainer should result in a matching OdcmClass");
+            odcmClass.As<OdcmClass>()
+                .Kind.Should()
+                .Be(OdcmClassKind.Service,
+                    "because an EntityContainer should result in a matching OdcmClass of kind DataService");
+        }
+    }
+}

@@ -1,0 +1,103 @@
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using CSharpWriter;
+using FluentAssertions;
+using Microsoft.OData.ProxyExtensions;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using Vipr.Core;
+using Type = System.Type;
+using Xunit;
+
+namespace CSharpWriterUnitTests
+{
+    public class Given_an_OdcmClass_Entity_Collection_Interface : EntityTestBase
+    {
+        
+        public Given_an_OdcmClass_Entity_Collection_Interface()
+        {
+            base.Init();
+        }
+
+        [Fact]
+        public void The_Collection_interface_is_Public()
+        {
+            CollectionInterface.IsPublic
+                .Should().BeTrue("Because it allows users to interact with the Collection Class and with" +
+                                 "Collection behaviors on the Concrete class.");
+        }
+
+        [Fact]
+        public void The_Collection_interface_implements_IReadOnlyQueryableSetBaseofT()
+        {
+            CollectionInterface
+                .Should().Implement(
+                    typeof(IReadOnlyQueryableSetBase<>).MakeGenericType(ConcreteInterface),
+                    "Because it implements IReadOnlyQueryableSetBase<T> which empowers it" +
+                    "with Linq expressions like Where, OrderBy, Expand, Select," +
+                    "Skip, and Take.");
+        }
+
+        [Fact]
+        public void The_Collection_interface_is_attributed_with_LowerCaseProperty()
+        {
+            var lowerCasePropertyType = typeof(LowerCasePropertyAttribute);
+
+            CollectionInterface.GetCustomAttribute(lowerCasePropertyType)
+                .Should().NotBeNull("Because this is used to manage casing when interacting with ODataLib");
+        }
+
+        [Fact]
+        public void The_Collection_interface_exposes_a_GetById_method()
+        {
+            CollectionInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                FetcherInterface,
+                "GetById",
+                GetKeyPropertyTypes(),
+                "Because it allows retrieving an instance by key");
+        }
+
+        [Fact]
+        public void The_Collection_interface_exposes_a_GetById_Indexer()
+        {
+            CollectionInterface.Should().HaveIndexer(
+                CSharpAccessModifiers.Public,
+                null,
+                FetcherInterface,
+                GetKeyPropertyTypes(),
+                "Because it allows retrieving an instance by key");
+        }
+
+        [Fact]
+        public void The_Collection_interface_exposes_an_ExecuteAsync_method()
+        {
+            CollectionInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                typeof(Task<>).MakeGenericType(typeof(IPagedCollection<>).MakeGenericType(ConcreteInterface)),
+                "ExecuteAsync", new Type[] { },
+                "Because it allows executing the query.");
+        }
+
+        [Fact]
+        public void The_Collection_interface_exposes_an_AddAsync_method()
+        {
+            CollectionInterface.Should()
+                .HaveMethod(
+                    CSharpAccessModifiers.Public,
+                    typeof(Task), "Add" + Class.Name + "Async",
+                    new[] { ConcreteInterface, typeof(bool) },
+                    "Because it allows adding elements to the Entity Set.");
+        }
+
+        private Type[] GetKeyPropertyTypes()
+        {
+            return Class.GetKeyProperties()
+                .Select(p => p.Type)
+                .Select(t => Proxy.GetClass(t.Namespace, t.Name))
+                .ToArray();
+        }
+    }
+}

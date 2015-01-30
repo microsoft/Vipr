@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0"
+         DefaultTargets="Test"
+         xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  
+  <ItemGroup>
+    <XunitRunnerMSBuild Include="$(MSBuildThisFileDirectory)packages\xunit.runners.*\tools\xunit.runner.msbuild.dll" />
+	<TestAssemblies Include="$(MSBuildThisFileDirectory)\test\**\bin\*\*Tests.dll" />
+  </ItemGroup>
+  
+  <UsingTask
+    AssemblyFile="@(XunitRunnerMSBuild)"
+    TaskName="Xunit.Runner.MSBuild.xunit" 
+	Condition="Exists('@(XunitRunnerMSBuild)')" />
+
+  <Target Name="Test">
+	<Error Condition="!Exists('@(XunitRunnerMSBuild)')"
+		   Text="The xUnit Runner tools nuget package is not installed. Please run build.cmd from the root of the repo at least once to get the tools installed." />
+	<Error Condition="'@(TestAssemblies)' == ''"
+		   Text="No test binaries available for running. Please run build.cmd from the root of the repo at least once to build the test libraries." />
+    <xunit Assemblies="@(TestAssemblies)" 
+		   Verbose="false" />
+  </Target>
+
+</Project>

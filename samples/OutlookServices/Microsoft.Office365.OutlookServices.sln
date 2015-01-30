@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Office365.OutlookServices", "src\Microsoft.Office365.OutlookServices.csproj", "{CD466610-F11B-4C4A-8C6C-E19E8E8BE1C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExchangeManagedOMTests", "test\ExchangeManagedOMTests.csproj", "{7C739A0E-9100-49C8-A1DD-A33BCC9A65EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XAuth", "..\XAuth\XAuth.csproj", "{4828C5DA-8D50-4C5B-A0BA-94190AA7EF46}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Android|Any CPU = Android|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD466610-F11B-4C4A-8C6C-E19E8E8BE1C7}.Android|Any CPU.ActiveCfg = Android|Any CPU
+		{CD466610-F11B-4C4A-8C6C-E19E8E8BE1C7}.Android|Any CPU.Build.0 = Android|Any CPU
+		{CD466610-F11B-4C4A-8C6C-E19E8E8BE1C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD466610-F11B-4C4A-8C6C-E19E8E8BE1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD466610-F11B-4C4A-8C6C-E19E8E8BE1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD466610-F11B-4C4A-8C6C-E19E8E8BE1C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C739A0E-9100-49C8-A1DD-A33BCC9A65EA}.Android|Any CPU.ActiveCfg = Android|Any CPU
+		{7C739A0E-9100-49C8-A1DD-A33BCC9A65EA}.Android|Any CPU.Build.0 = Android|Any CPU
+		{7C739A0E-9100-49C8-A1DD-A33BCC9A65EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C739A0E-9100-49C8-A1DD-A33BCC9A65EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C739A0E-9100-49C8-A1DD-A33BCC9A65EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C739A0E-9100-49C8-A1DD-A33BCC9A65EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4828C5DA-8D50-4C5B-A0BA-94190AA7EF46}.Android|Any CPU.ActiveCfg = Android|Any CPU
+		{4828C5DA-8D50-4C5B-A0BA-94190AA7EF46}.Android|Any CPU.Build.0 = Android|Any CPU
+		{4828C5DA-8D50-4C5B-A0BA-94190AA7EF46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4828C5DA-8D50-4C5B-A0BA-94190AA7EF46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4828C5DA-8D50-4C5B-A0BA-94190AA7EF46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4828C5DA-8D50-4C5B-A0BA-94190AA7EF46}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

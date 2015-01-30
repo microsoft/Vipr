@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props')" />
+  <Import Project="..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props" Condition="Exists('..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F77A6E65-8A18-4401-8E02-5CB4644EC31D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CSharpWriterUnitTests</RootNamespace>
+    <AssemblyName>CSharpWriterUnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>cd9d3550</NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentAssertions, Version=3.2.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions.Core">
+      <HintPath>..\..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.OData.Client">
+      <HintPath>..\..\packages\Microsoft.OData.Client.6.9.0\lib\net40\Microsoft.OData.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.OData.Core">
+      <HintPath>..\..\packages\Microsoft.OData.Core.6.9.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.OData.Edm">
+      <HintPath>..\..\packages\Microsoft.OData.Edm.6.9.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Spatial">
+      <HintPath>..\..\packages\Microsoft.Spatial.6.9.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.32.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\System.Collections.Immutable.1.1.32-beta\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.abstractions.2.0.0-rc1-build2826\lib\net35\xunit.abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.assert">
+      <HintPath>..\..\packages\xunit.assert.2.0.0-rc1-build2826\lib\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.assert.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.core">
+      <HintPath>..\..\packages\xunit.extensibility.core.2.0.0-rc1-build2826\lib\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise />
+  </Choose>
+  <ItemGroup>
+    <Compile Include="..\Shared\%28Its.Recipes%29\TestInputGenerator.cs">
+      <Link>%28Its.Recipes%29\TestInputGenerator.cs</Link>
+    </Compile>
+    <Compile Include="Any.cs" />
+    <Compile Include="AssemblyAssertionExtensions.cs" />
+    <Compile Include="AssemblyExtensions.cs" />
+    <Compile Include="CodeGenTestBase.cs" />
+    <Compile Include="CodeSamples.cs" />
+    <Compile Include="CSharpAccessModifierExtensions.cs" />
+    <Compile Include="CSharpAccessModifiers.cs" />
+    <Compile Include="EntityTestBase.cs" />
+    <Compile Include="Given_an_Indenter.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_ExecuteAsync_Method.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_GetById_Base.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_GetById_Method.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_GetById_Indexer.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_AddAsync_Method.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Concrete_Interface.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Navigation_Property_Collection.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Navigation_Property_Instance.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Action.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Bound_Action.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Bound_Function.cs" />
+    <Compile Include="Given_an_OdcmParameter.cs" />
+    <Compile Include="Given_a_Configuration_Provider.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Abstract.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Derived.cs" />
+    <Compile Include="Given_a_nullable_Primitive_OdcmProperty.cs" />
+    <Compile Include="Given_well_known_EDMX.cs" />
+    <Compile Include="NavigationPropertyTestBase.cs" />
+    <Compile Include="Given_an_OdcmClass_Service.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_Interface.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Fetcher_Interface.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Navigation_Property_Collection.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Navigation_Property_Instance.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Complex_Structural_Property.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Primitive_Structural_Property.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Fetcher.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Concrete_Class.cs" />
+    <Compile Include="Given_an_OdcmClass_Complex.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Bound_Function.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Bound_Action.cs" />
+    <Compile Include="Given_OdcmFields.cs" />
+    <Compile Include="Given_an_OdcmEnum.cs" />
+    <Compile Include="Given_an_OdcmNamespace.cs" />
+    <Compile Include="Given_an_OdcmModel.cs" />
+    <Compile Include="Given_a_code_generator.cs" />
+    <Compile Include="MethodInfoAssertionExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TypeAssertionsExtensions.cs" />
+    <Compile Include="TypeExtensions.cs" />
+    <Compile Include="TypeKindExtensions.cs" />
+    <Compile Include="TypeKinds.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Core\Vipr.Core\Vipr.Core.csproj">
+      <Project>{04c24936-006a-4fd8-a872-ee55588c1cbe}</Project>
+      <Name>Vipr.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Readers\ODataReader.v4\ODataReader.v4.csproj">
+      <Project>{6d8d8008-0a34-490f-8b38-21d9c8bf25c0}</Project>
+      <Name>ODataReader.v4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Writers\CSharpWriter\CSharpWriter.csproj">
+      <Project>{ea55efcf-3127-4e85-9a37-a645c06ffcc1}</Project>
+      <Name>CSharpWriter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared\ProxyExtensions\Microsoft.OData.ProxyExtensions.csproj">
+      <Project>{59c2b4ef-1cca-47ba-bb90-8b3d98f403e2}</Project>
+      <Name>Microsoft.OData.ProxyExtensions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\test\Shared\Edmx\ActiveDirectory.edmx.xml">
+      <Link>Edmx\ActiveDirectory.edmx.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\test\Shared\Edmx\CRM.edmx.xml">
+      <Link>Edmx\CRM.edmx.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\test\Shared\Edmx\Exchange.edmx.xml">
+      <Link>Edmx\Exchange.edmx.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\test\Shared\Edmx\OneNote.edmx.xml">
+      <Link>Edmx\OneNote.edmx.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\test\Shared\Edmx\Sharepoint.edmx.xml">
+      <Link>Edmx\Sharepoint.edmx.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props'))" />
+    <Error Condition="!Exists('..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
