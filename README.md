@@ -1,9 +1,7 @@
 # VIPR: Client Library Generation Toolkit
 
-[![Build status][build-status-image]][build-status]  [![Issue Stats][pull-requests-image]][pull-requests]  [![Issue Stats][issues-closed-image]][issues-closed]
-
-[build-status-image]: http://corefx-ci.cloudapp.net/jenkins/job/microsoft_vipr/badge/icon
-[build-status]: http://corefx-ci.cloudapp.net/jenkins/job/microsoft_vipr/
+[![Build status](https://ci.appveyor.com/api/projects/status/dpwmcc8gi0ps62le?svg=true)](https://ci.appveyor.com/project/dotnet-bot/vipr)
+[![Issue Stats][pull-requests-image]][pull-requests]  [![Issue Stats][issues-closed-image]][issues-closed]
 [pull-requests-image]: http://www.issuestats.com/github/microsoft/vipr/badge/pr
 [pull-requests]: http://www.issuestats.com/github/microsoft/vipr
 [issues-closed-image]: http://www.issuestats.com/github/microsoft/vipr/badge/issue
