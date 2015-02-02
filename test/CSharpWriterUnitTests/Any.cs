@@ -60,6 +60,9 @@ namespace Microsoft.Its.Recipes
 
             classes[0].Base = classes[1];
 
+            if (!classes[1].Derived.Contains(classes[0]))
+                classes[1].Derived.Add(classes[0]);
+
             retVal.Types.AddRange(classes);
 
             if (config != null) config(retVal);

@@ -11,14 +11,9 @@ namespace CSharpWriter
 {
     public static class TypeService
     {
-        public static ImmutableDictionary<OdcmType, IEnumerable<OdcmType>> DerivedTypes { get; private set; }
-
         public static void Initialize(OdcmModel model)
         {
             var allTypes = model.Namespaces.SelectMany(n => n.Types).ToList();
-
-            DerivedTypes =
-                allTypes.ToImmutableDictionary(t => t, bt => allTypes.Where(dt => dt.Base == bt));
         }
 
         public static bool IsValueType(OdcmType type)

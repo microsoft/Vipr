@@ -116,7 +116,7 @@ namespace CSharpWriter
         {
             return ConfigurationService.OmitFetcherUpcastMethods
                 ? Methods.Emtpy
-                : TypeService.DerivedTypes[odcmClass]
+                : odcmClass.Derived
                     .Select(dr => new FetcherUpcastMethod(odcmClass, dr));
         }
 
@@ -131,7 +131,7 @@ namespace CSharpWriter
         {
             return ConfigurationService.OmitFetcherUpcastMethods
                 ? Methods.Emtpy
-                : TypeService.DerivedTypes[odcmClass]
+                : odcmClass.Derived
                     .Select(dr => new ConcreteUpcastMethod(odcmClass, dr));
         }
 
