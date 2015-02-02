@@ -43,10 +43,10 @@ namespace Vipr.Core
                 .Concat(odcmClass.Properties.Where(p => odcmClass.Key.Contains(p.Field)));
         }
 
-        public static IEnumerable<OdcmType> NestedDerivedTypes(this OdcmType odcmType)
+        public static IEnumerable<OdcmClass> NestedDerivedTypes(this OdcmClass odcmClass)
         {
-            var graph = new Queue<OdcmType>();
-            graph.Enqueue(odcmType);
+            var graph = new Queue<OdcmClass>();
+            graph.Enqueue(odcmClass);
             while (graph.Count > 0)
             {
                 var parent = graph.Dequeue();

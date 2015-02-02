@@ -6,7 +6,6 @@ using Microsoft.Its.Recipes;
 using ODataReader.v4;
 using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using Vipr.Core.CodeModel;
 using Xunit;
 
@@ -24,19 +23,18 @@ namespace ODataReader.v4UnitTests
         [Fact]
         public void It_returns_an_odcm_model()
         {
-            var edmxElement =
-                Any.Edmx(edmx => edmx.Add(
-                    Any.DataServices(dataServices => dataServices.Add(
-                        Any.Schema(schema => schema.Add(
-                            Any.EntityContainer()))))));
+            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
+                schema.Add(Any.Csdl.EntityContainer()));
 
             var serviceMetadata = new Dictionary<string, string>()
             {
                 {"$metadata", edmxElement.ToString()}
             };
             var odcmModel = reader.GenerateOdcmModel(serviceMetadata);
-            
-            odcmModel.Should().NotBeNull("because a valid edmx should yield a valid model");
+
+            odcmModel
+                .Should()
+                .NotBeNull("because a valid edmx should yield a valid model");
         }
 
         [Fact]
@@ -44,15 +42,11 @@ namespace ODataReader.v4UnitTests
         {
             var schemaNamespace = string.Empty;
 
-            var edmxElement =
-                Any.Edmx(edmx => edmx.Add(
-                    Any.DataServices(dataServices => dataServices.Add(
-                        Any.Schema(schema =>
-                        {
-                            schema.Add(
-                                Any.EntityContainer());
-                            schemaNamespace = schema.Attribute("Namespace").Value;
-                        })))));
+            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
+            {
+                schema.Add(Any.Csdl.EntityContainer());
+                schemaNamespace = schema.Attribute("Namespace").Value;
+            });
 
             var serviceMetadata = new Dictionary<string, string>()
             {
@@ -60,9 +54,11 @@ namespace ODataReader.v4UnitTests
             };
             var odcmModel = reader.GenerateOdcmModel(serviceMetadata);
 
-            odcmModel.Namespaces.FindAll(
-                @namespace => @namespace.Name.Equals(schemaNamespace, StringComparison.InvariantCultureIgnoreCase))
-                .Count.Should()
+            odcmModel.Namespaces
+                .FindAll(
+                    @namespace => @namespace.Name.Equals(schemaNamespace, StringComparison.InvariantCultureIgnoreCase))
+                .Count
+                .Should()
                 .Be(1, "because only one namespace shoud be created per schema element");
         }
 
@@ -72,18 +68,14 @@ namespace ODataReader.v4UnitTests
             var schemaNamespace = string.Empty;
             var entityContainerName = string.Empty;
 
-            var edmxElement =
-                Any.Edmx(edmx => edmx.Add(
-                    Any.DataServices(dataServices => dataServices.Add(
-                        Any.Schema(schema =>
-                        {
-                            schema.Add(
-                                Any.EntityContainer(entityContainer =>
-                                {
-                                    entityContainerName = entityContainer.Attribute("Name").Value;
-                                }));
-                            schemaNamespace = schema.Attribute("Namespace").Value;
-                        })))));
+            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
+            {
+                schema.Add(Any.Csdl.EntityContainer(entityContainer =>
+                {
+                    entityContainerName = entityContainer.Attribute("Name").Value;
+                }));
+                schemaNamespace = schema.Attribute("Namespace").Value;
+            });
 
             var serviceMetadata = new Dictionary<string, string>()
             {
@@ -95,9 +87,13 @@ namespace ODataReader.v4UnitTests
             odcmModel.TryResolveType(entityContainerName, schemaNamespace, out odcmClass)
                 .Should()
                 .BeTrue("because an EntityContainer should result in a matching OdcmType");
-            odcmClass.Should().BeOfType<OdcmClass>("because an EntityContainer should result in a matching OdcmClass");
-            odcmClass.As<OdcmClass>()
-                .Kind.Should()
+            odcmClass
+                .Should()
+                .BeOfType<OdcmClass>("because an EntityContainer should result in a matching OdcmClass");
+            odcmClass
+                .As<OdcmClass>()
+                .Kind
+                .Should()
                 .Be(OdcmClassKind.Service,
                     "because an EntityContainer should result in a matching OdcmClass of kind DataService");
         }

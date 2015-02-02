@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CSharpWriter;
 using Vipr.Core.CodeModel;
 
 namespace Microsoft.Its.Recipes
@@ -59,6 +60,11 @@ namespace Microsoft.Its.Recipes
             }
 
             classes[0].Base = classes[1];
+
+            if (!classes[1].Derived.Contains(classes[0]))
+            {
+                classes[1].Derived.Add(classes[0]);
+            }
 
             retVal.Types.AddRange(classes);
 

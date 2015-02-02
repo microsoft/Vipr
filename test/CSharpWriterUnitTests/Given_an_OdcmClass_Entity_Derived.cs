@@ -34,6 +34,10 @@ namespace CSharpWriterUnitTests
                 _baseClass = Any.EntityOdcmClass(@namespace);
                 @namespace.Types.Add(_baseClass);
                 derivedClass.Base = _baseClass;
+                if (!_baseClass.Derived.Contains(derivedClass))
+                {
+                    _baseClass.Derived.Add(derivedClass);
+                }
             });
 
             _baseConcreteType = Proxy.GetClass(_baseClass.Namespace, _baseClass.Name);

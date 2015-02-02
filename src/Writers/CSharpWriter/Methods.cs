@@ -112,11 +112,11 @@ namespace CSharpWriter
             return GetMethodsBoundToEntityType(odcmClass);
         }
 
-        private static IEnumerable<Method> ForFetcherUpcasts(OdcmType odcmClass)
+        private static IEnumerable<Method> ForFetcherUpcasts(OdcmClass odcmClass)
         {
             return ConfigurationService.OmitFetcherUpcastMethods
                 ? Methods.Emtpy
-                : TypeService.DerivedTypes[odcmClass]
+                : odcmClass.NestedDerivedTypes()
                     .Select(dr => new FetcherUpcastMethod(odcmClass, dr));
         }
 
@@ -127,11 +127,11 @@ namespace CSharpWriter
                     .Select(p => new ContainerAddToCollectionMethod(p));
         }
 
-        private static IEnumerable<Method> ForConcreteUpcasts(OdcmType odcmClass)
+        private static IEnumerable<Method> ForConcreteUpcasts(OdcmClass odcmClass)
         {
             return ConfigurationService.OmitFetcherUpcastMethods
                 ? Methods.Emtpy
-                : TypeService.DerivedTypes[odcmClass]
+                : odcmClass.NestedDerivedTypes()
                     .Select(dr => new ConcreteUpcastMethod(odcmClass, dr));
         }
 
