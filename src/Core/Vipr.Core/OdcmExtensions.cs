@@ -17,7 +17,12 @@ namespace Vipr.Core
         public static IEnumerable<OdcmProperty> WhereIsNavigation(this IEnumerable<OdcmProperty> odcmProperties, bool isNavigation = true)
         {
             return odcmProperties
-                .Where(p => isNavigation == (p.Type is OdcmClass && ((OdcmClass)p.Type).Kind == OdcmClassKind.Entity));
+                .Where(
+                    p =>
+                        isNavigation ==
+                        (p.Type is OdcmClass &&
+                         (((OdcmClass) p.Type).Kind == OdcmClassKind.Entity ||
+                          ((OdcmClass) p.Type).Kind == OdcmClassKind.MediaEntity)));
         }
 
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
@@ -43,10 +48,10 @@ namespace Vipr.Core
                 .Concat(odcmClass.Properties.Where(p => odcmClass.Key.Contains(p.Field)));
         }
 
-        public static IEnumerable<OdcmType> NestedDerivedTypes(this OdcmType odcmType)
+        public static IEnumerable<OdcmClass> NestedDerivedTypes(this OdcmClass odcmClass)
         {
-            var graph = new Queue<OdcmType>();
-            graph.Enqueue(odcmType);
+            var graph = new Queue<OdcmClass>();
+            graph.Enqueue(odcmClass);
             while (graph.Count > 0)
             {
                 var parent = graph.Dequeue();

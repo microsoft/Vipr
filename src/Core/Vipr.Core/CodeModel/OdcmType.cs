@@ -10,15 +10,10 @@ namespace Vipr.Core.CodeModel
     {
         public string Namespace { get; set; }
 
-        public OdcmType Base { get; set; }
-
-        public IList<OdcmType> Derived { get; private set; }
-
         public OdcmType(string name, string @namespace)
             : base(name)
         {
             Namespace = @namespace;
-            Derived = new List<OdcmType>();
         }
 
         public string FullName

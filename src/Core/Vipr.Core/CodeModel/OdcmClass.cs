@@ -9,9 +9,15 @@ namespace Vipr.Core.CodeModel
     {
         public bool IsAbstract { get; set; }
 
+        public bool IsOpen { get; set; }
+
+        public OdcmClass Base { get; set; }
+
+        public IList<OdcmClass> Derived { get; private set; }
+
         public List<OdcmField> Key { get; private set; }
 
-        public OdcmClassKind Kind { get; private set; }
+        public OdcmClassKind Kind { get; set; }
 
         public List<OdcmField> Fields { get; private set; }
 
@@ -27,6 +33,7 @@ namespace Vipr.Core.CodeModel
             Properties = new List<OdcmProperty>();
             Methods = new List<OdcmMethod>();
             Key = new List<OdcmField>();
+            Derived = new List<OdcmClass>();
         }
 
         public override string AsReference()

@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Messaging;
 using System.Xml.Linq;
 
 namespace Microsoft.Its.Recipes
@@ -18,248 +20,311 @@ namespace Microsoft.Its.Recipes
             return camelCaseName.Substring(0, 1).ToLowerInvariant() + camelCaseName.Substring(1);
         }
 
-        public static XElement Action(Action<XElement> config = null)
+
+        internal static class Csdl
         {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string actionString = string.Format(ODataReader.v4UnitTests.Properties.Resources.Action_element,
-                pascalCaseName);
+            private readonly static string[] PrimitiveTypes = new[]
+            {
+                "Edm.Binary",
+                "Edm.Boolean",
+                "Edm.Byte",
+                "Edm.Date",
+                "Edm.DateTimeOffset",
+                "Edm.Decimal",
+                "Edm.Double",
+                "Edm.Duration",
+                "Edm.Guid",
+                "Edm.Int16",
+                "Edm.Int32",
+                "Edm.Int64",
+                "Edm.SByte",
+                "Edm.Single",
+                "Edm.Stream",
+                "Edm.String",
+                "Edm.TimeOfDay",
+                "Edm.Geography",
+                "Edm.GeographyPoint",
+                "Edm.GeographyLineString",
+                "Edm.GeographyPolygon",
+                "Edm.GeographyMultiPoint",
+                "Edm.GeographyMultiLineString",
+                "Edm.GeographyMultiPolygon",
+                "Edm.GeographyCollection",
+                "Edm.Geometry",
+                "Edm.GeometryPoint",
+                "Edm.GeometryLineString",
+                "Edm.GeometryPolygon",
+                "Edm.GeometryMultiPoint",
+                "Edm.GeometryMultiLineString",
+                "Edm.GeometryMultiPolygon",
+                "Edm.GeometryCollection"
+            };
+
+            public static string RandomPrimitiveType()
+            {
+                return PrimitiveTypes.RandomElement();
+            }
+            public static string DefaultEnumUnderlyingType()
+            {
+                return PrimitiveTypes[10];
+            }
+
+            public static string RandomEnumUnderlyingType()
+            {
+                int[] primitiveTypeIndices = {2, 9, 10, 11, 12};
+                return PrimitiveTypes[primitiveTypeIndices.RandomElement()];
+            }
+
+            public static XElement Action(Action<XElement> config = null)
+            {
+                var pascalCaseName = PascalCaseName(Int(1, 3));
+                var actionString = string.Format(ODataReader.v4UnitTests.Properties.Resources.Action_element, pascalCaseName);
+
+                var element = XElement.Parse(actionString);
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement ActionImport(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string actionImportString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.ActionImport_element, pascalCaseName);
+
+                XElement element = XElement.Parse(actionImportString);
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement ComplexType(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string complexTypeString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.ComplexType_element, pascalCaseName);
+
+                XElement element = XElement.Parse(complexTypeString);
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement DataServices(Action<XElement> config = null)
+            {
+                var element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.DataServices_element);
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement Edmx(Action<XElement> config = null)
+            {
+                XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Edmx_element);
 
-            XElement element = XElement.Parse(actionString);
+                if (config != null) config(element);
 
-            if (config != null) config(element);
+                return element;
+            }
 
-            return element;
-        }
+            public static XElement EntityContainer(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string entityContainerString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.EntityContainer_element, pascalCaseName);
 
-        public static XElement ActionImport(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string actionImportString =
-                string.Format(ODataReader.v4UnitTests.Properties.Resources.ActionImport_element, pascalCaseName);
+                XElement element = XElement.Parse(entityContainerString);
 
-            XElement element = XElement.Parse(actionImportString);
+                if (config != null) config(element);
 
-            if (config != null) config(element);
+                return element;
+            }
 
-            return element;
-        }
+            public static XElement EntitySet(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string entitySetString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.EntitySet_element, pascalCaseName);
 
-        public static XElement ComplexType(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string complexTypeString =
-                string.Format(ODataReader.v4UnitTests.Properties.Resources.ComplexType_element, pascalCaseName);
+                XElement element = XElement.Parse(entitySetString);
 
-            XElement element = XElement.Parse(complexTypeString);
+                if (config != null) config(element);
 
-            if (config != null) config(element);
+                return element;
+            }
 
-            return element;
-        }
+            public static XElement EntityType(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string entityTypeString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.EntityType_element, pascalCaseName);
 
-        public static XElement DataServices(Action<XElement> config = null)
-        {
-            XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.DataServices_element);
+                XElement element = XElement.Parse(entityTypeString);
 
-            if (config != null) config(element);
+                if (config != null) config(element);
 
-            return element;
-        }
+                return element;
+            }
 
-        public static XElement Edmx(Action<XElement> config = null)
-        {
-            XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Edmx_element);
+            public static XElement EnumType(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string enumTypeString = string.Format(ODataReader.v4UnitTests.Properties.Resources.EnumType_element,
+                    pascalCaseName);
 
-            if (config != null) config(element);
+                XElement element = XElement.Parse(enumTypeString);
 
-            return element;
-        }
+                if (config != null) config(element);
 
-        public static XElement EntityContainer(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1,3));
-            string entityContainerString =
-                string.Format(ODataReader.v4UnitTests.Properties.Resources.EntityContainer_element, pascalCaseName);
+                return element;
+            }
 
-            XElement element = XElement.Parse(entityContainerString);
+            public static XElement Function(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string functionString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Function_element, pascalCaseName);
 
-            if (config != null) config(element);
+                XElement element = XElement.Parse(functionString);
 
-            return element;
-        }
+                if (config != null) config(element);
 
-        public static XElement EntitySet(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string entitySetString =
-                string.Format(ODataReader.v4UnitTests.Properties.Resources.EntitySet_element, pascalCaseName);
+                return element;
+            }
 
-            XElement element = XElement.Parse(entitySetString);
+            public static XElement FunctionImport(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string functionImportString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.FunctionImport_element, pascalCaseName);
 
-            if (config != null) config(element);
+                XElement element = XElement.Parse(functionImportString);
 
-            return element;
-        }
+                if (config != null) config(element);
 
-        public static XElement EntityType(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string entityTypeString =
-                string.Format(ODataReader.v4UnitTests.Properties.Resources.EntityType_element, pascalCaseName);
+                return element;
+            }
 
-            XElement element = XElement.Parse(entityTypeString);
+            public static XElement Key(Action<XElement> config = null)
+            {
+                XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Key_element);
 
-            if (config != null) config(element);
+                if (config != null) config(element);
 
-            return element;
-        }
+                return element;
+            }
 
-        public static XElement EnumType(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string enumTypeString = string.Format(ODataReader.v4UnitTests.Properties.Resources.EnumType_element,
-                pascalCaseName);
+            public static XElement Member(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string memberString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Member_element, pascalCaseName);
 
-            XElement element = XElement.Parse(enumTypeString);
+                XElement element = XElement.Parse(memberString);
 
-            if (config != null) config(element);
+                if (config != null) config(element);
 
-            return element;
-        }
+                return element;
+            }
 
-        public static XElement Function(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string functionString =
-                string.Format(ODataReader.v4UnitTests.Properties.Resources.Function_element, pascalCaseName);
+            public static XElement NavigationProperty(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string navigationPropertyString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.NavigationProperty_element,
+                        pascalCaseName);
 
-            XElement element = XElement.Parse(functionString);
+                XElement element = XElement.Parse(navigationPropertyString);
 
-            if (config != null) config(element);
+                if (config != null) config(element);
 
-            return element;
-        }
+                return element;
+            }
 
-        public static XElement FunctionImport(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string functionImportString =
-                string.Format(ODataReader.v4UnitTests.Properties.Resources.FunctionImport_element, pascalCaseName);
+            public static XElement Parameter(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string parameterString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Parameter_element, pascalCaseName);
 
-            XElement element = XElement.Parse(functionImportString);
+                XElement element = XElement.Parse(parameterString);
 
-            if (config != null) config(element);
+                if (config != null) config(element);
 
-            return element;
-        }
+                return element;
+            }
 
-        public static XElement Key(Action<XElement> config = null)
-        {
-            XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Key_element);
+            public static XElement Property(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string propertyString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Property_element, pascalCaseName);
 
-            if (config != null) config(element);
+                XElement element = XElement.Parse(propertyString);
 
-            return element;
-        }
+                if (config != null) config(element);
 
-        public static XElement Member(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string memberString =
-                string.Format(ODataReader.v4UnitTests.Properties.Resources.Member_element, pascalCaseName);
+                return element;
+            }
 
-            XElement element = XElement.Parse(memberString);
+            public static XElement PropertyRef(Action<XElement> config = null)
+            {
+                XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.PropertyRef_element);
 
-            if (config != null) config(element);
+                if (config != null) config(element);
 
-            return element;
-        }
+                return element;
+            }
 
-        public static XElement NavigationProperty(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string navigationPropertyString =
-                string.Format(ODataReader.v4UnitTests.Properties.Resources.NavigationProperty_element, pascalCaseName);
+            public static XElement ReturnType(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string returnTypeString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.ReturnType_element, pascalCaseName);
 
-            XElement element = XElement.Parse(navigationPropertyString);
+                XElement element = XElement.Parse(returnTypeString);
 
-            if (config != null) config(element);
+                if (config != null) config(element);
 
-            return element;
-        }
+                return element;
+            }
 
-        public static XElement Parameter(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string parameterString =
-                string.Format(ODataReader.v4UnitTests.Properties.Resources.Parameter_element, pascalCaseName);
+            public static XElement Schema(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string schemaString = string.Format(ODataReader.v4UnitTests.Properties.Resources.Schema_element,
+                    pascalCaseName);
 
-            XElement element = XElement.Parse(parameterString);
+                XElement element = XElement.Parse(schemaString);
 
-            if (config != null) config(element);
+                if (config != null) config(element);
 
-            return element;
-        }
+                return element;
+            }
 
-        public static XElement Property(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string propertyString =
-                string.Format(ODataReader.v4UnitTests.Properties.Resources.Property_element, pascalCaseName);
+            public static XElement EdmxToSchema(Action<XElement> config = null)
+            {
+                return Edmx(edmx => 
+                    edmx.Add(DataServices(dataServices => 
+                        dataServices.Add(Schema(config)))));
+            }
 
-            XElement element = XElement.Parse(propertyString);
+            public static XElement Singleton(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string singletonString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Singleton_element, pascalCaseName);
 
-            if (config != null) config(element);
+                XElement element = XElement.Parse(singletonString);
 
-            return element;
-        }
+                if (config != null) config(element);
 
-        public static XElement PropertyRef(Action<XElement> config = null)
-        {
-            XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.PropertyRef_element);
-
-            if (config != null) config(element);
-
-            return element;
-        }
-
-        public static XElement ReturnType(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string returnTypeString =
-                string.Format(ODataReader.v4UnitTests.Properties.Resources.ReturnType_element, pascalCaseName);
-
-            XElement element = XElement.Parse(returnTypeString);
-
-            if (config != null) config(element);
-
-            return element;
-        }
-
-        public static XElement Schema(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string schemaString = string.Format(ODataReader.v4UnitTests.Properties.Resources.Schema_element,
-                pascalCaseName);
-
-            XElement element = XElement.Parse(schemaString);
-
-            if (config != null) config(element);
-
-            return element;
-        }
-
-        public static XElement Singleton(Action<XElement> config = null)
-        {
-            string pascalCaseName = PascalCaseName(Int(1, 3));
-            string singletonString =
-                string.Format(ODataReader.v4UnitTests.Properties.Resources.Singleton_element, pascalCaseName);
-
-            XElement element = XElement.Parse(singletonString);
-
-            if (config != null) config(element);
-
-            return element;
+                return element;
+            }
         }
     }
 }

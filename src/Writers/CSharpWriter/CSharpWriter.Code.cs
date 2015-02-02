@@ -25,8 +25,6 @@ namespace CSharpWriter
 
             ConfigurationService.Initialize(configurationProvider);
 
-            TypeService.Initialize(Model);
-
             if (model.ServiceType == ServiceType.ODataV4)
             {
                 _dependencies.Add("global::Microsoft.OData.Client");
@@ -136,6 +134,7 @@ namespace CSharpWriter
                     Write(Class.ForComplex(odcmClass));
                     break;
 
+                case OdcmClassKind.MediaEntity:
                 case OdcmClassKind.Entity:
                     Write(Interface.ForConcrete(odcmClass));
 
