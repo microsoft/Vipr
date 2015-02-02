@@ -25,8 +25,6 @@ namespace CSharpWriter
 
             ConfigurationService.Initialize(configurationProvider);
 
-            TypeService.Initialize(Model);
-
             if (model.ServiceType == ServiceType.ODataV4)
             {
                 _dependencies.Add("global::Microsoft.OData.Client");

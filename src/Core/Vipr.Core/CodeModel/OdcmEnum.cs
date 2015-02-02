@@ -11,6 +11,8 @@ namespace Vipr.Core.CodeModel
 
         public List<OdcmEnumMember> Members { get; private set; }
 
+        public bool IsFlags { get; set; }
+
         public OdcmEnum(string name, string @namespace)
             : base(name, @namespace)
         {

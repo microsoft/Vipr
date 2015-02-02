@@ -7,6 +7,7 @@ namespace Vipr.Core.CodeModel
     {
         Complex,
         Entity,
+        MediaEntity,
         Service
     }
 }
