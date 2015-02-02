@@ -9,6 +9,8 @@ namespace Vipr.Core.CodeModel
     {
         public bool IsAbstract { get; set; }
 
+        public bool IsOpen { get; set; }
+
         public OdcmClass Base { get; set; }
 
         public IList<OdcmClass> Derived { get; private set; }

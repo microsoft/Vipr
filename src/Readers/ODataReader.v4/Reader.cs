@@ -133,6 +133,7 @@ namespace ODataReader.v4
                     }
 
                     odcmClass.IsAbstract = complexType.IsAbstract;
+                    odcmClass.IsOpen = complexType.IsOpen;
 
                     if (complexType.BaseType != null)
                     {
@@ -171,6 +172,7 @@ namespace ODataReader.v4
                     }
 
                     odcmClass.IsAbstract = entityType.IsAbstract;
+                    odcmClass.IsOpen = entityType.IsOpen;
 
                     if (entityType.HasStream)
                     {

@@ -37,6 +37,11 @@ namespace CSharpWriter
                 return GetConcreteInterfaceName(odcmType);
             }
 
+            if (odcmType is OdcmClass && ((OdcmClass)odcmType).Kind == OdcmClassKind.MediaEntity)
+            {
+                return GetConcreteInterfaceName(odcmType);
+            }
+
             var resolvedName = ResolveIdentifier(odcmType);
 
             return new Identifier(resolvedName.Namespace, resolvedName.Name + (isCollection ? "[]" : string.Empty));

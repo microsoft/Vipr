@@ -134,6 +134,7 @@ namespace CSharpWriter
                     Write(Class.ForComplex(odcmClass));
                     break;
 
+                case OdcmClassKind.MediaEntity:
                 case OdcmClassKind.Entity:
                     Write(Interface.ForConcrete(odcmClass));
 
