@@ -2,8 +2,8 @@
 
 [![Build status][build-status-image]][build-status]  [![Issue Stats][pull-requests-image]][pull-requests]  [![Issue Stats][issues-closed-image]][issues-closed]
 
-[build-status-image]: http://corefx-ci.cloudapp.net/jenkins/job/microsoft_vipr/badge/icon
-[build-status]: http://corefx-ci.cloudapp.net/jenkins/job/microsoft_vipr/
+[build-status-image]: http://dotnet-ci.cloudapp.net/job/microsoft_vipr/badge/icon
+[build-status]: http://dotnet-ci.cloudapp.net/job/microsoft_vipr/
 [pull-requests-image]: http://www.issuestats.com/github/microsoft/vipr/badge/pr
 [pull-requests]: http://www.issuestats.com/github/microsoft/vipr
 [issues-closed-image]: http://www.issuestats.com/github/microsoft/vipr/badge/issue
