@@ -10,11 +10,11 @@ using Xunit;
 
 namespace ODataReader.v4UnitTests
 {
-    public class Given_a_valid_edmx_with_complex_types_when_passed_to_the_ODataReader
+    public class Given_complex_types_in_a_valid_edmx_when_passed_to_the_ODataReader
     {
         private ODataReader.v4.Reader reader;
 
-        public Given_a_valid_edmx_with_complex_types_when_passed_to_the_ODataReader()
+        public Given_complex_types_in_a_valid_edmx_when_passed_to_the_ODataReader()
         {
             reader = new Reader();
         }
@@ -98,7 +98,42 @@ namespace ODataReader.v4UnitTests
                 .BeOfType<OdcmClass>("because complex types should result in an OdcmClass");
             odcmComplexType.As<OdcmClass>().IsAbstract
                 .Should()
-                .BeTrue("because a complex type with the Abstract facet set should be abstact in the OdcmModel");
+                .BeTrue("because a complex type with the Abstract facet set should be abstract in the OdcmModel");
+        }
+
+        [Fact]
+        public void When_OpenType_is_set_it_returns_an_OdcmClass_with_IsOpen_set()
+        {
+            var complexTypeName = string.Empty;
+            var schemaNamespace = string.Empty;
+
+            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
+            {
+                schema.Add(Any.Csdl.ComplexType(complexType =>
+                {
+                    complexTypeName = complexType.Attribute("Name").Value;
+                    complexType.AddAttribute("OpenType", true);
+                }));
+                schema.Add(Any.Csdl.EntityContainer());
+                schemaNamespace = schema.Attribute("Namespace").Value;
+            });
+
+            var serviceMetadata = new Dictionary<string, string>()
+            {
+                {"$metadata", edmxElement.ToString()}
+            };
+            var odcmModel = reader.GenerateOdcmModel(serviceMetadata);
+
+            OdcmType odcmComplexType;
+            odcmModel.TryResolveType(complexTypeName, schemaNamespace, out odcmComplexType)
+                .Should()
+                .BeTrue("because a complex type in the schema should result in an OdcmType");
+            odcmComplexType
+                .Should()
+                .BeOfType<OdcmClass>("because complex types should result in an OdcmClass");
+            odcmComplexType.As<OdcmClass>().IsOpen
+                .Should()
+                .BeTrue("because a complex type with the OpenType facet set should be open in the OdcmModel");
         }
 
         [Fact]

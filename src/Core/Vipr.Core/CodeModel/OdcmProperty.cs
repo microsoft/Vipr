@@ -7,11 +7,17 @@ namespace Vipr.Core.CodeModel
     {
         public OdcmClass Class { get; set; }
 
-        public OdcmField Field { get; set; }
-
         public bool ReadOnly { get; set; }
 
         public OdcmType Type { get; set; }
+
+        public bool ContainsTarget { get; set; }
+
+        public bool IsLink { get; set; }
+
+        public bool IsRequired { get; set; }
+
+        public bool IsCollection { get; set; }
 
         public bool IsNullable { get; set; }
 

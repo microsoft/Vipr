@@ -94,7 +94,7 @@ namespace CSharpWriterUnitTests
 
         private Type[] GetKeyPropertyTypes()
         {
-            return Class.GetKeyProperties()
+            return Class.Key
                 .Select(p => p.Type)
                 .Select(t => Proxy.GetClass(t.Namespace, t.Name))
                 .ToArray();

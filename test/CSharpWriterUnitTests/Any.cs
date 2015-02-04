@@ -92,27 +92,9 @@ namespace Microsoft.Its.Recipes
             return retVal;
         }
 
-        public static OdcmField OdcmField(Action<OdcmField> config = null)
-        {
-            var retVal = new OdcmField(Any.CSharpIdentifier());
-
-            if (config != null) config(retVal);
-
-            return retVal;
-        }
-
         public static OdcmProperty OdcmProperty(Action<OdcmProperty> config = null)
         {
             var retVal = new OdcmProperty(Any.CSharpIdentifier());
-
-            if (config != null) config(retVal);
-
-            return retVal;
-        }
-
-        public static OdcmField PrimitiveOdcmField(Action<OdcmField> config = null)
-        {
-            var retVal = new OdcmField(Any.CSharpIdentifier()) { Type = Any.PrimitiveOdcmType() };
 
             if (config != null) config(retVal);
 
@@ -138,15 +120,6 @@ namespace Microsoft.Its.Recipes
             return retVal;
         }
 
-        public static object ComplexOdcmField(OdcmNamespace odcmNamespace, Action<OdcmField> config = null)
-        {
-            var retVal = new OdcmField(Any.CSharpIdentifier()) { Type = Any.ComplexOdcmType(odcmNamespace) };
-
-            if (config != null) config(retVal);
-
-            return retVal;
-        }
-
         private static OdcmClass ComplexOdcmType(OdcmNamespace odcmNamespace, Action<OdcmClass> config = null)
         {
             var retVal = new OdcmClass(Any.CSharpIdentifier(), odcmNamespace.Name, OdcmClassKind.Complex);
@@ -162,8 +135,6 @@ namespace Microsoft.Its.Recipes
         {
             var retVal = new OdcmProperty(Any.CSharpIdentifier()) { Type = Any.PrimitiveOdcmType() };
 
-            retVal.Field = new OdcmField(Any.CSharpIdentifier()) { Type = retVal.Type };
-
             if (config != null) config(retVal);
 
             return retVal;
@@ -173,8 +144,6 @@ namespace Microsoft.Its.Recipes
         {
             var retVal = new OdcmProperty(Any.CSharpIdentifier()) { Type = Any.EntityOdcmClass(odcmNamespace) };
 
-            retVal.Field = new OdcmField(Any.CSharpIdentifier()) { Type = retVal.Type };
-
             if (config != null) config(retVal);
 
             return retVal;
@@ -183,8 +152,6 @@ namespace Microsoft.Its.Recipes
         public static OdcmProperty ComplexOdcmProperty(OdcmNamespace odcmNamespace, Action<OdcmProperty> config = null)
         {
             var retVal = new OdcmProperty(Any.CSharpIdentifier()) { Type = Any.ComplexOdcmType(odcmNamespace) };
-
-            retVal.Field = new OdcmField(Any.CSharpIdentifier()) { Type = retVal.Type };
 
             if (config != null) config(retVal);
 
@@ -197,7 +164,7 @@ namespace Microsoft.Its.Recipes
 
             retVal.Properties.AddRange(Any.Sequence(i => Any.PrimitiveOdcmProperty(p => p.Class = retVal)));
 
-            retVal.Key.AddRange(retVal.Properties.RandomSubset(2).Select(p => p.Field));
+            retVal.Key.AddRange(retVal.Properties.RandomSubset(2));
 
             if (odcmNamespace.Classes.Any(c => c.Kind == OdcmClassKind.Complex))
                 retVal.Properties.AddRange(Any.Sequence(i => Any.OdcmProperty(p =>
@@ -232,8 +199,7 @@ namespace Microsoft.Its.Recipes
                     {
                         Class = retVal,
                         Type = entity,
-                        Field =
-                            new OdcmField("_" + entity.Name + "s") { Class = retVal, IsCollection = true, Type = entity }
+                        IsCollection = true
                     });
                 }
             }

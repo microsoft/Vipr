@@ -1029,7 +1029,7 @@ namespace CSharpWriter
             _("partial void OnContextCreated();");
         }
 
-        public void Write(IEnumerable<OdcmField> fields)
+        public void Write(IEnumerable<OdcmProperty> fields)
         {
             foreach (var odcmField in fields)
             {
@@ -1037,7 +1037,7 @@ namespace CSharpWriter
             }
         }
 
-        public void Write(OdcmField odcmField)
+        public void Write(OdcmProperty odcmField)
         {
             _("private {0} {1};", NamesService.GetPublicTypeName(odcmField.Type).FullName, odcmField.Name);
         }

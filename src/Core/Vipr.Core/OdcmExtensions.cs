@@ -9,11 +9,6 @@ namespace Vipr.Core
 {
     public static class OdcmExtensions
     {
-        public static bool IsCollection(this OdcmProperty odcmProperty)
-        {
-            return odcmProperty.Field != null && odcmProperty.Field.IsCollection;
-        }
-
         public static IEnumerable<OdcmProperty> WhereIsNavigation(this IEnumerable<OdcmProperty> odcmProperties, bool isNavigation = true)
         {
             return odcmProperties
@@ -33,19 +28,6 @@ namespace Vipr.Core
         public static IEnumerable<OdcmProperty> StructuralProperties(this OdcmClass odcmClass)
         {
             return odcmClass.Properties.WhereIsNavigation(false);
-        }
-
-        public static IEnumerable<OdcmProperty> GetKeyProperties(this OdcmClass odcmClass)
-        {
-            var keyProperties = Enumerable.Empty<OdcmProperty>();
-
-            var baseClass = odcmClass.Base as OdcmClass;
-
-            if (baseClass != null)
-                keyProperties = baseClass.GetKeyProperties();
-
-            return keyProperties
-                .Concat(odcmClass.Properties.Where(p => odcmClass.Key.Contains(p.Field)));
         }
 
         public static IEnumerable<OdcmClass> NestedDerivedTypes(this OdcmClass odcmClass)

@@ -30,17 +30,8 @@ namespace CSharpWriterUnitTests
                 _navigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = OdcmContainer;
-
                     p.Type = _navTargetClass;
-
-                    p.Field = new OdcmField(Any.CSharpIdentifier())
-                    {
-                        Class = @class,
-
-                        Type = _navTargetClass,
-
-                        IsCollection = false
-                    };
+                    p.IsCollection = false;
                 });
 
                 OdcmContainer.Properties.Add(_navigationProperty);

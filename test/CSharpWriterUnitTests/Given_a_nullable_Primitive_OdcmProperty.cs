@@ -152,7 +152,6 @@ namespace CSharpWriterUnitTests
             var @enum = Any.OdcmEnum(e => e.Namespace = _namespace.Name);
             _model.AddType(@enum);
             _property.Type = @enum;
-            _property.Field.Type = _property.Type;
             _proxy = GetProxy(_model);
             _classType = _proxy.GetClass(_class.Namespace, _class.Name);
             var _enumType = _proxy.GetEnum(@enum.Namespace, @enum.Name);
@@ -178,10 +177,7 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void When_the_property_is_Collection_of_Primitive_it_is_NOT_exposed_as_Collection_of_Nullable()
         {
-            _property.Field = Any.OdcmField(f =>
-            {
-                f.IsCollection = true;
-            });
+            _property.IsCollection = true;
 
             CreateProxyWithPropertyType("Int32");
 
@@ -192,8 +188,6 @@ namespace CSharpWriterUnitTests
         private void CreateProxyWithPropertyType(string type)
         {
             _property.Type = new OdcmPrimitiveType(type, "Edm");
-
-            _property.Field.Type = _property.Type;
 
             _proxy = GetProxy(_model);
 

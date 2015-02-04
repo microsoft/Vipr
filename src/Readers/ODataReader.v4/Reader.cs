@@ -151,14 +151,9 @@ namespace ODataReader.v4
                             baseClass.Derived.Add(odcmClass);
                     }
 
-                    var structuralProperties = from element in complexType.Properties()
-                        where element.PropertyKind == EdmPropertyKind.Structural &&
-                              element.DeclaringType == (IEdmStructuredType) complexType
-                        select element as IEdmStructuralProperty;
-                    foreach (var structuralProperty in structuralProperties)
+                    foreach (var property in complexType.DeclaredProperties)
                     {
-                        OdcmField odcmField = WriteStructuralField(odcmClass, structuralProperty);
-                        WriteStructuralProperty(odcmClass, odcmField, structuralProperty);
+                        WriteProperty(odcmClass, property);
                     }
                 }
 
@@ -197,13 +192,9 @@ namespace ODataReader.v4
                             baseClass.Derived.Add(odcmClass);
                     }
 
-                    var structuralProperties = from element in entityType.DeclaredProperties
-                        where element.PropertyKind == EdmPropertyKind.Structural
-                        select element as IEdmStructuralProperty;
-                    foreach (var structuralProperty in structuralProperties)
+                    foreach (var property in entityType.DeclaredProperties)
                     {
-                        OdcmField odcmField = WriteStructuralField(odcmClass, structuralProperty);
-                        WriteStructuralProperty(odcmClass, odcmField, structuralProperty);
+                        WriteProperty(odcmClass, property);
                     }
 
                     foreach (IEdmStructuralProperty keyProperty in entityType.Key())
@@ -215,16 +206,7 @@ namespace ODataReader.v4
                             property.IsNullable = false;
                         }
 
-                        odcmClass.Key.Add(FindField(odcmClass, keyProperty));
-                    }
-
-                    var navigationProperties = from element in entityType.DeclaredProperties
-                        where element.PropertyKind == EdmPropertyKind.Navigation
-                        select element as IEdmNavigationProperty;
-                    foreach (var navigationProperty in navigationProperties)
-                    {
-                        OdcmField odcmField = WriteNavigationField(odcmClass, navigationProperty);
-                        WriteNavigationProperty(odcmClass, odcmField, navigationProperty);
+                        odcmClass.Key.Add(property);
                     }
 
                     var entityTypeActions = from element in actions
@@ -258,8 +240,7 @@ namespace ODataReader.v4
                         select element as IEdmEntitySet;
                     foreach (var entitySet in entitySets)
                     {
-                        OdcmField odcmField = WriteField(odcmClass, entitySet);
-                        WriteProperty(odcmClass, odcmField, entitySet);
+                        WriteProperty(odcmClass, entitySet);
                     }
 
                     var singletons = from element in entityContainer.Elements
@@ -267,8 +248,7 @@ namespace ODataReader.v4
                         select element as IEdmSingleton;
                     foreach (var singleton in singletons)
                     {
-                        OdcmField odcmField = WriteField(odcmClass, singleton);
-                        WriteProperty(odcmClass, odcmField, singleton);
+                        WriteProperty(odcmClass, singleton);
                     }
 
                     var actionImports = from element in entityContainer.Elements
@@ -298,70 +278,38 @@ namespace ODataReader.v4
                             entityType.FullTypeName()));
             }
 
-            private void WriteProperty(OdcmClass odcmClass, OdcmField odcmField, IEdmEntitySet entitySet)
+            private void WriteProperty(OdcmClass odcmClass, IEdmEntitySet entitySet)
             {
-                OdcmProperty odcmProperty = new OdcmProperty(entitySet.Name);
-                odcmProperty.Class = odcmClass;
-                odcmProperty.Field = odcmField;
-                odcmProperty.Type = odcmField.Type;
-                odcmClass.Properties.Add(odcmProperty);
-            }
-
-            private OdcmField WriteField(OdcmClass odcmClass, IEdmEntitySet entitySet)
-            {
-                OdcmField odcmField = new OdcmField("_" + entitySet.Name);
-                odcmField.Class = odcmClass;
-                odcmClass.Fields.Add(odcmField);
-
-                odcmField.Type = ResolveType(entitySet.EntityType().Name, entitySet.EntityType().Namespace,
-                    TypeKind.Entity);
-
-                odcmField.IsCollection = true;
-                odcmField.IsLink = true;
-
-                return odcmField;
-            }
-
-            private void WriteProperty(OdcmClass odcmClass, OdcmField odcmField, IEdmSingleton singleton)
-            {
-                OdcmProperty odcmProperty = new OdcmProperty(singleton.Name);
-                odcmProperty.Class = odcmClass;
-                odcmProperty.Type = odcmField.Type;
-                odcmClass.Properties.Add(odcmProperty);
-
-                odcmProperty.Field = odcmField;
-                odcmProperty.Type = odcmField.Type;
-            }
-
-            private OdcmField WriteField(OdcmClass odcmClass, IEdmSingleton singleton)
-            {
-                OdcmField odcmField = new OdcmField("_" + singleton.Name);
-                odcmField.Class = odcmClass;
-                odcmClass.Fields.Add(odcmField);
-
-                odcmField.Type = ResolveType(singleton.EntityType().Name, singleton.EntityType().Namespace,
-                    TypeKind.Entity);
-
-                odcmField.IsLink = true;
-
-                return odcmField;
-            }
-
-            private OdcmField FindField(OdcmClass odcmClass, IEdmStructuralProperty keyProperty)
-            {
-                foreach (OdcmField field in odcmClass.Fields)
+                var odcmProperty = new OdcmProperty(entitySet.Name)
                 {
-                    if (field.Name.Equals("_" + keyProperty.Name, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return field;
-                    }
-                }
+                    Class = odcmClass,
+                    Type = ResolveType(entitySet.EntityType().Name, entitySet.EntityType().Namespace,
+                        TypeKind.Entity),
+                    IsCollection = true,
+                    IsLink = true
+                };
 
-                return null;
+                odcmClass.Properties.Add(odcmProperty);
+            }
+
+            private void WriteProperty(OdcmClass odcmClass, IEdmSingleton singleton)
+            {
+                var odcmProperty = new OdcmProperty(singleton.Name)
+                {
+                    Class = odcmClass,
+                    Type = ResolveType(singleton.EntityType().Name, singleton.EntityType().Namespace,
+                        TypeKind.Entity),
+                    IsLink = true
+                };
+
+                odcmClass.Properties.Add(odcmProperty);
             }
 
             private OdcmProperty FindProperty(OdcmClass odcmClass, IEdmStructuralProperty keyProperty)
             {
+                if (odcmClass == null)
+                    return null;
+
                 foreach (OdcmProperty property in odcmClass.Properties)
                 {
                     if (property.Name.Equals(keyProperty.Name, StringComparison.OrdinalIgnoreCase))
@@ -370,7 +318,7 @@ namespace ODataReader.v4
                     }
                 }
 
-                return null;
+                return FindProperty(odcmClass.Base, keyProperty);
             }
 
             private void WriteMethod(OdcmClass odcmClass, IEdmOperation operation)
@@ -416,55 +364,20 @@ namespace ODataReader.v4
                 }
             }
 
-            private void WriteNavigationProperty(OdcmClass odcmClass, OdcmField odcmField,
-                IEdmNavigationProperty navigationProperty)
+            private void WriteProperty(OdcmClass odcmClass, IEdmProperty property)
             {
-                WriteProperty(odcmClass, odcmField, navigationProperty);
-            }
+                var odcmProperty = new OdcmProperty(property.Name)
+                {
+                    Class = odcmClass,
+                    IsNullable = property.Type.IsNullable,
+                    Type = ResolveType(property.Type),
+                    IsCollection = property.Type.IsCollection(),
+                    ContainsTarget =
+                        property is IEdmNavigationProperty && ((IEdmNavigationProperty) property).ContainsTarget,
+                    IsLink = property is IEdmNavigationProperty
+                };
 
-            private void WriteStructuralProperty(OdcmClass odcmClass, OdcmField odcmField,
-                IEdmStructuralProperty structuralProperty)
-            {
-                WriteProperty(odcmClass, odcmField, structuralProperty);
-            }
-
-            private void WriteProperty(OdcmClass odcmClass, OdcmField odcmField, IEdmProperty property)
-            {
-                OdcmProperty odcmProperty = new OdcmProperty(property.Name);
-                odcmProperty.Class = odcmClass;
-                odcmProperty.IsNullable = property.Type.IsNullable;
                 odcmClass.Properties.Add(odcmProperty);
-
-                odcmProperty.Field = odcmField;
-
-                odcmProperty.Type = odcmField.Type;
-            }
-
-            private OdcmField WriteNavigationField(OdcmClass odcmClass, IEdmNavigationProperty navigationProperty)
-            {
-                OdcmField odcmField = WriteField(odcmClass, navigationProperty);
-
-                odcmField.ContainsTarget = navigationProperty.ContainsTarget;
-                odcmField.IsLink = true;
-
-                return odcmField;
-            }
-
-            private OdcmField WriteStructuralField(OdcmClass odcmClass, IEdmStructuralProperty structuralProperty)
-            {
-                return WriteField(odcmClass, structuralProperty);
-            }
-
-            private OdcmField WriteField(OdcmClass odcmClass, IEdmProperty property)
-            {
-                OdcmField odcmField = new OdcmField("_" + property.Name);
-                odcmField.Class = odcmClass;
-                odcmClass.Fields.Add(odcmField);
-
-                odcmField.Type = ResolveType(property.Type);
-                odcmField.IsCollection = property.Type.IsCollection();
-
-                return odcmField;
             }
 
             private OdcmType ResolveType(IEdmTypeReference realizedType)

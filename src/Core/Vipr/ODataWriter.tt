@@ -4,7 +4,7 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ import namespace="ODataReader.CodeModel" #>
+<#@ import namespace="Vipr.Core.CodeModel" #>
 <#@ output extension=".cs" #>
 <# ProcessModel(); #>
 <#+
@@ -20,12 +20,12 @@
         GenerationEnvironment.Remove(startIndex, count);
     }
 
-    public string GetPrimitiveType(ODataReader.CodeModel.OdcmType odcmType)
+    public string GetPrimitiveType(OdcmType odcmType)
     {
         return GetPrimitiveType(odcmType, false);
     }
 
-    public string GetPrimitiveType(ODataReader.CodeModel.OdcmType odcmType, bool isCollection)
+    public string GetPrimitiveType(OdcmType odcmType, bool isCollection)
     {
         switch(odcmType.Name)
         {
@@ -40,12 +40,12 @@
         return "<oops>";
     }
 
-    public string GetType(ODataReader.CodeModel.OdcmType odcmType)
+    public string GetType(OdcmType odcmType)
     {
         return GetType(odcmType, false);
     }
 
-    public string GetType(ODataReader.CodeModel.OdcmType odcmType, bool isCollection)
+    public string GetType(OdcmType odcmType, bool isCollection)
     {
         if(odcmType == null)
         {
@@ -76,9 +76,9 @@
         }
     }
 
-    ODataReader.CodeModel.OdcmNamespace currentNamespace;
+    OdcmNamespace currentNamespace;
 
-    public void ProcessNamespace(ODataReader.CodeModel.OdcmNamespace odcmNamespace)
+    public void ProcessNamespace(OdcmNamespace odcmNamespace)
     {
         currentNamespace = odcmNamespace;
 #>
@@ -104,7 +104,7 @@ namespace <#= odcmNamespace.Name #>
 <#+
     }
 
-    public void ProcessEnum(ODataReader.CodeModel.OdcmEnum odcmEnum)
+    public void ProcessEnum(OdcmEnum odcmEnum)
     {
         PushIndent("   ");
 #>
@@ -123,7 +123,7 @@ public enum <#= odcmEnum.Name #>
         PopIndent();
     }
 
-    public void ProcessEnumMember(ODataReader.CodeModel.OdcmEnumMember odcmEnumMember)
+    public void ProcessEnumMember(OdcmEnumMember odcmEnumMember)
     {
         PushIndent("   ");
 #>
@@ -132,7 +132,7 @@ public enum <#= odcmEnum.Name #>
         PopIndent();
     }
 
-    public void ProcessClass(ODataReader.CodeModel.OdcmClass odcmClass)
+    public void ProcessClass(OdcmClass odcmClass)
     {
         PushIndent("   ");
 
@@ -153,7 +153,7 @@ public <#= odcmClass.IsAbstract ? "abstract " : string.Empty #>class <#= odcmCla
 #>
 {
 <#+
-        foreach(OdcmField odcmField in odcmClass.Fields)
+        foreach(OdcmProperty odcmField in odcmClass.Properties)
         {
             ProcessField(odcmField);
         }
@@ -168,7 +168,7 @@ public <#= odcmClass.IsAbstract ? "abstract " : string.Empty #>class <#= odcmCla
         PopIndent();
     }
 
-    public void ProcessMethod(ODataReader.CodeModel.OdcmMethod odcmMethod)
+    public void ProcessMethod(OdcmMethod odcmMethod)
     {
         PushIndent("   ");
         string returnType = GetType(odcmMethod.ReturnType);
@@ -191,7 +191,7 @@ throw new System.NotImplementedException();
         PopIndent();
     }
 
-    public void ProcessField(ODataReader.CodeModel.OdcmField odcmField)
+    public void ProcessField(OdcmProperty odcmField)
     {
         PushIndent("   ");
 

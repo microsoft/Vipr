@@ -63,7 +63,7 @@ namespace CSharpWriterUnitTests
 
         private IEnumerable<string> EntityKeyNames
         {
-            get { return Class.GetKeyProperties().Select(p => p.Name); }
+            get { return Class.Key.Select(p => p.Name); }
         }
 
         [Fact]

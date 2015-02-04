@@ -63,7 +63,7 @@ namespace ODataReader.v3
             private void WriteNamespaces()
             {
                 var declaredNamespaces = (from se in _edmModel.SchemaElements
-                    select se.Namespace).Distinct();
+                                          select se.Namespace).Distinct();
                 foreach (var declaredNamespace in declaredNamespaces)
                 {
                     WriteNamespace(_edmModel, declaredNamespace);
@@ -73,36 +73,36 @@ namespace ODataReader.v3
             private void WriteNamespace(IEdmModel edmModel, string @namespace)
             {
                 var namespaceElements = from se in edmModel.SchemaElements
-                    where string.Equals(se.Namespace, @namespace)
-                    select se;
+                                        where string.Equals(se.Namespace, @namespace)
+                                        select se;
 
                 var types = from se in namespaceElements
-                    where se.SchemaElementKind == EdmSchemaElementKind.TypeDefinition
-                    select se as IEdmType;
+                            where se.SchemaElementKind == EdmSchemaElementKind.TypeDefinition
+                            select se as IEdmType;
 
                 var complexTypes = from se in types
-                    where se.TypeKind == EdmTypeKind.Complex
-                    select se as IEdmComplexType;
+                                   where se.TypeKind == EdmTypeKind.Complex
+                                   select se as IEdmComplexType;
 
                 var entityTypes = from se in types
-                    where se.TypeKind == EdmTypeKind.Entity
-                    select se as IEdmEntityType;
+                                  where se.TypeKind == EdmTypeKind.Entity
+                                  select se as IEdmEntityType;
 
                 var enumTypes = from se in types
-                    where se.TypeKind == EdmTypeKind.Enum
-                    select se as IEdmEnumType;
+                                where se.TypeKind == EdmTypeKind.Enum
+                                select se as IEdmEnumType;
 
                 var entityContainers = from se in namespaceElements
-                    where se.SchemaElementKind == EdmSchemaElementKind.EntityContainer
-                    select se as IEdmEntityContainer;
+                                       where se.SchemaElementKind == EdmSchemaElementKind.EntityContainer
+                                       select se as IEdmEntityContainer;
 
                 var boundFunctions = from se in
-                    (from ec in entityContainers
-                        select ec.Elements).SelectMany(v => v)
-                    where
-                        se.ContainerElementKind == EdmContainerElementKind.FunctionImport &&
-                        ((IEdmFunctionImport) se).IsBindable
-                    select se as IEdmFunctionImport;
+                                         (from ec in entityContainers
+                                          select ec.Elements).SelectMany(v => v)
+                                     where
+                                         se.ContainerElementKind == EdmContainerElementKind.FunctionImport &&
+                                         ((IEdmFunctionImport)se).IsBindable
+                                     select se as IEdmFunctionImport;
 
                 Console.WriteLine(@namespace);
 
@@ -125,7 +125,7 @@ namespace ODataReader.v3
                     {
                         odcmEnum.Members.Add(new OdcmEnumMember(enumMember.Name)
                         {
-                            Value = ((EdmIntegerConstant) enumMember.Value).Value
+                            Value = ((EdmIntegerConstant)enumMember.Value).Value
                         });
                     }
                 }
@@ -145,12 +145,15 @@ namespace ODataReader.v3
                     if (complexType.BaseType != null)
                     {
                         OdcmClass baseClass;
-                        if (
-                            !_odcmModel.TryResolveType(((IEdmSchemaElement) complexType.BaseType).Name,
-                                ((IEdmSchemaElement) complexType.BaseType).Namespace, out baseClass))
+                        if (!_odcmModel.TryResolveType(
+                            ((IEdmSchemaElement)complexType.BaseType).Name,
+                            ((IEdmSchemaElement)complexType.BaseType).Namespace,
+                            out baseClass))
                         {
-                            baseClass = new OdcmClass(((IEdmSchemaElement) complexType.BaseType).Name,
-                                ((IEdmSchemaElement) complexType.BaseType).Namespace, OdcmClassKind.Complex);
+                            baseClass = new OdcmClass(
+                                ((IEdmSchemaElement)complexType.BaseType).Name,
+                                ((IEdmSchemaElement)complexType.BaseType).Namespace,
+                                OdcmClassKind.Complex);
                             _odcmModel.AddType(baseClass);
                         }
                         odcmClass.Base = baseClass;
@@ -158,13 +161,9 @@ namespace ODataReader.v3
                             baseClass.Derived.Add(odcmClass);
                     }
 
-                    var structuralProperties = from element in complexType.Properties()
-                        where element.PropertyKind == EdmPropertyKind.Structural
-                        select element as IEdmStructuralProperty;
-                    foreach (var structuralProperty in structuralProperties)
+                    foreach (var property in complexType.DeclaredProperties)
                     {
-                        OdcmField odcmField = WriteStructuralField(odcmClass, structuralProperty);
-                        WriteStructuralProperty(odcmClass, odcmField, structuralProperty);
+                        WriteProperty(odcmClass, property);
                     }
                 }
 
@@ -183,12 +182,15 @@ namespace ODataReader.v3
                     if (entityType.BaseType != null)
                     {
                         OdcmClass baseClass;
-                        if (
-                            !_odcmModel.TryResolveType(((IEdmSchemaElement) entityType.BaseType).Name,
-                                ((IEdmSchemaElement) entityType.BaseType).Namespace, out baseClass))
+                        if (!_odcmModel.TryResolveType(
+                            ((IEdmSchemaElement)entityType.BaseType).Name,
+                            ((IEdmSchemaElement)entityType.BaseType).Namespace,
+                            out baseClass))
                         {
-                            baseClass = new OdcmClass(((IEdmSchemaElement) entityType.BaseType).Name,
-                                ((IEdmSchemaElement) entityType.BaseType).Namespace, OdcmClassKind.Entity);
+                            baseClass = new OdcmClass(
+                                ((IEdmSchemaElement)entityType.BaseType).Name,
+                                ((IEdmSchemaElement)entityType.BaseType).Namespace,
+                                OdcmClassKind.Entity);
                             _odcmModel.AddType(baseClass);
                         }
 
@@ -198,22 +200,9 @@ namespace ODataReader.v3
                             baseClass.Derived.Add(odcmClass);
                     }
 
-                    var structuralProperties = from element in entityType.Properties()
-                        where element.PropertyKind == EdmPropertyKind.Structural
-                        select element as IEdmStructuralProperty;
-                    foreach (var structuralProperty in structuralProperties)
+                    foreach (var property in entityType.DeclaredProperties)
                     {
-                        OdcmField odcmField = WriteStructuralField(odcmClass, structuralProperty);
-                        WriteStructuralProperty(odcmClass, odcmField, structuralProperty);
-                    }
-
-                    var navigationProperties = from element in entityType.Properties()
-                        where element.PropertyKind == EdmPropertyKind.Navigation
-                        select element as IEdmNavigationProperty;
-                    foreach (var navigationProperty in navigationProperties)
-                    {
-                        OdcmField odcmField = WriteNavigationField(odcmClass, navigationProperty);
-                        WriteNavigationProperty(odcmClass, odcmField, navigationProperty);
+                        WriteProperty(odcmClass, property);
                     }
 
                     foreach (IEdmStructuralProperty keyProperty in entityType.Key())
@@ -225,12 +214,12 @@ namespace ODataReader.v3
                             property.IsNullable = false;
                         }
 
-                        odcmClass.Key.Add(FindField(odcmClass, keyProperty));
+                        odcmClass.Key.Add(property);
                     }
 
                     var entityTypeFunctions = from se in boundFunctions
-                        where IsFunctionBound(se, entityType)
-                        select se;
+                                              where IsFunctionBound(se, entityType)
+                                              select se;
                     foreach (var function in entityTypeFunctions)
                     {
                         WriteMethod(odcmClass, function);
@@ -247,19 +236,18 @@ namespace ODataReader.v3
                     }
 
                     var entitySets = from se in entityContainer.Elements
-                        where se.ContainerElementKind == EdmContainerElementKind.EntitySet
-                        select se as IEdmEntitySet;
+                                     where se.ContainerElementKind == EdmContainerElementKind.EntitySet
+                                     select se as IEdmEntitySet;
                     foreach (var entitySet in entitySets)
                     {
-                        OdcmField odcmField = WriteField(odcmClass, entitySet);
-                        WriteProperty(odcmClass, odcmField, entitySet);
+                        WriteProperty(odcmClass, entitySet);
                     }
 
                     var functionImports = from se in entityContainer.Elements
-                        where
-                            se.ContainerElementKind == EdmContainerElementKind.FunctionImport &&
-                            !((IEdmFunctionImport) se).IsBindable
-                        select se as IEdmFunctionImport;
+                                          where
+                                              se.ContainerElementKind == EdmContainerElementKind.FunctionImport &&
+                                              !((IEdmFunctionImport)se).IsBindable
+                                          select se as IEdmFunctionImport;
                     foreach (var functionImport in functionImports)
                     {
                         WriteMethod(odcmClass, functionImport);
@@ -276,46 +264,25 @@ namespace ODataReader.v3
                         bindingParameterType.AsCollection().ElementType().Definition == entityType);
             }
 
-            private void WriteProperty(OdcmClass odcmClass, OdcmField odcmField, IEdmEntitySet entitySet)
+            private void WriteProperty(OdcmClass odcmClass, IEdmEntitySet entitySet)
             {
-                OdcmProperty odcmProperty = new OdcmProperty(entitySet.Name);
-                odcmProperty.Class = odcmClass;
-                odcmClass.Properties.Add(odcmProperty);
-
-                odcmProperty.Field = odcmField;
-                odcmProperty.Type = odcmField.Type;
-            }
-
-            private OdcmField WriteField(OdcmClass odcmClass, IEdmEntitySet entitySet)
-            {
-                OdcmField odcmField = new OdcmField("_" + entitySet.Name);
-                odcmField.Class = odcmClass;
-                odcmClass.Fields.Add(odcmField);
-
-                odcmField.Type = ResolveType(entitySet.ElementType.Name, entitySet.ElementType.Namespace,
-                    TypeKind.Entity);
-
-                odcmField.IsCollection = true;
-                odcmField.IsLink = true;
-
-                return odcmField;
-            }
-
-            private OdcmField FindField(OdcmClass odcmClass, IEdmStructuralProperty keyProperty)
-            {
-                foreach (OdcmField field in odcmClass.Fields)
+                var odcmProperty = new OdcmProperty(entitySet.Name)
                 {
-                    if (field.Name.Equals(keyProperty.Name, StringComparison.OrdinalIgnoreCase))
-                    {
-                        return field;
-                    }
-                }
+                    Type = ResolveType(entitySet.ElementType.Name, entitySet.ElementType.Namespace,
+                        TypeKind.Entity),
+                    IsCollection = true,
+                    IsLink = true,
+                    Class = odcmClass
+                };
 
-                return null;
+                odcmClass.Properties.Add(odcmProperty);
             }
 
             private OdcmProperty FindProperty(OdcmClass odcmClass, IEdmStructuralProperty keyProperty)
             {
+                if (odcmClass == null)
+                    return null;
+
                 foreach (OdcmProperty property in odcmClass.Properties)
                 {
                     if (property.Name.Equals(keyProperty.Name, StringComparison.OrdinalIgnoreCase))
@@ -324,15 +291,15 @@ namespace ODataReader.v3
                     }
                 }
 
-                return null;
+                return FindProperty(odcmClass.Base, keyProperty);
             }
 
             private void WriteMethod(OdcmClass odcmClass, IEdmFunctionImport operation)
             {
                 IEnumerable<IEdmFunctionParameter> parameters = operation.IsBindable
                     ? (from parameter in operation.Parameters
-                        where parameter != operation.Parameters.First()
-                        select parameter)
+                       where parameter != operation.Parameters.First()
+                       select parameter)
                     : (operation.Parameters);
 
                 bool isBoundToCollection = operation.IsBindable && operation.Parameters.First().Type.IsCollection();
@@ -370,53 +337,20 @@ namespace ODataReader.v3
                 }
             }
 
-            private void WriteNavigationProperty(OdcmClass odcmClass, OdcmField odcmField,
-                IEdmNavigationProperty navigationProperty)
+            private void WriteProperty(OdcmClass odcmClass, IEdmProperty property)
             {
-                WriteProperty(odcmClass, odcmField, navigationProperty);
-            }
+                var odcmProperty = new OdcmProperty(property.Name)
+                {
+                    Class = odcmClass,
+                    Type = ResolveType(property.Type),
+                    IsCollection = property.Type.IsCollection(),
+                    IsNullable = property.Type.IsNullable,
+                    ContainsTarget =
+                        property is IEdmNavigationProperty && ((IEdmNavigationProperty)property).ContainsTarget,
+                    IsLink = property is IEdmNavigationProperty
+                };
 
-            private void WriteStructuralProperty(OdcmClass odcmClass, OdcmField odcmField,
-                IEdmStructuralProperty structuralProperty)
-            {
-                WriteProperty(odcmClass, odcmField, structuralProperty);
-            }
-
-            private void WriteProperty(OdcmClass odcmClass, OdcmField odcmField, IEdmProperty property)
-            {
-                OdcmProperty odcmProperty = new OdcmProperty(property.Name);
-                odcmProperty.Class = odcmClass;
-                odcmProperty.IsNullable = property.Type.IsNullable;
                 odcmClass.Properties.Add(odcmProperty);
-
-                odcmProperty.Field = odcmField;
-            }
-
-            private OdcmField WriteNavigationField(OdcmClass odcmClass, IEdmNavigationProperty navigationProperty)
-            {
-                OdcmField odcmField = WriteField(odcmClass, navigationProperty);
-
-                odcmField.ContainsTarget = navigationProperty.ContainsTarget;
-                odcmField.IsLink = true;
-
-                return odcmField;
-            }
-
-            private OdcmField WriteStructuralField(OdcmClass odcmClass, IEdmStructuralProperty structuralProperty)
-            {
-                return WriteField(odcmClass, structuralProperty);
-            }
-
-            private OdcmField WriteField(OdcmClass odcmClass, IEdmProperty property)
-            {
-                OdcmField odcmField = new OdcmField(property.Name);
-                odcmField.Class = odcmClass;
-                odcmClass.Fields.Add(odcmField);
-
-                odcmField.Type = ResolveType(property.Type);
-                odcmField.IsCollection = property.Type.IsCollection();
-
-                return odcmField;
             }
 
             private OdcmType ResolveType(IEdmTypeReference realizedType)

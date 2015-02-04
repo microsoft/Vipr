@@ -11,11 +11,11 @@ using Xunit;
 
 namespace ODataReader.v4UnitTests
 {
-    public class Given_a_valid_edmx_element_when_passed_to_the_ODataReader
+    public class Given_a_valid_edmx_when_passed_to_the_ODataReader
     {
         private ODataReader.v4.Reader reader;
 
-        public Given_a_valid_edmx_element_when_passed_to_the_ODataReader()
+        public Given_a_valid_edmx_when_passed_to_the_ODataReader()
         {
             reader = new Reader();
         }

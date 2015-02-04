@@ -12,8 +12,7 @@ namespace CSharpWriter
     {
         public static IEnumerable<Parameter> GetKeyParameters(OdcmClass odcmClass)
         {
-            return odcmClass.GetKeyProperties()
-                .Select(Parameter.FromProperty);
+            return odcmClass.Key.Select(Parameter.FromProperty);
         }
 
         public static IEnumerable<Parameter> Empty { get { return Enumerable.Empty<Parameter>(); } }

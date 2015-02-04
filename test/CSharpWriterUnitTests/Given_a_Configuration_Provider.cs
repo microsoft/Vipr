@@ -241,7 +241,6 @@ namespace CSharpWriterUnitTests
                             new OdcmProperty(GetCamelCaseName(property))
                             {
                                 Class = property.Class,
-                                Field = property.Field,
                                 ReadOnly = property.ReadOnly,
                                 Type = property.Type
                             };

@@ -18,10 +18,5 @@ namespace Vipr.Core.CodeModel
         {
             Members = new List<OdcmEnumMember>();
         }
-
-        public override string AsReference()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
