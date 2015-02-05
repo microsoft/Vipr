@@ -24,11 +24,7 @@ namespace CSharpWriterUnitTests
 
                 _structuralCollectionProperty = Any.PrimitiveOdcmProperty(p =>
                 {
-                    p.Field = Any.OdcmField(f =>
-                    {
-                        f.Type = p.Type;
-                        f.IsCollection = true;
-                    });
+                    p.IsCollection = true;
                 });
 
                 m.Namespaces[0].Classes.First().Properties.Add(_structuralInstanceProperty);

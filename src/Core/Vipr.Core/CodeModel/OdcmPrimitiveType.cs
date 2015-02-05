@@ -9,10 +9,5 @@ namespace Vipr.Core.CodeModel
             : base(name, @namespace)
         {
         }
-
-        public override string AsReference()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

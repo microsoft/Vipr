@@ -15,11 +15,9 @@ namespace Vipr.Core.CodeModel
 
         public IList<OdcmClass> Derived { get; private set; }
 
-        public List<OdcmField> Key { get; private set; }
+        public List<OdcmProperty> Key { get; private set; }
 
         public OdcmClassKind Kind { get; set; }
-
-        public List<OdcmField> Fields { get; private set; }
 
         public List<OdcmProperty> Properties { get; private set; }
 
@@ -29,16 +27,10 @@ namespace Vipr.Core.CodeModel
             : base(name, @namespace)
         {
             Kind = kind;
-            Fields = new List<OdcmField>();
             Properties = new List<OdcmProperty>();
             Methods = new List<OdcmMethod>();
-            Key = new List<OdcmField>();
+            Key = new List<OdcmProperty>();
             Derived = new List<OdcmClass>();
-        }
-
-        public override string AsReference()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

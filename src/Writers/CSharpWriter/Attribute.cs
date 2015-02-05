@@ -32,7 +32,7 @@ namespace CSharpWriter
             return new Attribute
             {
                 Type = new Type(new Identifier("global::Microsoft.OData.Client", "Key")),
-                Parameters = odcmClass.GetKeyProperties().ToDictionary<OdcmProperty, string, string>(p => p.Name, p => null)
+                Parameters = odcmClass.Key.ToDictionary<OdcmProperty, string, string>(p => p.Name, p => null)
             };
         }
 

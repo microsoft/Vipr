@@ -123,7 +123,7 @@ namespace CSharpWriter
         private static IEnumerable<Method> ForContainerAddToCollection(OdcmClass odcmClass)
         {
             return odcmClass.NavigationProperties()
-                    .Where(p => p.IsCollection())
+                    .Where(p => p.IsCollection)
                     .Select(p => new ContainerAddToCollectionMethod(p));
         }
 

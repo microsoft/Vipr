@@ -39,59 +39,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.TextTemplating.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ODataWriter.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ODataWriter.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ODataWriter.Code.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="ODataWriter.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>ODataWriter.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
-    <None Include="Resources\aadgraph.edmx.xml" />
-    <None Include="Resources\dynamicsCrm.edmx.xml" />
-    <None Include="Resources\exchange.edmx.xml" />
-    <None Include="Resources\odataDemo.edmx.xml" />
-    <None Include="Resources\sharepoint.full.edmx.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Readers\ODataReader.v3\ODataReader.v3.csproj">
-      <Project>{3439bde9-5387-46ee-8a00-e789259f8853}</Project>
-      <Name>ODataReader.v3</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Readers\ODataReader.v4\ODataReader.v4.csproj">
-      <Project>{6d8d8008-0a34-490f-8b38-21d9c8bf25c0}</Project>
-      <Name>ODataReader.v4</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Writers\CSharpWriter\CSharpWriter.csproj">
       <Project>{ea55efcf-3127-4e85-9a37-a645c06ffcc1}</Project>
       <Name>CSharpWriter</Name>

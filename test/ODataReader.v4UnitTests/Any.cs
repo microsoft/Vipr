@@ -5,6 +5,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Messaging;
 using System.Xml.Linq;
+using ODataReader.v4UnitTests;
 
 namespace Microsoft.Its.Recipes
 {
@@ -271,6 +272,15 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
+            public static XElement Property(string type, Action<XElement> config = null)
+            {
+                return Property(property =>
+                {
+                    property.AddAttribute("Type", type);
+                    if (config != null) config(property);
+                });
+            }
+
             public static XElement PropertyRef(Action<XElement> config = null)
             {
                 XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.PropertyRef_element);
@@ -278,6 +288,15 @@ namespace Microsoft.Its.Recipes
                 if (config != null) config(element);
 
                 return element;
+            }
+
+            public static XElement PropertyRef(string name, Action<XElement> config = null)
+            {
+                return PropertyRef(propertyRef =>
+                {
+                    propertyRef.AddAttribute("Name", name);
+                    if(config != null) config(propertyRef);
+                });
             }
 
             public static XElement ReturnType(Action<XElement> config = null)

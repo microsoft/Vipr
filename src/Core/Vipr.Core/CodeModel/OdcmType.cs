@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System;
-using System.Collections.Generic;
-
 namespace Vipr.Core.CodeModel
 {
     public abstract class OdcmType : OdcmAnnotatedObject
@@ -20,7 +17,5 @@ namespace Vipr.Core.CodeModel
         {
             get { return Namespace + "." + Name; }
         }
-
-        public abstract string AsReference();
     }
 }

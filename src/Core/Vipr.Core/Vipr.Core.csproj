@@ -59,7 +59,6 @@
     <Compile Include="CodeModel\OdcmClass.cs" />
     <Compile Include="CodeModel\OdcmEnum.cs" />
     <Compile Include="CodeModel\OdcmEnumMember.cs" />
-    <Compile Include="CodeModel\OdcmField.cs" />
     <Compile Include="CodeModel\OdcmMethod.cs" />
     <Compile Include="CodeModel\OdcmModel.cs" />
     <Compile Include="CodeModel\OdcmNamespace.cs" />

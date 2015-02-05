@@ -41,7 +41,7 @@ namespace CSharpWriter
             return new Field
             {
                 Name = NamesService.GetPropertyFieldName(property),
-                Type = property.IsCollection()
+                Type = property.IsCollection
                     ? new Type(NamesService.GetExtensionTypeName("NonEntityTypeCollectionImpl"), new Type(NamesService.GetConcreteTypeName(property.Type)))
                     : TypeService.GetPropertyType(property)
             };
@@ -52,7 +52,7 @@ namespace CSharpWriter
             return new Field
             {
                 Name = NamesService.GetFetcherFieldName(property),
-                Type = property.IsCollection()
+                Type = property.IsCollection
                      ? new Type(NamesService.GetCollectionTypeName((OdcmClass)property.Type))
                      : new Type(NamesService.GetFetcherTypeName(property.Type))
             };

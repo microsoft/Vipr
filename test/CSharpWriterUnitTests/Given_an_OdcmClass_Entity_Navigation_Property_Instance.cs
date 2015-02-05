@@ -27,12 +27,7 @@ namespace CSharpWriterUnitTests
                 {
                     p.Class = @class;
                     p.Type = _navTargetClass;
-                    p.Field = new OdcmField(Any.CSharpIdentifier())
-                    {
-                        Class = @class,
-                        Type = _navTargetClass,
-                        IsCollection = false
-                    };
+                    p.IsCollection = false;
                 });
 
                 m.Namespaces[0].Classes.First().Properties.Add(_navigationProperty);

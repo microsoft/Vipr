@@ -72,15 +72,16 @@
       <Link>%28Its.Recipes%29\TestInputGenerator.cs</Link>
     </Compile>
     <Compile Include="Any.cs" />
-    <Compile Include="Given_a_valid_edmx_with_complex_types_when_passed_to_the_ODataReader.cs" />
+    <Compile Include="Given_complex_types_in_a_valid_edmx_when_passed_to_the_ODataReader.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Given_a_valid_edmx_element_when_passed_to_the_ODataReader.cs" />
+    <Compile Include="Given_a_valid_edmx_when_passed_to_the_ODataReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Given_a_valid_edmx_with_enum_types_when_passed_to_the_ODataReader.cs" />
+    <Compile Include="Given_enum_types_in_a_valid_edmx_when_passed_to_the_ODataReader.cs" />
+    <Compile Include="Given_entity_types_in_a_valid_edmx_when_passed_to_the_ODataReader.cs" />
     <Compile Include="XElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
