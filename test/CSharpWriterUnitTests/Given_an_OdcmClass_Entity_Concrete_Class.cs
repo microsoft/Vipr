@@ -12,6 +12,7 @@ using Microsoft.OData.ProxyExtensions;
 using System.Linq;
 using System.Reflection;
 using Vipr.Core;
+using Vipr.Core.CodeModel;
 using Type = System.Type;
 using Xunit;
 
@@ -63,7 +64,7 @@ namespace CSharpWriterUnitTests
 
         private IEnumerable<string> EntityKeyNames
         {
-            get { return Class.Key.Select(p => p.Name); }
+            get { return ((OdcmEntityClass)Class).Key.Select(p => p.Name); }
         }
 
         [Fact]

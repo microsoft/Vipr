@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Vipr.Core.CodeModel
 {
@@ -27,6 +28,11 @@ namespace Vipr.Core.CodeModel
             : base(name)
         {
             Parameters = new List<OdcmParameter>();
+        }
+
+        public override string CanonicalName()
+        {
+            return MakeCanonicalName(Name, ReturnType, Parameters.ToArray());
         }
     }
 }

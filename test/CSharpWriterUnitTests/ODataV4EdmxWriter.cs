@@ -34,6 +34,29 @@ namespace CSharpWriterUnitTests
 
         public static string ToEdmx(this OdcmClass odcmClass)
         {
+            if (odcmClass is OdcmEntityClass)
+            {
+                return ((OdcmEntityClass) odcmClass).ToEdmx();
+            }
+
+            var sb = new StringBuilder();
+
+            var tagName = GetTagName(odcmClass);
+
+            sb.AppendFormat("<{0} Name=\"{1}\">", tagName, odcmClass.Name);
+            if (odcmClass.Properties.Any()) sb.Append(odcmClass.Properties.Select(ToEdmx).Aggregate((c, n) => c + "\n" + n));
+            sb.AppendFormat("</{0}>", tagName);
+
+            return sb.ToString();
+        }
+
+        public static string ToEdmx(this OdcmEntityClass odcmClass)
+        {
+            if (odcmClass is OdcmMediaClass)
+            {
+                return ((OdcmMediaClass)odcmClass).ToEdmx();
+            }
+
             var sb = new StringBuilder();
 
             var tagName = GetTagName(odcmClass);
@@ -46,7 +69,21 @@ namespace CSharpWriterUnitTests
             return sb.ToString();
         }
 
-        private static string GetKeyNode(OdcmClass odcmClass)
+        public static string ToEdmx(this OdcmMediaClass odcmClass)
+        {
+            var sb = new StringBuilder();
+
+            var tagName = GetTagName(odcmClass);
+
+            sb.AppendFormat("<{0} Name=\"{1}\" HasStream=\"true\">", tagName, odcmClass.Name);
+            sb.Append(GetKeyNode(odcmClass));
+            if (odcmClass.Properties.Any()) sb.Append(odcmClass.Properties.Select(ToEdmx).Aggregate((c, n) => c + "\n" + n));
+            sb.AppendFormat("</{0}>", tagName);
+
+            return sb.ToString();
+        }
+
+        private static string GetKeyNode(OdcmEntityClass odcmClass)
         {
             if (!odcmClass.Key.Any())
                 return string.Empty;

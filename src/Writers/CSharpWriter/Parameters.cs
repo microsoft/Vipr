@@ -12,7 +12,7 @@ namespace CSharpWriter
     {
         public static IEnumerable<Parameter> GetKeyParameters(OdcmClass odcmClass)
         {
-            return odcmClass.Key.Select(Parameter.FromProperty);
+            return odcmClass is OdcmEntityClass ? ((OdcmEntityClass)odcmClass).Key.Select(Parameter.FromProperty) : null;
         }
 
         public static IEnumerable<Parameter> Empty { get { return Enumerable.Empty<Parameter>(); } }

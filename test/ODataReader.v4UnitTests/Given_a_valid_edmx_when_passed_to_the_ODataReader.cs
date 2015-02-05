@@ -89,13 +89,7 @@ namespace ODataReader.v4UnitTests
                 .BeTrue("because an EntityContainer should result in a matching OdcmType");
             odcmClass
                 .Should()
-                .BeOfType<OdcmClass>("because an EntityContainer should result in a matching OdcmClass");
-            odcmClass
-                .As<OdcmClass>()
-                .Kind
-                .Should()
-                .Be(OdcmClassKind.Service,
-                    "because an EntityContainer should result in a matching OdcmClass of kind DataService");
+                .BeOfType<OdcmServiceClass>("because an EntityContainer should result in a matching OdcmServiceClass");
         }
     }
 }

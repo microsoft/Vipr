@@ -44,6 +44,9 @@
     <Compile Include="CodeModel\OdcmCallingConvention.cs" />
     <Compile Include="CodeModel\OdcmClassKind.cs" />
     <Compile Include="CodeModel\OdcmAllowedVerbs.cs" />
+    <Compile Include="CodeModel\OdcmEntityClass.cs" />
+    <Compile Include="CodeModel\OdcmMediaClass.cs" />
+    <Compile Include="CodeModel\OdcmServiceClass.cs" />
     <Compile Include="CodeModel\OdcmVocabularyAnnotation.cs" />
     <Compile Include="IConfigurable.cs" />
     <Compile Include="IConfigurationProvider.cs" />

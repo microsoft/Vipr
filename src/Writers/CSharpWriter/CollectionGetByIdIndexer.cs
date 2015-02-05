@@ -14,7 +14,7 @@ namespace CSharpWriter
 
         public CollectionGetByIdIndexer(OdcmClass odcmClass)
         {
-            var keyProperties = odcmClass.Key;
+            var keyProperties = ((OdcmEntityClass)odcmClass).Key;
 
             ParameterToPropertyMap = keyProperties.ToDictionary(Parameter.FromProperty, p => p);
 

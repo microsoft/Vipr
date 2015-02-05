@@ -20,11 +20,12 @@ namespace Vipr.Core.CodeModel
             {
                 return Namespaces
                     .SelectMany(n => n.Classes)
-                    .FirstOrDefault(c => c.Kind == OdcmClassKind.Service);
+                    .FirstOrDefault(c => c is OdcmServiceClass);
             }
         }
 
         public IEnumerable<OdcmVocabularyAnnotation> VocabularyAnnotations { get; private set; }
+
         public ServiceType ServiceType { get; private set; }
 
         public OdcmModel(IDictionary<string, string> serviceMetadata, ServiceType serviceType = ServiceType.ODataV4)
@@ -53,6 +54,7 @@ namespace Vipr.Core.CodeModel
             }
 
             _Types.Add(type);
+            ;
             odcmNamespace.Types.Add(type);
         }
 

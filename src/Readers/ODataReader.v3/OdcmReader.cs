@@ -17,6 +17,43 @@ namespace ODataReader.v3
 {
     public class OdcmReader : IOdcmReader
     {
+        private static readonly string[][] PrimitiveTypes = new[]
+        {
+            new[] {"Edm", "Binary"},
+            new[] {"Edm", "Boolean"},
+            new[] {"Edm", "Byte"},
+            new[] {"Edm", "Date"},
+            new[] {"Edm", "DateTimeOffset"},
+            new[] {"Edm", "Decimal"},
+            new[] {"Edm", "Double"},
+            new[] {"Edm", "Duration"},
+            new[] {"Edm", "Guid"},
+            new[] {"Edm", "Int16"},
+            new[] {"Edm", "Int32"},
+            new[] {"Edm", "Int64"},
+            new[] {"Edm", "SByte"},
+            new[] {"Edm", "Single"},
+            new[] {"Edm", "Stream"},
+            new[] {"Edm", "String"},
+            new[] {"Edm", "TimeOfDay"},
+            new[] {"Edm", "Geography"},
+            new[] {"Edm", "GeographyPoint"},
+            new[] {"Edm", "GeographyLineString"},
+            new[] {"Edm", "GeographyPolygon"},
+            new[] {"Edm", "GeographyMultiPoint"},
+            new[] {"Edm", "GeographyMultiLineString"},
+            new[] {"Edm", "GeographyMultiPolygon"},
+            new[] {"Edm", "GeographyCollection"},
+            new[] {"Edm", "Geometry"},
+            new[] {"Edm", "GeometryPoint"},
+            new[] {"Edm", "GeometryLineString"},
+            new[] {"Edm", "GeometryPolygon"},
+            new[] {"Edm", "GeometryMultiPoint"},
+            new[] {"Edm", "GeometryMultiLineString"},
+            new[] {"Edm", "GeometryMultiPolygon"},
+            new[] {"Edm", "GeometryCollection"}
+        };
+
         public OdcmModel GenerateOdcmModel(IDictionary<string, string> serviceMetadata)
         {
             var daemon = new ReaderDaemon();
@@ -55,9 +92,19 @@ namespace ODataReader.v3
 
                 _odcmModel = new OdcmModel(serviceMetadata);
 
+                AddPrimitives();
+
                 WriteNamespaces();
 
                 return _odcmModel;
+            }
+
+            private void AddPrimitives()
+            {
+                foreach (var entry in PrimitiveTypes)
+                {
+                    _odcmModel.AddType(new OdcmPrimitiveType(entry[1], entry[0]));
+                }
             }
 
             private void WriteNamespaces()
@@ -66,11 +113,62 @@ namespace ODataReader.v3
                                           select se.Namespace).Distinct();
                 foreach (var declaredNamespace in declaredNamespaces)
                 {
-                    WriteNamespace(_edmModel, declaredNamespace);
+                    WriteNamespaceShallow(_edmModel, declaredNamespace);
+                }
+                foreach (var declaredNamespace in declaredNamespaces)
+                {
+                    WriteNamespaceDeep(_edmModel, declaredNamespace);
                 }
             }
 
-            private void WriteNamespace(IEdmModel edmModel, string @namespace)
+            private void WriteNamespaceShallow(IEdmModel edmModel, string @namespace)
+            {
+                var namespaceElements = from se in edmModel.SchemaElements
+                                        where string.Equals(se.Namespace, @namespace)
+                                        select se;
+
+                var types = from se in namespaceElements
+                            where se.SchemaElementKind == EdmSchemaElementKind.TypeDefinition
+                            select se as IEdmType;
+
+                var complexTypes = from se in types
+                                   where se.TypeKind == EdmTypeKind.Complex
+                                   select se as IEdmComplexType;
+
+                var entityTypes = from se in types
+                                  where se.TypeKind == EdmTypeKind.Entity
+                                  select se as IEdmEntityType;
+
+                var enumTypes = from se in types
+                                where se.TypeKind == EdmTypeKind.Enum
+                                select se as IEdmEnumType;
+
+                var entityContainers = from se in namespaceElements
+                                       where se.SchemaElementKind == EdmSchemaElementKind.EntityContainer
+                                       select se as IEdmEntityContainer;
+
+                foreach (var enumType in enumTypes)
+                {
+                    _odcmModel.AddType(new OdcmEnum(enumType.Name, enumType.Namespace));
+                }
+
+                foreach (var complexType in complexTypes)
+                {
+                    _odcmModel.AddType(new OdcmClass(complexType.Name, complexType.Namespace));
+                }
+
+                foreach (var entityType in entityTypes)
+                {
+                    _odcmModel.AddType(new OdcmEntityClass(entityType.Name, entityType.Namespace));
+                }
+
+                foreach (var entityContainer in entityContainers)
+                {
+                    _odcmModel.AddType(new OdcmServiceClass(entityContainer.Name, entityContainer.Namespace));
+                }
+            }
+
+            private void WriteNamespaceDeep(IEdmModel edmModel, string @namespace)
             {
                 var namespaceElements = from se in edmModel.SchemaElements
                                         where string.Equals(se.Namespace, @namespace)
@@ -104,21 +202,15 @@ namespace ODataReader.v3
                                          ((IEdmFunctionImport)se).IsBindable
                                      select se as IEdmFunctionImport;
 
-                Console.WriteLine(@namespace);
-
                 foreach (var enumType in enumTypes)
                 {
                     OdcmEnum odcmEnum;
                     if (!_odcmModel.TryResolveType(enumType.Name, enumType.Namespace, out odcmEnum))
                     {
-                        odcmEnum = new OdcmEnum(enumType.Name, enumType.Namespace);
-                        _odcmModel.AddType(odcmEnum);
+                        throw new InvalidOperationException();
                     }
 
-                    odcmEnum.UnderlyingType =
-                        (OdcmPrimitiveType)
-                            ResolveType(enumType.UnderlyingType.Name, enumType.UnderlyingType.Namespace,
-                                TypeKind.Primitive);
+                    odcmEnum.UnderlyingType = (OdcmPrimitiveType)ResolveType(enumType.UnderlyingType.Name, enumType.UnderlyingType.Namespace);
                     odcmEnum.IsFlags = enumType.IsFlags;
 
                     foreach (var enumMember in enumType.Members)
@@ -135,8 +227,7 @@ namespace ODataReader.v3
                     OdcmClass odcmClass;
                     if (!_odcmModel.TryResolveType(complexType.Name, complexType.Namespace, out odcmClass))
                     {
-                        odcmClass = new OdcmClass(complexType.Name, complexType.Namespace, OdcmClassKind.Complex);
-                        _odcmModel.AddType(odcmClass);
+                        throw new InvalidOperationException();
                     }
 
                     odcmClass.IsAbstract = complexType.IsAbstract;
@@ -144,21 +235,20 @@ namespace ODataReader.v3
 
                     if (complexType.BaseType != null)
                     {
+                        var baseType = (IEdmSchemaElement)complexType.BaseType;
+
                         OdcmClass baseClass;
-                        if (!_odcmModel.TryResolveType(
-                            ((IEdmSchemaElement)complexType.BaseType).Name,
-                            ((IEdmSchemaElement)complexType.BaseType).Namespace,
-                            out baseClass))
+                        if (!_odcmModel.TryResolveType(baseType.Name, baseType.Namespace, out baseClass))
                         {
-                            baseClass = new OdcmClass(
-                                ((IEdmSchemaElement)complexType.BaseType).Name,
-                                ((IEdmSchemaElement)complexType.BaseType).Namespace,
-                                OdcmClassKind.Complex);
-                            _odcmModel.AddType(baseClass);
+                            throw new InvalidOperationException();
                         }
+
                         odcmClass.Base = baseClass;
+
                         if (!baseClass.Derived.Contains(odcmClass))
+                        {
                             baseClass.Derived.Add(odcmClass);
+                        }
                     }
 
                     foreach (var property in complexType.DeclaredProperties)
@@ -169,11 +259,10 @@ namespace ODataReader.v3
 
                 foreach (var entityType in entityTypes)
                 {
-                    OdcmClass odcmClass;
+                    OdcmEntityClass odcmClass;
                     if (!_odcmModel.TryResolveType(entityType.Name, entityType.Namespace, out odcmClass))
                     {
-                        odcmClass = new OdcmClass(entityType.Name, entityType.Namespace, OdcmClassKind.Entity);
-                        _odcmModel.AddType(odcmClass);
+                        throw new InvalidOperationException();
                     }
 
                     odcmClass.IsAbstract = entityType.IsAbstract;
@@ -181,23 +270,20 @@ namespace ODataReader.v3
 
                     if (entityType.BaseType != null)
                     {
+                        var baseType = (IEdmSchemaElement)entityType.BaseType;
+
                         OdcmClass baseClass;
-                        if (!_odcmModel.TryResolveType(
-                            ((IEdmSchemaElement)entityType.BaseType).Name,
-                            ((IEdmSchemaElement)entityType.BaseType).Namespace,
-                            out baseClass))
+                        if (!_odcmModel.TryResolveType(baseType.Name, baseType.Namespace, out baseClass))
                         {
-                            baseClass = new OdcmClass(
-                                ((IEdmSchemaElement)entityType.BaseType).Name,
-                                ((IEdmSchemaElement)entityType.BaseType).Namespace,
-                                OdcmClassKind.Entity);
-                            _odcmModel.AddType(baseClass);
+                            throw new InvalidOperationException();
                         }
 
                         odcmClass.Base = baseClass;
 
                         if (!baseClass.Derived.Contains(odcmClass))
+                        {
                             baseClass.Derived.Add(odcmClass);
+                        }
                     }
 
                     foreach (var property in entityType.DeclaredProperties)
@@ -207,11 +293,15 @@ namespace ODataReader.v3
 
                     foreach (IEdmStructuralProperty keyProperty in entityType.Key())
                     {
-                        var property = FindProperty(odcmClass, keyProperty);
-                        if (property != null)
+                        OdcmProperty property;
+                        if (!TryFindProperty(odcmClass, keyProperty, out property))
                         {
-                            // The properties that compose the key MUST be non-nullable.
-                            property.IsNullable = false;
+                            throw new InvalidOperationException();
+                        }
+
+                        if (property.IsNullable)
+                        {
+                            //TODO: need to create a warning...
                         }
 
                         odcmClass.Key.Add(property);
@@ -228,11 +318,10 @@ namespace ODataReader.v3
 
                 foreach (var entityContainer in entityContainers)
                 {
-                    OdcmClass odcmClass;
+                    OdcmServiceClass odcmClass;
                     if (!_odcmModel.TryResolveType(entityContainer.Name, entityContainer.Namespace, out odcmClass))
                     {
-                        odcmClass = new OdcmClass(entityContainer.Name, entityContainer.Namespace, OdcmClassKind.Service);
-                        _odcmModel.AddType(odcmClass);
+                        throw new InvalidOperationException();
                     }
 
                     var entitySets = from se in entityContainer.Elements
@@ -268,8 +357,7 @@ namespace ODataReader.v3
             {
                 var odcmProperty = new OdcmProperty(entitySet.Name)
                 {
-                    Type = ResolveType(entitySet.ElementType.Name, entitySet.ElementType.Namespace,
-                        TypeKind.Entity),
+                    Type = ResolveType(entitySet.ElementType.Name, entitySet.ElementType.Namespace),
                     IsCollection = true,
                     IsLink = true,
                     Class = odcmClass
@@ -278,20 +366,24 @@ namespace ODataReader.v3
                 odcmClass.Properties.Add(odcmProperty);
             }
 
-            private OdcmProperty FindProperty(OdcmClass odcmClass, IEdmStructuralProperty keyProperty)
+            private bool TryFindProperty(OdcmClass odcmClass, IEdmStructuralProperty keyProperty, out OdcmProperty odcmProperty)
             {
                 if (odcmClass == null)
-                    return null;
+                {
+                    odcmProperty = null;
+                    return false;
+                }
 
                 foreach (OdcmProperty property in odcmClass.Properties)
                 {
                     if (property.Name.Equals(keyProperty.Name, StringComparison.OrdinalIgnoreCase))
                     {
-                        return property;
+                        odcmProperty = property;
+                        return true;
                     }
                 }
 
-                return FindProperty(odcmClass.Base, keyProperty);
+                return TryFindProperty(odcmClass.Base, keyProperty, out odcmProperty);
             }
 
             private void WriteMethod(OdcmClass odcmClass, IEdmFunctionImport operation)
@@ -347,7 +439,11 @@ namespace ODataReader.v3
                     IsNullable = property.Type.IsNullable,
                     ContainsTarget =
                         property is IEdmNavigationProperty && ((IEdmNavigationProperty)property).ContainsTarget,
-                    IsLink = property is IEdmNavigationProperty
+                    IsLink = property is IEdmNavigationProperty,
+                    DefaultValue = 
+                        property is IEdmStructuralProperty ? 
+                            ((IEdmStructuralProperty)property).DefaultValueString : 
+                            null
                 };
 
                 odcmClass.Properties.Add(odcmProperty);
@@ -357,70 +453,24 @@ namespace ODataReader.v3
             {
                 if (realizedType.IsCollection())
                 {
-                    realizedType = realizedType.AsCollection().ElementType();
+                    return ResolveType(realizedType.AsCollection().ElementType());
                 }
 
-                if (realizedType.IsComplex())
-                    return ResolveType(realizedType.Definition as IEdmSchemaElement, TypeKind.Complex);
+                var realizedSchemaElement = (IEdmSchemaElement)realizedType.Definition;
 
-                if (realizedType.IsEntity())
-                    return ResolveType(realizedType.Definition as IEdmSchemaElement, TypeKind.Entity);
-
-                if (realizedType.IsEnum())
-                    return ResolveType(realizedType.Definition as IEdmSchemaElement, TypeKind.Enum);
-
-                return ResolveType(realizedType.Definition as IEdmSchemaElement, TypeKind.Primitive);
+                return ResolveType(realizedSchemaElement.Name, realizedSchemaElement.Namespace);
             }
 
-            private OdcmType ResolveType(IEdmSchemaElement realizedSchemaElement, TypeKind kind)
-            {
-                return ResolveType(realizedSchemaElement.Name, realizedSchemaElement.Namespace, kind);
-            }
-
-            private OdcmType ResolveType(string name, string @namespace, TypeKind kind)
+            private OdcmType ResolveType(string name, string @namespace)
             {
                 OdcmType type;
-
                 if (!_odcmModel.TryResolveType(name, @namespace, out type))
                 {
-                    switch (kind)
-                    {
-                        case TypeKind.Complex:
-                            type = new OdcmClass(name, @namespace, OdcmClassKind.Complex);
-                            break;
-                        case TypeKind.Entity:
-                            type = new OdcmClass(name, @namespace, OdcmClassKind.Entity);
-                            break;
-                        case TypeKind.Enum:
-                            type = new OdcmEnum(name, @namespace);
-                            break;
-                        case TypeKind.Primitive:
-                            type = new OdcmPrimitiveType(name, @namespace);
-                            break;
-                    }
-
-                    _odcmModel.AddType(type);
+                    throw new InvalidOperationException();
                 }
 
                 return type;
             }
-        }
-    }
-
-    public static class Extensions
-    {
-        public static string FullTypeName(this IEdmTypeReference typeReference, string @namespace = "")
-        {
-            string result = (typeReference.IsCollection())
-                ? "Collection(" + typeReference.AsCollection().ElementType().FullName() + ")"
-                : typeReference.FullName();
-
-            if (!string.IsNullOrEmpty(@namespace))
-            {
-                result = result.Replace(@namespace + ".", "");
-            }
-
-            return result;
         }
     }
 }

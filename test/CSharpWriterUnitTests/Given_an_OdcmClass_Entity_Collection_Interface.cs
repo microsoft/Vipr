@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Vipr.Core;
+using Vipr.Core.CodeModel;
 using Type = System.Type;
 using Xunit;
 
@@ -92,7 +93,7 @@ namespace CSharpWriterUnitTests
 
         private Type[] GetKeyPropertyTypes()
         {
-            return Class.Key
+            return ((OdcmEntityClass)Class).Key
                 .Select(p => p.Type)
                 .Select(t => Proxy.GetClass(t.Namespace, t.Name))
                 .ToArray();
