@@ -1029,37 +1029,6 @@ namespace CSharpWriter
             _("partial void OnContextCreated();");
         }
 
-        public void Write(IEnumerable<OdcmProperty> fields)
-        {
-            foreach (var odcmField in fields)
-            {
-                Write(odcmField);
-            }
-        }
-
-        public void Write(OdcmProperty odcmField)
-        {
-            _("private {0} {1};", NamesService.GetPublicTypeName(odcmField.Type).FullName, odcmField.Name);
-        }
-
-        public void Write(IEnumerable<OdcmMethod> methods)
-        {
-            foreach (var odcmMethod in methods)
-            {
-                Write(odcmMethod);
-            }
-        }
-
-        public void Write(OdcmMethod odcmMethod)
-        {
-            var returnType = NamesService.GetPublicTypeName(odcmMethod.ReturnType);
-
-            var parameters = string.Join(", ",
-                (from i in odcmMethod.Parameters select NamesService.GetPublicTypeName(i.Type, i.IsCollection) + " " + i.Name));
-        }
-
-
-
         private void _(string text, params object[] args)
         {
             WriteDebugComment();
