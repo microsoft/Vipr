@@ -55,7 +55,6 @@
     <Compile Include="CodeModel\OdcmVocabularyAnnotation.cs" />
     <Compile Include="IConfigurationProvider.cs" />
     <Compile Include="IReader.cs" />
-    <Compile Include="CodeModel\OdcmAnnotatedObject.cs" />
     <Compile Include="CodeModel\OdcmClass.cs" />
     <Compile Include="CodeModel\OdcmEnum.cs" />
     <Compile Include="CodeModel\OdcmEnumMember.cs" />
