@@ -138,7 +138,6 @@
     <Compile Include="Given_an_OdcmClass_Complex.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_Function.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_Action.cs" />
-    <Compile Include="Given_OdcmFields.cs" />
     <Compile Include="Given_an_OdcmEnum.cs" />
     <Compile Include="Given_an_OdcmNamespace.cs" />
     <Compile Include="Given_an_OdcmModel.cs" />
