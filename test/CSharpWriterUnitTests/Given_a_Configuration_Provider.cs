@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using CSharpWriter;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Moq;
@@ -187,16 +188,28 @@ namespace CSharpWriterUnitTests
                 {
                     var cl = @class;
 
-                    proxy.GetClass(ns.Name, cl.Name)
+                    var propertyNames = proxy.GetClass(ns.Name, cl.Name)
                         .Properties()
-                        .Select(p => p.Name.Substring(p.Name.LastIndexOf('.') + 1))
-                        .Where(n => n[0] != '_')
-                        .Should()
-                            .NotContain(s => cl.Properties.Any(p => p.Name == s))
-                            .And
-                            .Contain(cl.Properties
-                                       .Select(GetPascalCaseName)
-                                       .Where(n => n[0] != '_'));
+                        .Select(p => p.Name.Substring(p.Name.LastIndexOf('.') + 1)).ToList();
+
+                    if (cl.Kind != OdcmClassKind.Service)
+                    {
+                        propertyNames.Should().Contain(
+                            cl.Properties.Select(p => p.Name).Where(n => n[0] != '_'),
+                            because: "Because Complex and Entity Types should have obsoleted properties with original names.");
+                    }
+
+                    if (cl.Kind == OdcmClassKind.Entity)
+                    {
+                        proxy.GetInterface(ns.Name, "I" + cl.Name + "Fetcher")
+                            .Properties()
+                            .Select(p => p.Name.Substring(p.Name.LastIndexOf('.') + 1))
+                            .Should().Contain(cl.NavigationProperties().Select(GetPascalCaseName).Where(n => n[0] != '_'), because: "Because the fetcher's navigation properties should be capitalized.")
+                            .And.NotContain(cl.NavigationProperties().Select(p => p.Name).Where(n => n[0] != '_'), because: "Because the fetcher should not have obsoleted properties.");
+                    }
+
+                    propertyNames.Should()
+                        .Contain(cl.Properties.Select(GetPascalCaseName).Where(n => n[0] != '_'), because: "Because all generated classes should have Pascal-Cased properties.");
                 }
             }
         }

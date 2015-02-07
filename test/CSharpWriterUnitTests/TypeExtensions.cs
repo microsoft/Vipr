@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FluentAssertions;
 using Microsoft.OData.Client;
 
 namespace CSharpWriterUnitTests
@@ -18,6 +19,15 @@ namespace CSharpWriterUnitTests
             return keyAttribute == null
                 ? Enumerable.Empty<PropertyInfo>()
                 : keyAttribute.KeyNames.Select(type.GetProperty);
+        }
+
+        public static void ValidatePropertyValues(this object instance, IEnumerable<Tuple<string, object>> keyValues)
+        {
+            foreach (var keyValue in keyValues)
+            {
+                instance.GetPropertyValue(keyValue.Item1)
+                    .Should().Be(keyValue.Item2);
+            }
         }
     }
 }

@@ -20,6 +20,11 @@ namespace ODataV4TestService.SelfHost
             return s_Scenarios.ContainsKey(portNumber) ? s_Scenarios[portNumber].GetHttpConfiguration() : null;
         }
 
+        internal static IStartedScenario GetScenario(int portNumber)
+        {
+            return s_Scenarios.ContainsKey(portNumber) ? s_Scenarios[portNumber] : null;
+        }
+
         internal static void Register(int portNumber, IStartedScenario startedScenario)
         {
             lock (s_Scenarios)

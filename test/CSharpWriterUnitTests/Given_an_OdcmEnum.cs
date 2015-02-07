@@ -122,7 +122,7 @@ namespace CSharpWriterUnitTests
             @enum.Members.Add(Any.OdcmEnumMember());
             @enum.Members.Add(Any.OdcmEnumMember());
 
-            @enum.Members.ForEach(m => m.Value = Any.Long(0, 100));
+            @enum.Members.ForEach(m => m.Value = Any.Long(0, 127));
 
             _model.AddType(@enum);
 

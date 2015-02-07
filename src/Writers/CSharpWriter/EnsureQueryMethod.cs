@@ -7,15 +7,15 @@ namespace CSharpWriter
 {
     public class EnsureQueryMethod : Method
     {
-        public Type QueryableSetType { get; private set; }
-        public Identifier FetchedType { get; set; }
+        public Type FetchedTypeInterface { get; private set; }
+        public Type FetchedType { get; set; }
 
         public EnsureQueryMethod(OdcmClass odcmClass)
         {
             IsPublic = false;
             Name = "EnsureQuery";
-            FetchedType = NamesService.GetPublicTypeName(odcmClass);
-            QueryableSetType = new Type(NamesService.GetExtensionTypeName("ReadOnlyQueryableSet"), new Type(NamesService.GetPublicTypeName(odcmClass)));
+            FetchedType = new Type(NamesService.GetConcreteTypeName(odcmClass));
+            FetchedTypeInterface = new Type(NamesService.GetConcreteInterfaceName(odcmClass));
             ReturnType = new Type(NamesService.GetExtensionTypeName("IReadOnlyQueryableSet"), new Type(NamesService.GetConcreteInterfaceName(odcmClass)));
         }
     }

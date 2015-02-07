@@ -12,7 +12,8 @@ namespace CSharpWriter
     {
         public static IEnumerable<Property> ForComplex(OdcmClass odcmClass)
         {
-            return GetStructuralProperties(odcmClass);
+            return GetStructuralProperties(odcmClass)
+                .Concat(GetObsoletedStructuralProperties(odcmClass));
         }
 
         public static IEnumerable<Property> ForConcreteInterface(OdcmClass odcmClass)
@@ -24,6 +25,8 @@ namespace CSharpWriter
         public static IEnumerable<Property> ForConcrete(OdcmClass odcmClass)
         {
             return ForConcreteInterface(odcmClass)
+                .Concat(GetObsoletedStructuralProperties(odcmClass))
+                .Concat(GetObsoletedNavigationProperties(odcmClass))
                 .Concat(GetImplicitPropertiesForConcrete(odcmClass))
                 .Concat(GetIFetcherPropertiesForConcrete(odcmClass));
         }
@@ -76,6 +79,18 @@ namespace CSharpWriter
         private static IEnumerable<NavigationProperty> GetNavigationPropertiesForContainer(OdcmClass odcmClass)
         {
             return odcmClass.NavigationProperties().Select(Property.AsContainerNavigationProperty);
+        }
+
+        private static IEnumerable<Property> GetObsoletedStructuralProperties(OdcmClass odcmClass)
+        {
+            return odcmClass.StructuralProperties().Where(p => NamesService.GetPropertyName(p) != NamesService.GetModelPropertyName(p))
+                    .Select(Property.AsObsoletedProperty);
+        }
+
+        private static IEnumerable<Property> GetObsoletedNavigationProperties(OdcmClass odcmClass)
+        {
+            return odcmClass.NavigationProperties().Where(p => NamesService.GetPropertyName(p) != NamesService.GetModelPropertyName(p))
+                    .Select(Property.AsObsoletedNavigationProperty);
         }
 
         private static IEnumerable<Property> GetStructuralProperties(OdcmClass odcmClass)

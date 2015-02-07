@@ -1,54 +1,40 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System;
-using System.Reflection;
-using System.Threading.Tasks;
-using FluentAssertions;
-using Microsoft.OData.ProxyExtensions;
-using Moq;
-using Moq.Protected;
+using Microsoft.Its.Recipes;
+using ODataV4TestService.SelfHost;
 using Xunit;
 
 namespace CSharpWriterUnitTests
 {
     public class Given_an_OdcmClass_Entity_Collection_ExecuteAsync_Method : EntityTestBase
     {
-        private MethodInfo _executeAsyncMethod;
-        private object _executeAsyncResult;
+        private IStartedScenario _serviceMock;
 
-        
         public Given_an_OdcmClass_Entity_Collection_ExecuteAsync_Method()
         {
-            Init(null, true);
-
-            _executeAsyncMethod = CollectionInterface.GetMethod("ExecuteAsync",
-                PermissiveBindingFlags,
-                null,
-                new Type[0],
-                null);
+            Init();
         }
 
         [Fact]
-        public void It_returns_result_of_ExecuteAsyncInternal()
+        public void When_ExecuteAsync_is_called_it_GETs_the_collection_by_name()
         {
-            CallExecuteAsyncMethod(CollectionInstance).Should().Be(_executeAsyncResult);
-        }
+            var entitySetName = Any.CSharpIdentifier();
+            var entitySetPath = "/" + entitySetName;
 
-        protected override void ConfigureCollectionMock<TCollection, TInstance, TIInstance>(Mock<TCollection> mock)
-        {
-            var result = Task.FromResult(new Mock<IPagedCollection<TIInstance>>().Object);
+            using (_serviceMock = new MockScenario()
+                    .Setup(c => c.Request.Method == "GET" && c.Request.Path.Value == entitySetPath,
+                           c => c.Response.StatusCode = 200)
+                    .Start())
+            {
+                var context = _serviceMock.GetContext()
+                    .UseJson(Model.ToEdmx(), true);
 
-            _executeAsyncResult = result;
+                var collection = context.CreateCollection(CollectionType, ConcreteType, entitySetName);
 
-            mock.Protected()
-                .Setup<Task<IPagedCollection<TIInstance>>>("ExecuteAsyncInternal")
-                .Returns(result);
-        }
-
-        protected object CallExecuteAsyncMethod(object collectionInstance)
-        {
-            return _executeAsyncMethod.Invoke(CollectionInstance, new object[0]);
+                var task = collection.ExecuteAsync();
+                task.Wait();
+            }
         }
     }
 }

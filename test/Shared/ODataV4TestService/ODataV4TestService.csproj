@@ -178,6 +178,7 @@
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\SuppliedProductsController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Extensions\ConstantMemberEvaluationVisitor.cs" />
     <Compile Include="Extensions\DependencyResolverExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -196,13 +197,15 @@
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SelfHost\IStartedScenario.cs" />
+    <Compile Include="SelfHost\LoggingMiddleware.cs" />
+    <Compile Include="SelfHost\MockScenario.cs" />
+    <Compile Include="SelfHost\MockStartup.cs" />
     <Compile Include="SelfHost\ODataScenario.cs" />
     <Compile Include="SelfHost\PortRepository.cs" />
-    <Compile Include="SelfHost\MockScenario.cs" />
     <Compile Include="SelfHost\ProxyScenario.cs" />
     <Compile Include="SelfHost\ScenarioBase.cs" />
     <Compile Include="SelfHost\ScenarioRepository.cs" />
-    <Compile Include="SelfHost\Startup.cs" />
+    <Compile Include="SelfHost\WebApiStartup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

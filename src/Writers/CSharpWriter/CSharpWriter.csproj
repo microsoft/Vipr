@@ -108,6 +108,8 @@
     <Compile Include="ConcreteNavigationAccessorProperty.cs" />
     <Compile Include="ModelField.cs" />
     <Compile Include="NavigationProperty.cs" />
+    <Compile Include="ObsoletedNavigationProperty.cs" />
+    <Compile Include="ObsoletedProperty.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="ParameterizedMember.cs" />
     <Compile Include="ParameterizedFunction.cs" />

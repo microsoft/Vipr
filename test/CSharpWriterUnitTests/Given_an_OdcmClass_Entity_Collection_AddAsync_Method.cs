@@ -2,137 +2,225 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Reflection;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
-using Microsoft.OData.Client;
-using Microsoft.OData.ProxyExtensions;
-using Moq;
+using ODataV4TestService.SelfHost;
+using Vipr.Core;
 using Xunit;
 
 namespace CSharpWriterUnitTests
 {
     public class Given_an_OdcmClass_Entity_Collection_AddAsync_Method : EntityTestBase
     {
-        private MethodInfo _addAsyncMethod;
-        private object _entity;
-        private object _itemToAdd;
-        private string _entityName;
-        private string _path;
-        private Mock<DataServiceContextWrapper> _dscwMock;
-        private Task<DataServiceResponse> _saveChangesAsyncReturnValue;
+        private IStartedScenario _serviceMock;
 
-        
         public Given_an_OdcmClass_Entity_Collection_AddAsync_Method()
         {
-            Init(null, true);
-
-            _addAsyncMethod = CollectionInterface.GetMethod("Add" + Class.Name + "Async",
-                PermissiveBindingFlags,
-                null,
-                new[] { ConcreteInterface, typeof(bool) },
-                null);
-
-            _entity = new object();
-
-            _itemToAdd = ConstructConcreteInstance();
-
-            _entityName = Any.AlphanumericString(1);
-
-            _path = Any.String() + "/" + _entityName;
-
-            _dscwMock = new Mock<DataServiceContextWrapper>(MockBehavior.Strict);
-
-            _saveChangesAsyncReturnValue = null;
-
-            ConfigureCollectionInstance();
+            Init();
         }
 
         [Fact]
-        public void When_the_entity_is_null_it_calls_Context_AddObject()
+        public void When_the_entity_is_null_then_AddAsync_POSTs_to_the_EntitySet_and_updates_the_added_instance()
         {
-            _entity = null;
+            var entitySetName = Any.CSharpIdentifier(1);
 
-            ConfigureCollectionInstance();
+            var entitySetPath = string.Format("/{0}", entitySetName);
 
-            CallAddAsync(CollectionInstance, _itemToAdd, false);
+            var keyValues = Class.GetSampleKeyArguments().ToArray();
 
-            _dscwMock.Verify(d => d.AddObject(It.IsAny<string>(), It.IsAny<object>()), Times.Once);
+            using (_serviceMock = new MockScenario()
+                    .Setup(c => c.Request.Method == "POST" &&
+                                c.Request.Path.Value == entitySetPath,
+                           (b, c) =>
+                           {
+                               c.Response.StatusCode = 201;
+                               c.Response.WithDefaultODataHeaders();
+                               c.Response.Write(ConcreteType.AsJson(b, keyValues));
+                           })
+                    .Start())
+            {
+                var collection = _serviceMock
+                    .GetContext()
+                    .UseJson(Model.ToEdmx(), true)
+                    .WithDefaultResolvers(Class.Namespace)
+                    .WithIgnoreMissingProperties()
+                    .CreateCollection(CollectionType, ConcreteType, entitySetPath);
 
-            _dscwMock.Verify(d => d.AddRelatedObject(It.IsAny<object>(), It.IsAny<string>(), It.IsAny<object>()), Times.Never);
+                var instance = Activator.CreateInstance(ConcreteType);
+
+                var task = collection.InvokeMethod<Task>("Add" + Class.Name + "Async", args: new[] { instance, false });
+
+                task.Wait();
+
+                instance.ValidatePropertyValues(keyValues);
+            }
         }
 
         [Fact]
-        public void When_the_entity_is_not_null_and_path_is_simple_it_calls_Context_AddRelatedObject()
+        public void When_the_entity_is_not_null_then_AddAsync_POSTs_to_the_Entitys_canoncial_Uri_property_and_updates_the_added_instance()
         {
-            _path = _entityName;
 
-            CallAddAsync(CollectionInstance, _itemToAdd);
+            var entitySetName = Any.CSharpIdentifier(1);
+            var entitySetPath = string.Format("/{0}", entitySetName);
+            var parentKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var parentCanonicalPath = String.Format("{0}({1})", Class.Name + "s",
+                ODataKeyPredicate.AsString(parentKeyValues));
+            var navPropertyName = Class.NavigationProperties().First(p => p.Type == Class && p.IsCollection).Name;
+            var navPropertyPath = string.Format("/{0}/{1}", parentCanonicalPath, navPropertyName);
+            var childKeyValues = Class.GetSampleKeyArguments().ToArray();
 
-            _dscwMock.Verify(d => d.AddObject(It.IsAny<string>(), It.IsAny<object>()), Times.Never);
+            using (_serviceMock = new MockScenario()
+                    .Setup(c => c.Request.Method == "POST" &&
+                                c.Request.Path.Value == entitySetPath,
+                           (b, c) =>
+                           {
+                               c.Response.StatusCode = 201;
+                               c.Response.WithDefaultODataHeaders();
+                               c.Response.Write(ConcreteType.AsJson(b, parentKeyValues));
+                           })
+                    .Setup(c => c.Request.Method == "POST" &&
+                                c.Request.Path.Value == navPropertyPath,
+                           (b, c) =>
+                           {
+                               c.Response.StatusCode = 201;
+                               c.Response.WithDefaultODataHeaders();
+                               c.Response.Write(ConcreteType.AsJson(b, childKeyValues));
+                           })
+                    .Start())
+            {
+                var parentEntity = Activator.CreateInstance(ConcreteType);
+                var childEntity = Activator.CreateInstance(ConcreteType);
 
-            _dscwMock.Verify(d => d.AddRelatedObject(It.IsAny<object>(), It.IsAny<string>(), It.IsAny<object>()), Times.Once);
+                var entitySetCollection = _serviceMock
+                    .GetContext()
+                    .UseJson(Model.ToEdmx(), true)
+                    .WithDefaultResolvers(Class.Namespace)
+                    .WithIgnoreMissingProperties()
+                    .CreateCollection(CollectionType, ConcreteType, entitySetPath);
+
+                var navigationPropertyCollection = entitySetCollection
+                    .Context
+                    .CreateCollection(CollectionType, ConcreteType, navPropertyName, parentEntity);
+
+                var parentTask = entitySetCollection.InvokeMethod<Task>("Add" + Class.Name + "Async", args: new[] { parentEntity, false });
+
+                parentTask.Wait();
+
+                var childTask = navigationPropertyCollection.InvokeMethod<Task>("Add" + Class.Name + "Async", args: new object[] { childEntity, false });
+
+                childTask.Wait();
+
+                childEntity.ValidatePropertyValues(childKeyValues);
+            }
         }
 
         [Fact]
-        public void When_the_entity_is_not_null_and_path_is_complex_it_calls_Context_AddRelatedObject()
+        public void When_the_entity_is_not_null_and_the_property_path_is_not_a_single_segmentthen_AddAsync_POSTs_to_the_Entitys_canoncial_Uri_property_and_updates_the_added_instance()
         {
-            CallAddAsync(CollectionInstance, _itemToAdd);
 
-            _dscwMock.Verify(d => d.AddObject(It.IsAny<string>(), It.IsAny<object>()), Times.Never);
+            var entitySetName = Any.CSharpIdentifier(1);
+            var entitySetPath = string.Format("/{0}", entitySetName);
+            var parentKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var parentCanonicalPath = String.Format("{0}({1})", Class.Name + "s",
+                ODataKeyPredicate.AsString(parentKeyValues));
+            var navPropertyName = Class.NavigationProperties().First(p => p.Type == Class && p.IsCollection).Name;
+            var navPropertyPath = string.Format("/{0}/{1}", parentCanonicalPath, navPropertyName);
+            var childKeyValues = Class.GetSampleKeyArguments().ToArray();
 
-            _dscwMock.Verify(d => d.AddRelatedObject(It.IsAny<object>(), It.IsAny<string>(), It.IsAny<object>()), Times.Once);
+            using (_serviceMock = new MockScenario()
+                    .Setup(c => c.Request.Method == "POST" &&
+                                c.Request.Path.Value == entitySetPath,
+                           (b, c) =>
+                           {
+                               c.Response.StatusCode = 201;
+                               c.Response.WithDefaultODataHeaders();
+                               c.Response.Write(ConcreteType.AsJson(b, parentKeyValues));
+                           })
+                    .Setup(c => c.Request.Method == "POST" &&
+                                c.Request.Path.Value == navPropertyPath,
+                           (b, c) =>
+                           {
+                               c.Response.StatusCode = 201;
+                               c.Response.WithDefaultODataHeaders();
+                               c.Response.Write(ConcreteType.AsJson(b, childKeyValues));
+                           })
+                    .Start())
+            {
+                var parentEntity = Activator.CreateInstance(ConcreteType);
+                var childEntity = Activator.CreateInstance(ConcreteType);
+
+                var entitySetCollection = _serviceMock
+                    .GetContext()
+                    .UseJson(Model.ToEdmx(), true)
+                    .WithDefaultResolvers(Class.Namespace)
+                    .WithIgnoreMissingProperties()
+                    .CreateCollection(CollectionType, ConcreteType, entitySetPath);
+
+                var navigationPropertyCollection = entitySetCollection
+                    .Context
+                    .CreateCollection(CollectionType, ConcreteType, Any.String() + "/" + navPropertyName, parentEntity);
+
+                var parentTask = entitySetCollection.InvokeMethod<Task>("Add" + Class.Name + "Async", args: new[] { parentEntity, false });
+
+                parentTask.Wait();
+
+                var childTask = navigationPropertyCollection.InvokeMethod<Task>("Add" + Class.Name + "Async", args: new object[] { childEntity, false });
+
+                childTask.Wait();
+
+                childEntity.ValidatePropertyValues(childKeyValues);
+            }
         }
 
         [Fact]
-        public void When_dontSave_is_false_it_returns_result_of_Context_SaveChangesAsync()
+        public void When_dont_save_is_true_then_the_server_is_not_called_until_Context_SaveChangesAsync_is_invoked()
         {
-            CallAddAsync(CollectionInstance, _itemToAdd, false)
-                .Should()
-                .Be(_saveChangesAsyncReturnValue);
+            var entitySetName = Any.CSharpIdentifier(1);
+            var entitySetPath = string.Format("/{0}", entitySetName);
+            var keyValues = Class.GetSampleKeyArguments().ToArray();
+            var acceptPost = false;
 
-            _dscwMock.Verify(d => d.SaveChangesAsync(), Times.Once);
-        }
+            using (_serviceMock = new MockScenario()
+                    .Setup(c => c.Request.Method == "POST" &&
+                                c.Request.Path.Value == entitySetPath &&
+                                acceptPost,
+                           (b, c) =>
+                           {
+                               c.Response.StatusCode = 201;
+                               c.Response.WithDefaultODataHeaders();
+                               c.Response.Write(ConcreteType.AsJson(b, keyValues));
+                           })
+                    .Start())
+            {
+                var collection = _serviceMock
+                    .GetContext()
+                    .UseJson(Model.ToEdmx(), true)
+                    .WithDefaultResolvers(Class.Namespace)
+                    .WithIgnoreMissingProperties()
+                    .CreateCollection(CollectionType, ConcreteType, entitySetPath);
 
-        [Fact]
-        public void When_dontSave_is_true_it_returns_a_Completed_Task()
-        {
-            CallAddAsync(CollectionInstance, _itemToAdd, true)
-                .IsCompleted.Should().BeTrue();
+                var instance = Activator.CreateInstance(ConcreteType);
 
-            _dscwMock.Verify(d => d.SaveChangesAsync(), Times.Never);
-        }
+                var task = collection.InvokeMethod<Task>("Add" + Class.Name + "Async", args: new[] { instance, true });
 
-        private void ConfigureCollectionInstance()
-        {
-            _dscwMock.Setup(d => d.AddObject(_path, _itemToAdd));
+                task.Wait();
 
-            _dscwMock.Setup(d => d.AddRelatedObject(_entity, _entityName, _itemToAdd));
+                foreach (var keyValue in keyValues)
+                {
+                    instance.GetPropertyValue(keyValue.Item1)
+                        .Should().Be(null);
+                }
 
-            _dscwMock.Setup(d => d.SaveChangesAsync())
-                .Returns(_saveChangesAsyncReturnValue = Task.FromResult<DataServiceResponse>(null));
+                acceptPost = true;
 
-            CollectionType.GetField("_entity", PermissiveBindingFlags).SetValue(CollectionInstance, _entity);
+                task = collection.Context.SaveChangesAsync();
 
-            CollectionType.GetField("_path", PermissiveBindingFlags).SetValue(CollectionInstance, _path);
+                task.Wait();
 
-            CollectionType.GetField("_context", PermissiveBindingFlags).SetValue(CollectionInstance, _dscwMock.Object);
-        }
-
-        private Task CallAddAsync(object collectionInstance, object item, bool? dontSave = null)
-        {
-            return (Task)_addAsyncMethod.Invoke(collectionInstance, new[] { item, dontSave });
-        }
-
-        private object ConstructConcreteInstance()
-        {
-            return ConcreteType.GetConstructor(
-                PermissiveBindingFlags,
-                null,
-                new Type[] { },
-                null)
-                .Invoke(new object[] { });
+                instance.ValidatePropertyValues(keyValues);
+            }
         }
     }
 }

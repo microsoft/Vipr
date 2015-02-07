@@ -64,6 +64,7 @@
       <HintPath>..\..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="xunit.abstractions">
@@ -92,6 +93,8 @@
     <Compile Include="Given_An_EntityType_Created_On_Client.cs" />
     <Compile Include="Given_An_EntityType_From_Server.cs" />
     <Compile Include="Given_A_Query_For_Single_EntityType.cs" />
+    <Compile Include="Given_a_RestShallowObjectFetcher_Initialized.cs" />
+    <Compile Include="Given_a_RestShallowObjectFetcher_Uninitialized.cs" />
     <Compile Include="Given_Multiple_Queries_To_Execute_As_A_Batch.cs" />
     <Compile Include="Given_An_EntityType_With_Navigation_Property.cs" />
     <Compile Include="Given_An_EntitySet_Query_Returning_PagedCollection.cs" />

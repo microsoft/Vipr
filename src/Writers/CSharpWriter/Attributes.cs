@@ -15,5 +15,29 @@ namespace CSharpWriter
                 Attribute.ForMicrosoftOdataClientKey(odcmClass)
             };
         }
+
+        public static IEnumerable<Attribute> ForConcreteInterface 
+        {
+            get
+            {
+                return new [] {Attribute.ForLowerCaseProperty()};
+            } 
+        }
+
+        public static IEnumerable<Attribute> ForFetcherInterface
+        {
+            get
+            {
+                return new[] { Attribute.ForLowerCaseProperty() };
+            }
+        }
+
+        public static IEnumerable<Attribute> ForCollectionInterface
+        {
+            get
+            {
+                return new[] { Attribute.ForLowerCaseProperty() };
+            }
+        }
     }
 }
