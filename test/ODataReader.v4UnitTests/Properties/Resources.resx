@@ -160,6 +160,9 @@
   <data name="NavigationProperty_element" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Edmx\NavigationProperty.element.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="OneNoteExampleEdmx" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Edmx\OneNoteExampleEdmx.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="Parameter_element" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Edmx\Parameter.element.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
