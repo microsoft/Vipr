@@ -65,6 +65,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ODataReader.v4UnitTests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataReader.v4UnitTests", "test\ODataReader.v4UnitTests\ODataReader.v4UnitTests.csproj", "{0FE50B4D-1BB1-4CE5-91EA-D5046F326536}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockService", "test\Shared\MockService\MockService.csproj", "{A6C40F9C-833D-4FBD-B9F2-7800A3621875}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Android|Any CPU = Android|Any CPU
@@ -450,6 +452,34 @@ Global
 		{0FE50B4D-1BB1-4CE5-91EA-D5046F326536}.Xamarin|Mixed Platforms.Build.0 = Release|Any CPU
 		{0FE50B4D-1BB1-4CE5-91EA-D5046F326536}.Xamarin|x64.ActiveCfg = Release|Any CPU
 		{0FE50B4D-1BB1-4CE5-91EA-D5046F326536}.Xamarin|x86.ActiveCfg = Release|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Android|Any CPU.ActiveCfg = Android|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Android|Any CPU.Build.0 = Android|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Android|ARM.ActiveCfg = Android|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Android|Mixed Platforms.ActiveCfg = Android|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Android|Mixed Platforms.Build.0 = Android|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Android|x64.ActiveCfg = Android|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Android|x86.ActiveCfg = Android|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Release|ARM.ActiveCfg = Release|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Release|x64.ActiveCfg = Release|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Release|x86.ActiveCfg = Release|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Xamarin|Any CPU.ActiveCfg = Android|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Xamarin|Any CPU.Build.0 = Android|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Xamarin|ARM.ActiveCfg = Android|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Xamarin|Mixed Platforms.ActiveCfg = Android|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Xamarin|Mixed Platforms.Build.0 = Android|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Xamarin|x64.ActiveCfg = Android|Any CPU
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875}.Xamarin|x86.ActiveCfg = Android|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -478,5 +508,6 @@ Global
 		{5D8C6C01-E173-492A-9F8C-6AAF273FF14A} = {9B9EB8FA-8DD2-45F4-9FC7-5B5A79DEDFF3}
 		{A37C4110-002B-443A-9DEE-374F0C2E311C} = {EA781C06-3F27-4F44-9128-BAABCA5420C5}
 		{0FE50B4D-1BB1-4CE5-91EA-D5046F326536} = {A37C4110-002B-443A-9DEE-374F0C2E311C}
+		{A6C40F9C-833D-4FBD-B9F2-7800A3621875} = {5E7779C3-0CA4-4938-8C42-96572D97162C}
 	EndGlobalSection
 EndGlobal

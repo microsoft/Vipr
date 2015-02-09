@@ -1,26 +1,16 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Xml;
-using Microsoft.Its.Recipes;
 using Microsoft.OData.Client;
 using Microsoft.OData.Edm.Csdl;
 using Microsoft.OData.ProxyExtensions;
-using ODataV4TestService.SelfHost;
 
 namespace CSharpWriterUnitTests
 {
-    public static class MockedScenarioExtensions
+    public static class DataServiceContextWrapperExtensions
     {
-        public static DataServiceContextWrapper GetContext(this IStartedScenario serviceMock, Func<Task<string>> tokenGetterFunction = null)
-        {
-            tokenGetterFunction = tokenGetterFunction ?? Any.TokenGetterFunction();
-
-            return new DataServiceContextWrapper(new Uri(serviceMock.GetBaseAddress()), ODataProtocolVersion.V4,  tokenGetterFunction);
-        }
-
         public static DataServiceContextWrapper WithDefaultResolvers(this DataServiceContextWrapper context, string @namespace)
         {
             context.ResolveName = type => context.DefaultResolveNameInternal(type, @namespace, @namespace) ?? type.FullName;
@@ -34,14 +24,6 @@ namespace CSharpWriterUnitTests
             context.IgnoreMissingProperties = true;
 
             return context;
-        }
-
-        public static object CreateContainer(this IStartedScenario serviceMock, Type containerType, Func<Task<string>> tokenGetterFunction = null)
-        {
-            tokenGetterFunction = tokenGetterFunction ?? Any.TokenGetterFunction();
-
-            return Activator.CreateInstance(containerType,
-                new object[] {new Uri(serviceMock.GetBaseAddress()), tokenGetterFunction});
         }
 
         public static DataServiceContextWrapper UseJson(this DataServiceContextWrapper context, string edmx,
@@ -98,16 +80,6 @@ namespace CSharpWriterUnitTests
             context.SaveChangesAsync().Wait();
 
             return instance;
-        }
-
-        public static Task ExecuteAsync(this ReadOnlyQueryableSetBase collection)
-        {
-            return collection.InvokeMethod<Task>("ExecuteAsync", args: new object[0]);
-        }
-
-        public static Task ExecuteAsync(this RestShallowObjectFetcher fetcher)
-        {
-            return fetcher.InvokeMethod<Task>("ExecuteAsync", args: new object[0]);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Collections.ObjectModel;
 using Microsoft.Its.Recipes;
 using System;
 using System.Reflection;
@@ -15,6 +16,7 @@ namespace CSharpWriterUnitTests
         protected OdcmNamespace Namespace;
         protected OdcmClass Class;
         protected Assembly Proxy;
+        protected EntityArtifacts TargetEntity;
         protected Type ConcreteType;
         protected Type ConcreteInterface;
         protected Type FetcherType;
@@ -61,6 +63,17 @@ namespace CSharpWriterUnitTests
             EntityContainerType = Proxy.GetClass(Model.EntityContainer.Namespace, Model.EntityContainer.Name);
 
             EntityContainerInterface = Proxy.GetInterface(Model.EntityContainer.Namespace, "I" + Model.EntityContainer.Name);
+
+            TargetEntity = new EntityArtifacts()
+            {
+                Class = Class,
+                ConcreteType = ConcreteType,
+                ConcreteInterface = ConcreteInterface,
+                FetcherType = FetcherType,
+                FetcherInterface = FetcherInterface,
+                CollectionType = CollectionType,
+                CollectionInterface = CollectionInterface
+            };
         }
     }
 }

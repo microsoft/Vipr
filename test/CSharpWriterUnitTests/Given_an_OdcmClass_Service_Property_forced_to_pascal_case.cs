@@ -27,15 +27,7 @@ namespace CSharpWriterUnitTests
             {
                 _property = Model.EntityContainer.Properties.RandomElement();
 
-                Model.EntityContainer.Properties.Remove(_property);
-
-                Model.EntityContainer.Properties.Add(
-                    _property = new OdcmProperty(Any.Char('a','z') + _property.Name)
-                    {
-                        Class = _property.Class,
-                        ReadOnly = _property.ReadOnly,
-                        Type = _property.Type
-                    });
+                _property = _property.Rename(Any.Char('a', 'z') + _property.Name);
             });
         }
 

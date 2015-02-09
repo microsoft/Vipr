@@ -1,14 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net.Http;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
-using Microsoft.OData.ProxyExtensions;
-using Moq;
-using ODataV4TestService.SelfHost;
-using Vipr.Core;
+using Microsoft.MockService;
+using Microsoft.MockService.Extensions.ODataV4;
 using Vipr.Core.CodeModel;
 using Xunit;
 
@@ -16,7 +11,7 @@ namespace CSharpWriterUnitTests
 {
     public class Given_an_OdcmClass_Entity_Fetcher_Collection_Property : EntityTestBase
     {
-        private IStartedScenario _mockedService;
+        private MockService _mockedService;
 
         public Given_an_OdcmClass_Entity_Fetcher_Collection_Property()
         {
@@ -36,13 +31,12 @@ namespace CSharpWriterUnitTests
 
             var propertyPath = "/" + entityPath + "/" + collectionProperty.Name;
 
-            using (_mockedService = new MockScenario()
-                    .Setup(c => c.Request.Method == "GET" && c.Request.Path.Value == propertyPath, 
-                           c => c.Response.StatusCode = 200)
+            using (_mockedService = new MockService()
+                    .SetupGetWithEmptyResponse(propertyPath)
                     .Start())
             {
                 var fetcher = _mockedService
-                    .GetContext()
+                    .GetDefaultContext(Model)
                     .CreateFetcher(Proxy.GetClass(collectionProperty.Class.Namespace, collectionProperty.Class.Name + "Fetcher"), entityPath);
 
                 var propertyValue = fetcher.GetPropertyValue(collectionProperty.Name);
@@ -60,7 +54,9 @@ namespace CSharpWriterUnitTests
                     .Where(p => p.IsCollection)
                     .RandomElement();
 
-            var fetcher = MockedScenarioExtensions.CreateFetcher(null, Proxy.GetClass(collectionProperty.Class.Namespace, collectionProperty.Class.Name + "Fetcher"), collectionProperty.Name);
+            var fetcher = DataServiceContextWrapperExtensions.CreateFetcher(null,
+                Proxy.GetClass(collectionProperty.Class.Namespace, collectionProperty.Class.Name + "Fetcher"),
+                collectionProperty.Name);
 
             fetcher.GetPropertyValue(collectionProperty.Name)
                 .Should().Be(fetcher.GetPropertyValue(collectionProperty.Name), "Because the value should be cached.");

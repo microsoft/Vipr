@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -21,13 +22,24 @@ namespace CSharpWriterUnitTests
                 : keyAttribute.KeyNames.Select(type.GetProperty);
         }
 
-        public static void ValidatePropertyValues(this object instance, IEnumerable<Tuple<string, object>> keyValues)
+        public static object Initialize(this Type type, IEnumerable<Tuple<string, object>> propertyValues = null)
         {
-            foreach (var keyValue in keyValues)
-            {
-                instance.GetPropertyValue(keyValue.Item1)
-                    .Should().Be(keyValue.Item2);
-            }
+            if (propertyValues == null)
+                propertyValues = new List<Tuple<string, object>>();
+
+            return type.Initialize<object>(propertyValues);
+        }
+
+        public static T Initialize<T>(this Type type, IEnumerable<Tuple<string, object>> propertyValues = null) where T : class
+        {
+            if (propertyValues == null)
+                propertyValues = new List<Tuple<string, object>>();
+
+            var instance = Activator.CreateInstance(type);
+
+            instance.SetPropertyValues(propertyValues);
+
+            return instance as T;
         }
     }
 }

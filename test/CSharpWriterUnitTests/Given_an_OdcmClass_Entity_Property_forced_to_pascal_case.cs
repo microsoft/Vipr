@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Moq;
@@ -26,18 +27,11 @@ namespace CSharpWriterUnitTests
 
             Init(m =>
             {
-                _property = Class.Properties.RandomElement();
+                var originalProperty = Class.Properties.RandomElement();
 
-                Class.Properties.Remove(_property);
+                var camelCasedName = Any.Char('a', 'z') + originalProperty.Name;
 
-                Class.Properties.Add(
-                    _property = new OdcmProperty(Any.Char('a', 'z') + _property.Name)
-                    {
-                        Class = _property.Class,
-                        IsCollection = _property.IsCollection,
-                        ReadOnly = _property.ReadOnly,
-                        Type = _property.Type
-                    });
+                _property = originalProperty.Rename(camelCasedName);
             });
 
             _propertyType = Proxy.GetClass(_property.Type.Namespace, _property.Type.Name);

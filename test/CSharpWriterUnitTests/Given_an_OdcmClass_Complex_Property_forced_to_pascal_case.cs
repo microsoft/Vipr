@@ -37,15 +37,7 @@ namespace CSharpWriterUnitTests
 
                 _property = _targetClass.Properties.RandomElement();
 
-                _targetClass.Properties.Remove(_property);
-
-                _targetClass.Properties.Add(
-                    _property = new OdcmProperty(Any.Char('a', 'z') + _property.Name)
-                    {
-                        Class = _property.Class,
-                        ReadOnly = _property.ReadOnly,
-                        Type = _property.Type
-                    });
+                _property = _property.Rename(Any.Char('a', 'z') + _property.Name);
             });
 
             _targetType = Proxy.GetClass(_targetClass.Namespace, _targetClass.Name);
