@@ -198,7 +198,7 @@ namespace ProxyExtensionsUnitTests
             }
         }
 
-        [Fact(Skip = "Issue #84 https://github.com/Microsoft/vipr/issues/84")]
+        [Fact(Skip = "Issue #3 https://github.com/Microsoft/vipr/issues/3")]
         public void When_Updating_GeoSpatial_Primitive_Property_On_Client_Then_That_Property_Must_Be_Updated_On_Server()
         {
             using (var scenario =

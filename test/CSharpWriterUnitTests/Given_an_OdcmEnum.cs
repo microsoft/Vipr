@@ -118,11 +118,9 @@ namespace CSharpWriterUnitTests
         {
             var @enum = Any.OdcmEnum(e => e.Namespace = _namespace.Name);
 
-            @enum.Members.Add(Any.OdcmEnumMember());
-            @enum.Members.Add(Any.OdcmEnumMember());
-            @enum.Members.Add(Any.OdcmEnumMember());
-
-            @enum.Members.ForEach(m => m.Value = Any.Long(0, 100));
+            Any.Sequence(x => x, 127)
+                .RandomSubset(3).ToList()
+                .ForEach(v => @enum.Members.Add(Any.OdcmEnumMember(m => m.Value = v)));
 
             _model.AddType(@enum);
 

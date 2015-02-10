@@ -373,11 +373,19 @@ namespace CSharpWriterUnitTests
                     validSetter = !propertyInfo.CanWrite;
             }
 
+            var getAccessModifierString = "no";
+            var setAccessModifierString = "no";
+
+            if (getAccessModifier.HasValue)
+                getAccessModifierString = getAccessModifier.Value.ToString();
+            if (setAccessModifier.HasValue)
+                setAccessModifierString = setAccessModifier.Value.ToString();
+
             Execute.Assertion.ForCondition(propertyInfo != null && validGetter && validSetter)
                 .BecauseOf(because, reasonArgs)
                 .FailWith("Expected type {0} to have a {1} property {2} with {3} getter and {4} setter.",
                     typeAssertions.Subject.FullName, propertyType.FullName, name,
-                    propertyType, getAccessModifier.HasValue ? getAccessModifier.ToString() : "no", setAccessModifier.HasValue ? setAccessModifier.ToString() : "no");
+                    propertyType, getAccessModifierString, setAccessModifierString);
 
             return new AndConstraint<TypeAssertions>(typeAssertions);
         }
@@ -396,7 +404,7 @@ namespace CSharpWriterUnitTests
             Execute.Assertion.ForCondition(typeAssertions.Subject != null &&
                                            typeAssertions.Subject.GetProperty(name) == null)
                 .BecauseOf(because, reasonArgs)
-                .FailWith("Expected type {1} to not contain property {2}.", typeAssertions.Subject.Name, name);
+                .FailWith("Expected type {0} to not contain property {1}.", typeAssertions.Subject.Name, name);
 
             return new AndConstraint<TypeAssertions>(typeAssertions);
         }

@@ -283,7 +283,7 @@ namespace CSharpWriter
             WriteSignature(method);
             using (_builder.IndentBraced)
             {
-                _("return propertyName == null ? _path : _path + \" / \" + propertyName;");
+                _("return propertyName == null ? _path : _path + \"/\" + propertyName;");
             }
         }
 
@@ -334,7 +334,7 @@ namespace CSharpWriter
 
                 using (_builder.IndentBraced)
                 {
-                    _("var path = GetPath((i) => {0});", indexer.ParameterToPropertyMap.ToEquivalenceString("i"));
+                    _("var path = GetPath<{0}>((i) => {1});", NamesService.GetConcreteTypeName(indexer.OdcmClass), indexer.ParameterToPropertyMap.ToEquivalenceString("i"));
                     _("var fetcher = new {0}();", NamesService.GetFetcherTypeName(indexer.OdcmClass));
                     _("fetcher.Initialize(Context, path);");
                     _("");
@@ -352,7 +352,7 @@ namespace CSharpWriter
 
                 using (_builder.IndentBraced)
                 {
-                    _("this._query = new {0}(Context.CreateQuery<{1}>(GetPath(null)), Context);", method.QueryableSetType, method.FetchedType);
+                    _("this._query = CreateQuery<{0}, {1}>();", method.FetchedType, method.FetchedTypeInterface);
                 }
 
                 _("return this._query;");
@@ -894,6 +894,20 @@ namespace CSharpWriter
             }
         }
 
+        private void Write(ObsoletedProperty property)
+        {
+            _("[EditorBrowsable(EditorBrowsableState.Never)]");
+            _("[Obsolete(\"Use {0} instead.\")]", property.UpdatedName);
+            WriteDeclaration(property);
+
+            using (_builder.IndentBraced)
+            {
+                WriteObsoletedPropertyGet(property);
+
+                WriteObsoletedPropertySet(property);
+            }
+        }
+
         private void Write(StructuralCollectionProperty property)
         {
             WriteDeclaration(property);
@@ -973,7 +987,7 @@ namespace CSharpWriter
                 using (_builder.IndentBraced)
                 {
                     _("{0} = value;", property.FieldName);
-                    _("OnPropertyChanged(\"{0}\");", property.Name);
+                    _("OnPropertyChanged(\"{0}\");", property.ModelName);
                 }
             }
         }
@@ -984,6 +998,24 @@ namespace CSharpWriter
             using (_builder.IndentBraced)
             {
                 _("return {0};", property.FieldName);
+            }
+        }
+
+        private void WriteObsoletedPropertySet(ObsoletedProperty property)
+        {
+            _("set");
+            using (_builder.IndentBraced)
+            {
+                _("{0} = value;", property.UpdatedName);
+            }
+        }
+
+        private void WriteObsoletedPropertyGet(ObsoletedProperty property)
+        {
+            _("get");
+            using (_builder.IndentBraced)
+            {
+                _("return {0};", property.UpdatedName);
             }
         }
 

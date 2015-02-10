@@ -94,7 +94,7 @@ namespace ProxyExtensionsUnitTests
             }
         }
 
-        [Fact(Skip = "Issue #81 https://github.com/Microsoft/vipr/issues/81")]
+        [Fact(Skip = "Issue #4 https://github.com/Microsoft/vipr/issues/4")]
         public void When_Using_Expand_Clause_On_EntityType_Interface_Then_Resulting_Sequence_Must_Be_Expanded()
         {
             using (var scenario =

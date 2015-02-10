@@ -22,7 +22,7 @@ namespace CSharpWriterUnitTests
         }
 
         [Fact]
-        public void The_Collection_interface_is_Public()
+        public void It_is_Public()
         {
             CollectionInterface.IsPublic
                 .Should().BeTrue("Because it allows users to interact with the Collection Class and with" +
@@ -30,7 +30,7 @@ namespace CSharpWriterUnitTests
         }
 
         [Fact]
-        public void The_Collection_interface_implements_IReadOnlyQueryableSetBaseofT()
+        public void It_implements_IReadOnlyQueryableSetBaseofT()
         {
             CollectionInterface
                 .Should().Implement(
@@ -41,16 +41,14 @@ namespace CSharpWriterUnitTests
         }
 
         [Fact]
-        public void The_Collection_interface_is_attributed_with_LowerCaseProperty()
+        public void It_is_decorated_with_LowerCasePropertyAttribute()
         {
-            var lowerCasePropertyType = typeof(LowerCasePropertyAttribute);
-
-            CollectionInterface.GetCustomAttribute(lowerCasePropertyType)
-                .Should().NotBeNull("Because this is used to manage casing when interacting with ODataLib");
+            ConcreteInterface.Should()
+                .BeDecoratedWith<LowerCasePropertyAttribute>();
         }
 
         [Fact]
-        public void The_Collection_interface_exposes_a_GetById_method()
+        public void It_exposes_a_GetById_method()
         {
             CollectionInterface.Should().HaveMethod(
                 CSharpAccessModifiers.Public,
@@ -61,7 +59,7 @@ namespace CSharpWriterUnitTests
         }
 
         [Fact]
-        public void The_Collection_interface_exposes_a_GetById_Indexer()
+        public void It_exposes_a_GetById_Indexer()
         {
             CollectionInterface.Should().HaveIndexer(
                 CSharpAccessModifiers.Public,
@@ -72,7 +70,7 @@ namespace CSharpWriterUnitTests
         }
 
         [Fact]
-        public void The_Collection_interface_exposes_an_ExecuteAsync_method()
+        public void It_exposes_an_ExecuteAsync_method()
         {
             CollectionInterface.Should().HaveMethod(
                 CSharpAccessModifiers.Public,
@@ -82,7 +80,7 @@ namespace CSharpWriterUnitTests
         }
 
         [Fact]
-        public void The_Collection_interface_exposes_an_AddAsync_method()
+        public void It_exposes_an_AddAsync_method()
         {
             CollectionInterface.Should()
                 .HaveMethod(

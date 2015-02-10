@@ -67,7 +67,7 @@ namespace CSharpWriterUnitTests
                 proxySource = internalsHeader + proxySource;
             }
 
-            Debug.WriteLine(proxySource);
+            WriteProxySource(proxySource);
 
             var referencedAssemblies = new List<string>
             {
@@ -85,15 +85,15 @@ namespace CSharpWriterUnitTests
             return CompileText(referencedAssemblies, proxySource);
         }
 
+        private static void WriteProxySource(string proxySource)
+        {
+            if(Debugger.IsAttached)
+                Debug.WriteLine(proxySource);
+        }
+
         public Assembly CompileText(IEnumerable<string> referencedAssemblies, params string[] cSharpSource)
         {
-            var compilerParams = new CompilerParameters
-            {
-                GenerateInMemory = true,
-                TreatWarningsAsErrors = false,
-                GenerateExecutable = false,
-                CompilerOptions = "/optimize",
-            };
+            var compilerParams = GetCompilerParameters();
 
             compilerParams.ReferencedAssemblies.AddRange(new[] { "System.dll" });
 
@@ -108,6 +108,31 @@ namespace CSharpWriterUnitTests
             var text = compile.Errors.Cast<CompilerError>().Aggregate("Compile error: ", (c, ce) => c + ("\r\n" + ce.ToString()));
 
             throw new Exception(text);
+        }
+
+        private static CompilerParameters GetCompilerParameters()
+        {
+            if (Debugger.IsAttached)
+            {
+                return new CompilerParameters
+                {
+                    CompilerOptions = "/debug:pdbonly",
+                    GenerateInMemory = false,
+                    IncludeDebugInformation = true,
+                    TempFiles = new TempFileCollection(AppDomain.CurrentDomain.BaseDirectory, true),
+                    TreatWarningsAsErrors = false,
+                };
+            }
+            else
+            {
+                return new CompilerParameters
+                {
+                    CompilerOptions = "/optimize",
+                    GenerateExecutable = false,
+                    GenerateInMemory = true,
+                    TreatWarningsAsErrors = false,
+                };
+            }
         }
 
         protected static T GetValue<T>(Assembly asm, string methodName, string typeName, string @namespace) where T : class

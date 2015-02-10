@@ -14,7 +14,7 @@ namespace CSharpWriter
         {
             CollectionType = new Type(NamesService.GetCollectionTypeName((OdcmClass)odcmProperty.Type));
             FieldName = NamesService.GetFetcherCollectionFieldName(odcmProperty);
-            InstanceType = NamesService.GetFetcherTypeName(odcmProperty.Type);
+            InstanceType = NamesService.GetConcreteTypeName(odcmProperty.Type);
             Type = new Type(NamesService.GetCollectionInterfaceName((OdcmClass)odcmProperty.Type));
         }
 

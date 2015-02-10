@@ -1,46 +1,43 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using FluentAssertions;
+using Microsoft.MockService;
 using Microsoft.OData.ProxyExtensions;
 using Xunit;
 
 namespace CSharpWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Collection_GetById_Method : Given_an_OdcmClass_Entity_Collection_GetById_Base
+    public class Given_an_OdcmClass_Entity_Collection_GetById_Method : EntityTestBase
     {
-        private MethodInfo _getByIdMethod;
+        private MockService _serviceMock;
 
-        
+
         public Given_an_OdcmClass_Entity_Collection_GetById_Method()
         {
-            base.Init();
-
-            _getByIdMethod = CollectionInterface
-                .GetMethod(
-                    "GetById",
-                    ConcreteType.GetKeyProperties()
-                        .Select(p => p.PropertyType)
-                        .ToArray());
+            Init();
         }
 
         [Fact]
-        public void It_returns_a_Fetcher_with_the_right_Context_and_Path()
+        public void When_GetById_is_called_it_GETs_the_collection_by_name_and_passes_the_id_in_the_path()
         {
-            var fetcher = CallGetByIdMethod(CollectionInstance, Params.Select(p => p.Item2));
+            var keyValues = Class.GetSampleKeyArguments().ToArray();
 
-            fetcher.Context.Should().Be(DscwMock.Object);
+            using (_serviceMock = new MockService()
+                    .SetupGetEntity(TargetEntity, keyValues)
+                    .Start())
+            {
+                var context = _serviceMock
+                    .GetDefaultContext(Model);
 
-            FetcherType.BaseType.GetField("_path", PermissiveBindingFlags).GetValue(fetcher)
-                .Should().Be(InstancePath);
-        }
+                var collection = context.CreateCollection(CollectionType, ConcreteType, Class.GetDefaultEntitySetPath());
 
-        protected RestShallowObjectFetcher CallGetByIdMethod(object collectionInstance, IEnumerable<object> parameters)
-        {
-            return _getByIdMethod.Invoke(collectionInstance, parameters.ToArray()) as RestShallowObjectFetcher;
+                var fetcher = collection.InvokeMethod<RestShallowObjectFetcher>("GetById",
+                    keyValues.Select(k => k.Item2).ToArray());
+
+                var task = fetcher.ExecuteAsync();
+                task.Wait();
+            }
         }
     }
 }

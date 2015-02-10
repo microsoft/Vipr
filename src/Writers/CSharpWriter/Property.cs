@@ -61,5 +61,15 @@ namespace CSharpWriter
                 ? (NavigationProperty)ContainerNavigationCollectionProperty.ForService(odcmProperty)
                 : ContainerNavigationProperty.ForService(odcmProperty);
         }
+
+        public static Property AsObsoletedProperty(OdcmProperty odcmProperty)
+        {
+            return new ObsoletedProperty(odcmProperty);
+        }
+
+        public static Property AsObsoletedNavigationProperty(OdcmProperty odcmProperty)
+        {
+            return new ObsoletedNavigationProperty(odcmProperty);
+        }
     }
 }
