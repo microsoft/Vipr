@@ -53,9 +53,12 @@
     <Compile Include="CodeModel\OdcmClassKind.cs" />
     <Compile Include="CodeModel\OdcmAllowedVerbs.cs" />
     <Compile Include="CodeModel\OdcmVocabularyAnnotation.cs" />
+    <Compile Include="CodeModel\Vocabularies\Capabilities\DeleteRestrictionsType.cs" />
+    <Compile Include="CodeModel\Vocabularies\Capabilities\ExpandRestrictionsType.cs" />
+    <Compile Include="CodeModel\Vocabularies\Capabilities\InsertRestrictionsType.cs" />
+    <Compile Include="CodeModel\Vocabularies\Capabilities\UpdateRestrictionsType.cs" />
     <Compile Include="IConfigurationProvider.cs" />
     <Compile Include="IReader.cs" />
-    <Compile Include="CodeModel\OdcmAnnotatedObject.cs" />
     <Compile Include="CodeModel\OdcmClass.cs" />
     <Compile Include="CodeModel\OdcmEnum.cs" />
     <Compile Include="CodeModel\OdcmEnumMember.cs" />

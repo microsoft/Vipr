@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Vipr.Core.CodeModel
 {
-    public class OdcmNamespace : OdcmAnnotatedObject
+    public class OdcmNamespace : OdcmObject
     {
         public List<OdcmType> Types { get; private set; }
 
