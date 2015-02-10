@@ -371,6 +371,11 @@ namespace ODataReader.v4
 
             // We should attempt to cache these constructors so this code does not get called repeatedly 
             Func<object> constructor;
+            if (_constructorCache == null)
+            {
+                _constructorCache = new Dictionary<IEdmType, Func<object>>();
+            }
+
             if (!_constructorCache.TryGetValue(type, out constructor))
             {
                 var viprCodeModelNamespace = VocabularyNamespaceMappings[complexType.Namespace];
