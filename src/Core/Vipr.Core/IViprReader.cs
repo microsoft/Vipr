@@ -6,8 +6,8 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr.Core
 {
-    public interface IReader
+    public interface IViprReader
     {
-        OdcmModel GenerateOdcmModel(IReadOnlyDictionary<string, string> serviceMetadata);
+        OdcmModel GenerateModel(IReaderConfigurationProvider config);
     }
 }
