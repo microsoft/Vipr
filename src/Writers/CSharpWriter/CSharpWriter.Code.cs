@@ -456,22 +456,6 @@ namespace CSharpWriter
             }
         }
 
-        private void Write(EntityVoidMethod method)
-        {
-            WriteSignature(method);
-            using (_builder.IndentBraced)
-            {
-                WriteEntityMethodBodyStart(method);
-                _("await this.Context.ExecuteAsync(requestUri, \"POST\", new OperationParameter[{0}]", method.Parameters.Count());
-                using (_builder.IndentBraced)
-                {
-                    foreach (var parameter in method.Parameters)
-                        _("new BodyOperationParameter(\"{0}\", (object) {0}),", parameter.Name);
-                }
-                _(");");
-            }
-        }
-
         private void Write(FetcherUpcastMethod method)
         {
             WriteSignature(method);
@@ -498,15 +482,39 @@ namespace CSharpWriter
             using (_builder.IndentBraced)
             {
                 WriteEntityMethodBodyStart(method);
-                _("return ({0}) Enumerable.Single<{1}>(await this.Context.ExecuteAsync<{1}>(requestUri, \"POST\", true, new OperationParameter[{2}]",
-                    method.ReturnType.GenericParameters.First(), method.InstanceName, method.Parameters.Count());
+                _("return ({0}) Enumerable.Single<{1}>(await this.Context.ExecuteAsync<{1}>(requestUri, \"{2}\", true, new OperationParameter[]",
+                    method.ReturnType.GenericParameters.First(), method.InstanceName, method.HttpMethod);
                 using (_builder.IndentBraced)
                 {
-                    foreach (var parameter in method.Parameters)
-                        _("new BodyOperationParameter(\"{0}\", (object) {0}),", parameter.Name);
+                    WriteMethodOperationParameters(method);
                 }
                 _("));");
             }
+        }
+
+        private void Write(EntityVoidMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                WriteEntityMethodBodyStart(method);
+                _("await this.Context.ExecuteAsync(requestUri, \"{0}\", new OperationParameter[{1}]", method.HttpMethod,
+                    method.Parameters.Count());
+                using (_builder.IndentBraced)
+                {
+                    WriteMethodOperationParameters(method);
+                }
+                _(");");
+            }
+        }
+
+        private void WriteMethodOperationParameters(ServerMethod method)
+        {
+            foreach (var parameter in method.BodyParameters)
+                _("new BodyOperationParameter(\"{0}\", (object) {0}),", parameter.Name);
+
+            foreach (var parameter in method.UriParameters)
+                _("new UriOperationParameter(\"{0}\", (object) {0}),", parameter.Name);
         }
 
         private void WriteEntityMethodBodyStart(Method method)

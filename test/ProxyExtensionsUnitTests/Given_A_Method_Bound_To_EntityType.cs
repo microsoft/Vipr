@@ -2,13 +2,9 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Microsoft.Its.Recipes;
-using Microsoft.OData.ProxyExtensions;
 using ODataV4TestService.SelfHost;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
 using Microsoft.OData.Client;
@@ -16,7 +12,7 @@ using Xunit;
 
 namespace ProxyExtensionsUnitTests
 {
-    public class Given_An_Action_Or_Function_Bound_To_EntityType : ProxyExtensionsUnitTestsBase
+    public class Given_A_Method_Bound_To_EntityType : ProxyExtensionsUnitTestsBase
     {
         [Fact]
         public void When_Executing_Action_On_Client_Then_Action_Is_Called_On_Server_With_Correct_Parameters()

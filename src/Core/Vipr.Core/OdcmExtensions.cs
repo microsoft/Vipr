@@ -44,5 +44,17 @@ namespace Vipr.Core
                 }
             }
         }
+
+        public static IEnumerable<OdcmParameter> UriParameters(this OdcmMethod odcmMethod)
+        {
+            return odcmMethod.Parameters
+                .Where(p => p.CallingConvention == OdcmCallingConvention.InHttpRequestUri);
+        }
+
+        public static IEnumerable<OdcmParameter> BodyParameters(this OdcmMethod odcmMethod)
+        {
+            return odcmMethod.Parameters
+                .Where(p => p.CallingConvention == OdcmCallingConvention.InHttpMessageBody);
+        }
     }
 }

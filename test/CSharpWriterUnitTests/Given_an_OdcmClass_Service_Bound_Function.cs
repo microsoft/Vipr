@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.MockService;
 using Vipr.Core.CodeModel;
 using Xunit;
 
@@ -61,6 +62,54 @@ namespace CSharpWriterUnitTests
         private IEnumerable<Type> GetMethodParameterTypes()
         {
             return _method.Parameters.Select(p => Proxy.GetClass(p.Type.Namespace, p.Type.Name));
+        }
+
+        [Fact]
+        public void When_the_verb_is_POST_the_Collection_passes_parameters_on_the_URI_and_in_the_body()
+        {
+            Init(model =>
+            {
+                _method = Any.OdcmMethodPost();
+                _method.Class = model.EntityContainer;
+                _method.ReturnType = Class;
+                _method.IsCollection = false;
+                _method.IsBoundToCollection = false;
+                model.EntityContainer.Methods.Add(_method);
+            });
+
+            using (var mockService = new MockService()
+                .Start())
+            {
+                var service = mockService
+                    .CreateContainer(EntityContainerType);
+
+                mockService.ValidateParameterPassing("POST", service, "", _method,
+                    mockService.GetOdataJsonInstance(TargetEntity));
+            }
+        }
+
+        [Fact]
+        public void When_the_verb_is_GET_the_Collection_passes_parameters_on_the_URI()
+        {
+            Init(model =>
+            {
+                _method = Any.OdcmMethodGet();
+                _method.Class = model.EntityContainer;
+                _method.ReturnType = Class;
+                _method.IsCollection = false;
+                _method.IsBoundToCollection = false;
+                model.EntityContainer.Methods.Add(_method);
+            });
+
+            using (var mockService = new MockService()
+                .Start())
+            {
+                var service = mockService
+                    .CreateContainer(EntityContainerType);
+
+                mockService.ValidateParameterPassing("GET", service, "", _method,
+                    mockService.GetOdataJsonInstance(TargetEntity));
+            }
         }
     }
 }

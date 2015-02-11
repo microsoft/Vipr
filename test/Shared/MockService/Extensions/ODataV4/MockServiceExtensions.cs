@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Owin;
 using Newtonsoft.Json.Linq;
 using Microsoft.MockService;
@@ -7,12 +8,12 @@ namespace Microsoft.MockService.Extensions.ODataV4
 {
     public static class MockServiceExtensions
     {
-        public static MockService SetupPostEntity(this MockService mockService, string entitySetPath,
+        public static MockService SetupPostEntity(this MockService mockService, string entityPath,
             string entitySetName, object response = null)
         {
             mockService
                 .Setup(c => c.Request.Method == "POST" &&
-                            c.Request.Path.Value == entitySetPath,
+                            c.Request.Path.Value == entityPath,
                     (b, c) =>
                     {
                         c.Response.StatusCode = 201;
@@ -23,6 +24,52 @@ namespace Microsoft.MockService.Extensions.ODataV4
             return mockService;
         }
 
+        public static MockService SetupMethod(this MockService mockService, string httpMethod, string methodPath,
+            TestReadableStringCollection uriArguments, JObject expectedBody, string entitySetName, object response = null)
+        {
+            uriArguments = uriArguments ?? new TestReadableStringCollection(new Dictionary<string, string[]>());
+
+            mockService
+                .Setup(c => c.Request.Method == httpMethod &&
+                            c.Request.Path.Value.StartsWith(methodPath) &&
+                            c.Request.InvokesMethodWithParameters(methodPath, uriArguments) &&
+                            ((c.Request.Body.Length == 0 && expectedBody == null) || (JToken.DeepEquals(expectedBody, c.Request.Body.ToJObject()))),
+                    (b, c) =>
+                    {
+                        c.Response.StatusCode = 200;
+                        if (response != null)
+                        {
+                            c.Response.WithDefaultODataHeaders();
+                            c.Response.WithODataEntityResponseBody(mockService.GetBaseAddress(), entitySetName, response);
+                        }
+                    });
+
+            return mockService;
+        }
+
+        public static MockService SetupMethod(this MockService mockService, string httpMethod, string methodPath,
+            TestReadableStringCollection uriArguments, JObject expectedBody, JObject response = null)
+        {
+            uriArguments = uriArguments ?? new TestReadableStringCollection(new Dictionary<string, string[]>());
+
+            mockService
+                .Setup(c => c.Request.Method == httpMethod &&
+                            c.Request.Path.Value.StartsWith(methodPath) &&
+                            c.Request.InvokesMethodWithParameters(methodPath, uriArguments) &&
+                            ((c.Request.Body.Length == 0 && expectedBody == null) || (JToken.DeepEquals(expectedBody, c.Request.Body.ToJObject()))),
+                    (b, c) =>
+                    {
+                        c.Response.StatusCode = 200;
+                        if (response != null)
+                        {
+                            c.Response.WithDefaultODataHeaders();
+                            c.Response.Write(response.ToString());
+                        }
+                    });
+
+            return mockService;
+        }
+        
         public static MockService SetupPostEntityChanges(this MockService mockService, string entitySetPath)
         {
             mockService
@@ -61,7 +108,7 @@ namespace Microsoft.MockService.Extensions.ODataV4
             mockService
                 .Setup(c => c.Request.Method == "GET" &&
                             c.Request.Path.Value == entitySetPath &&
-                            expandTargets == null || c.Request.Query["$expand"] == string.Join(",", expandTargets),
+                            (expandTargets == null || c.Request.Query["$expand"] == string.Join(",", expandTargets)),
                     (b, c) =>
                     {
                         c.Response.StatusCode = 200;

@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Web.Http;
 
 namespace Microsoft.MockService.SelfHost
 {

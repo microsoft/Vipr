@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.MockService.SelfHost;
 using Microsoft.Owin;
 using Microsoft.Owin.Hosting;
+using Newtonsoft.Json.Linq;
 using ODataV4TestService.SelfHost;
 
 namespace Microsoft.MockService
@@ -63,17 +64,26 @@ namespace Microsoft.MockService
 
         public Task Invoke(IOwinContext context)
         {
-            foreach (var handler in _handlers)
+            try
             {
-                if (!handler.Item1.Compile().Invoke(context)) continue;
+                foreach (var handler in _handlers)
+                {
+                    if (!handler.Item1.Compile().Invoke(context)) continue;
 
-                _unusedHandlers.Remove(handler.Item1);
-                return handler.Item2(context);
+                    _unusedHandlers.Remove(handler.Item1);
+                    return handler.Item2(context);
+                }
+
+                context.Response.StatusCode = 400;
+                Debug.WriteLine("No handler for request\n\r{0} {1}", context.Request.Method, context.Request.Path);
+                return Task.FromResult<object>(null);
             }
-
-            context.Response.StatusCode = 400;
-            Debug.WriteLine("No handler for request\n\r{0} {1}", context.Request.Method, context.Request.Path);
-            return Task.FromResult<object>(null);
+            catch (Exception e)
+            {
+                context.Response.StatusCode = 500;
+                context.Response.Write(JObject.FromObject(e).ToString());
+                return Task.FromResult<object>(null);
+            }
         }
 
         public string GetBaseAddress()

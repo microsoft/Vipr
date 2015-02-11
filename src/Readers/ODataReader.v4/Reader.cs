@@ -17,7 +17,7 @@ namespace ODataReader.v4
 {
     public class Reader : IReader
     {
-        public OdcmModel GenerateOdcmModel(IReadOnlyDictionary<string, string> serviceMetadata)
+        public OdcmModel GenerateOdcmModel(IDictionary<string, string> serviceMetadata)
         {
             var daemon = new ReaderDaemon();
             return daemon.GenerateOdcmModel(serviceMetadata);
@@ -30,7 +30,7 @@ namespace ODataReader.v4
             private IEdmModel _edmModel = null;
             private OdcmModel _odcmModel;
 
-            public OdcmModel GenerateOdcmModel(IReadOnlyDictionary<string, string> serviceMetadata)
+            public OdcmModel GenerateOdcmModel(IDictionary<string, string> serviceMetadata)
             {
                 if (serviceMetadata == null)
                     throw new ArgumentNullException("serviceMetadata");

@@ -46,6 +46,8 @@ namespace CSharpWriterUnitTests
 
             if (config != null) config(Model);
 
+            Model.ServiceMetadata["$metadata"] = Model.ToEdmx(true);
+
             Proxy = GetProxy(Model, ConfigurationProvider, generateMocks ? new[] { "DynamicProxyGenAssembly2" } : null);
 
             ConcreteType = Proxy.GetClass(Class.Namespace, Class.Name);

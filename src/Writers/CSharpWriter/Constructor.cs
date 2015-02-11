@@ -10,13 +10,5 @@ namespace CSharpWriter
     public abstract class Constructor : ParameterizedFunction
     {
         public string Name { get; protected set; }
-
-        public static IEnumerable<Constructor> ForCollectionInterface(OdcmClass odcmClass)
-        {
-            return new Constructor[]
-            {
-                new CollectionConstructor(odcmClass)
-            }.AsEnumerable();
-        }
     }
 }

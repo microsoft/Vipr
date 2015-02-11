@@ -20,16 +20,17 @@ namespace CSharpWriterUnitTests
         {
             base.Init(m =>
             {
-                _structuralInstanceProperty = Any.PrimitiveOdcmProperty();
+                _structuralInstanceProperty = Any.PrimitiveOdcmProperty(p => p.Class = Class);
 
                 _structuralCollectionProperty = Any.PrimitiveOdcmProperty(p =>
                 {
+                    p.Class = Class;
                     p.IsCollection = true;
                 });
 
-                m.Namespaces[0].Classes.First().Properties.Add(_structuralInstanceProperty);
+                Class.Properties.Add(_structuralInstanceProperty);
 
-                m.Namespaces[0].Classes.First().Properties.Add(_structuralCollectionProperty);
+                Class.Properties.Add(_structuralCollectionProperty);
             });
         }
 

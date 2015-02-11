@@ -8,28 +8,24 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.MockService;
-using Moq;
-using Vipr.Core;
 using Vipr.Core.CodeModel;
 using Xunit;
 
 namespace CSharpWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Bound_Function : EntityTestBase
+    public class Given_an_OdcmClass_Entity_Bound_VoidMethod : EntityTestBase
     {
         private OdcmMethod _method;
-        private Type _expectedReturnType;
-        private string _expectedMethodName;
-        private MockService _mockedService;
+        private readonly Type _expectedReturnType = typeof(Task);
+        private readonly string _expectedMethodName;
 
-        public Given_an_OdcmClass_Entity_Bound_Function()
+        public Given_an_OdcmClass_Entity_Bound_VoidMethod()
         {
-            Init(model => model.Namespaces[0].Classes.First()
-                .Methods.Add(_method = Any.OdcmMethod(m => m.ReturnType = model.Namespaces[0].Classes.First())));
-
-            _expectedReturnType = typeof(Task<>).MakeGenericType(ConcreteInterface);
+            _method = Any.OdcmMethod();
 
             _expectedMethodName = _method.Name + "Async";
+
+            Init(m => m.Namespaces[0].Classes.First().Methods.Add(_method));
         }
 
         [Fact]
@@ -77,38 +73,13 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void The_Collection_interface_does_not_expose_the_method()
         {
-            CollectionInterface.Should().NotHaveMethod(_expectedMethodName);
+            CollectionInterface.Should().NotHaveMethod(_method.Name);
         }
 
         [Fact]
         public void The_Collection_class_does_not_expose_the_method()
         {
-            CollectionType.Should().NotHaveMethod(_expectedMethodName);
-        }
-
-        [Fact]
-        public void When_the_return_type_is_primitive_it_is_mapped_to_a_DotNet_Primitive()
-        {
-            Init(model => model.Namespaces[0].Classes.First()
-                .Methods.Add(_method = Any.OdcmMethod(m => m.ReturnType = new OdcmPrimitiveType("Stream", "Edm"))));
-
-            _expectedReturnType = typeof(Task<>).MakeGenericType(typeof(Microsoft.OData.Client.DataServiceStreamLink));
-
-            _expectedMethodName = _method.Name + "Async";
-
-            var methodInfos = new[]
-            {
-                ConcreteInterface.GetMethod(_expectedMethodName),
-                ConcreteType.GetMethod(_expectedMethodName),
-                FetcherInterface.GetMethod(_expectedMethodName),
-                FetcherType.GetMethod(_expectedMethodName)
-            };
-
-            foreach (var methodInfo in methodInfos)
-            {
-                methodInfo.ReturnType
-                    .Should().Be(_expectedReturnType);
-            }
+            CollectionType.Should().NotHaveMethod(_method.Name);
         }
 
         private IEnumerable<Type> GetMethodParameterTypes()
@@ -123,7 +94,7 @@ namespace CSharpWriterUnitTests
             {
                 _method = Any.OdcmMethodPost();
                 _method.Class = Class;
-                _method.ReturnType = Class;
+                _method.ReturnType = null;
                 _method.IsCollection = false;
                 Class.Methods.Add(_method);
             });
@@ -139,8 +110,7 @@ namespace CSharpWriterUnitTests
                     .GetDefaultContext(Model)
                     .CreateConcrete(ConcreteType);
 
-                mockService.ValidateParameterPassing("POST", concrete, instancePath, _method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                mockService.ValidateParameterPassing("POST", concrete, instancePath, _method, null);
             }
         }
 
@@ -151,7 +121,7 @@ namespace CSharpWriterUnitTests
             {
                 _method = Any.OdcmMethodPost();
                 _method.Class = Class;
-                _method.ReturnType = Class;
+                _method.ReturnType = null;
                 _method.IsCollection = false;
                 Class.Methods.Add(_method);
             });
@@ -167,7 +137,7 @@ namespace CSharpWriterUnitTests
                     .CreateFetcher(FetcherType, fetcherPath);
 
                 mockService.ValidateParameterPassing("POST", fetcher, fetcherPath, _method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    null);
             }
         }
 
@@ -178,7 +148,7 @@ namespace CSharpWriterUnitTests
             {
                 _method = Any.OdcmMethodGet();
                 _method.Class = Class;
-                _method.ReturnType = Class;
+                _method.ReturnType = null;
                 _method.IsCollection = false;
                 Class.Methods.Add(_method);
             });
@@ -194,8 +164,7 @@ namespace CSharpWriterUnitTests
                     .GetDefaultContext(Model)
                     .CreateConcrete(ConcreteType);
 
-                mockService.ValidateParameterPassing("GET", concrete, instancePath, _method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                mockService.ValidateParameterPassing("GET", concrete, instancePath, _method, null);
             }
         }
 
@@ -206,7 +175,7 @@ namespace CSharpWriterUnitTests
             {
                 _method = Any.OdcmMethodGet();
                 _method.Class = Class;
-                _method.ReturnType = Class;
+                _method.ReturnType = null;
                 _method.IsCollection = false;
                 Class.Methods.Add(_method);
             });
@@ -222,7 +191,7 @@ namespace CSharpWriterUnitTests
                     .CreateFetcher(FetcherType, fetcherPath);
 
                 mockService.ValidateParameterPassing("GET", fetcher, fetcherPath, _method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    null);
             }
         }
     }
