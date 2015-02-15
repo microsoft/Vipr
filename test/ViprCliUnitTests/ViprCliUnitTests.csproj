@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props')" />
-  <Import Project="..\..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props" Condition="Exists('..\..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" />
+  <Import Project="..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props" Condition="Exists('..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props')" />
+  <Import Project="..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props" Condition="Exists('..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,8 +9,8 @@
     <ProjectGuid>{40977593-9DA2-4BE5-84C8-E156111CD133}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ViprUnitTests</RootNamespace>
-    <AssemblyName>ViprUnitTests</AssemblyName>
+    <RootNamespace>ViprCliUnitTests</RootNamespace>
+    <AssemblyName>ViprCliUnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>dfcbacbf</NuGetPackageImportStamp>
@@ -42,52 +42,65 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Shared\%28Its.Recipes%29\Any.Odcm.cs">
+    <Compile Include="..\Shared\%28Its.Recipes%29\Any.Odcm.cs">
       <Link>Any.Odcm.cs</Link>
     </Compile>
-    <Compile Include="..\..\Shared\%28Its.Recipes%29\TestInputGenerator.cs">
+    <Compile Include="..\Shared\%28Its.Recipes%29\TestInputGenerator.cs">
       <Link>TestInputGenerator.cs</Link>
     </Compile>
     <Compile Include="Any.cs" />
     <Compile Include="Given_the_Vipr_Bootstrapper.cs" />
+    <Compile Include="Given_the_Vipr_ConfigurationProvider.cs" />
+    <Compile Include="TestConfigurable.cs" />
+    <Compile Include="TestSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions">
-      <HintPath>..\..\..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.dll</HintPath>
+      <HintPath>..\..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions.Core">
-      <HintPath>..\..\..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.Core.dll</HintPath>
+      <HintPath>..\..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Its.Configuration, Version=0.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Its.Configuration.0.10.1\lib\net40\Its.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin">
-      <HintPath>..\..\..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Host.HttpListener">
-      <HintPath>..\..\..\packages\Microsoft.Owin.Host.HttpListener.3.0.0\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.Owin.Host.HttpListener.3.0.0\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
-      <HintPath>..\..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
+      <HintPath>..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin">
-      <HintPath>..\..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="xunit.core">
-      <HintPath>..\..\..\packages\xunit.extensibility.core.2.0.0-rc1-build2826\lib\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.dll</HintPath>
+      <HintPath>..\..\packages\xunit.extensibility.core.2.0.0-rc1-build2826\lib\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Core\Vipr.Core\Vipr.Core.csproj">
+    <ProjectReference Include="..\..\src\Core\Vipr.Core\Vipr.Core.csproj">
       <Project>{04C24936-006A-4FD8-A872-EE55588C1CBE}</Project>
       <Name>Vipr.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\src\Core\Vipr\Vipr.csproj">
+    <ProjectReference Include="..\..\src\Core\Vipr\Vipr.csproj">
       <Project>{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}</Project>
       <Name>Vipr</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\MockService\MockService.csproj">
+    <ProjectReference Include="..\Shared\MockService\MockService.csproj">
       <Project>{A6C40F9C-833D-4FBD-B9F2-7800A3621875}</Project>
       <Name>MockService</Name>
     </ProjectReference>
@@ -100,8 +113,8 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props'))" />
-    <Error Condition="!Exists('..\..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props'))" />
+    <Error Condition="!Exists('..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props'))" />
+    <Error Condition="!Exists('..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

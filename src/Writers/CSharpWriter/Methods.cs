@@ -114,7 +114,7 @@ namespace CSharpWriter
 
         private static IEnumerable<Method> ForFetcherUpcasts(OdcmClass odcmClass)
         {
-            return ConfigurationService.OmitFetcherUpcastMethods
+            return ConfigurationService.Settings.OmitFetcherUpcastMethods
                 ? Methods.Emtpy
                 : odcmClass.NestedDerivedTypes()
                     .Select(dr => new FetcherUpcastMethod(odcmClass, dr));
@@ -129,7 +129,7 @@ namespace CSharpWriter
 
         private static IEnumerable<Method> ForConcreteUpcasts(OdcmClass odcmClass)
         {
-            return ConfigurationService.OmitFetcherUpcastMethods
+            return ConfigurationService.Settings.OmitFetcherUpcastMethods
                 ? Methods.Emtpy
                 : odcmClass.NestedDerivedTypes()
                     .Select(dr => new ConcreteUpcastMethod(odcmClass, dr));

@@ -1,4 +1,5 @@
 using System.Linq;
+using CSharpWriter.Settings;
 using Microsoft.Its.Recipes;
 using Microsoft.MockService;
 using Microsoft.OData.ProxyExtensions;
@@ -16,18 +17,19 @@ namespace CSharpWriterUnitTests
 
         public Given_an_OdcmClass_Entity_Navigation_Property_Key_forced_to_pascal_case()
         {
-            var configurationProviderMock = new Mock<IConfigurationProvider>();
-                configurationProviderMock.Setup(c => c.ForcePropertyPascalCasing).Returns(true);
-                ConfigurationProvider = configurationProviderMock.Object;
+            SetConfiguration(new CSharpWriterSettings
+            {
+                ForcePropertyPascalCasing = true
+            });
 
-                Init(m =>
-                {
-                    var property = Class.Key.RandomElement();
+            Init(m =>
+            {
+                var property = Class.Key.RandomElement();
 
-                    _camelCasedName = Any.Char('a', 'z') + property.Name;
+                _camelCasedName = Any.Char('a', 'z') + property.Name;
 
-                    property.Rename(_camelCasedName);
-                });
+                property.Rename(_camelCasedName);
+            });
 
             _pascalCasedName = _camelCasedName.ToPascalCase();
         }

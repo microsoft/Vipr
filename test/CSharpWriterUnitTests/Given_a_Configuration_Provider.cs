@@ -2,11 +2,11 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using CSharpWriter;
+using CSharpWriter.Settings;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Moq;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
@@ -29,13 +29,16 @@ namespace CSharpWriterUnitTests
         {
             var namespaceMap = _model.Namespaces
                 .RandomSubset(2)
-                .ToImmutableDictionary(n => n.Name, n => Any.CSharpIdentifier());
+                .ToDictionary(n => n.Name, n => Any.CSharpIdentifier());
 
             var configMock = new Mock<IConfigurationProvider>(MockBehavior.Loose);
 
             configMock
-                .Setup(c => c.OdcmNamespaceToProxyNamespace)
-                .Returns(() => namespaceMap);
+                .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
+                .Returns(() => new CSharpWriterSettings
+                {
+                    OdcmNamespaceToProxyNamespace = namespaceMap
+                });
 
             var proxy = GetProxy(_model, configMock.Object);
 
@@ -50,18 +53,21 @@ namespace CSharpWriterUnitTests
         public void When_it_changes_an_entity_name_then_the_proxy_reflects_the_change()
         {
             var nameMap = _model.Namespaces
-                .ToImmutableDictionary(
+                .ToDictionary(
                     n => n.Name,
-                    n => (IImmutableDictionary<string, string>)n.Classes
+                    n => (IDictionary<string, string>)n.Classes
                               .Where(c => c.Kind == OdcmClassKind.Entity)
                               .RandomSubset(2)
-                              .ToImmutableDictionary(c => c.Name, c => Any.CSharpIdentifier()));
+                              .ToDictionary(c => c.Name, c => Any.CSharpIdentifier()));
 
             var configMock = new Mock<IConfigurationProvider>(MockBehavior.Loose);
 
             configMock
-                .Setup(c => c.OdcmClassNameToProxyClassName)
-                .Returns(() => nameMap);
+                .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
+                .Returns(() => new CSharpWriterSettings
+                {
+                    OdcmClassNameToProxyClassName = nameMap
+                });
 
             var proxy = GetProxy(_model, configMock.Object);
 
@@ -85,21 +91,24 @@ namespace CSharpWriterUnitTests
             var newEntityContainerName = Any.CSharpIdentifier();
 
             var nameMap =
-                new Dictionary<string, IImmutableDictionary<string, string>>
+                new Dictionary<string, IDictionary<string, string>>
                 {
                     {
                         _model.EntityContainer.Namespace, new Dictionary<string, string>
                         {
                             {_model.EntityContainer.Name, newEntityContainerName}
-                        }.ToImmutableDictionary()
+                        }
                     }
-                }.ToImmutableDictionary();
+                };
 
             var configMock = new Mock<IConfigurationProvider>(MockBehavior.Loose);
 
             configMock
-                .Setup(c => c.OdcmClassNameToProxyClassName)
-                .Returns(() => nameMap);
+                .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
+                .Returns(() => new CSharpWriterSettings
+                {
+                    OdcmClassNameToProxyClassName = nameMap
+                });
 
             var proxy = GetProxy(_model, configMock.Object);
 
@@ -118,9 +127,14 @@ namespace CSharpWriterUnitTests
             var prefix = Any.CSharpIdentifier();
 
             var configMock = new Mock<IConfigurationProvider>(MockBehavior.Loose);
+
+
             configMock
-                .Setup(c => c.NamespacePrefix)
-                .Returns(() => prefix);
+                .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
+                .Returns(() => new CSharpWriterSettings
+                {
+                    NamespacePrefix = prefix
+                });
 
             var proxy = GetProxy(_model, configMock.Object);
 
@@ -133,9 +147,13 @@ namespace CSharpWriterUnitTests
         public void When_OmitFetcherCastOperators_is_true_then_base_types_do_not_expose_ToDerived_methods()
         {
             var configMock = new Mock<IConfigurationProvider>(MockBehavior.Loose);
+            
             configMock
-                .Setup(c => c.OmitFetcherCastMethods)
-                .Returns(() => true);
+                .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
+                .Returns(() => new CSharpWriterSettings
+                {
+                    OmitFetcherUpcastMethods = true
+                });
 
             var proxy = GetProxy(_model, configMock.Object);
 
@@ -153,9 +171,13 @@ namespace CSharpWriterUnitTests
         public void When_OmitFetcherCastOperators_is_false_then_base_types_do_expose_ToDerived_methods()
         {
             var configMock = new Mock<IConfigurationProvider>(MockBehavior.Loose);
+
             configMock
-                .Setup(c => c.OmitFetcherCastMethods)
-                .Returns(() => false);
+                .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
+                .Returns(() => new CSharpWriterSettings
+                {
+                    OmitFetcherUpcastMethods = false
+                });
 
             var proxy = GetProxy(_model, configMock.Object);
 
@@ -176,9 +198,13 @@ namespace CSharpWriterUnitTests
 
             var configMock = new Mock<IConfigurationProvider>(MockBehavior.Loose);
 
+
             configMock
-                .Setup(c => c.ForcePropertyPascalCasing)
-                .Returns(() => true);
+                .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
+                .Returns(() => new CSharpWriterSettings
+                {
+                    ForcePropertyPascalCasing = true
+                });
 
             var proxy = GetProxy(_model, configMock.Object);
 
@@ -219,9 +245,13 @@ namespace CSharpWriterUnitTests
         {
             var configMock = new Mock<IConfigurationProvider>(MockBehavior.Loose);
 
+
             configMock
-                .Setup(c => c.ForcePropertyPascalCasing)
-                .Returns(() => false);
+                .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
+                .Returns(() => new CSharpWriterSettings
+                {
+                    ForcePropertyPascalCasing = false
+                });
 
             var proxy = GetProxy(_model, configMock.Object);
 

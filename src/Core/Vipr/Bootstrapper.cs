@@ -25,6 +25,8 @@ Options:
 ";
 
         private string _ocdmModelExportPath = "";
+        private IOdcmReader _odcmReader;
+        private IOdcmWriter _odcmWriter;
 
         public void Start(string[] args)
         {
@@ -76,6 +78,36 @@ Options:
             Console.WriteLine("Done.");
         }
 
+        private IOdcmReader OdcmReader
+        {
+            get
+            {
+                if (_odcmReader == null)
+                {
+                    _odcmReader = GetOdcmReader();
+
+                    ConfigurationProvider.SetConfigurationOn(_odcmReader);
+                }
+
+                return _odcmReader;
+            }
+        }
+
+        private IOdcmWriter OdcmWriter
+        {
+            get
+            {
+                if (_odcmWriter == null)
+                {
+                    _odcmWriter = GetOdcmWriter();
+
+                    ConfigurationProvider.SetConfigurationOn(_odcmWriter);
+                }
+
+                return _odcmWriter;
+            }
+        }
+
         protected virtual IOdcmReader GetOdcmReader()
         {
             return new ODataReader.v4.OdcmReader();
@@ -101,13 +133,11 @@ Options:
 
         private IDictionary<string, string> EdmxToClientSource(string edmxString)
         {
-            var reader = GetOdcmReader();
-            var model = reader.GenerateOdcmModel(new Dictionary<string, string>{{"$metadata",edmxString}});
+            var model = OdcmReader.GenerateOdcmModel(new Dictionary<string, string> { { "$metadata", edmxString } });
 
             ExportOcdmModel(model);
 
-            var writer = GetOdcmWriter();
-            return writer.GenerateProxy(model);
+            return OdcmWriter.GenerateProxy(model);
         }
 
         private void ExportOcdmModel(OdcmModel model)
