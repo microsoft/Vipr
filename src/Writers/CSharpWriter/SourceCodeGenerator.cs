@@ -1,64 +1,58 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for full license information.
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
-using Vipr.Core;
 using Vipr.Core.CodeModel;
 
 namespace CSharpWriter
 {
-    public class CSharpWriter
+    internal class SourceCodeGenerator
     {
         private readonly HashSet<string> _dependencies = new HashSet<string>();
 
-        private OdcmModel Model { get; set; }
-
         private readonly SourceCodeBuilder _builder = new SourceCodeBuilder();
 
-        public CSharpWriter(OdcmModel model, IConfigurationProvider configurationProvider)
+        internal SourceCodeGenerator(ServiceType serviceType)
         {
-            Model = model;
+            InitializeDependencies(serviceType);
+        }
 
-            ConfigurationService.Initialize(configurationProvider);
+        internal IDictionary<string, string> Generate(CSharpProject project)
+        {
+            Write(project);
 
-            if (model.ServiceType == ServiceType.ODataV4)
+            return new Dictionary<string, string>
             {
-                _dependencies.Add("global::Microsoft.OData.Client");
-                _dependencies.Add("global::Microsoft.OData.Edm");
-                _dependencies.Add("System");
-                _dependencies.Add("System.Collections.Generic");
-                _dependencies.Add("System.ComponentModel");
-                _dependencies.Add("System.Linq");
-                _dependencies.Add("System.Reflection");
+                {"CSharpProxy.cs", _builder.ToString()}
+            };
+        }
+
+        private void InitializeDependencies(ServiceType serviceType)
+        {
+            _dependencies.Clear();
+
+            if (serviceType != ServiceType.ODataV4) return;
+
+            _dependencies.Add("global::Microsoft.OData.Client");
+            _dependencies.Add("global::Microsoft.OData.Edm");
+            _dependencies.Add("System");
+            _dependencies.Add("System.Collections.Generic");
+            _dependencies.Add("System.ComponentModel");
+            _dependencies.Add("System.Linq");
+            _dependencies.Add("System.Reflection");
+        }
+
+        private void Write(CSharpProject project)
+        {
+            foreach (var @namespace in project.Namespaces)
+            {
+                Write(@namespace);
             }
         }
 
-        public string GenerateProxy()
+        private void Write(Namespace @namespace)
         {
-            Write();
-
-            return _builder.ToString();
-        }
-
-        private void Write()
-        {
-            var proxyNamespaces = Model.Namespaces.Where(n => !n.Name.Equals("edm", StringComparison.OrdinalIgnoreCase));
-
-            if (!proxyNamespaces.Any()) return;
-
-            foreach (var odcmNamespace in proxyNamespaces)
-            {
-                Write(odcmNamespace);
-            }
-        }
-
-        private void Write(OdcmNamespace @namespace)
-        {
-            _("namespace {0}", NamesService.GetNamespaceName(@namespace));
+            _("namespace {0}", @namespace.Name);
             using (_builder.IndentBraced)
             {
                 Write(_dependencies);
@@ -66,6 +60,16 @@ namespace CSharpWriter
                 Write(@namespace.Enums);
 
                 Write(@namespace.Classes);
+
+                Write(@namespace.Interfaces);
+            }
+        }
+
+        private void Write(IEnumerable<Interface> interfaces)
+        {
+            foreach (var @interface in interfaces)
+            {
+                Write(@interface);
             }
         }
 
@@ -82,78 +86,45 @@ namespace CSharpWriter
             _("using {0};", dependency);
         }
 
-        public void Write(IEnumerable<OdcmEnum> odcmEnums)
+        private void Write(IEnumerable<Enum> enums)
         {
-            foreach (var odcmEnum in odcmEnums)
+            foreach (var @enum in enums)
             {
-                Write(odcmEnum);
+                Write(@enum);
 
                 _();
             }
         }
 
-        public void Write(OdcmEnum odcmEnum)
+        private void Write(Enum @enum)
         {
-            // if no Underlying type is specified then default to 'int'.
-            _("public enum {0} : {1}", odcmEnum.Name,
-                odcmEnum.UnderlyingType == null ? "int" : NamesService.GetPrimitiveTypeKeyword(odcmEnum.UnderlyingType));
+            _("public enum {0} : {1}", @enum.Name, @enum.UnderlyingType);
             using (_builder.IndentBraced)
             {
-                Write(odcmEnum.Members);
+                Write(@enum.Members);
             }
         }
 
-        public void Write(IEnumerable<OdcmEnumMember> odcmEnumMembers)
+        private void Write(IEnumerable<EnumMember> enumMembers)
         {
-            foreach (var odcmEnumMember in odcmEnumMembers)
+            foreach (var enumMember in enumMembers)
             {
-                Write(odcmEnumMember);
+                Write(enumMember);
             }
         }
 
-        public void Write(OdcmEnumMember odcmEnumMember)
+        private void Write(EnumMember enumMember)
         {
-            _builder.Write("{0}", odcmEnumMember.Name, odcmEnumMember.Value);
-            if (odcmEnumMember.Value.HasValue) _builder.Write(" = {0}", odcmEnumMember.Value);
+            _builder.Write("{0}", enumMember.Name);
+            if (enumMember.Value.HasValue) _builder.Write(" = {0}", enumMember.Value);
             _builder.Write(",");
         }
 
-        public void Write(IEnumerable<OdcmClass> odcmClasses)
+        private void Write(IEnumerable<Class> classes)
         {
-            foreach (var odcmClass in odcmClasses)
+            foreach (var @class in classes)
             {
-                Write(odcmClass);
-            }
-        }
-
-        public void Write(OdcmClass odcmClass)
-        {
-            switch (odcmClass.Kind)
-            {
-                case OdcmClassKind.Complex:
-                    Write(Class.ForComplex(odcmClass));
-                    break;
-
-                case OdcmClassKind.MediaEntity:
-                case OdcmClassKind.Entity:
-                    Write(Interface.ForConcrete(odcmClass));
-
-                    Write(Class.ForConcrete(odcmClass));
-
-                    Write(Interface.ForFetcher(odcmClass));
-
-                    Write(Class.ForFetcher(odcmClass));
-
-                    Write(Interface.ForCollection(odcmClass));
-
-                    Write(Class.ForCollection(odcmClass));
-                    break;
-
-                case OdcmClassKind.Service:
-                    Write(Class.ForEntityContainer(Model, odcmClass));
-
-                    Write(Interface.ForEntityContainer(odcmClass));
-                    break;
+                Write(@class);
             }
         }
 
@@ -177,14 +148,6 @@ namespace CSharpWriter
                 Write(@class.Indexers);
 
                 Write(@class.NestedClasses);
-            }
-        }
-
-        private void Write(IEnumerable<Class> classes)
-        {
-            foreach (var @class in classes)
-            {
-                Write(@class);
             }
         }
 

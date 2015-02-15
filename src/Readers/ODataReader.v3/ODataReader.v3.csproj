@@ -58,7 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Reader.cs" />
+    <Compile Include="OdcmReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeKind.cs" />
   </ItemGroup>

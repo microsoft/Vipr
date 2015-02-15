@@ -6,7 +6,7 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr.Core
 {
-    public interface IReader
+    public interface IOdcmReader
     {
         OdcmModel GenerateOdcmModel(IDictionary<string, string> serviceMetadata);
     }

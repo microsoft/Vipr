@@ -14,7 +14,9 @@ namespace Vipr
     {
         private static void Main(string[] args)
         {
-            //TODO: CLI tool to generate library from schema.
+            var bootstrapper = new Bootstrapper();
+
+            bootstrapper.Start(args);
         }
     }
 }
