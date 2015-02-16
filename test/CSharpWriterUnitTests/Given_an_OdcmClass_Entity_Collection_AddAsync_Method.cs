@@ -2,137 +2,152 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Reflection;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
-using Microsoft.OData.Client;
-using Microsoft.OData.ProxyExtensions;
-using Moq;
+using Microsoft.MockService;
+using Microsoft.MockService.Extensions.ODataV4;
+using Vipr.Core;
 using Xunit;
 
 namespace CSharpWriterUnitTests
 {
     public class Given_an_OdcmClass_Entity_Collection_AddAsync_Method : EntityTestBase
     {
-        private MethodInfo _addAsyncMethod;
-        private object _entity;
-        private object _itemToAdd;
-        private string _entityName;
-        private string _path;
-        private Mock<DataServiceContextWrapper> _dscwMock;
-        private Task<DataServiceResponse> _saveChangesAsyncReturnValue;
+        private MockService _serviceMock;
 
-        
         public Given_an_OdcmClass_Entity_Collection_AddAsync_Method()
         {
-            Init(null, true);
-
-            _addAsyncMethod = CollectionInterface.GetMethod("Add" + Class.Name + "Async",
-                PermissiveBindingFlags,
-                null,
-                new[] { ConcreteInterface, typeof(bool) },
-                null);
-
-            _entity = new object();
-
-            _itemToAdd = ConstructConcreteInstance();
-
-            _entityName = Any.AlphanumericString(1);
-
-            _path = Any.String() + "/" + _entityName;
-
-            _dscwMock = new Mock<DataServiceContextWrapper>(MockBehavior.Strict);
-
-            _saveChangesAsyncReturnValue = null;
-
-            ConfigureCollectionInstance();
+            Init();
         }
 
         [Fact]
-        public void When_the_entity_is_null_it_calls_Context_AddObject()
+        public void When_the_entity_is_null_then_AddAsync_POSTs_to_the_EntitySet_and_updates_the_added_instance()
         {
-            _entity = null;
+            var keyValues = Class.GetSampleKeyArguments().ToArray();
 
-            ConfigureCollectionInstance();
+            using (_serviceMock = new MockService()
+                    .SetupPostEntity(TargetEntity, keyValues)
+                    .Start())
+            {
+                var collection = _serviceMock
+                    .GetDefaultContext(Model)
+                    .CreateCollection(CollectionType, ConcreteType, TargetEntity.Class.GetDefaultEntitySetPath());
 
-            CallAddAsync(CollectionInstance, _itemToAdd, false);
+                var instance = Activator.CreateInstance(ConcreteType);
 
-            _dscwMock.Verify(d => d.AddObject(It.IsAny<string>(), It.IsAny<object>()), Times.Once);
+                var task = collection.InvokeMethod<Task>("Add" + Class.Name + "Async", args: new[] { instance, false });
 
-            _dscwMock.Verify(d => d.AddRelatedObject(It.IsAny<object>(), It.IsAny<string>(), It.IsAny<object>()), Times.Never);
+                task.Wait();
+
+                instance.ValidatePropertyValues(keyValues);
+            }
         }
 
         [Fact]
-        public void When_the_entity_is_not_null_and_path_is_simple_it_calls_Context_AddRelatedObject()
+        public void When_the_entity_is_not_null_then_AddAsync_POSTs_to_the_Entitys_canoncial_Uri_property_and_updates_the_added_instance()
         {
-            _path = _entityName;
+            var parentKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var navPropertyName = Class.NavigationProperties().First(p => p.Type == Class && p.IsCollection).Name;
+            var navPropertyPath = string.Format("{0}/{1}", TargetEntity.Class.GetDefaultEntityPath(parentKeyValues), navPropertyName);
+            var childKeyValues = Class.GetSampleKeyArguments().ToArray();
 
-            CallAddAsync(CollectionInstance, _itemToAdd);
+            using (_serviceMock = new MockService()
+                    .SetupPostEntity(TargetEntity, parentKeyValues)
+                    .SetupPostEntity(navPropertyPath, Class.GetDefaultEntitySetName(), ConcreteType.Initialize(childKeyValues))
+                    .Start())
+            {
+                var parentEntity = Activator.CreateInstance(ConcreteType);
+                var childEntity = Activator.CreateInstance(ConcreteType);
 
-            _dscwMock.Verify(d => d.AddObject(It.IsAny<string>(), It.IsAny<object>()), Times.Never);
+                var entitySetCollection = _serviceMock
+                    .GetDefaultContext(Model)
+                    .CreateCollection(CollectionType, ConcreteType, TargetEntity.Class.GetDefaultEntitySetPath());
 
-            _dscwMock.Verify(d => d.AddRelatedObject(It.IsAny<object>(), It.IsAny<string>(), It.IsAny<object>()), Times.Once);
+                var navigationPropertyCollection = entitySetCollection
+                    .Context
+                    .CreateCollection(CollectionType, ConcreteType, navPropertyName, parentEntity);
+
+                var parentTask = entitySetCollection.InvokeMethod<Task>("Add" + Class.Name + "Async", args: new[] { parentEntity, false });
+
+                parentTask.Wait();
+
+                var childTask = navigationPropertyCollection.InvokeMethod<Task>("Add" + Class.Name + "Async", args: new object[] { childEntity, false });
+
+                childTask.Wait();
+
+                childEntity.ValidatePropertyValues(childKeyValues);
+            }
         }
 
         [Fact]
-        public void When_the_entity_is_not_null_and_path_is_complex_it_calls_Context_AddRelatedObject()
+        public void When_the_entity_is_not_null_and_the_property_path_is_not_a_single_segmentthen_AddAsync_POSTs_to_the_Entitys_canoncial_Uri_property_and_updates_the_added_instance()
         {
-            CallAddAsync(CollectionInstance, _itemToAdd);
+            var parentKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var navPropertyName = Class.NavigationProperties().First(p => p.Type == Class && p.IsCollection).Name;
+            var navPropertyPath = string.Format("{0}/{1}", TargetEntity.Class.GetDefaultEntityPath(parentKeyValues), navPropertyName);
+            var childKeyValues = Class.GetSampleKeyArguments().ToArray();
 
-            _dscwMock.Verify(d => d.AddObject(It.IsAny<string>(), It.IsAny<object>()), Times.Never);
+            using (_serviceMock = new MockService()
+                    .SetupPostEntity(TargetEntity, parentKeyValues)
+                    .SetupPostEntity(navPropertyPath, TargetEntity.Class.GetDefaultEntitySetName(), ConcreteType.Initialize(childKeyValues))
+                    .Start())
+            {
+                var parentEntity = Activator.CreateInstance(ConcreteType);
+                var childEntity = Activator.CreateInstance(ConcreteType);
 
-            _dscwMock.Verify(d => d.AddRelatedObject(It.IsAny<object>(), It.IsAny<string>(), It.IsAny<object>()), Times.Once);
+                var entitySetCollection = _serviceMock
+                    .GetDefaultContext(Model)
+                    .CreateCollection(CollectionType, ConcreteType, TargetEntity.Class.GetDefaultEntitySetPath());
+
+                var navigationPropertyCollection = entitySetCollection
+                    .Context
+                    .CreateCollection(CollectionType, ConcreteType, Any.String() + "/" + navPropertyName, parentEntity);
+
+                var parentTask = entitySetCollection.InvokeMethod<Task>("Add" + Class.Name + "Async", args: new[] { parentEntity, false });
+
+                parentTask.Wait();
+
+                var childTask = navigationPropertyCollection.InvokeMethod<Task>("Add" + Class.Name + "Async", args: new object[] { childEntity, false });
+
+                childTask.Wait();
+
+                childEntity.ValidatePropertyValues(childKeyValues);
+            }
         }
 
         [Fact]
-        public void When_dontSave_is_false_it_returns_result_of_Context_SaveChangesAsync()
+        public void When_dont_save_is_true_then_the_server_is_not_called_until_Context_SaveChangesAsync_is_invoked()
         {
-            CallAddAsync(CollectionInstance, _itemToAdd, false)
-                .Should()
-                .Be(_saveChangesAsyncReturnValue);
+            var keyValues = Class.GetSampleKeyArguments().ToArray();
 
-            _dscwMock.Verify(d => d.SaveChangesAsync(), Times.Once);
-        }
+            using (_serviceMock = new MockService()
+                    .SetupPostEntity(TargetEntity, keyValues)
+                    .Start())
+            {
+                var collection = _serviceMock
+                    .GetDefaultContext(Model)
+                    .CreateCollection(CollectionType, ConcreteType, TargetEntity.Class.GetDefaultEntitySetPath());
 
-        [Fact]
-        public void When_dontSave_is_true_it_returns_a_Completed_Task()
-        {
-            CallAddAsync(CollectionInstance, _itemToAdd, true)
-                .IsCompleted.Should().BeTrue();
+                var instance = Activator.CreateInstance(ConcreteType);
 
-            _dscwMock.Verify(d => d.SaveChangesAsync(), Times.Never);
-        }
+                var task = collection.InvokeMethod<Task>("Add" + Class.Name + "Async", args: new[] { instance, true });
 
-        private void ConfigureCollectionInstance()
-        {
-            _dscwMock.Setup(d => d.AddObject(_path, _itemToAdd));
+                task.Wait();
 
-            _dscwMock.Setup(d => d.AddRelatedObject(_entity, _entityName, _itemToAdd));
+                foreach (var keyValue in keyValues)
+                {
+                    instance.GetPropertyValue(keyValue.Item1)
+                        .Should().Be(null);
+                }
+                
+                task = collection.Context.SaveChangesAsync();
 
-            _dscwMock.Setup(d => d.SaveChangesAsync())
-                .Returns(_saveChangesAsyncReturnValue = Task.FromResult<DataServiceResponse>(null));
+                task.Wait();
 
-            CollectionType.GetField("_entity", PermissiveBindingFlags).SetValue(CollectionInstance, _entity);
-
-            CollectionType.GetField("_path", PermissiveBindingFlags).SetValue(CollectionInstance, _path);
-
-            CollectionType.GetField("_context", PermissiveBindingFlags).SetValue(CollectionInstance, _dscwMock.Object);
-        }
-
-        private Task CallAddAsync(object collectionInstance, object item, bool? dontSave = null)
-        {
-            return (Task)_addAsyncMethod.Invoke(collectionInstance, new[] { item, dontSave });
-        }
-
-        private object ConstructConcreteInstance()
-        {
-            return ConcreteType.GetConstructor(
-                PermissiveBindingFlags,
-                null,
-                new Type[] { },
-                null)
-                .Invoke(new object[] { });
+                instance.ValidatePropertyValues(keyValues);
+            }
         }
     }
 }

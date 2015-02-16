@@ -62,17 +62,33 @@
     <Reference Include="Microsoft.OData.Edm">
       <HintPath>..\..\packages\Microsoft.OData.Edm.6.9.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Edm.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.HttpListener">
+      <HintPath>..\..\packages\Microsoft.Owin.Host.HttpListener.3.0.0\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Spatial">
       <HintPath>..\..\packages\Microsoft.Spatial.6.9.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.Spatial.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Shared\ODataV4TestService\bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.1.32.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\System.Collections.Immutable.1.1.32-beta\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
@@ -104,26 +120,38 @@
     <Compile Include="CodeSamples.cs" />
     <Compile Include="CSharpAccessModifierExtensions.cs" />
     <Compile Include="CSharpAccessModifiers.cs" />
+    <Compile Include="DataServiceContextWrapperExtensions.cs" />
+    <Compile Include="EntityArtifacts.cs" />
     <Compile Include="EntityTestBase.cs" />
+    <Compile Include="EnumType.cs" />
     <Compile Include="Given_an_Indenter.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_ExecuteAsync_Method.cs" />
-    <Compile Include="Given_an_OdcmClass_Entity_Collection_GetById_Base.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Fetcher_Collection_Property.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Fetcher_ExecuteAsync_Method.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_GetById_Method.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_GetById_Indexer.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_AddAsync_Method.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Concrete_Interface.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Fetcher_Expand_Method.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Navigation_Property_Collection_forced_to_pascal_case.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Navigation_Property_Key_forced_to_pascal_case.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Navigation_Property_Instance_forced_to_pascal_case.cs" />
     <Compile Include="Given_an_OdcmClass_Service_Navigation_Property_Collection.cs" />
     <Compile Include="Given_an_OdcmClass_Service_Navigation_Property_Instance.cs" />
-    <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Action.cs" />
-    <Compile Include="Given_an_OdcmClass_Service_Bound_Action.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_VoidMethod.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Bound_VoidMethod.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function.cs" />
     <Compile Include="Given_an_OdcmClass_Service_Bound_Function.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Property_forced_to_pascal_case.cs" />
+    <Compile Include="Given_an_OdcmClass_Complex_Property_forced_to_pascal_case.cs" />
     <Compile Include="Given_an_OdcmParameter.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Property_forced_to_pascal_case.cs" />
     <Compile Include="Given_a_Configuration_Provider.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Abstract.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Derived.cs" />
     <Compile Include="Given_a_nullable_Primitive_OdcmProperty.cs" />
     <Compile Include="Given_well_known_EDMX.cs" />
+    <Compile Include="MockServiceExtensions.cs" />
     <Compile Include="NavigationPropertyTestBase.cs" />
     <Compile Include="Given_an_OdcmClass_Service.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_Interface.cs" />
@@ -137,18 +165,25 @@
     <Compile Include="Given_an_OdcmClass_Entity_Concrete_Class.cs" />
     <Compile Include="Given_an_OdcmClass_Complex.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_Function.cs" />
-    <Compile Include="Given_an_OdcmClass_Entity_Bound_Action.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Bound_VoidMethod.cs" />
     <Compile Include="Given_an_OdcmEnum.cs" />
     <Compile Include="Given_an_OdcmNamespace.cs" />
     <Compile Include="Given_an_OdcmModel.cs" />
     <Compile Include="Given_a_code_generator.cs" />
     <Compile Include="MethodInfoAssertionExtensions.cs" />
+    <Compile Include="ObjectExtensions.cs" />
+    <Compile Include="ODataKeyPredicate.cs" />
+    <Compile Include="ODataV4EdmxWriter.cs" />
+    <Compile Include="OdcmTestExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="PropertyInfoAssertionsExtensions.cs" />
+    <Compile Include="ProxyExtensionExtensions.cs" />
+    <Compile Include="StringCasingExtensions.cs" />
     <Compile Include="TypeAssertionsExtensions.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="TypeKindExtensions.cs" />
@@ -159,6 +194,10 @@
       <Project>{04c24936-006a-4fd8-a872-ee55588c1cbe}</Project>
       <Name>Vipr.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\ProxyExtensions\Microsoft.OData.ProxyExtensions\Microsoft.OData.ProxyExtensions.csproj">
+      <Project>{d640a736-f1b0-4036-82a4-63cd03e945bc}</Project>
+      <Name>Microsoft.OData.ProxyExtensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Readers\ODataReader.v4\ODataReader.v4.csproj">
       <Project>{6d8d8008-0a34-490f-8b38-21d9c8bf25c0}</Project>
       <Name>ODataReader.v4</Name>
@@ -167,12 +206,13 @@
       <Project>{ea55efcf-3127-4e85-9a37-a645c06ffcc1}</Project>
       <Name>CSharpWriter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Shared\ProxyExtensions\Microsoft.OData.ProxyExtensions.csproj">
-      <Project>{59c2b4ef-1cca-47ba-bb90-8b3d98f403e2}</Project>
-      <Name>Microsoft.OData.ProxyExtensions</Name>
+    <ProjectReference Include="..\Shared\MockService\MockService.csproj">
+      <Project>{a6c40f9c-833d-4fbd-b9f2-7800a3621875}</Project>
+      <Name>MockService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

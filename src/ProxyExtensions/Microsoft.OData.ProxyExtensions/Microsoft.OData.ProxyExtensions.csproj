@@ -34,8 +34,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ProxyExtensions.cs" />
+    <Compile Include="BatchElementResult.cs" />
+    <Compile Include="ComplexTypeBase.cs" />
+    <Compile Include="DataServiceContextWrapper.cs" />
+    <Compile Include="EntityBase.cs" />
+    <Compile Include="EntityCollectionImpl.cs" />
+    <Compile Include="IBatchElementResult.cs" />
+    <Compile Include="IConcreteTypeAccessor.cs" />
+    <Compile Include="IEntityBase.cs" />
+    <Compile Include="IPagedCollection.cs" />
+    <Compile Include="IReadOnlyQueryableSet.cs" />
+    <Compile Include="IReadOnlyQueryableSetBase.cs" />
+    <Compile Include="IStreamFetcher.cs" />
+    <Compile Include="LowerCasePropertyAttribute.cs" />
+    <Compile Include="NonEntityTypeCollectionImpl.cs" />
+    <Compile Include="PagedCollection.cs" />
+    <Compile Include="StreamFetcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryableSet.cs" />
+    <Compile Include="ReadOnlyQueryableSet.cs" />
+    <Compile Include="ReadOnlyQueryableSetBase.cs" />
+    <Compile Include="RestShallowObjectFetcher.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.OData.Client">

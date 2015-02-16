@@ -12,14 +12,14 @@ using Xunit;
 
 namespace CSharpWriterUnitTests
 {
-    public class Given_an_OdcmClass_Service_Bound_Action : EntityTestBase
+    public class Given_an_OdcmClass_Service_Bound_VoidMethod : EntityTestBase
     {
         private OdcmMethod _method;
         private readonly Type _expectedReturnType = typeof(Task);
         private string _expectedMethodName;
 
         
-        public Given_an_OdcmClass_Service_Bound_Action()
+        public Given_an_OdcmClass_Service_Bound_VoidMethod()
         {
             _method = Any.OdcmMethod();
 

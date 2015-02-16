@@ -40,13 +40,18 @@ namespace ODataV4TestService.SelfHost
             };
         }
 
-        public void Start()
+        public virtual void Start()
+        {
+            Start<WebApiStartup>();
+        }
+
+        protected void Start<TStartup>()
         {
             _started = true;
 
             WebApiConfig.Register(_httpConfiguration);
 
-            _host = WebApp.Start<Startup>(GetBaseAddress());
+            _host = WebApp.Start<TStartup>(GetBaseAddress());
         }
 
         public string GetBaseAddress()

@@ -109,9 +109,28 @@ namespace ProxyExtensionsUnitTests
         {
         }
 
-        public new string GetPath(Expression<Func<IProduct, bool>> whereExpression)
+        public string GetPath(Expression<Func<Product, bool>> whereExpression)
         {
             return base.GetPath(whereExpression);
+        }
+    }
+
+    public class TestRestShallowObjectFetcher : RestShallowObjectFetcher
+    {
+        public new IReadOnlyQueryableSet<TIInstance> CreateQuery<TInstance, TIInstance>() 
+            where TInstance:EntityBase, TIInstance
+        {
+            return base.CreateQuery<TInstance, TIInstance>();
+        }
+
+        public new string GetPath(string propertyName)
+        {
+            return base.GetPath(propertyName);
+        }
+
+        public new Uri GetUrl()
+        {
+            return base.GetUrl();
         }
     }
 }

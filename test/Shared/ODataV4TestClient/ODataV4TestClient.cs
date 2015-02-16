@@ -15,13 +15,17 @@
 //------------------------------------------------------------------------------
 
 #pragma warning disable 109
-using Microsoft.OData.Client;
-using Microsoft.OData.Core;
-using ODataV4TestClient.Extensions;
+using global::Microsoft.OData.Client;
+using global::Microsoft.OData.Core;
+
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+
+using global::Microsoft.OData.Core;
+using ODataV4TestClient.Extensions;
 
 namespace ODataV4TestClient.Extensions
 {

@@ -8,12 +8,10 @@ namespace CSharpWriter
     public class StructuralCollectionProperty : StructuralProperty
     {
         public Type InstanceType { get; private set; }
-        public string ModelName { get; private set; }
 
         private StructuralCollectionProperty(OdcmProperty odcmProperty) : base(odcmProperty)
         {
             InstanceType = new Type(NamesService.GetPublicTypeName(odcmProperty.Type));
-            ModelName = odcmProperty.Name;
             Type = new Type(new Identifier("System.Collections.Generic", "IList"), InstanceType);
         }
 

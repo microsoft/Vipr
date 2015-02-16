@@ -33,6 +33,7 @@ namespace CSharpWriter
         {
             return new Interface
             {
+                Attributes = global::CSharpWriter.Attributes.ForConcreteInterface,
                 Identifier = NamesService.GetConcreteInterfaceName(odcmClass),
                 Methods = global::CSharpWriter.Methods.ForConcreteInterface(odcmClass),
                 Namespace = odcmClass.Namespace,
@@ -45,7 +46,7 @@ namespace CSharpWriter
         {
             return new Interface
             {
-                Attributes = new[] { Attribute.ForLowerCaseProperty() },
+                Attributes = global::CSharpWriter.Attributes.ForFetcherInterface,
                 Identifier = NamesService.GetFetcherInterfaceName(odcmClass),
                 Interfaces = global::CSharpWriter.Interfaces.ForFetcherInterface(odcmClass),
                 Methods = global::CSharpWriter.Methods.ForFetcherInterface(odcmClass),
@@ -58,7 +59,7 @@ namespace CSharpWriter
         {
             return new Interface
             {
-                Attributes = new[] { Attribute.ForLowerCaseProperty() },
+                Attributes = global::CSharpWriter.Attributes.ForCollectionInterface,
                 Identifier = NamesService.GetCollectionInterfaceName(odcmClass),
                 Namespace = odcmClass.Namespace,
                 Methods = global::CSharpWriter.Methods.ForCollectionInterface(odcmClass),

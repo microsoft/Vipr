@@ -1,47 +1,40 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using FluentAssertions;
+using Microsoft.MockService;
 using Microsoft.OData.ProxyExtensions;
 using Xunit;
 
 namespace CSharpWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Collection_GetById_Indexer : Given_an_OdcmClass_Entity_Collection_GetById_Base
+    public class Given_an_OdcmClass_Entity_Collection_GetById_Indexer : EntityTestBase
     {
-        private PropertyInfo _getByIdIndexer;
+        private MockService _serviceMock;
 
-        
         public Given_an_OdcmClass_Entity_Collection_GetById_Indexer()
         {
-            base.Init();
-
-            _getByIdIndexer = CollectionInterface.GetProperty("Item",
-                PermissiveBindingFlags,
-                null,
-                FetcherInterface,
-                ConcreteType.GetKeyProperties()
-                    .Select(p => p.PropertyType)
-                    .ToArray(), null);
+            Init();
         }
 
         [Fact]
-        public void It_returns_a_Fetcher_with_the_right_Context_and_Path()
+        public void When_the_indexer_is_called_it_GETs_the_collection_by_name_and_passes_the_id_in_the_path()
         {
-            var fetcher = CallGetByIdIndexer(CollectionInstance, Params.Select(p => p.Item2));
+            var keyValues = Class.GetSampleKeyArguments().ToList();
 
-            fetcher.Context.Should().Be(DscwMock.Object);
+            using (_serviceMock = new MockService()
+                    .SetupGetEntity(TargetEntity, keyValues)
+                    .Start())
+            {
+                var collection = _serviceMock
+                    .GetDefaultContext(Model)
+                    .CreateCollection(CollectionType, ConcreteType, Class.GetDefaultEntitySetPath());
 
-            FetcherType.BaseType.GetField("_path", PermissiveBindingFlags).GetValue(fetcher)
-                .Should().Be(InstancePath);
-        }
+                var fetcher = collection.GetIndexerValue<RestShallowObjectFetcher>(keyValues.Select(k => k.Item2).ToArray());
 
-        protected RestShallowObjectFetcher CallGetByIdIndexer(object collectionInstance, IEnumerable<object> parameters)
-        {
-            return _getByIdIndexer.GetValue(collectionInstance, parameters.ToArray()) as RestShallowObjectFetcher;
+                var task = fetcher.ExecuteAsync();
+                task.Wait();
+            }
         }
     }
 }

@@ -86,8 +86,6 @@
     <Compile Include="CollectionGetByIdIndexer.cs" />
     <Compile Include="CollectionExecuteAsyncMethod.cs" />
     <Compile Include="CollectionGetByIdMethod.cs" />
-    <Compile Include="CSharpModel\Enum.cs" />
-    <Compile Include="CSharpModel\Namespace.cs" />
     <Compile Include="FetcherExpandMethod.cs" />
     <Compile Include="FetcherNavigationCollectionProperty.cs" />
     <Compile Include="FetcherNavigationProperty.cs" />
@@ -108,6 +106,8 @@
     <Compile Include="ConcreteNavigationAccessorProperty.cs" />
     <Compile Include="ModelField.cs" />
     <Compile Include="NavigationProperty.cs" />
+    <Compile Include="ObsoletedNavigationProperty.cs" />
+    <Compile Include="ObsoletedProperty.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="ParameterizedMember.cs" />
     <Compile Include="ParameterizedFunction.cs" />

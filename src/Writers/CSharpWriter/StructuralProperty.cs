@@ -7,9 +7,12 @@ namespace CSharpWriter
 {
     public class StructuralProperty : Property
     {
+        public string ModelName { get; private set; }
+
         protected StructuralProperty(OdcmProperty odcmProperty) : base(odcmProperty)
         {
             FieldName = NamesService.GetPropertyFieldName(odcmProperty);
+            ModelName = NamesService.GetModelPropertyName(odcmProperty);
             Type = TypeService.GetPropertyType(odcmProperty);
         }
 

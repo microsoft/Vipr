@@ -21,7 +21,8 @@ namespace CSharpWriterUnitTests
             base.Init(m =>
             {
                 _structuralProperty = Any.ComplexOdcmProperty(m.Namespaces[0]);
-                m.Namespaces[0].Classes.First().Properties.Add(_structuralProperty);
+                _structuralProperty.Class = Class;
+                Class.Properties.Add(_structuralProperty);
                 m.AddType(_structuralProperty.Type);
             });
 

@@ -18,11 +18,11 @@ namespace CSharpWriterUnitTests
         
         public Given_an_OdcmClass_Entity_Fetcher_Interface()
         {
-            base.Init(m => m.Namespaces[0].Classes.First().Properties.Add(Any.PrimitiveOdcmProperty()));
+            base.Init(m => m.Namespaces[0].Classes.First().Properties.Add(Any.PrimitiveOdcmProperty(p => p.Class = Class)));
         }
 
         [Fact]
-        public void The_Fetcher_interface_is_Public()
+        public void It_is_Public()
         {
             FetcherInterface.IsPublic
                 .Should().BeTrue("Because it allows users to interact with the Fetcher Class and with" +
@@ -30,16 +30,14 @@ namespace CSharpWriterUnitTests
         }
 
         [Fact]
-        public void The_Fetcher_interface_is_attributed_with_LowerCaseProperty()
+        public void It_is_decorated_with_LowerCasePropertyAttribute()
         {
-            var lowerCasePropertyType = typeof(LowerCasePropertyAttribute);
-
-            FetcherInterface.Should().BeDecoratedWith<LowerCasePropertyAttribute>(
-                "Because this is used to manage casing when interacting with ODataLib");
+            ConcreteInterface.Should()
+                .BeDecoratedWith<LowerCasePropertyAttribute>();
         }
 
         [Fact]
-        public void The_Fetcher_interface_exposes_an_ExecuteAsync_Method()
+        public void It_exposes_an_ExecuteAsync_Method()
         {
             FetcherInterface.Should().HaveMethod(
                 CSharpAccessModifiers.Public,
@@ -50,7 +48,7 @@ namespace CSharpWriterUnitTests
         }
 
         [Fact]
-        public void The_Fetcher_interface_exposes_an_Expand_Method()
+        public void It_exposes_an_Expand_Method()
         {
             var expandMethod = FetcherInterface.GetMethod("Expand");
 

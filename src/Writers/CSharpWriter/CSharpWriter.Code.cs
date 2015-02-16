@@ -283,7 +283,7 @@ namespace CSharpWriter
             WriteSignature(method);
             using (_builder.IndentBraced)
             {
-                _("return propertyName == null ? _path : _path + \" / \" + propertyName;");
+                _("return propertyName == null ? _path : _path + \"/\" + propertyName;");
             }
         }
 
@@ -334,7 +334,7 @@ namespace CSharpWriter
 
                 using (_builder.IndentBraced)
                 {
-                    _("var path = GetPath((i) => {0});", indexer.ParameterToPropertyMap.ToEquivalenceString("i"));
+                    _("var path = GetPath<{0}>((i) => {1});", NamesService.GetConcreteTypeName(indexer.OdcmClass), indexer.ParameterToPropertyMap.ToEquivalenceString("i"));
                     _("var fetcher = new {0}();", NamesService.GetFetcherTypeName(indexer.OdcmClass));
                     _("fetcher.Initialize(Context, path);");
                     _("");
@@ -352,7 +352,7 @@ namespace CSharpWriter
 
                 using (_builder.IndentBraced)
                 {
-                    _("this._query = new {0}(Context.CreateQuery<{1}>(GetPath(null)), Context);", method.QueryableSetType, method.FetchedType);
+                    _("this._query = CreateQuery<{0}, {1}>();", method.FetchedType, method.FetchedTypeInterface);
                 }
 
                 _("return this._query;");
@@ -456,22 +456,6 @@ namespace CSharpWriter
             }
         }
 
-        private void Write(EntityVoidMethod method)
-        {
-            WriteSignature(method);
-            using (_builder.IndentBraced)
-            {
-                WriteEntityMethodBodyStart(method);
-                _("await this.Context.ExecuteAsync(requestUri, \"POST\", new OperationParameter[{0}]", method.Parameters.Count());
-                using (_builder.IndentBraced)
-                {
-                    foreach (var parameter in method.Parameters)
-                        _("new BodyOperationParameter(\"{0}\", (object) {0}),", parameter.Name);
-                }
-                _(");");
-            }
-        }
-
         private void Write(FetcherUpcastMethod method)
         {
             WriteSignature(method);
@@ -498,15 +482,39 @@ namespace CSharpWriter
             using (_builder.IndentBraced)
             {
                 WriteEntityMethodBodyStart(method);
-                _("return ({0}) Enumerable.Single<{1}>(await this.Context.ExecuteAsync<{1}>(requestUri, \"POST\", true, new OperationParameter[{2}]",
-                    method.ReturnType.GenericParameters.First(), method.InstanceName, method.Parameters.Count());
+                _("return ({0}) Enumerable.Single<{1}>(await this.Context.ExecuteAsync<{1}>(requestUri, \"{2}\", true, new OperationParameter[]",
+                    method.ReturnType.GenericParameters.First(), method.InstanceName, method.HttpMethod);
                 using (_builder.IndentBraced)
                 {
-                    foreach (var parameter in method.Parameters)
-                        _("new BodyOperationParameter(\"{0}\", (object) {0}),", parameter.Name);
+                    WriteMethodOperationParameters(method);
                 }
                 _("));");
             }
+        }
+
+        private void Write(EntityVoidMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                WriteEntityMethodBodyStart(method);
+                _("await this.Context.ExecuteAsync(requestUri, \"{0}\", new OperationParameter[{1}]", method.HttpMethod,
+                    method.Parameters.Count());
+                using (_builder.IndentBraced)
+                {
+                    WriteMethodOperationParameters(method);
+                }
+                _(");");
+            }
+        }
+
+        private void WriteMethodOperationParameters(ServerMethod method)
+        {
+            foreach (var parameter in method.BodyParameters)
+                _("new BodyOperationParameter(\"{0}\", (object) {0}),", parameter.Name);
+
+            foreach (var parameter in method.UriParameters)
+                _("new UriOperationParameter(\"{0}\", (object) {0}),", parameter.Name);
         }
 
         private void WriteEntityMethodBodyStart(Method method)
@@ -894,6 +902,20 @@ namespace CSharpWriter
             }
         }
 
+        private void Write(ObsoletedProperty property)
+        {
+            _("[EditorBrowsable(EditorBrowsableState.Never)]");
+            _("[Obsolete(\"Use {0} instead.\")]", property.UpdatedName);
+            WriteDeclaration(property);
+
+            using (_builder.IndentBraced)
+            {
+                WriteObsoletedPropertyGet(property);
+
+                WriteObsoletedPropertySet(property);
+            }
+        }
+
         private void Write(StructuralCollectionProperty property)
         {
             WriteDeclaration(property);
@@ -973,7 +995,7 @@ namespace CSharpWriter
                 using (_builder.IndentBraced)
                 {
                     _("{0} = value;", property.FieldName);
-                    _("OnPropertyChanged(\"{0}\");", property.Name);
+                    _("OnPropertyChanged(\"{0}\");", property.ModelName);
                 }
             }
         }
@@ -984,6 +1006,24 @@ namespace CSharpWriter
             using (_builder.IndentBraced)
             {
                 _("return {0};", property.FieldName);
+            }
+        }
+
+        private void WriteObsoletedPropertySet(ObsoletedProperty property)
+        {
+            _("set");
+            using (_builder.IndentBraced)
+            {
+                _("{0} = value;", property.UpdatedName);
+            }
+        }
+
+        private void WriteObsoletedPropertyGet(ObsoletedProperty property)
+        {
+            _("get");
+            using (_builder.IndentBraced)
+            {
+                _("return {0};", property.UpdatedName);
             }
         }
 

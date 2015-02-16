@@ -620,7 +620,7 @@ namespace Microsoft.Its.Recipes
             var builder = new UriBuilder(scheme)
             {
                 Host = DomainName(tld),
-                Path = string.Join("/", Words(Int(0, 5)))
+                Path = UriPath(1)
             };
 
             if (allowQuerystring && Bool())
@@ -629,6 +629,16 @@ namespace Microsoft.Its.Recipes
             }
 
             return builder.Uri;
+        }
+
+        /// <summary>
+        /// Generates a random <see cref="Uri" /> Path.
+        /// </summary>
+        /// <param name="minSegments">Minimum number of path segments.</param>
+        /// <param name="maxSegments">Maximum number of path segments.</param>
+        public static string UriPath(int minSegments = 0, int maxSegments = 5)
+        {
+            return string.Join("/", Words(Int(minSegments, maxSegments)));
         }
     }
 
