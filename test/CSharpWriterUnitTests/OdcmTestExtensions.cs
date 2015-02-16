@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Its.Recipes;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Vipr.Core;
 using Vipr.Core.CodeModel;
 
 namespace CSharpWriterUnitTests
@@ -22,6 +17,11 @@ namespace CSharpWriterUnitTests
         public static IEnumerable<Tuple<string, object>> GetSampleKeyArguments(this OdcmClass entityClass)
         {
             return entityClass.Key.Select(p => new Tuple<string, object>(p.Name, Any.CSharpIdentifier(1)));
+        }
+
+        public static IEnumerable<Tuple<string, object>> GetSampleArguments(this OdcmMethod method)
+        {
+            return method.Parameters.Select(p => new Tuple<string, object>(p.Name, Any.Paragraph(5)));
         }
 
         public static OdcmProperty Rename(this OdcmProperty originalProperty, string newName)
@@ -73,6 +73,11 @@ namespace CSharpWriterUnitTests
         }
 
         public static string GetDefaultEntityPropertyPath(this OdcmClass odcmClass, string propertyName, IEnumerable<Tuple<string, object>> keyValues = null)
+        {
+            return string.Format("{0}/{1}", odcmClass.GetDefaultEntityPath(keyValues), propertyName);
+        }
+
+        public static string GetDefaultEntityMethodPath(this OdcmClass odcmClass, IEnumerable<Tuple<string, object>> keyValues, string propertyName)
         {
             return string.Format("{0}/{1}", odcmClass.GetDefaultEntityPath(keyValues), propertyName);
         }

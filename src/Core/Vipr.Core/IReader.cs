@@ -8,6 +8,6 @@ namespace Vipr.Core
 {
     public interface IReader
     {
-        OdcmModel GenerateOdcmModel(IReadOnlyDictionary<string, string> serviceMetadata);
+        OdcmModel GenerateOdcmModel(IDictionary<string, string> serviceMetadata);
     }
 }

@@ -13,7 +13,7 @@ using Xunit;
 
 namespace CSharpWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Collection_Bound_Action : EntityTestBase
+    public class Given_an_OdcmClass_Entity_Collection_Bound_VoidMethod : EntityTestBase
     {
         private OdcmMethod _method;
         private readonly Type _expectedReturnType = typeof(Task);
@@ -21,7 +21,7 @@ namespace CSharpWriterUnitTests
         private IEnumerable<Type> _expectedMethodParameters;
 
         
-        public Given_an_OdcmClass_Entity_Collection_Bound_Action()
+        public Given_an_OdcmClass_Entity_Collection_Bound_VoidMethod()
         {
             _method = Any.OdcmMethod(m => m.IsBoundToCollection = true);
 

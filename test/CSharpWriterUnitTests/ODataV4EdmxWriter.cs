@@ -8,13 +8,15 @@ namespace CSharpWriterUnitTests
 {
     public static class ODataV4EdmxWriter
     {
-        public static string ToEdmx(this OdcmModel odcmModel)
+        public static string ToEdmx(this OdcmModel odcmModel, bool addEdmxTag = false)
         {
             var sb = new StringBuilder();
 
+            if (addEdmxTag) sb.AppendFormat("<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\">");
             sb.AppendFormat("<edmx:DataServices>");
             sb.Append(odcmModel.Namespaces.Select(ToEdmx).Aggregate((c, n) => c + "\n" + n));
             sb.AppendFormat("</edmx:DataServices>");
+            if (addEdmxTag) sb.AppendFormat("</edmx:Edmx>");
 
             return sb.ToString();
         }
@@ -38,7 +40,7 @@ namespace CSharpWriterUnitTests
 
             sb.AppendFormat("<{0} Name=\"{1}\">", tagName, odcmClass.Name);
             sb.Append(GetKeyNode(odcmClass));
-            sb.Append(odcmClass.Properties.Select(ToEdmx).Aggregate((c, n) => c + "\n" + n));
+            if (odcmClass.Properties.Any()) sb.Append(odcmClass.Properties.Select(ToEdmx).Aggregate((c, n) => c + "\n" + n));
             sb.AppendFormat("</{0}>", tagName);
 
             return sb.ToString();

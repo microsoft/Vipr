@@ -225,8 +225,50 @@ namespace Microsoft.Its.Recipes
         {
             var retVal = new OdcmMethod(Any.CSharpIdentifier());
 
+            retVal.Verbs = EnumValue<OdcmAllowedVerbs>();
+
             retVal.Parameters.AddRange(
                 Any.Sequence(s => new OdcmParameter(Any.CSharpIdentifier()) { Type = Any.PrimitiveOdcmType() }, Any.Int(0, 3)));
+
+            if (config != null) config(retVal);
+
+            return retVal;
+        }
+
+        public static OdcmMethod OdcmMethodPost(Action<OdcmMethod> config = null)
+        {
+            var retVal = Any.OdcmMethodGet();
+
+            retVal.Verbs = OdcmAllowedVerbs.Post;
+
+            retVal.Parameters.AddRange(
+                Any.Sequence(
+                    s =>
+                        new OdcmParameter(Any.CSharpIdentifier())
+                        {
+                            Type = Any.PrimitiveOdcmType(),
+                            CallingConvention = OdcmCallingConvention.InHttpMessageBody
+                        }, Any.Int(1, 3)));
+
+            if (config != null) config(retVal);
+
+            return retVal;
+        }
+
+        public static OdcmMethod OdcmMethodGet(Action<OdcmMethod> config = null)
+        {
+            var retVal = new OdcmMethod(Any.CSharpIdentifier());
+
+            retVal.Verbs = OdcmAllowedVerbs.Get;
+
+            retVal.Parameters.AddRange(
+                Any.Sequence(
+                    s =>
+                        new OdcmParameter(Any.CSharpIdentifier())
+                        {
+                            Type = Any.PrimitiveOdcmType(),
+                            CallingConvention = OdcmCallingConvention.InHttpRequestUri
+                        }, Any.Int(1, 3)));
 
             if (config != null) config(retVal);
 
@@ -258,7 +300,7 @@ namespace Microsoft.Its.Recipes
             return retVal;
         }
 
-        public static IReadOnlyDictionary<string, string> ServiceMetadata()
+        public static IDictionary<string, string> ServiceMetadata()
         {
             return new Dictionary<string, string> { { "$metadata", "<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\"></edmx:Edmx>" } };
         }

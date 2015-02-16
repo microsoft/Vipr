@@ -21,7 +21,6 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void When_a_single_property_is_expanded_it_populates_the_DollarExpand_query_parameter()
         {
-            var keyValues = Class.GetSampleKeyArguments().ToArray();
             var navigationPropertyName = Class.NavigationProperties().Where(p => !p.IsCollection).RandomElement().Name;
 
             var param = Expression.Parameter(ConcreteInterface, "i");
@@ -29,24 +28,20 @@ namespace CSharpWriterUnitTests
             var lambda = Expression.Lambda(navigationProperty, new[] { param });
 
             using (_mockedService = new MockService()
-                    .SetupGetEntity(TargetEntity, keyValues, new []{navigationPropertyName})
+                    .SetupGetEntitySet(TargetEntity, new []{navigationPropertyName})
                     .Start())
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)
                     .CreateFetcher(FetcherType, Class.GetDefaultEntitySetName());
 
-                var result = fetcher.InvokeMethod<RestShallowObjectFetcher>("Expand", new []{lambda}, new []{ConcreteInterface}).InvokeMethod<Task>("ExecuteAsync").GetPropertyValue<EntityBase>("Result");
-
-                result.ValidatePropertyValues(keyValues);
+                fetcher.InvokeMethod<RestShallowObjectFetcher>("Expand", new []{lambda}, new []{ConcreteInterface}).InvokeMethod<Task>("ExecuteAsync").GetPropertyValue<EntityBase>("Result");
             }
         }
 
         [Fact]
         public void When_multiple_properties_are_expanded_it_populates_the_DollarExpand_query_parameter()
         {
-            var keyValues = Class.GetSampleKeyArguments().ToArray();
-
             var navigationProperties =
                 Class.NavigationProperties().Where(p => !p.IsCollection).RandomSubset(2).ToArray();
 
@@ -57,19 +52,17 @@ namespace CSharpWriterUnitTests
             var lambda2 = GetExpandLambda(navigationPropertyName2);
 
             using (_mockedService = new MockService()
-                    .SetupGetEntity(TargetEntity, keyValues, new[] { navigationPropertyName1, navigationPropertyName2 })
+                    .SetupGetEntitySet(TargetEntity, new[] { navigationPropertyName1, navigationPropertyName2 })
                     .Start())
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)
                     .CreateFetcher(FetcherType, Class.GetDefaultEntitySetName());
 
-                var result = fetcher
+                fetcher
                     .InvokeMethod<RestShallowObjectFetcher>("Expand", new[] { lambda1 }, new[] { ConcreteInterface })
                     .InvokeMethod<RestShallowObjectFetcher>("Expand", new[] { lambda2 }, new[] { ConcreteInterface })
                     .InvokeMethod<Task>("ExecuteAsync").GetPropertyValue<EntityBase>("Result");
-
-                result.ValidatePropertyValues(keyValues);
             }
         }
 

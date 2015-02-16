@@ -5,10 +5,9 @@ using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using System;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.MockService;
 using Vipr.Core.CodeModel;
 using Xunit;
 
@@ -21,7 +20,7 @@ namespace CSharpWriterUnitTests
         private string _expectedMethodName;
         private IEnumerable<Type> _expectedMethodParameters;
 
-        
+
         public Given_an_OdcmClass_Entity_Collection_Bound_Function()
         {
             Init(model => model.Namespaces[0].Classes.First()
@@ -81,6 +80,60 @@ namespace CSharpWriterUnitTests
                  _expectedReturnType,
                  _expectedMethodName,
                  _expectedMethodParameters);
+        }
+
+        [Fact]
+        public void When_the_verb_is_POST_the_Collection_passes_parameters_on_the_URI_and_in_the_body()
+        {
+            Init(m =>
+            {
+                _method = Any.OdcmMethodPost();
+                _method.Class = Class;
+                _method.ReturnType = Class;
+                _method.IsCollection = false;
+                _method.IsBoundToCollection = true;
+                Class.Methods.Add(_method);
+            });
+
+            var collectionPath = Any.UriPath(1);
+            
+            using (var mockService = new MockService()
+                .Start())
+            {
+                var collection = mockService
+                    .GetDefaultContext(Model)
+                    .CreateCollection(CollectionType, ConcreteType, collectionPath);
+                
+                mockService.ValidateParameterPassing("POST", collection, "/" + collectionPath, _method,
+                    mockService.GetOdataJsonInstance(TargetEntity));
+            }
+        }
+
+        [Fact]
+        public void When_the_verb_is_GET_the_Collection_passes_parameters_on_the_URI()
+        {
+            Init(m =>
+            {
+                _method = Any.OdcmMethodGet();
+                _method.Class = Class;
+                _method.ReturnType = Class;
+                _method.IsCollection = false;
+                _method.IsBoundToCollection = true;
+                Class.Methods.Add(_method);
+            });
+
+            var collectionPath = Any.UriPath(1);
+
+            using (var mockService = new MockService()
+                .Start())
+            {
+                var collection = mockService
+                    .GetDefaultContext(Model)
+                    .CreateCollection(CollectionType, ConcreteType, collectionPath);
+
+                mockService.ValidateParameterPassing("GET", collection, "/" + collectionPath, _method,
+                    mockService.GetOdataJsonInstance(TargetEntity));
+            }
         }
     }
 }

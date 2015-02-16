@@ -7,6 +7,8 @@ using Microsoft.MockService;
 using Microsoft.MockService.Extensions.ODataV4;
 using Microsoft.OData.Client;
 using Microsoft.OData.ProxyExtensions;
+using Newtonsoft.Json.Linq;
+using Vipr.Core;
 using Vipr.Core.CodeModel;
 
 namespace CSharpWriterUnitTests
@@ -79,6 +81,33 @@ namespace CSharpWriterUnitTests
         {
             return mockService.SetupGetEntity(targetEntity.Class.GetDefaultEntitySetPath(), targetEntity.Class.GetDefaultEntitySetName(),
                 targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()), expandTargets);
+        }
+        public static JObject GetOdataJsonInstance(this MockService mockService, EntityArtifacts targetEntity)
+        {
+            return
+                JObject.FromObject(targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()))
+                    .AddOdataContext(mockService.GetBaseAddress(), targetEntity.Class.GetDefaultEntitySetName());
+        }
+
+        public static void ValidateParameterPassing(this MockService mockService, string httpMethod, object instance, string instancePath, OdcmMethod method, JObject response)
+        {
+            var expectedMethodName = method.Name + "Async";
+
+            var methodArguments = method.GetSampleArguments().ToArray();
+            var uriArguments = method.UriParameters()
+                .Select(p => methodArguments.First(a => a.Item1 == p.Name));
+            var bodyArguments = method.BodyParameters()
+                .Select(p => methodArguments.First(a => a.Item1 == p.Name));
+
+            mockService
+                .SetupMethod(httpMethod,
+                    instancePath + "/" + method.Name,
+                    uriArguments.ToTestReadableStringCollection(),
+                    ArgumentOfTupleExtensions.ToJObject(bodyArguments),
+                    response);
+
+            instance.InvokeMethod<Task>(expectedMethodName, methodArguments.Select(t => t.Item2).ToArray())
+                .Wait();
         }
     }
 }

@@ -86,8 +86,6 @@
     <Compile Include="CollectionGetByIdIndexer.cs" />
     <Compile Include="CollectionExecuteAsyncMethod.cs" />
     <Compile Include="CollectionGetByIdMethod.cs" />
-    <Compile Include="CSharpModel\Enum.cs" />
-    <Compile Include="CSharpModel\Namespace.cs" />
     <Compile Include="FetcherExpandMethod.cs" />
     <Compile Include="FetcherNavigationCollectionProperty.cs" />
     <Compile Include="FetcherNavigationProperty.cs" />

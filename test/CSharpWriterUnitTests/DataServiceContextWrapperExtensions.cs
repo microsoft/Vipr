@@ -34,7 +34,8 @@ namespace CSharpWriterUnitTests
                     "<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\">" +
                     edmx + "</edmx:Edmx>";
 
-            Debug.WriteLine(edmx);
+            if(Debugger.IsAttached)
+                Debug.WriteLine(edmx);
 
             var model = EdmxReader.Parse(XmlReader.Create(new StringReader(edmx)));
 

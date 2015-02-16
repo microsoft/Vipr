@@ -18,7 +18,7 @@ namespace CSharpWriterUnitTests
         
         public Given_an_OdcmClass_Entity_Fetcher_Interface()
         {
-            base.Init(m => m.Namespaces[0].Classes.First().Properties.Add(Any.PrimitiveOdcmProperty()));
+            base.Init(m => m.Namespaces[0].Classes.First().Properties.Add(Any.PrimitiveOdcmProperty(p => p.Class = Class)));
         }
 
         [Fact]

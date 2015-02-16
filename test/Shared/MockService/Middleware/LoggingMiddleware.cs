@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,6 +58,18 @@ HTTP/{1} {0}
 
         private static async Task WriteRequestSummary(IOwinContext context)
         {
+            var requestBody = "";
+
+            if (context.Request.Body != null)
+            {
+                var bodyBuffer = new MemoryStream();
+                await context.Request.Body.CopyToAsync(bodyBuffer);
+                bodyBuffer.Seek(0, SeekOrigin.Begin);
+                context.Request.Body = bodyBuffer;
+                requestBody = await new StreamReader(bodyBuffer).ReadToEndAsync();
+                bodyBuffer.Seek(0, SeekOrigin.Begin);
+            }
+
             Debug.WriteLine(@"
 >>>REQUEST>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 {0} {1}
@@ -68,8 +81,8 @@ HTTP/{1} {0}
                     context.Request.Headers.Select(
                         h =>
                             String.Format("{0}: {1}\r\n", h.Key,
-                                String.Join(", ", h.Value.Select(v => v.ToString()))))),
-                context.Request.Body == null ? "" : await new StreamReader(context.Request.Body).ReadToEndAsync());
+                            String.Join(", ", h.Value.Select(v => v.ToString(CultureInfo.InvariantCulture)))))),
+                            requestBody);
         }
     }
 }

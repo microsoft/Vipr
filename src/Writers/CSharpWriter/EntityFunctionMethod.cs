@@ -6,18 +6,14 @@ using Vipr.Core.CodeModel;
 
 namespace CSharpWriter
 {
-    internal class EntityFunctionMethod : Method
+    internal class EntityFunctionMethod : ServerMethod
     {
-        public EntityFunctionMethod(OdcmMethod odcmMethod)
+        public Identifier InstanceName { get; set; }
+
+        public EntityFunctionMethod(OdcmMethod odcmMethod) : base(odcmMethod)
         {
             InstanceName = NamesService.GetConcreteTypeName(odcmMethod.ReturnType);
-            IsAsync = true;
-            ModelName = odcmMethod.Name;
-            Name = odcmMethod.Name + "Async";
-            Parameters = odcmMethod.Parameters.Select(Parameter.FromOdcmParameter);
             ReturnType = new Type(new Identifier("System.Threading.Tasks", "Task"), new Type(NamesService.GetPublicTypeName(odcmMethod.ReturnType)));
         }
-
-        public Identifier InstanceName { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Vipr.Core.CodeModel
 
         public List<OdcmNamespace> Namespaces { get; private set; }
 
-        public IReadOnlyDictionary<string, string> ServiceMetadata { get; private set; } 
+        public IDictionary<string, string> ServiceMetadata { get; private set; } 
 
         public OdcmClass EntityContainer
         {
@@ -27,7 +27,7 @@ namespace Vipr.Core.CodeModel
         public IEnumerable<OdcmVocabularyAnnotation> VocabularyAnnotations { get; private set; }
         public ServiceType ServiceType { get; private set; }
 
-        public OdcmModel(IReadOnlyDictionary<string, string> serviceMetadata, ServiceType serviceType = ServiceType.ODataV4)
+        public OdcmModel(IDictionary<string, string> serviceMetadata, ServiceType serviceType = ServiceType.ODataV4)
         {
             Namespaces = new List<OdcmNamespace>();
             ServiceMetadata = serviceMetadata;
