@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Vipr.Core.CodeModel
 {
-    public class OdcmMethod : OdcmAnnotatedObject
+    public class OdcmMethod : OdcmObject
     {
         public OdcmClass Class { get; set; }
 

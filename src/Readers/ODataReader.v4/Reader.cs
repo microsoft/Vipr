@@ -37,7 +37,7 @@ namespace ODataReader.v4
 
                 if (!serviceMetadata.ContainsKey(MetadataKey))
                     throw new ArgumentException("Argument must contain value for key \"$metadata\"", "serviceMetadata");
-
+                                    
                 var edmx = XElement.Parse(serviceMetadata[MetadataKey]);
 
                 IEnumerable<EdmError> errors;
@@ -58,6 +58,11 @@ namespace ODataReader.v4
                 WriteNamespaces();
 
                 return _odcmModel;
+            }
+
+            private void AddVocabularyAnnotations(OdcmObject odcmObject, object annotatableEdmEntity)
+            {
+                odcmObject.Annotations = ODataVocabularyReader.GetOdcmAnnotations(_edmModel, annotatableEdmEntity).ToList();
             }
 
             private void WriteNamespaces()
@@ -129,6 +134,7 @@ namespace ODataReader.v4
                     if (!_odcmModel.TryResolveType(complexType.Name, complexType.Namespace, out odcmClass))
                     {
                         odcmClass = new OdcmClass(complexType.Name, complexType.Namespace, OdcmClassKind.Complex);
+                        AddVocabularyAnnotations(odcmClass, complexType);
                         _odcmModel.AddType(odcmClass);
                     }
 
@@ -144,6 +150,7 @@ namespace ODataReader.v4
                         {
                             baseClass = new OdcmClass(((IEdmSchemaElement) complexType.BaseType).Name,
                                 ((IEdmSchemaElement) complexType.BaseType).Namespace, OdcmClassKind.Complex);
+                            AddVocabularyAnnotations(baseClass, complexType.BaseType);
                             _odcmModel.AddType(baseClass);
                         }
                         odcmClass.Base = baseClass;
@@ -163,6 +170,7 @@ namespace ODataReader.v4
                     if (!_odcmModel.TryResolveType(entityType.Name, entityType.Namespace, out odcmClass))
                     {
                         odcmClass = new OdcmClass(entityType.Name, entityType.Namespace, OdcmClassKind.Entity);
+                        AddVocabularyAnnotations(odcmClass, entityType);
                         _odcmModel.AddType(odcmClass);
                     }
 
@@ -183,6 +191,7 @@ namespace ODataReader.v4
                         {
                             baseClass = new OdcmClass(baseEntityType.Name, baseEntityType.Namespace,
                                 OdcmClassKind.Entity);
+                            AddVocabularyAnnotations(baseClass, baseEntityType);
                             _odcmModel.AddType(baseClass);
                         }
 
@@ -232,6 +241,7 @@ namespace ODataReader.v4
                     if (!_odcmModel.TryResolveType(entityContainer.Name, entityContainer.Namespace, out odcmClass))
                     {
                         odcmClass = new OdcmClass(entityContainer.Name, entityContainer.Namespace, OdcmClassKind.Service);
+                        AddVocabularyAnnotations(odcmClass, entityContainer);
                         _odcmModel.AddType(odcmClass);
                     }
 
@@ -289,6 +299,8 @@ namespace ODataReader.v4
                     IsLink = true
                 };
 
+                AddVocabularyAnnotations(odcmProperty, entitySet);
+
                 odcmClass.Properties.Add(odcmProperty);
             }
 
@@ -301,6 +313,8 @@ namespace ODataReader.v4
                         TypeKind.Entity),
                     IsLink = true
                 };
+
+                AddVocabularyAnnotations(odcmProperty, singleton);
 
                 odcmClass.Properties.Add(odcmProperty);
             }
@@ -339,6 +353,8 @@ namespace ODataReader.v4
                     Class = odcmClass
                 };
 
+                AddVocabularyAnnotations(odcmMethod, operation);
+
                 odcmClass.Methods.Add(odcmMethod);
 
                 if (operation.ReturnType != null)
@@ -354,13 +370,17 @@ namespace ODataReader.v4
 
                 foreach (var parameter in parameters)
                 {
-                    odcmMethod.Parameters.Add(new OdcmParameter(parameter.Name)
+                    var odcmParameter = new OdcmParameter(parameter.Name)
                     {
                         CallingConvention = callingConvention,
                         Type = ResolveType(parameter.Type),
                         IsCollection = parameter.Type.IsCollection(),
                         IsNullable = parameter.Type.IsNullable
-                    });
+                    };
+
+                    AddVocabularyAnnotations(odcmParameter, parameter);
+
+                    odcmMethod.Parameters.Add(odcmParameter);
                 }
             }
 
@@ -376,6 +396,8 @@ namespace ODataReader.v4
                         property is IEdmNavigationProperty && ((IEdmNavigationProperty) property).ContainsTarget,
                     IsLink = property is IEdmNavigationProperty
                 };
+
+                AddVocabularyAnnotations(odcmProperty, property);
 
                 odcmClass.Properties.Add(odcmProperty);
             }
