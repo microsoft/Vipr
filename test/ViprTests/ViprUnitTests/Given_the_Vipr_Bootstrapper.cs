@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -39,7 +42,7 @@ namespace ViprUnitTests
 
             WriteAsTextFiles(inputFiles);
 
-            var commandLine = String.Format("compile fromedmx {0} to {1}", metadataPath, _workingDirectory);
+            var commandLine = String.Format("compile fromdisk {0} to {1}", metadataPath, _workingDirectory);
 
             ValidateProxyGeneration(metadata, commandLine);
 
@@ -75,7 +78,7 @@ namespace ViprUnitTests
 
             WriteAsTextFiles(inputFiles);
 
-            var commandLine = String.Format("compile fromedmx {0} to {1} --modelexport {2}", metadataPath, _workingDirectory, exportPath);
+            var commandLine = String.Format("compile fromdisk {0} to {1} --modelexport {2}", metadataPath, _workingDirectory, exportPath);
 
             ValidateProxyGeneration(metadata, commandLine);
 
@@ -83,7 +86,6 @@ namespace ViprUnitTests
 
             File.Exists(exportPath).Should().BeTrue("Because the model was to be exported.");
                 
-
             File.Delete(exportPath);
         }
 
@@ -168,6 +170,5 @@ namespace ViprUnitTests
                                 d => d.ContainsKey("$metadata") && d["$metadata"].Equals(metadata))))
                 .Returns(model);
         }
-
     }
 }

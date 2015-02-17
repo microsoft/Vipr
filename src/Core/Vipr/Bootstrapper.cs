@@ -1,12 +1,12 @@
-﻿using System;
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
-using System.Xml.Linq;
-using CSharpWriter;
 using DocoptNet;
-using Microsoft.Data.OData;
 using Newtonsoft.Json;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
@@ -18,8 +18,8 @@ namespace Vipr
         const string Usage = @"Vipr CLI Tool
 Usage:
     vipr.exe compile example to <sourcePath>
-    vipr.exe compile fromedmx <edmxPath> to <sourcePath> [--modelexport=<modelExportPath>]
-    vipr.exe compile fromweb <webPath> to <sourcePath> [--modelexport=<modelExportPath>]
+    vipr.exe compile fromdisk <metadataPath> to <sourcePath> [--modelexport=<modelExportPath>]
+    vipr.exe compile fromweb <metadataUri> to <sourcePath> [--modelexport=<modelExportPath>]
 Options:
     --modelexport=<modelExportPath>     Export the OcdmModel generated from the given Edmx model as a json file.
 ";
@@ -40,26 +40,40 @@ Options:
 
             string edmxContents = "";
 
+            var fromFile = res["fromdisk"].IsTrue;
             var fromWeb = res["fromweb"].IsTrue;
-            var fromFile = res["fromedmx"].IsTrue;
             var fromExample = !fromWeb && !fromFile;
 
             if (fromWeb)
             {
-                edmxContents = LoadEdmxFromWeb(res["<webPath>"].ToString());
+                var uri = res["<metadataUri>"].ToString();
+
+                Console.WriteLine("Downloading service description from {0}.", uri);
+
+                edmxContents = LoadEdmxFromWeb(uri);
             }
 
             if (fromFile)
             {
-                edmxContents = LoadEdmxFromFile(res["<edmxPath>"].ToString());
+                var path = res["<metadataPath>"].ToString();
+
+                Console.WriteLine("Loading service description from {0}.", path);
+
+                edmxContents = LoadEdmxFromFile(path);
             }
 
             if (fromExample)
             {
+                Console.WriteLine("Downloading sample service description.");
+
                 edmxContents = LoadEdmxFromWeb("http://services.odata.org/V4/TripPinServiceRW/$metadata");
             }
 
+            Console.WriteLine("Generating Client Library to {0}", outputPath);
+
             ODataToFile(outputPath, edmxContents);
+
+            Console.WriteLine("Done.");
         }
 
         protected virtual IOdcmReader GetOdcmReader()
@@ -100,8 +114,7 @@ Options:
         {
             if (string.IsNullOrEmpty(_ocdmModelExportPath)) return;
 
-            var jss = new JsonSerializerSettings();
-            jss.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+            var jss = new JsonSerializerSettings {PreserveReferencesHandling = PreserveReferencesHandling.Objects};
 
             File.WriteAllText(_ocdmModelExportPath, JsonConvert.SerializeObject(model, jss));
         }
