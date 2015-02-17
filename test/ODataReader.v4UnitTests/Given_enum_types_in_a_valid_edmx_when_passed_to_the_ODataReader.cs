@@ -13,11 +13,11 @@ namespace ODataReader.v4UnitTests
 {
     public class Given_enum_types_in_a_valid_edmx_when_passed_to_the_ODataReader
     {
-        private ODataReader.v4.Reader reader;
+        private ODataReader.v4.OdcmReader _odcmReader;
 
         public Given_enum_types_in_a_valid_edmx_when_passed_to_the_ODataReader()
         {
-            reader = new Reader();
+            _odcmReader = new OdcmReader();
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace ODataReader.v4UnitTests
             {
                 {"$metadata", edmxElement.ToString()}
             };
-            var odcmModel = reader.GenerateOdcmModel(serviceMetadata);
+            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
 
             OdcmType odcmEnum;
             odcmModel.TryResolveType(enumName, schemaNamespace, out odcmEnum)
@@ -86,7 +86,7 @@ namespace ODataReader.v4UnitTests
             {
                 {"$metadata", edmxElement.ToString()}
             };
-            var odcmModel = reader.GenerateOdcmModel(serviceMetadata);
+            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
 
             OdcmType odcmEnum;
             odcmModel.TryResolveType(enumName, schemaNamespace, out odcmEnum)
@@ -128,7 +128,7 @@ namespace ODataReader.v4UnitTests
             {
                 {"$metadata", edmxElement.ToString()}
             };
-            var odcmModel = reader.GenerateOdcmModel(serviceMetadata);
+            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
 
             OdcmType odcmEnum;
             odcmModel.TryResolveType(enumName, schemaNamespace, out odcmEnum)
@@ -173,7 +173,7 @@ namespace ODataReader.v4UnitTests
             {
                 {"$metadata", edmxElement.ToString()}
             };
-            var odcmModel = reader.GenerateOdcmModel(serviceMetadata);
+            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
 
             OdcmType odcmEnum;
             odcmModel.TryResolveType(enumName, schemaNamespace, out odcmEnum)

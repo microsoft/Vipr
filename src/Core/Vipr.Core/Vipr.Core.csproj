@@ -38,15 +38,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable">
-      <HintPath>..\..\..\packages\System.Collections.Immutable.1.1.32-beta\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    <Reference Include="System.Collections.Immutable, Version=1.1.33.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\System.Collections.Immutable.1.1.33-beta\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeModel\OdcmCallingConvention.cs" />
@@ -54,7 +50,7 @@
     <Compile Include="CodeModel\OdcmAllowedVerbs.cs" />
     <Compile Include="CodeModel\OdcmVocabularyAnnotation.cs" />
     <Compile Include="IConfigurationProvider.cs" />
-    <Compile Include="IReader.cs" />
+    <Compile Include="IOdcmReader.cs" />
     <Compile Include="CodeModel\OdcmAnnotatedObject.cs" />
     <Compile Include="CodeModel\OdcmClass.cs" />
     <Compile Include="CodeModel\OdcmEnum.cs" />
@@ -67,6 +63,7 @@
     <Compile Include="CodeModel\OdcmPrimitiveType.cs" />
     <Compile Include="CodeModel\OdcmProperty.cs" />
     <Compile Include="CodeModel\OdcmType.cs" />
+    <Compile Include="IOdcmWriter.cs" />
     <Compile Include="OdcmExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

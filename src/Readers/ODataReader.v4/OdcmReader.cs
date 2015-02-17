@@ -15,7 +15,7 @@ using System.Xml.Linq;
 
 namespace ODataReader.v4
 {
-    public class Reader : IReader
+    public class OdcmReader : IOdcmReader
     {
         public OdcmModel GenerateOdcmModel(IDictionary<string, string> serviceMetadata)
         {

@@ -6,8 +6,8 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr.Core
 {
-    public interface IReader
+    public interface IOdcmWriter
     {
-        OdcmModel GenerateOdcmModel(IDictionary<string, string> serviceMetadata);
+        IDictionary<string, string> GenerateProxy(OdcmModel model, IConfigurationProvider configurationProvider = null);
     }
 }

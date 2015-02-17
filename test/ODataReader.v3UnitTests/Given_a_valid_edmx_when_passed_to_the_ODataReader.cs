@@ -12,11 +12,11 @@ namespace ODataReader.v3UnitTests
 {
     public class Given_a_valid_edmx_when_passed_to_the_ODataReader
     {
-        private ODataReader.v3.Reader reader;
+        private ODataReader.v3.OdcmReader _odcmReader;
 
         public Given_a_valid_edmx_when_passed_to_the_ODataReader()
         {
-            reader = new Reader();
+            _odcmReader = new OdcmReader();
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace ODataReader.v3UnitTests
             {
                 {"$metadata", edmxElement.ToString()}
             };
-            var odcmModel = reader.GenerateOdcmModel(serviceMetadata);
+            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
 
             odcmModel.Should().NotBeNull("because a valid edmx should yield a valid model");
         }
