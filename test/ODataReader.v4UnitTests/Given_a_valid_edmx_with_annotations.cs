@@ -19,7 +19,7 @@ namespace ODataReader.v4UnitTests
         [Fact]
         public void InsertRestrictions_should_be_properly_parsed()
         {
-            Reader odata4Reader = new Reader();
+            OdcmReader odata4Reader = new OdcmReader();
             OdcmModel model = odata4Reader.GenerateOdcmModel(GetOneNoteEdmModel());
 
             model.EntityContainer.Properties.Should().Contain(prop => prop.Name == "notebooks");
@@ -38,7 +38,7 @@ namespace ODataReader.v4UnitTests
         [Fact]
         public void UpdateRestrictions_should_be_properly_parsed()
         {
-            Reader odata4Reader = new Reader();
+            OdcmReader odata4Reader = new OdcmReader();
             OdcmModel model = odata4Reader.GenerateOdcmModel(GetOneNoteEdmModel());
 
             model.EntityContainer.Properties.Should().Contain(prop => prop.Name == "notebooks");
@@ -57,7 +57,7 @@ namespace ODataReader.v4UnitTests
         [Fact]
         public void DeleteRestrictions_should_be_properly_parsed()
         {
-            Reader odata4Reader = new Reader();
+            OdcmReader odata4Reader = new OdcmReader();
             OdcmModel model = odata4Reader.GenerateOdcmModel(GetOneNoteEdmModel());
 
             model.EntityContainer.Properties.Should().Contain(prop => prop.Name == "notebooks");

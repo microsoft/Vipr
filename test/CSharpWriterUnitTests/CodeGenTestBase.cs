@@ -52,9 +52,9 @@ namespace CSharpWriterUnitTests
 
         public Assembly GetProxy(OdcmModel model, IConfigurationProvider _configurationProvider = null, IEnumerable<string> internalsVisibleTo = null)
         {
-            var writer = new CSharpWriter.CSharpWriter(model, _configurationProvider);
+            var writer = new CSharpWriter.CSharpWriter();
 
-            var proxySource = writer.GenerateProxy();
+            var proxySources = writer.GenerateProxy(model, _configurationProvider);
 
             if (internalsVisibleTo != null && internalsVisibleTo.Any())
             {
@@ -64,10 +64,13 @@ namespace CSharpWriterUnitTests
                         .Select(s => string.Format("[assembly: InternalsVisibleTo(\"{0}\")]\n\n", s))
                         .Aggregate((a, i) => a + i);
 
-                proxySource = internalsHeader + proxySource;
+                foreach (var fileName in proxySources.Keys)
+                {
+                    proxySources[fileName] = internalsHeader + proxySources[fileName];
+                }
             }
 
-            WriteProxySource(proxySource);
+            WriteProxySource(proxySources);
 
             var referencedAssemblies = new List<string>
             {
@@ -82,16 +85,21 @@ namespace CSharpWriterUnitTests
                 "System.IO.dll"
             };
 
-            return CompileText(referencedAssemblies, proxySource);
+            return CompileText(referencedAssemblies, proxySources.Values.ToArray());
         }
 
-        private static void WriteProxySource(string proxySource)
+        private static void WriteProxySource(IEnumerable<KeyValuePair<string, string>> proxySources)
         {
             if(Debugger.IsAttached)
-                Debug.WriteLine(proxySource);
+                foreach (var proxySource in proxySources)
+                {
+                    Debug.WriteLine("-------- {0} ------", proxySource.Key);
+                    Debug.WriteLine(proxySource.Value);
+                    Debug.WriteLine("-------------------", proxySource.Key);
+                }
         }
 
-        public Assembly CompileText(IEnumerable<string> referencedAssemblies, params string[] cSharpSource)
+        public Assembly CompileText(IEnumerable<string> referencedAssemblies, params string[] cSharpSources)
         {
             var compilerParams = GetCompilerParameters();
 
@@ -101,7 +109,7 @@ namespace CSharpWriterUnitTests
 
             var provider = new CSharpCodeProvider();
 
-            var compile = provider.CompileAssemblyFromSource(compilerParams, cSharpSource);
+            var compile = provider.CompileAssemblyFromSource(compilerParams, cSharpSources);
 
             if (!compile.Errors.HasErrors) return compile.CompiledAssembly;
 
