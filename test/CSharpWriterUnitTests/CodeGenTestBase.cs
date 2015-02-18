@@ -54,7 +54,9 @@ namespace CSharpWriterUnitTests
         {
             var writer = new CSharpWriter.CSharpWriter();
 
-            var proxySources = writer.GenerateProxy(model, _configurationProvider);
+            writer.SetConfigurationProvider(_configurationProvider);
+
+            var proxySources = writer.GenerateProxy(model);
 
             if (internalsVisibleTo != null && internalsVisibleTo.Any())
             {

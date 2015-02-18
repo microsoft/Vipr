@@ -6,88 +6,194 @@
         <Key>
           <PropertyRef Name="id" />
         </Key>
-        <Property Name="isDefault" Type="Edm.Boolean" />
-        <Property Name="userRole" Type="Microsoft.OneNote.Api.UserRole" />
-        <Property Name="isShared" Type="Edm.Boolean" />
-        <Property Name="sectionsUrl" Type="Edm.String" />
-        <Property Name="sectionGroupsUrl" Type="Edm.String" />
-        <Property Name="links" Type="Microsoft.OneNote.Api.NotebookLinks" />
-        <Property Name="name" Type="Edm.String" />
-        <Property Name="createdBy" Type="Edm.String" />
-        <Property Name="lastModifiedBy" Type="Edm.String" />
-        <Property Name="lastModifiedTime" Type="Edm.DateTimeOffset" />
-        <Property Name="id" Type="Edm.String" Nullable="false" />
-        <Property Name="self" Type="Edm.String" />
-        <Property Name="createdTime" Type="Edm.DateTimeOffset" />
-        <NavigationProperty Name="sections" Type="Collection(Microsoft.OneNote.Api.Section)" />
-        <NavigationProperty Name="sectionGroups" Type="Collection(Microsoft.OneNote.Api.SectionGroup)" />
+        <Property Name="isDefault" Type="Edm.Boolean">
+          <Annotation Term="Org.OData.Core.V1.Description" String="Indicates whether this is the user’s default notebook." />
+        </Property>
+        <Property Name="userRole" Type="Microsoft.OneNote.Api.UserRole">
+          <Annotation Term="Org.OData.Core.V1.Description" String="One of three values: Owner, Contributor, or Reader. Owner represents owner-level access to the notebook. Contributor represents read/write access to the notebook. Reader represents read-only access to the notebook." />
+        </Property>
+        <Property Name="isShared" Type="Edm.Boolean">
+          <Annotation Term="Org.OData.Core.V1.Description" String="Indicates whether the notebook is shared. If true, the contents of the notebook can be seen by people other than the owner." />
+        </Property>
+        <Property Name="sectionsUrl" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The URL for the sections navigation property, which returns all the sections in the notebook." />
+        </Property>
+        <Property Name="sectionGroupsUrl" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The URL for the sectionGroups navigation property, which returns all the section groups in the notebook." />
+        </Property>
+        <Property Name="links" Type="Microsoft.OneNote.Api.NotebookLinks">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The value of oneNoteClientURL can be used to open the notebook using the OneNote native client app if it's installed. The value of oneNoteWebURL can be used to open the web-browser based OneNote Online client." />
+        </Property>
+        <Property Name="name" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The name of the notebook." />
+        </Property>
+        <Property Name="createdBy" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The user who created the notebook." />
+        </Property>
+        <Property Name="lastModifiedBy" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The user who last modified the notebook." />
+        </Property>
+        <Property Name="lastModifiedTime" Type="Edm.DateTimeOffset">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The date and time when the notebook was last modified." />
+        </Property>
+        <Property Name="id" Type="Edm.String" Nullable="false">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The unique identifier of the notebook." />
+        </Property>
+        <Property Name="self" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The endpoint where you can get details about the notebook." />
+        </Property>
+        <Property Name="createdTime" Type="Edm.DateTimeOffset">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The date and time when the notebook was created." />
+        </Property>
+        <NavigationProperty Name="sections" Type="Collection(Microsoft.OneNote.Api.Section)">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The sections in the notebook. Can be navigated to using the sectionsUrl property or expanded in a GET request." />
+        </NavigationProperty>
+        <NavigationProperty Name="sectionGroups" Type="Collection(Microsoft.OneNote.Api.SectionGroup)">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The section groups in the notebook. Can be navigated to using the sectionGroupsUrl property or expanded in a GET request." />
+        </NavigationProperty>
+        <Annotation Term="Org.OData.Core.V1.Description" String="A OneNote notebook" />
       </EntityType>
       <EntityType Name="SectionGroup">
         <Key>
           <PropertyRef Name="id" />
         </Key>
-        <Property Name="sectionsUrl" Type="Edm.String" />
-        <Property Name="sectionGroupsUrl" Type="Edm.String" />
-        <Property Name="name" Type="Edm.String" />
-        <Property Name="createdBy" Type="Edm.String" />
-        <Property Name="lastModifiedBy" Type="Edm.String" />
-        <Property Name="lastModifiedTime" Type="Edm.DateTimeOffset" />
-        <Property Name="id" Type="Edm.String" Nullable="false" />
-        <Property Name="self" Type="Edm.String" />
-        <Property Name="createdTime" Type="Edm.DateTimeOffset" />
-        <NavigationProperty Name="parentNotebook" Type="Microsoft.OneNote.Api.Notebook" />
-        <NavigationProperty Name="parentSectionGroup" Type="Microsoft.OneNote.Api.SectionGroup" />
-        <NavigationProperty Name="sections" Type="Collection(Microsoft.OneNote.Api.Section)" />
+        <Property Name="sectionsUrl" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The URL for the sections navigation property, which returns all the sections in the section group." />
+        </Property>
+        <Property Name="sectionGroupsUrl" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The URL for the sectionGroups navigation property, which returns all the section groups in the section group." />
+        </Property>
+        <Property Name="name" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The name of the section group." />
+        </Property>
+        <Property Name="createdBy" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The user who created the section group." />
+        </Property>
+        <Property Name="lastModifiedBy" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The user who last modified the section group." />
+        </Property>
+        <Property Name="lastModifiedTime" Type="Edm.DateTimeOffset">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The date and time when the section group was last modified." />
+        </Property>
+        <Property Name="id" Type="Edm.String" Nullable="false">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The unique identifier of the section group." />
+        </Property>
+        <Property Name="self" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The endpoint where you can get details about the section group." />
+        </Property>
+        <Property Name="createdTime" Type="Edm.DateTimeOffset">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The date and time when the section group was created." />
+        </Property>
+        <NavigationProperty Name="parentNotebook" Type="Microsoft.OneNote.Api.Notebook">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The notebook that contains the section group, expanded by default with the id, name, and self properties selected." />
+        </NavigationProperty>
+        <NavigationProperty Name="parentSectionGroup" Type="Microsoft.OneNote.Api.SectionGroup">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The section group that contains the section group, expanded by default with the id, name, and self properties selected." />
+        </NavigationProperty>
+        <NavigationProperty Name="sections" Type="Collection(Microsoft.OneNote.Api.Section)">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The sections in the section group. Can be navigated to using the sectionsUrl property or expanded in a GET request." />
+        </NavigationProperty>
         <NavigationProperty Name="sectionGroups" Type="Collection(Microsoft.OneNote.Api.SectionGroup)" />
       </EntityType>
       <EntityType Name="Section">
         <Key>
           <PropertyRef Name="id" />
         </Key>
-        <Property Name="isDefault" Type="Edm.Boolean" />
-        <Property Name="pagesUrl" Type="Edm.String" />
-        <Property Name="name" Type="Edm.String" />
-        <Property Name="createdBy" Type="Edm.String" />
-        <Property Name="lastModifiedBy" Type="Edm.String" />
-        <Property Name="lastModifiedTime" Type="Edm.DateTimeOffset" />
-        <Property Name="id" Type="Edm.String" Nullable="false" />
-        <Property Name="self" Type="Edm.String" />
-        <Property Name="createdTime" Type="Edm.DateTimeOffset" />
-        <NavigationProperty Name="parentNotebook" Type="Microsoft.OneNote.Api.Notebook" />
-        <NavigationProperty Name="parentSectionGroup" Type="Microsoft.OneNote.Api.SectionGroup" />
+        <Property Name="isDefault" Type="Edm.Boolean">
+          <Annotation Term="Org.OData.Core.V1.Description" String="Indicates whether this is the user’s default section." />
+        </Property>
+        <Property Name="pagesUrl" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The /pages endpoint where you can get details for all the pages in the section.&quot;" />
+        </Property>
+        <Property Name="name" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The name of the section." />
+        </Property>
+        <Property Name="createdBy" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The user who created the section." />
+        </Property>
+        <Property Name="lastModifiedBy" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The user who last modified the section." />
+        </Property>
+        <Property Name="lastModifiedTime" Type="Edm.DateTimeOffset">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The date and time when the section was last modified." />
+        </Property>
+        <Property Name="id" Type="Edm.String" Nullable="false">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The unique identifier of the section." />
+        </Property>
+        <Property Name="self" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The endpoint where you can get details about the section." />
+        </Property>
+        <Property Name="createdTime" Type="Edm.DateTimeOffset">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The date and time when the section was created." />
+        </Property>
+        <NavigationProperty Name="parentNotebook" Type="Microsoft.OneNote.Api.Notebook">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The notebook that contains the section, expanded by default with the id, name, and self properties selected." />
+        </NavigationProperty>
+        <NavigationProperty Name="parentSectionGroup" Type="Microsoft.OneNote.Api.SectionGroup">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The section group that contains the section, expanded by default with the id, name, and self properties selected." />
+        </NavigationProperty>
         <NavigationProperty Name="pages" Type="Collection(Microsoft.OneNote.Api.Page)" />
       </EntityType>
       <EntityType Name="Page" HasStream="true">
         <Key>
           <PropertyRef Name="id" />
         </Key>
-        <Property Name="title" Type="Edm.String" />
-        <Property Name="createdByAppId" Type="Edm.String" />
-        <Property Name="links" Type="Microsoft.OneNote.Api.PageLinks" />
-        <Property Name="contentUrl" Type="Edm.String" />
+        <Property Name="title" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The title of the page" />
+        </Property>
+        <Property Name="createdByAppId" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The unique identifier of the application that created the page" />
+        </Property>
+        <Property Name="links" Type="Microsoft.OneNote.Api.PageLinks">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The oneNoteClientURL link to open the page in the OneNote native client if it's installed,  and oneNoteWebUrl to open the page in OneNote Online" />
+        </Property>
+        <Property Name="contentUrl" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The URL for the page's HTML content" />
+        </Property>
         <Property Name="content" Type="Edm.Stream" />
-        <Property Name="id" Type="Edm.String" Nullable="false" />
+        <Property Name="lastModifiedTime" Type="Edm.DateTimeOffset" />
+        <Property Name="id" Type="Edm.String" Nullable="false">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The unique identifier of the page" />
+        </Property>
         <Property Name="self" Type="Edm.String" />
-        <Property Name="createdTime" Type="Edm.DateTimeOffset" />
+        <Property Name="createdTime" Type="Edm.DateTimeOffset">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The date and time when the page was created in UTC format" />
+        </Property>
         <NavigationProperty Name="parentSection" Type="Microsoft.OneNote.Api.Section" />
         <NavigationProperty Name="parentNotebook" Type="Microsoft.OneNote.Api.Notebook" />
+        <Annotation Term="Org.OData.Core.V1.Description" String="A page in a OneNote notebook" />
       </EntityType>
       <EntityType Name="Resource" HasStream="true">
         <Key>
           <PropertyRef Name="id" />
         </Key>
-        <Property Name="id" Type="Edm.String" Nullable="false" />
+        <Property Name="id" Type="Edm.String" Nullable="false">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The unique id of this resource" />
+        </Property>
         <Property Name="self" Type="Edm.String" />
-        <Property Name="content" Type="Edm.Stream" />
-        <Property Name="contentUrl" Type="Edm.String" />
+        <Property Name="content" Type="Edm.Stream">
+          <Annotation Term="Org.OData.Core.V1.Description" String="A stream of the conent of this resource" />
+        </Property>
+        <Property Name="contentUrl" Type="Edm.String">
+          <Annotation Term="Org.OData.Core.V1.Description" String="A Url to which a GET request can be sent to retrieve this resource" />
+        </Property>
+        <Annotation Term="Org.OData.Core.V1.Description" String="A resource, such as a file or image, which is in a OneNote page" />
       </EntityType>
       <ComplexType Name="NotebookLinks">
-        <Property Name="oneNoteClientUrl" Type="Microsoft.OneNote.Api.ExternalLink" />
-        <Property Name="oneNoteWebUrl" Type="Microsoft.OneNote.Api.ExternalLink" />
+        <Property Name="oneNoteClientUrl" Type="Microsoft.OneNote.Api.ExternalLink">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The value of oneNoteClientURL can be used to open the notebook using the OneNote native client app if it's installed." />
+        </Property>
+        <Property Name="oneNoteWebUrl" Type="Microsoft.OneNote.Api.ExternalLink">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The value of oneNoteWebURL can be used to open the web-browser based OneNote Online client." />
+        </Property>
       </ComplexType>
       <ComplexType Name="PageLinks">
-        <Property Name="oneNoteClientUrl" Type="Microsoft.OneNote.Api.ExternalLink" />
-        <Property Name="oneNoteWebUrl" Type="Microsoft.OneNote.Api.ExternalLink" />
+        <Property Name="oneNoteClientUrl" Type="Microsoft.OneNote.Api.ExternalLink">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The value of oneNoteClientURL can be used to open the notebook using the OneNote native client app if it's installed." />
+        </Property>
+        <Property Name="oneNoteWebUrl" Type="Microsoft.OneNote.Api.ExternalLink">
+          <Annotation Term="Org.OData.Core.V1.Description" String="The value of oneNoteWebURL can be used to open the web-browser based OneNote Online client." />
+        </Property>
       </ComplexType>
       <ComplexType Name="ExternalLink">
         <Property Name="href" Type="Edm.String" />
@@ -96,34 +202,241 @@
         <Property Name="message" Type="Edm.String" />
         <Property Name="url" Type="Edm.String" />
       </ComplexType>
+      <ComplexType Name="PatchContentCommand">
+        <Property Name="action" Type="Microsoft.OneNote.Api.PatchActionType" Nullable="false" />
+        <Property Name="target" Type="Edm.String" Nullable="false" />
+        <Property Name="content" Type="Edm.String" />
+        <Property Name="position" Type="Microsoft.OneNote.Api.PatchInsertPosition" />
+      </ComplexType>
+      <EnumType Name="PatchInsertPosition">
+        <Member Name="After" Value="0" />
+        <Member Name="Before" Value="1" />
+      </EnumType>
+      <EnumType Name="PatchActionType">
+        <Member Name="Replace" Value="0" />
+        <Member Name="Append" Value="1" />
+        <Member Name="Delete" Value="2" />
+        <Member Name="Insert" Value="3" />
+        <Member Name="Prepend" Value="4" />
+      </EnumType>
       <EnumType Name="UserRole">
         <Member Name="Owner" Value="0" />
         <Member Name="Contributor" Value="1" />
         <Member Name="Reader" Value="2" />
         <Member Name="None" Value="-1" />
       </EnumType>
+      <Action Name="PatchContent" IsBound="true">
+        <Parameter Name="bindingParameter" Type="Microsoft.OneNote.Api.Page" />
+        <Parameter Name="commands" Type="Collection(Microsoft.OneNote.Api.PatchContentCommand)" />
+      </Action>
       <EntityContainer Name="OneNoteApi">
         <EntitySet Name="notebooks" EntityType="Microsoft.OneNote.Api.Notebook">
           <NavigationPropertyBinding Path="sections" Target="sections" />
           <NavigationPropertyBinding Path="sectionGroups" Target="sectionGroups" />
+          <Annotation Term="Org.OData.Capabilities.V1.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="true" />
+              <PropertyValue Property="NonInsertableNavigationProperties">
+                <Collection>
+                  <NavigationPropertyPath>sectionGroups</NavigationPropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Org.OData.Capabilities.V1.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false" />
+              <PropertyValue Property="NonUpdatableNavigationProperties">
+                <Collection>
+                  <NavigationPropertyPath>sections</NavigationPropertyPath>
+                  <NavigationPropertyPath>sectionGroups</NavigationPropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Org.OData.Capabilities.V1.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false" />
+              <PropertyValue Property="NonDeletableNavigationProperties">
+                <Collection>
+                  <NavigationPropertyPath>sections</NavigationPropertyPath>
+                  <NavigationPropertyPath>sectionGroups</NavigationPropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
         </EntitySet>
         <EntitySet Name="sectionGroups" EntityType="Microsoft.OneNote.Api.SectionGroup">
           <NavigationPropertyBinding Path="parentNotebook" Target="notebooks" />
           <NavigationPropertyBinding Path="parentSectionGroup" Target="sectionGroups" />
           <NavigationPropertyBinding Path="sections" Target="sections" />
           <NavigationPropertyBinding Path="sectionGroups" Target="sectionGroups" />
+          <Annotation Term="Org.OData.Capabilities.V1.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false" />
+              <PropertyValue Property="NonInsertableNavigationProperties">
+                <Collection>
+                  <NavigationPropertyPath>sections</NavigationPropertyPath>
+                  <NavigationPropertyPath>sectionGroups</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentNotebook</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentSectionGroup</NavigationPropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Org.OData.Capabilities.V1.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false" />
+              <PropertyValue Property="NonUpdatableNavigationProperties">
+                <Collection>
+                  <NavigationPropertyPath>sections</NavigationPropertyPath>
+                  <NavigationPropertyPath>sectionGroups</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentNotebook</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentSectionGroup</NavigationPropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Org.OData.Capabilities.V1.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false" />
+              <PropertyValue Property="NonDeletableNavigationProperties">
+                <Collection>
+                  <NavigationPropertyPath>sections</NavigationPropertyPath>
+                  <NavigationPropertyPath>sectionGroups</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentNotebook</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentSectionGroup</NavigationPropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
         </EntitySet>
         <EntitySet Name="sections" EntityType="Microsoft.OneNote.Api.Section">
           <NavigationPropertyBinding Path="parentNotebook" Target="notebooks" />
           <NavigationPropertyBinding Path="parentSectionGroup" Target="sectionGroups" />
           <NavigationPropertyBinding Path="pages" Target="pages" />
+          <Annotation Term="Org.OData.Capabilities.V1.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false" />
+              <PropertyValue Property="NonInsertableNavigationProperties">
+                <Collection>
+                  <NavigationPropertyPath>parentNotebook</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentSectionGroup</NavigationPropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Org.OData.Capabilities.V1.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false" />
+              <PropertyValue Property="NonUpdatableNavigationProperties">
+                <Collection>
+                  <NavigationPropertyPath>pages</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentNotebook</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentSectionGroup</NavigationPropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Org.OData.Capabilities.V1.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false" />
+              <PropertyValue Property="NonDeletableNavigationProperties">
+                <Collection>
+                  <NavigationPropertyPath>pages</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentNotebook</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentSectionGroup</NavigationPropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Org.OData.Capabilities.V1.ExpandRestrictions">
+            <Record>
+              <PropertyValue Property="Expandable" Bool="true" />
+              <PropertyValue Property="NonExpandableProperties">
+                <Collection />
+              </PropertyValue>
+            </Record>
+          </Annotation>
         </EntitySet>
         <EntitySet Name="pages" EntityType="Microsoft.OneNote.Api.Page">
           <NavigationPropertyBinding Path="parentSection" Target="sections" />
           <NavigationPropertyBinding Path="parentNotebook" Target="notebooks" />
+          <Annotation Term="Org.OData.Capabilities.V1.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="true" />
+              <PropertyValue Property="NonInsertableNavigationProperties">
+                <Collection>
+                  <NavigationPropertyPath>parentSection</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentNotebook</NavigationPropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Org.OData.Capabilities.V1.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false" />
+              <PropertyValue Property="NonUpdatableNavigationProperties">
+                <Collection>
+                  <NavigationPropertyPath>parentSection</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentNotebook</NavigationPropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Org.OData.Capabilities.V1.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false" />
+              <PropertyValue Property="NonDeletableNavigationProperties">
+                <Collection>
+                  <NavigationPropertyPath>parentSection</NavigationPropertyPath>
+                  <NavigationPropertyPath>parentNotebook</NavigationPropertyPath>
+                </Collection>
+              </PropertyValue>
+            </Record>
+          </Annotation>
         </EntitySet>
-        <EntitySet Name="resources" EntityType="Microsoft.OneNote.Api.Resource" />
+        <EntitySet Name="resources" EntityType="Microsoft.OneNote.Api.Resource">
+          <Annotation Term="Org.OData.Core.V1.Description" String="Exposes resources, such as files and images, that have been added to a page." />
+          <Annotation Term="Org.OData.Capabilities.V1.InsertRestrictions">
+            <Record>
+              <PropertyValue Property="Insertable" Bool="false" />
+              <PropertyValue Property="NonInsertableNavigationProperties">
+                <Collection />
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Org.OData.Capabilities.V1.UpdateRestrictions">
+            <Record>
+              <PropertyValue Property="Updatable" Bool="false" />
+              <PropertyValue Property="NonUpdatableNavigationProperties">
+                <Collection />
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Org.OData.Capabilities.V1.DeleteRestrictions">
+            <Record>
+              <PropertyValue Property="Deletable" Bool="false" />
+              <PropertyValue Property="NonDeletableNavigationProperties">
+                <Collection />
+              </PropertyValue>
+            </Record>
+          </Annotation>
+          <Annotation Term="Org.OData.Capabilities.V1.ExpandRestrictions">
+            <Record>
+              <PropertyValue Property="Expandable" Bool="false" />
+              <PropertyValue Property="NonExpandableProperties">
+                <Collection />
+              </PropertyValue>
+            </Record>
+          </Annotation>
+        </EntitySet>
       </EntityContainer>
+      <Annotations Target="Microsoft.OneNote.Api.OneNoteApi">
+        <Annotation Term="Org.OData.Capabilities.V1.BatchSupported" Bool="false" />
+        <Annotation Term="Org.OData.Capabilities.V1.BatchContinueOnErrorSupported" Bool="false" />
+        <Annotation Term="Org.OData.Capabilities.V1.AsynchronousRequestsSupported" Bool="false" />
+      </Annotations>
     </Schema>
   </edmx:DataServices>
 </edmx:Edmx>
