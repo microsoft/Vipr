@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CSharpWriter.Settings;
 using Microsoft.Its.Recipes;
 using Microsoft.MockService;
 using Microsoft.MockService.Extensions.ODataV4;
@@ -19,9 +20,10 @@ namespace CSharpWriterUnitTests
 
         public Given_an_OdcmClass_Entity_Navigation_Property_Collection_forced_to_pascal_case()
         {
-            var configurationProviderMock = new Mock<IConfigurationProvider>();
-            configurationProviderMock.Setup(c => c.ForcePropertyPascalCasing).Returns(true);
-            ConfigurationProvider = configurationProviderMock.Object;
+            SetConfiguration(new CSharpWriterSettings
+            {
+                ForcePropertyPascalCasing = true
+            });
 
             Init(m =>
             {

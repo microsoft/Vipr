@@ -198,7 +198,7 @@ namespace CSharpWriter
 
         public static string GetPropertyName(string propertyName)
         {
-            if (ConfigurationService.ForcePropertyPascalCasing)
+            if (ConfigurationService.Settings.ForcePropertyPascalCasing)
                 propertyName = propertyName.Substring(0, 1).ToUpper() + propertyName.Substring(1);
 
             return propertyName;
@@ -225,14 +225,14 @@ namespace CSharpWriter
 
         private static string ResolveNamespace(string @namespace)
         {
-            if (ConfigurationService.OdcmNamespaceToProxyNamespace.ContainsKey(@namespace))
+            if (ConfigurationService.Settings.OdcmNamespaceToProxyNamespace.ContainsKey(@namespace))
             {
-                @namespace = ConfigurationService.OdcmNamespaceToProxyNamespace[@namespace];
+                @namespace = ConfigurationService.Settings.OdcmNamespaceToProxyNamespace[@namespace];
             }
 
-            if (ConfigurationService.NamespacePrefix != null)
+            if (ConfigurationService.Settings.NamespacePrefix != null)
             {
-                @namespace = String.Format("{0}.{1}", ConfigurationService.NamespacePrefix, @namespace);
+                @namespace = String.Format("{0}.{1}", ConfigurationService.Settings.NamespacePrefix, @namespace);
             }
 
             return @namespace;
@@ -240,10 +240,10 @@ namespace CSharpWriter
 
         private static string ResolveName(string @namespace, string name)
         {
-            if (ConfigurationService.OdcmClassNameToProxyClassName.ContainsKey(@namespace)
-                && ConfigurationService.OdcmClassNameToProxyClassName[@namespace].ContainsKey(name))
+            if (ConfigurationService.Settings.OdcmClassNameToProxyClassName.ContainsKey(@namespace)
+                && ConfigurationService.Settings.OdcmClassNameToProxyClassName[@namespace].ContainsKey(name))
             {
-                name = ConfigurationService.OdcmClassNameToProxyClassName[@namespace][name];
+                name = ConfigurationService.Settings.OdcmClassNameToProxyClassName[@namespace][name];
             }
 
             return name;

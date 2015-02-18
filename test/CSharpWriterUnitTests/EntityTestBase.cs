@@ -1,10 +1,11 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Collections.ObjectModel;
+using CSharpWriter.Settings;
 using Microsoft.Its.Recipes;
 using System;
 using System.Reflection;
+using Moq;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 
@@ -76,6 +77,14 @@ namespace CSharpWriterUnitTests
                 CollectionType = CollectionType,
                 CollectionInterface = CollectionInterface
             };
+        }
+        protected void SetConfiguration(CSharpWriterSettings config)
+        {
+            var configurationProviderMock = new Mock<IConfigurationProvider>();
+            configurationProviderMock
+                .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
+                .Returns(config);
+            ConfigurationProvider = configurationProviderMock.Object;
         }
     }
 }
