@@ -8,6 +8,6 @@ namespace Vipr.Core
 {
     public interface IOdcmWriter
     {
-        IDictionary<string, string> GenerateProxy(OdcmModel model, IConfigurationProvider configurationProvider = null);
+        IDictionary<string, string> GenerateProxy(OdcmModel model);
     }
 }
