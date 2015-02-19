@@ -7,8 +7,7 @@ namespace CSharpWriter
     {
         public ContainerGetPathMethod()
         {
-            IsPublic = false;
-
+            Visibility = Visibility.Private;
             Name = "GetPath";
             Parameters = new[] { new Parameter(new Type(new Identifier("System", "String")), "propertyName"), };
             ReturnType = new Type(new Identifier("System", "String"));

@@ -1,11 +1,9 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.Remoting.Messaging;
-using System.Xml.Linq;
 using ODataReader.v4UnitTests;
+using System;
+using System.Xml.Linq;
 
 namespace Microsoft.Its.Recipes
 {
@@ -24,7 +22,7 @@ namespace Microsoft.Its.Recipes
 
         internal static class Csdl
         {
-            private readonly static string[] PrimitiveTypes = new[]
+            private readonly static string[] PrimitiveTypes =
             {
                 "Edm.Binary",
                 "Edm.Boolean",

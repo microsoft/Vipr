@@ -1,14 +1,17 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.IO;
+using System.Threading.Tasks;
+
 namespace Microsoft.OData.ProxyExtensions
 {
     public class StreamFetcher : IStreamFetcher
     {
-        private global::Microsoft.OData.Client.DataServiceStreamLink _link;
-        private EntityBase _entity;
-        private string _propertyName;
-        private DataServiceContextWrapper _context;
+        private readonly Client.DataServiceStreamLink _link;
+        private readonly EntityBase _entity;
+        private readonly string _propertyName;
+        private readonly DataServiceContextWrapper _context;
 
         public string ContentType
         {
@@ -18,7 +21,7 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
-        public StreamFetcher(DataServiceContextWrapper context, EntityBase entity, string propertyName, global::Microsoft.OData.Client.DataServiceStreamLink link)
+        public StreamFetcher(DataServiceContextWrapper context, EntityBase entity, string propertyName, Client.DataServiceStreamLink link)
         {
             _context = context;
             _entity = entity;
@@ -26,10 +29,13 @@ namespace Microsoft.OData.ProxyExtensions
             _propertyName = propertyName;
         }
 
-        /// <param name=""dontSave"">true to delay saving until batch is saved; false to save immediately.</param>
-        public global::System.Threading.Tasks.Task UploadAsync(global::System.IO.Stream stream, string contentType, bool dontSave = false, bool closeStream = false)
+        /// <param name="stream">The stream content to upload.</param>
+        /// <param name="contentType">The content type of the stream content.</param>
+        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
+        /// <param name="closeStream">true to close stream after the upload is complete; false to leave stream open.</param>
+        public Task UploadAsync(Stream stream, string contentType, bool deferSaveChanges = false, bool closeStream = false)
         {
-            var args = new global::Microsoft.OData.Client.DataServiceRequestArgs
+            var args = new Client.DataServiceRequestArgs
             {
                 ContentType = contentType
             };
@@ -43,10 +49,10 @@ namespace Microsoft.OData.ProxyExtensions
 
             _entity.OnPropertyChanged(_propertyName);
 
-            return _entity.SaveAsNeeded(dontSave);
+            return _entity.SaveChangesAsync(deferSaveChanges);
         }
 
-        public global::System.Threading.Tasks.Task<global::Microsoft.OData.Client.DataServiceStreamResponse> DownloadAsync()
+        public Task<Client.DataServiceStreamResponse> DownloadAsync()
         {
             return _context.GetReadStreamAsync(_entity, _propertyName, ContentType);
         }

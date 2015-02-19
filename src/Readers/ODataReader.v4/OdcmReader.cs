@@ -156,7 +156,7 @@ namespace ODataReader.v4
 
                 foreach (var complexType in complexTypes)
                 {
-                    _odcmModel.AddType(new OdcmClass(complexType.Name, ResolveNamespace(complexType.Namespace)));
+                    _odcmModel.AddType(new OdcmComplexClass(complexType.Name, ResolveNamespace(complexType.Namespace)));
                 }
 
                 foreach (var entityType in entityTypes)
@@ -173,8 +173,7 @@ namespace ODataReader.v4
 
                 foreach (var entityContainer in entityContainers)
                 {
-                    _odcmModel.AddType(new OdcmServiceClass(entityContainer.Name,
-                        ResolveNamespace(entityContainer.Namespace)));
+                    _odcmModel.AddType(new OdcmServiceClass(entityContainer.Name, ResolveNamespace(entityContainer.Namespace)));
                 }
             }
 

@@ -193,23 +193,70 @@ namespace CSharpWriter
             WriteSignature(method);
             using (_builder.IndentBraced)
             {
-                _("if (_entity == null)");
+                _("if (Entity == null)");
 
                 using (_builder.IndentBraced)
                 {
-                    _("Context.AddObject(_path, item);");
+                    _("Context.AddObject(Path, item);");
                 }
 
                 _("else");
 
                 using (_builder.IndentBraced)
                 {
-                    _("var lastSlash = _path.LastIndexOf('/');");
-                    _("var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;");
-                    _("Context.AddRelatedObject(_entity, shortPath, item);");
+                    _("var lastSlash = Path.LastIndexOf('/');");
+                    _("var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;");
+                    _("Context.AddRelatedObject(Entity, shortPath, item);");
                 }
 
-                _("if (!dontSave)");
+                _("if (!deferSaveChanges)");
+
+                using (_builder.IndentBraced)
+                {
+                    _("return Context.SaveChangesAsync();");
+                }
+
+                _("else");
+
+                using (_builder.IndentBraced)
+                {
+                    _("var retVal = new global::System.Threading.Tasks.TaskCompletionSource<object>();");
+                    _("retVal.SetResult(null);");
+                    _("return retVal.Task;");
+                }
+            }
+        }
+
+        private void Write(AddAsyncMediaMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                _("if (Entity == null)");
+
+                using (_builder.IndentBraced)
+                {
+                    _("Context.AddObject(Path, item);");
+                }
+
+                _("else");
+
+                using (_builder.IndentBraced)
+                {
+                    _("var lastSlash = Path.LastIndexOf('/');");
+                    _("var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;");
+                    _("Context.AddRelatedObject(Entity, shortPath, item);");
+                }
+
+                _("Context.SetSaveStream(item, stream, closeStream, new DataServiceRequestArgs()");
+                _("{");
+                using (_builder.Indent)
+                {
+                    _("ContentType = contentType");
+                }
+                _("});");
+
+                _("if (!deferSaveChanges)");
 
                 using (_builder.IndentBraced)
                 {
@@ -241,7 +288,7 @@ namespace CSharpWriter
             WriteSignature(method);
             using (_builder.IndentBraced)
             {
-                _("return new DataServiceQuerySingle<long>(Context, _path + \"/$count\").GetValueAsync();");
+                _("return new DataServiceQuerySingle<long>(Context, Path + \"/$count\").GetValueAsync();");
             }
         }
 
@@ -528,7 +575,7 @@ namespace CSharpWriter
 
         private void WriteSignature(MethodSignature method, bool isForInterface = false)
         {
-            var accessModifier = method.IsPublic ? "public " : "private ";
+            var accessModifier = GetAccessModifier(method.Visibility);
 
             var asyncModifier = method.IsAsync ? "async " : "";
 
@@ -550,6 +597,24 @@ namespace CSharpWriter
 
             _(template, accessModifier, asyncModifier, staticModifier, overrideModifier, method.ReturnType, explicitName, method.Name,
                 genericParameters, method.Parameters.ToParametersString());
+        }
+
+        private string GetAccessModifier(Visibility visibility)
+        {
+            switch (visibility)
+            {
+                case Visibility.Internal:
+                    return "internal ";
+                case Visibility.Private:
+                    return "private ";
+                case Visibility.Protected:
+                    return "protected ";
+                case Visibility.ProtectedInternal:
+                    return "protected internal ";
+                case Visibility.Public:
+                    return "public ";
+            }
+            return string.Empty;
         }
 
         private void WriteSignature(IndexerSignature indexer, bool? @public = true)
@@ -817,7 +882,7 @@ namespace CSharpWriter
 
         private void WriteDeclaration(Property property, bool isForInterface = false)
         {
-            var accessModifier = property.IsPublic ? "public " : "private ";
+            var accessModifier = GetAccessModifier(property.Visibility);
 
             var template = isForInterface ? "{1} {3};" : "{0}{1} {2}{3}";
 
@@ -873,7 +938,10 @@ namespace CSharpWriter
         {
             foreach (var methodSignature in methodSignatures)
             {
-                WriteSignature(methodSignature, true);
+                if (methodSignature.Visibility == Visibility.Public)
+                {
+                    WriteSignature(methodSignature, true);
+                }
             }
         }
 

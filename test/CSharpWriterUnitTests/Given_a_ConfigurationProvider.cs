@@ -4,6 +4,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using CSharpWriter.Settings;
 using FluentAssertions;
@@ -383,6 +384,87 @@ namespace CSharpWriterUnitTests
                          .Select(p => p.Name.Substring(p.Name.LastIndexOf('.') + 1))
                          .Should()
                          .Contain(cl.Properties.Select(p => p.Name));
+                }
+            }
+        }
+
+        [Fact]
+        public void When_no_MediaEntityAddAsyncVisibility_is_specified_then_all_Media_Entity_AddAsync_methods_default_to_Public()
+        {
+            var configMock = new Mock<IConfigurationProvider>(MockBehavior.Loose);
+
+            configMock
+                .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
+                .Returns(() => new CSharpWriterSettings());
+
+            var proxy = GetProxy(_model, configMock.Object);
+
+            foreach (var ns in _model.Namespaces)
+            {
+                var mediaEntityTypes = from @class in ns.Types
+                    where @class is OdcmMediaClass
+                    select @class as OdcmMediaClass;
+
+                foreach (var @class in mediaEntityTypes)
+                {
+                    var cl = @class;
+
+                    var addmethod = (from method in proxy.GetClass(ns.Name, cl.Name + "Collection").Methods()
+                        where method.Name.Equals("Add" + cl.Name + "Async")
+                        select method).FirstOrDefault();
+
+                    addmethod
+                        .Should()
+                        .NotBeNull("Because every media entity collection class should have an add async method.");
+
+                    addmethod.GetCSharpAccessModifier()
+                        .Should()
+                        .Be(CSharpAccessModifiers.Public, "Because all media entity add async methods should default to public access.");
+                }
+            }
+        }
+
+        [Fact]
+        public void When_MediaEntityAddAsyncVisibility_is_specified_then_all_Media_Entity_AddAsync_methods_have_that_visiblity()
+        {
+            var configMock = new Mock<IConfigurationProvider>(MockBehavior.Loose);
+
+            for (var accessModifier = (CSharpAccessModifiers) 0; accessModifier <= (CSharpAccessModifiers) 4; accessModifier++)
+            {
+                Visibility visibility;
+                Visibility.TryParse(accessModifier.ToString(), true, out visibility);
+
+                configMock
+                    .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
+                    .Returns(() => new CSharpWriterSettings
+                    {
+                        MediaEntityAddAsyncVisibility = visibility
+                    });
+
+                var proxy = GetProxy(_model, configMock.Object);
+
+                foreach (var ns in _model.Namespaces)
+                {
+                    var mediaEntityTypes = from @class in ns.Types 
+                                           where @class is OdcmMediaClass 
+                                           select @class as OdcmMediaClass;
+
+                    foreach (var @class in mediaEntityTypes)
+                    {
+                        var cl = @class;
+
+                        var addmethod = (from method in proxy.GetClass(ns.Name, cl.Name + "Collection").Methods()
+                                         where method.Name.Equals("Add" + cl.Name + "Async")
+                                         select method).FirstOrDefault();
+
+                        addmethod
+                            .Should()
+                            .NotBeNull("Because every media entity collection class should have an add async method.");
+
+                        addmethod.GetCSharpAccessModifier()
+                            .Should()
+                            .Be(accessModifier, "Because all media entity add async methods should have the specified visibility.");
+                    }
                 }
             }
         }

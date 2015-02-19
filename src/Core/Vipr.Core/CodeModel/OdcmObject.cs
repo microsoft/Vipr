@@ -9,7 +9,7 @@ namespace Vipr.Core.CodeModel
     {
         public string Name { get; private set; }
 
-        public OdcmObject(string name)
+        protected OdcmObject(string name)
         {
             Name = name;
         }

@@ -77,6 +77,7 @@
       <Link>%28Its.Recipes%29\TestInputGenerator.cs</Link>
     </Compile>
     <Compile Include="Any.cs" />
+    <Compile Include="EdmxTestCase.cs" />
     <Compile Include="Given_complex_types_in_a_valid_edmx_when_passed_to_the_ODataReader.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

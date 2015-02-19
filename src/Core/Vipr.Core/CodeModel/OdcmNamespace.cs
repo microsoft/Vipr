@@ -31,8 +31,13 @@ namespace Vipr.Core.CodeModel
         {
             get
             {
-                return from odcmType in Types where odcmType is OdcmClass select odcmType as OdcmClass;
+                return ClassesOf<OdcmClass>();
             }
+        }
+
+        public IEnumerable<T> ClassesOf<T>() where T : OdcmClass
+        {
+            return from odcmType in Types where odcmType is T select odcmType as T;
         }
 
         public static OdcmNamespace Edm { get { return EdmNamespace; } }

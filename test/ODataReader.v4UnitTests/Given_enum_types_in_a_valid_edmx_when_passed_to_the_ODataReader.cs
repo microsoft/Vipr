@@ -5,8 +5,7 @@ using FluentAssertions;
 using Microsoft.Its.Recipes;
 using ODataReader.v4;
 using System;
-using System.Collections.Generic;
-using Vipr.Core;
+using System.Linq;
 using Vipr.Core.CodeModel;
 using Xunit;
 
@@ -24,34 +23,16 @@ namespace ODataReader.v4UnitTests
         [Fact]
         public void It_returns_one_OdcmType_for_each_EnumType()
         {
-            var schemaNamespace = string.Empty;
-            var enumName = string.Empty;
-            var enumMemberCount = 0;
+            var testCase = new EdmxTestCase()
+                .AddEnumType(EdmxTestCase.Keys.EnumType);
 
-            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
-            {
-                schema.Add(Any.Csdl.EnumType(enumType =>
-                {
-                    foreach (var member in Any.Sequence((i) => Any.Csdl.Member(), Any.Int(1, 5)))
-                    {
-                        enumType.Add(member);
-                        enumMemberCount++;
-                    }
-                    enumName = enumType.Attribute("Name").Value;
-                }));
-                schema.Add(Any.Csdl.EntityContainer());
-                schemaNamespace = schema.Attribute("Namespace").Value;
-            });
+            var enumTypeTestNode = testCase[EdmxTestCase.Keys.EnumType];
+            var enumMemberCount = (from x in enumTypeTestNode.Element.Descendants() where x.Name.LocalName.Equals("Member") select x).Count();
 
-            var serviceMetadata = new TextFileCollection
-            {
-                new TextFile("$metadata", edmxElement.ToString())
-            };
-
-            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
 
             OdcmType odcmEnum;
-            odcmModel.TryResolveType(enumName, schemaNamespace, out odcmEnum)
+            odcmModel.TryResolveType(enumTypeTestNode.Name, enumTypeTestNode.Namespace, out odcmEnum)
                 .Should()
                 .BeTrue("because an enum type in the schema should result in an OdcmType");
             odcmEnum.Should().BeOfType<OdcmEnum>("because an enum type in the schema should result in an OdcmEnum");
@@ -63,36 +44,27 @@ namespace ODataReader.v4UnitTests
         [Fact]
         public void When_IsFlags_is_set_it_returns_an_OdcmEnum_with_IsFlags_set()
         {
-            var schemaNamespace = string.Empty;
-            var enumName = string.Empty;
-            var enumMemberCount = 0;
-
-            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
-            {
-                schema.Add(Any.Csdl.EnumType(enumType =>
+            var testCase = new EdmxTestCase()
+                .AddEnumType(EdmxTestCase.Keys.EnumType, (_, enumType) =>
                 {
-                    foreach (var member in Any.Sequence((i) => Any.Csdl.Member(), Any.Int(1, 5)))
+                    var count = 0;
+                    foreach (var descendent in enumType.Descendants())
                     {
-                        member.AddAttribute("Value", (int)Math.Pow(enumMemberCount, 2));
-                        enumType.Add(member);
-                        enumMemberCount++;
+                        if (descendent.Name.LocalName.Equals("Member"))
+                        {
+                            descendent.AddAttribute("Value", (int)Math.Pow(count++, 2));
+                        }
                     }
-                    enumName = enumType.Attribute("Name").Value;
                     enumType.AddAttribute("IsFlags", true);
-                }));
-                schema.Add(Any.Csdl.EntityContainer());
-                schemaNamespace = schema.Attribute("Namespace").Value;
-            });
+                });
 
-            var serviceMetadata = new TextFileCollection
-            {
-                new TextFile("$metadata", edmxElement.ToString())
-            };
+            var enumTypeTestNode = testCase[EdmxTestCase.Keys.EnumType];
+            var enumMemberCount = (from x in enumTypeTestNode.Element.Descendants() where x.Name.LocalName.Equals("Member") select x).Count();
 
-            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
 
             OdcmType odcmEnum;
-            odcmModel.TryResolveType(enumName, schemaNamespace, out odcmEnum)
+            odcmModel.TryResolveType(enumTypeTestNode.Name, enumTypeTestNode.Namespace, out odcmEnum)
                 .Should()
                 .BeTrue("because an enum type in the schema should result in an OdcmType");
             odcmEnum.Should().BeOfType<OdcmEnum>("because an enum type in the schema should result in an OdcmEnum");
@@ -108,34 +80,16 @@ namespace ODataReader.v4UnitTests
         [Fact]
         public void When_No_Underlying_Type_is_set_it_returns_an_OdcmEnum_with_a_Default_UnderlyingType()
         {
-            var schemaNamespace = string.Empty;
-            var enumName = string.Empty;
-            var enumMemberCount = 0;
+            var testCase = new EdmxTestCase()
+                .AddEnumType(EdmxTestCase.Keys.EnumType);
 
-            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
-            {
-                schema.Add(Any.Csdl.EnumType(enumType =>
-                {
-                    foreach (var member in Any.Sequence((i) => Any.Csdl.Member(), Any.Int(1, 5)))
-                    {
-                        enumType.Add(member);
-                        enumMemberCount++;
-                    }
-                    enumName = enumType.Attribute("Name").Value;
-                }));
-                schema.Add(Any.Csdl.EntityContainer());
-                schemaNamespace = schema.Attribute("Namespace").Value;
-            });
+            var enumTypeTestNode = testCase[EdmxTestCase.Keys.EnumType];
+            var enumMemberCount = (from x in enumTypeTestNode.Element.Descendants() where x.Name.LocalName.Equals("Member") select x).Count();
 
-            var serviceMetadata = new TextFileCollection
-            {
-                new TextFile("$metadata", edmxElement.ToString())
-            };
-
-            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
 
             OdcmType odcmEnum;
-            odcmModel.TryResolveType(enumName, schemaNamespace, out odcmEnum)
+            odcmModel.TryResolveType(enumTypeTestNode.Name, enumTypeTestNode.Namespace, out odcmEnum)
                 .Should()
                 .BeTrue("because an enum type in the schema should result in an OdcmType");
             odcmEnum.Should().BeOfType<OdcmEnum>("because an enum type in the schema should result in an OdcmEnum");
@@ -151,37 +105,18 @@ namespace ODataReader.v4UnitTests
         [Fact]
         public void When_An_Underlying_Type_is_set_it_returns_an_OdcmEnum_with_the_specified_UnderlyingType()
         {
-            var schemaNamespace = string.Empty;
-            var enumName = string.Empty;
-            var enumMemberCount = 0;
-            var underlyingType = string.Empty;
+            var underlyingType = Any.Csdl.RandomEnumUnderlyingType();
 
-            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
-            {
-                schema.Add(Any.Csdl.EnumType(enumType =>
-                {
-                    foreach (var member in Any.Sequence((i) => Any.Csdl.Member(), Any.Int(1, 5)))
-                    {
-                        enumType.Add(member);
-                        enumMemberCount++;
-                    }
-                    enumName = enumType.Attribute("Name").Value;
-                    underlyingType = Any.Csdl.RandomEnumUnderlyingType();
-                    enumType.AddAttribute("UnderlyingType", underlyingType);
-                }));
-                schema.Add(Any.Csdl.EntityContainer());
-                schemaNamespace = schema.Attribute("Namespace").Value;
-            });
+            var testCase = new EdmxTestCase()
+                .AddEnumType(EdmxTestCase.Keys.EnumType, (_, enumType) => enumType.AddAttribute("UnderlyingType", underlyingType));
 
-            var serviceMetadata = new TextFileCollection
-            {
-                new TextFile("$metadata", edmxElement.ToString())
-            };
+            var enumTypeTestNode = testCase[EdmxTestCase.Keys.EnumType];
+            var enumMemberCount = (from x in enumTypeTestNode.Element.Descendants() where x.Name.LocalName.Equals("Member") select x).Count();
 
-            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
 
             OdcmType odcmEnum;
-            odcmModel.TryResolveType(enumName, schemaNamespace, out odcmEnum)
+            odcmModel.TryResolveType(enumTypeTestNode.Name, enumTypeTestNode.Namespace, out odcmEnum)
                 .Should()
                 .BeTrue("because an enum type in the schema should result in an OdcmType");
             odcmEnum.Should().BeOfType<OdcmEnum>("because an enum type in the schema should result in an OdcmEnum");

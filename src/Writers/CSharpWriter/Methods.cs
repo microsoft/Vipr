@@ -14,6 +14,10 @@ namespace CSharpWriter
         {
             return Methods.ForEntityType(odcmClass);
         }
+        public static IEnumerable<Method> ForConcreteMediaInterface(OdcmClass odcmClass)
+        {
+            return Methods.ForEntityType(odcmClass);
+        }
 
         public static IEnumerable<Method> ForConcrete(OdcmClass odcmClass)
         {
@@ -70,12 +74,29 @@ namespace CSharpWriter
 
         public static IEnumerable<Method> ForCollectionInterface(OdcmClass odcmClass)
         {
+            var odcmMediaClass = odcmClass as OdcmMediaClass;
+            if (odcmMediaClass != null)
+            {
+                return ForMediaCollectionInterface(odcmMediaClass);
+            }
+
             return Methods.GetMethodsBoundToCollection(odcmClass)
                 .Concat(new Method[]
                 {
                     new CollectionGetByIdMethod(odcmClass),
                     new CollectionExecuteAsyncMethod(odcmClass),
                     new AddAsyncMethod(odcmClass)
+                });
+        }
+
+        public static IEnumerable<Method> ForMediaCollectionInterface(OdcmMediaClass odcmClass)
+        {
+            return Methods.GetMethodsBoundToCollection(odcmClass)
+                .Concat(new Method[]
+                {
+                    new CollectionGetByIdMethod(odcmClass),
+                    new CollectionExecuteAsyncMethod(odcmClass),
+                    new AddAsyncMediaMethod(odcmClass)
                 });
         }
 

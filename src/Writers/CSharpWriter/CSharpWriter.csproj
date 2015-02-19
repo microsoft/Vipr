@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddAsyncMediaMethod.cs" />
     <Compile Include="Classes.cs" />
     <Compile Include="CollectionCountAsyncMethod.cs" />
     <Compile Include="ContainerAddToCollectionMethod.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Type.cs" />
     <Compile Include="TypeService.cs" />
     <Compile Include="UpcastMethodBase.cs" />
+    <Compile Include="Visibility.cs" />
     <Compile Include="WriterExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

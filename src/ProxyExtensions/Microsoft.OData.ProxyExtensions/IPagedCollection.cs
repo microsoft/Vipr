@@ -1,16 +1,26 @@
-﻿namespace Microsoft.OData.ProxyExtensions
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Microsoft.OData.ProxyExtensions
 {
     public interface IPagedCollection
     {
-        global::System.Collections.Generic.IReadOnlyList<object> CurrentPage { get; }
+        IReadOnlyList<object> CurrentPage { get; }
+
         bool MorePagesAvailable { get; }
-        global::System.Threading.Tasks.Task<IPagedCollection> GetNextPageAsync();
+
+        Task<IPagedCollection> GetNextPageAsync();
     }
 
     public interface IPagedCollection<TElement>
     {
-        global::System.Collections.Generic.IReadOnlyList<TElement> CurrentPage { get; }
+        IReadOnlyList<TElement> CurrentPage { get; }
+
         bool MorePagesAvailable { get; }
-        global::System.Threading.Tasks.Task<IPagedCollection<TElement>> GetNextPageAsync();
+
+        Task<IPagedCollection<TElement>> GetNextPageAsync();
     }
 }

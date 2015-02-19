@@ -14,7 +14,7 @@ namespace CSharpWriter
             Parameters = new[]
             {
                 new Parameter(new Type(NamesService.GetConcreteInterfaceName(odcmClass)), "item"),
-                new Parameter(new Type(NamesService.GetPrimitiveTypeName("Boolean")), "dontSave", "false")
+                new Parameter(new Type(NamesService.GetPrimitiveTypeName("Boolean")), "deferSaveChanges", "false")
             };
 
             ReturnType = new Type(Identifier.Task);
