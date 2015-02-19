@@ -136,7 +136,7 @@ namespace CSharpWriterUnitTests
 
         private IEnumerable<Type> GetKeyTypes()
         {
-            return ((OdcmEntityClass)Class).Key
+            return Class.Key
                 .Select(p => p.Type)
                 .Select(t => Proxy.GetClass(t.Namespace, t.Name));
         }

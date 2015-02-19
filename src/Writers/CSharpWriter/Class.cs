@@ -67,7 +67,7 @@ namespace CSharpWriter
             };
         }
 
-        public static Class ForConcrete(OdcmClass odcmClass)
+        public static Class ForConcrete(OdcmEntityClass odcmClass)
         {
             return new Class
             {
@@ -87,7 +87,7 @@ namespace CSharpWriter
             };
         }
 
-        public static Class ForCollection(OdcmClass odcmClass)
+        public static Class ForCollection(OdcmEntityClass odcmClass)
         {
             return new Class
             {

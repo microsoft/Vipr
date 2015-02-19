@@ -22,7 +22,7 @@ namespace Vipr.Core.CodeModel
 
         public override string CanonicalName()
         {
-            return string.Format("{0}.{1}", Namespace, base.CanonicalName());
+            return MakeCanonicalName(base.CanonicalName(), Namespace);
         }
     }
 }

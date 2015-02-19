@@ -8,7 +8,7 @@ namespace CSharpWriter
 {
     public class Indexers
     {
-        public static IEnumerable<Indexer> ForCollection(OdcmClass odcmClass)
+        public static IEnumerable<Indexer> ForCollection(OdcmEntityClass odcmClass)
         {
             return new Indexer[]
             {

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -54,15 +55,17 @@ namespace Vipr.Core.CodeModel
             }
 
             _Types.Add(type);
-            ;
+
             odcmNamespace.Types.Add(type);
         }
 
         public bool TryResolveType<T>(string name, string @namespace, out T type) where T : OdcmType
         {
+            string canonicalName = OdcmObject.MakeCanonicalName(name, @namespace);
+
             foreach (OdcmType candidate in _Types)
             {
-                if (string.Equals(candidate.Name, name) && string.Equals(candidate.Namespace, @namespace))
+                if (candidate.CanonicalName().Equals(canonicalName, StringComparison.InvariantCulture))
                 {
                     type = candidate as T;
                     return true;

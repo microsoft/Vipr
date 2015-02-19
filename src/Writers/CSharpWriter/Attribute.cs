@@ -27,12 +27,12 @@ namespace CSharpWriter
             };
         }
 
-        public static Attribute ForMicrosoftOdataClientKey(OdcmClass odcmClass)
+        public static Attribute ForMicrosoftOdataClientKey(OdcmEntityClass odcmClass)
         {
             return new Attribute
             {
                 Type = new Type(new Identifier("global::Microsoft.OData.Client", "Key")),
-                Parameters = ((OdcmEntityClass)odcmClass).Key.ToDictionary<OdcmProperty, string, string>(p => p.Name, p => null)
+                Parameters = odcmClass.Key.ToDictionary<OdcmProperty, string, string>(p => p.Name, p => null)
             };
         }
 

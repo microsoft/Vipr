@@ -55,7 +55,7 @@ namespace CSharpWriter
             };
         }
 
-        public static Interface ForCollection(OdcmClass odcmClass)
+        public static Interface ForCollection(OdcmEntityClass odcmClass)
         {
             return new Interface
             {

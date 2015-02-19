@@ -12,9 +12,9 @@ namespace CSharpWriter
     {
         public Dictionary<Parameter, OdcmProperty> ParameterToPropertyMap { get; private set; }
 
-        public CollectionGetByIdIndexer(OdcmClass odcmClass)
+        public CollectionGetByIdIndexer(OdcmEntityClass odcmClass)
         {
-            var keyProperties = ((OdcmEntityClass)odcmClass).Key;
+            var keyProperties = odcmClass.Key;
 
             ParameterToPropertyMap = keyProperties.ToDictionary(Parameter.FromProperty, p => p);
 

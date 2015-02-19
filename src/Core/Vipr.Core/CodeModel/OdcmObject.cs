@@ -21,7 +21,7 @@ namespace Vipr.Core.CodeModel
 
         public static string MakeCanonicalName(string name, string @namespace)
         {
-            return string.Format("{0}.{1}", name, @namespace);
+            return string.Format("{1}.{0}", name, @namespace);
         }
 
         public static string MakeCanonicalName(string name, string @namespace, params OdcmType[] parameters)
