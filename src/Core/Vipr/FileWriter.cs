@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Vipr
 {
-    public class FileWriter
+    internal class FileWriter
     {
         public static void Write(IDictionary<string, string> fileNameToContents, string outputDirectoryPath = null)
         {

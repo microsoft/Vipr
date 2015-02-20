@@ -11,7 +11,7 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr
 {
-    public class Bootstrapper
+    internal class Bootstrapper
     {
         const string Usage = @"Vipr CLI Tool
 Usage:

@@ -13,7 +13,7 @@ namespace CSharpWriter
         {
         }
 
-        public IDictionary<string, string> GenerateProxy(OdcmModel model)
+        public FileGroup GenerateProxy(OdcmModel model)
         {
             var csProject = new CSharpProject(model);
 
