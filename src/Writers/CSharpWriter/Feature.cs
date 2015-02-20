@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Generic;
-using System.Linq;
 using Vipr.Core.CodeModel;
 
 namespace CSharpWriter
@@ -16,12 +15,12 @@ namespace CSharpWriter
 
         internal Feature()
         {
-            Enums = Enumerable.Empty<Enum>();
-            Classes = Enumerable.Empty<Class>();
-            Interfaces = Enumerable.Empty<Interface>();
+            Enums = global::CSharpWriter.Enums.Empty;
+            Classes = global::CSharpWriter.Classes.Empty;
+            Interfaces = global::CSharpWriter.Interfaces.Empty;
         }
 
-        public static Feature ForCountableCollection(OdcmClass odcmClass)
+        public static Feature ForCountableCollection(OdcmEntityClass odcmClass)
         {
             return new Feature
             {
@@ -36,22 +35,12 @@ namespace CSharpWriter
             };
         }
 
-        public static Feature ForOdcmClassEntity(OdcmClass odcmClass)
+        public static Feature ForOdcmClassEntity(OdcmEntityClass odcmClass)
         {
             return new Feature
             {
-                Classes = new[]
-                {
-                    Class.ForConcrete(odcmClass),
-                    Class.ForFetcher(odcmClass),
-                    Class.ForCollection(odcmClass),
-                },
-                Interfaces = new[]
-                {
-                    Interface.ForConcrete(odcmClass),
-                    Interface.ForFetcher(odcmClass),
-                    Interface.ForCollection(odcmClass),
-                }
+                Classes = global::CSharpWriter.Classes.ForOdcmClassEntity(odcmClass),
+                Interfaces = global::CSharpWriter.Interfaces.ForOdcmClassEntity(odcmClass),
             };
         }
 
@@ -59,7 +48,7 @@ namespace CSharpWriter
         {
             return new Feature
             {
-                Classes = new[] {Class.ForComplex(odcmClass)}
+                Classes = global::CSharpWriter.Classes.ForOdcmClassComplex(odcmClass),
             };
         }
 
@@ -67,8 +56,8 @@ namespace CSharpWriter
         {
             return new Feature
             {
-                Classes = new[] {Class.ForEntityContainer(model, odcmClass)},
-                Interfaces = new[] {Interface.ForEntityContainer(odcmClass)},
+                Classes = global::CSharpWriter.Classes.ForOdcmClassService(odcmClass, model),
+                Interfaces = global::CSharpWriter.Interfaces.ForOdcmClassService(odcmClass),
             };
         }
     }
