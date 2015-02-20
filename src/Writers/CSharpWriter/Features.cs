@@ -62,11 +62,7 @@ namespace CSharpWriter
         {
             return new[]
             {
-                new Feature
-                {
-                    Classes = new[] {Class.ForEntityContainer(model, odcmClass)},
-                    Interfaces = new[] {Interface.ForEntityContainer(odcmClass)},
-                }
+                Feature.ForOdcmClassService(odcmClass, model),
             };
         }
 
@@ -74,21 +70,8 @@ namespace CSharpWriter
         {
             return new[]
             {
-                new Feature
-                {
-                    Classes = new[]
-                    {
-                        Class.ForConcrete(odcmClass),
-                        Class.ForFetcher(odcmClass),
-                        Class.ForCollection(odcmClass)
-                    },
-                    Interfaces = new[]
-                    {
-                        Interface.ForConcrete(odcmClass),
-                        Interface.ForFetcher(odcmClass),
-                        Interface.ForCollection(odcmClass)
-                    }
-                }
+                Feature.ForOdcmClassEntity(odcmClass),
+                Feature.ForCountableCollection(odcmClass),
             };
         }
 
@@ -96,10 +79,7 @@ namespace CSharpWriter
         {
             return new[]
             {
-                new Feature
-                {
-                    Classes = new[] {Class.ForComplex(odcmClass)}
-                }
+                Feature.ForOdcmClassComplex(odcmClass),
             };
         }
     }

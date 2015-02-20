@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes.cs" />
+    <Compile Include="CollectionCountAsyncMethod.cs" />
     <Compile Include="ContainerAddToCollectionMethod.cs" />
     <Compile Include="AttributableStructure.cs" />
     <Compile Include="Attribute.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="EntityFunctionMethod.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="EnumMember.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="ExplicitlyImplementableMember.cs" />
     <Compile Include="Feature.cs" />
     <Compile Include="Features.cs" />
@@ -85,6 +88,7 @@
     <Compile Include="GeneratedEdmModelCreateXmlReaderMethod.cs" />
     <Compile Include="GeneratedEdmModelGetInstanceMethod.cs" />
     <Compile Include="GeneratedEdmModelLoadModelFromStringMethod.cs" />
+    <Compile Include="ImplementedInterfaces.cs" />
     <Compile Include="Indexer.cs" />
     <Compile Include="Constructor.cs" />
     <Compile Include="Indexers.cs" />
@@ -138,6 +142,7 @@
       <Name>Vipr.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -65,5 +65,7 @@ namespace CSharpWriter
         {
             return odcmClass.StructuralProperties().Select(Field.ForStructuralProperty);
         }
+
+        public static IEnumerable<Field> Empty { get { return Enumerable.Empty<Field>(); } }
     }
 }

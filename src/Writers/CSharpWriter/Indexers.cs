@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using Vipr.Core.CodeModel;
 
 namespace CSharpWriter
@@ -15,5 +16,7 @@ namespace CSharpWriter
                 new CollectionGetByIdIndexer(odcmClass)
             };
         }
+
+        public static IEnumerable<Indexer> Empty { get { return Enumerable.Empty<Indexer>(); } }
     }
 }

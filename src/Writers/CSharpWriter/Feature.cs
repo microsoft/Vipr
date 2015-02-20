@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Generic;
-using System.Linq;
+using Vipr.Core.CodeModel;
 
 namespace CSharpWriter
 {
@@ -15,9 +15,50 @@ namespace CSharpWriter
 
         internal Feature()
         {
-            Enums = Enumerable.Empty<Enum>();
-            Classes = Enumerable.Empty<Class>();
-            Interfaces = Enumerable.Empty<Interface>();
+            Enums = global::CSharpWriter.Enums.Empty;
+            Classes = global::CSharpWriter.Classes.Empty;
+            Interfaces = global::CSharpWriter.Interfaces.Empty;
+        }
+
+        public static Feature ForCountableCollection(OdcmEntityClass odcmClass)
+        {
+            return new Feature
+            {
+                Classes = new[]
+                {
+                    Class.ForCountableCollection(odcmClass)
+                },
+                Interfaces = new[]
+                {
+                    Interface.ForCountableCollection(odcmClass)
+                }
+            };
+        }
+
+        public static Feature ForOdcmClassEntity(OdcmEntityClass odcmClass)
+        {
+            return new Feature
+            {
+                Classes = global::CSharpWriter.Classes.ForOdcmClassEntity(odcmClass),
+                Interfaces = global::CSharpWriter.Interfaces.ForOdcmClassEntity(odcmClass),
+            };
+        }
+
+        public static Feature ForOdcmClassComplex(OdcmClass odcmClass)
+        {
+            return new Feature
+            {
+                Classes = global::CSharpWriter.Classes.ForOdcmClassComplex(odcmClass),
+            };
+        }
+
+        public static Feature ForOdcmClassService(OdcmClass odcmClass, OdcmModel model)
+        {
+            return new Feature
+            {
+                Classes = global::CSharpWriter.Classes.ForOdcmClassService(odcmClass, model),
+                Interfaces = global::CSharpWriter.Interfaces.ForOdcmClassService(odcmClass),
+            };
         }
     }
 }

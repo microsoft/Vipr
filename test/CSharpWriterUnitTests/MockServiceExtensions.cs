@@ -82,6 +82,13 @@ namespace CSharpWriterUnitTests
             return mockService.SetupGetEntity(targetEntity.Class.GetDefaultEntitySetPath(), targetEntity.Class.GetDefaultEntitySetName(),
                 targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()), expandTargets);
         }
+        
+        public static MockService SetupGetEntitySetCount(this MockService mockService, EntityArtifacts targetEntity,
+            long count)
+        {
+            return mockService.SetupGetEntitySetCount(targetEntity.Class.GetDefaultEntitySetPath(), count);
+        }
+
         public static JObject GetOdataJsonInstance(this MockService mockService, EntityArtifacts targetEntity)
         {
             return

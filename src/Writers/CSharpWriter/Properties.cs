@@ -97,5 +97,7 @@ namespace CSharpWriter
         {
             return odcmClass.StructuralProperties().Select(Property.AsConcreteStructuralProperty);
         }
+
+        public static IEnumerable<Property> Empty { get { return Enumerable.Empty<Property>(); }}
     }
 }
