@@ -15,7 +15,7 @@ namespace CSharpWriterUnitTests
     {
         protected OdcmModel Model;
         protected OdcmNamespace Namespace;
-        protected OdcmClass Class;
+        protected OdcmEntityClass Class;
         protected Assembly Proxy;
         protected EntityArtifacts TargetEntity;
         protected Type ConcreteType;

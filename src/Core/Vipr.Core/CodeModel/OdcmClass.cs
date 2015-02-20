@@ -15,21 +15,18 @@ namespace Vipr.Core.CodeModel
 
         public IList<OdcmClass> Derived { get; private set; }
 
-        public List<OdcmProperty> Key { get; private set; }
-
         public OdcmClassKind Kind { get; set; }
 
         public List<OdcmProperty> Properties { get; private set; }
 
         public List<OdcmMethod> Methods { get; private set; }
 
-        public OdcmClass(string name, string @namespace, OdcmClassKind kind)
+        public OdcmClass(string name, string @namespace)
             : base(name, @namespace)
         {
-            Kind = kind;
+            Kind = OdcmClassKind.Complex;
             Properties = new List<OdcmProperty>();
             Methods = new List<OdcmMethod>();
-            Key = new List<OdcmProperty>();
             Derived = new List<OdcmClass>();
         }
     }

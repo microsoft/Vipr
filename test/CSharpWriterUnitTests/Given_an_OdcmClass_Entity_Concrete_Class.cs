@@ -12,6 +12,7 @@ using Microsoft.OData.ProxyExtensions;
 using System.Linq;
 using System.Reflection;
 using Vipr.Core;
+using Vipr.Core.CodeModel;
 using Type = System.Type;
 using Xunit;
 

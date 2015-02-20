@@ -27,7 +27,7 @@ namespace CSharpWriter
             };
         }
 
-        public static Attribute ForMicrosoftOdataClientKey(OdcmClass odcmClass)
+        public static Attribute ForMicrosoftOdataClientKey(OdcmEntityClass odcmClass)
         {
             return new Attribute
             {

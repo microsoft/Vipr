@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Vipr.Core;
+using Vipr.Core.CodeModel;
 using Type = System.Type;
 using Xunit;
 

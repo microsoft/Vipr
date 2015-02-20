@@ -13,5 +13,10 @@ namespace ODataReader.v4UnitTests
         {
             element.Add(new XAttribute(name, value));
         }
+
+        public static string GetAttribute(this XElement element, string name)
+        {
+            return element.Attribute(name).Value;
+        }
     }
 }

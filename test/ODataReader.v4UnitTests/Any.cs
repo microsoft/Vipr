@@ -88,6 +88,15 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
+            public static XElement Action(string returnType, Action<XElement> config = null)
+            {
+                return Action(action =>
+                {
+                    action.Add(ReturnType(returnType));
+                    if (config != null) config(action);
+                });
+            }
+
             public static XElement ActionImport(Action<XElement> config = null)
             {
                 string pascalCaseName = PascalCaseName(Int(1, 3));
@@ -101,6 +110,15 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
+            public static XElement ActionImport(string action, Action<XElement> config = null)
+            {
+                return ActionImport(actionImport =>
+                {
+                    actionImport.AddAttribute("Action", action);
+                    if (config != null) config(actionImport);
+                });
+            }
+
             public static XElement ComplexType(Action<XElement> config = null)
             {
                 string pascalCaseName = PascalCaseName(Int(1, 3));
@@ -112,6 +130,15 @@ namespace Microsoft.Its.Recipes
                 if (config != null) config(element);
 
                 return element;
+            }
+
+            public static XElement ComplexType(string baseType, Action<XElement> config = null)
+            {
+                return ComplexType(complexType =>
+                {
+                    complexType.AddAttribute("BaseType", baseType);
+                    if (config != null) config(complexType);
+                });
             }
 
             public static XElement DataServices(Action<XElement> config = null)
@@ -171,6 +198,15 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
+            public static XElement EntityType(string baseType, Action<XElement> config = null)
+            {
+                return EntityType(entityType =>
+                {
+                    entityType.AddAttribute("BaseType", baseType);
+                    if (config != null) config(entityType);
+                });
+            }
+
             public static XElement EnumType(Action<XElement> config = null)
             {
                 string pascalCaseName = PascalCaseName(Int(1, 3));
@@ -197,6 +233,14 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
+            public static XElement Function(string returnType, Action<XElement> config = null)
+            {
+                return Function(function =>
+                {
+                    function.Add(ReturnType(returnType));
+                    if (config != null) config(function);
+                });
+            }
             public static XElement FunctionImport(Action<XElement> config = null)
             {
                 string pascalCaseName = PascalCaseName(Int(1, 3));
@@ -259,6 +303,15 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
+            public static XElement Parameter(string type, Action<XElement> config = null)
+            {
+                return Parameter(parameter =>
+                {
+                    parameter.AddAttribute("Type", type);
+                    if (config != null) config(parameter);
+                });
+            }
+
             public static XElement Property(Action<XElement> config = null)
             {
                 string pascalCaseName = PascalCaseName(Int(1, 3));
@@ -277,6 +330,16 @@ namespace Microsoft.Its.Recipes
                 return Property(property =>
                 {
                     property.AddAttribute("Type", type);
+                    if (config != null) config(property);
+                });
+            }
+
+            public static XElement Property(string type, bool isNullable, Action<XElement> config = null)
+            {
+                return Property(property =>
+                {
+                    property.AddAttribute("Type", type);
+                    property.AddAttribute("Nullable", isNullable);
                     if (config != null) config(property);
                 });
             }
@@ -301,15 +364,20 @@ namespace Microsoft.Its.Recipes
 
             public static XElement ReturnType(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string returnTypeString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.ReturnType_element, pascalCaseName);
-
-                XElement element = XElement.Parse(returnTypeString);
+                XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.ReturnType_element);
 
                 if (config != null) config(element);
 
                 return element;
+            }
+
+            public static XElement ReturnType(string type, Action<XElement> config = null)
+            {
+                return ReturnType(returnType =>
+                {
+                    returnType.AddAttribute("Type", type);
+                    if (config != null) config(returnType);
+                });
             }
 
             public static XElement Schema(Action<XElement> config = null)

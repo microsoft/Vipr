@@ -33,7 +33,7 @@ namespace CSharpWriter
 
                 case OdcmClassKind.MediaEntity:
                 case OdcmClassKind.Entity:
-                    return Features.ForOdcmClassEntity(odcmClass);
+                    return Features.ForOdcmClassEntity((OdcmEntityClass)odcmClass);
 
                 case OdcmClassKind.Service:
                     return Enumerable.Empty<Feature>();
@@ -70,7 +70,7 @@ namespace CSharpWriter
             };
         }
 
-        private static IEnumerable<Feature> ForOdcmClassEntity(OdcmClass odcmClass)
+        private static IEnumerable<Feature> ForOdcmClassEntity(OdcmEntityClass odcmClass)
         {
             return new[]
             {

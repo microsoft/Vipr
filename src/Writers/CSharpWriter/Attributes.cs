@@ -8,7 +8,7 @@ namespace CSharpWriter
 {
     public class Attributes
     {
-        public static IEnumerable<Attribute> ForConcrete(OdcmClass odcmClass)
+        public static IEnumerable<Attribute> ForConcrete(OdcmEntityClass odcmClass)
         {
             return new[]
             {
