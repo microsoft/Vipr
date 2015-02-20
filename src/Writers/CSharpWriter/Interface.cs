@@ -79,5 +79,14 @@ namespace CSharpWriter
                 Namespace = odcmContainer.Namespace
             };
         }
+
+        public static Interface ForCountableCollection(OdcmClass odcmClass)
+        {
+            return new Interface
+            {
+                Identifier = NamesService.GetCollectionInterfaceName(odcmClass),
+                Methods = global::CSharpWriter.Methods.ForCountableCollectionInterface(odcmClass)
+            };
+        }
     }
 }

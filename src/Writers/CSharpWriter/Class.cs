@@ -102,6 +102,16 @@ namespace CSharpWriter
             };
         }
 
+        public static Class ForCountableCollection(OdcmClass odcmClass)
+        {
+            return new Class
+            {
+                AccessModifier = "internal ",
+                Identifier = NamesService.GetCollectionTypeName(odcmClass),
+                Methods = global::CSharpWriter.Methods.ForCountableCollectionInterface(odcmClass)
+            };
+        }
+
         internal static Class ForEntityContainer(OdcmModel odcmModel, OdcmClass odcmContainer)
         {
             return new Class

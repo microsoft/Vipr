@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionCountAsyncMethod.cs" />
     <Compile Include="ContainerAddToCollectionMethod.cs" />
     <Compile Include="AttributableStructure.cs" />
     <Compile Include="Attribute.cs" />

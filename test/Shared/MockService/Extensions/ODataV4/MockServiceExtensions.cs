@@ -119,6 +119,23 @@ namespace Microsoft.MockService.Extensions.ODataV4
             return mockService;
         }
 
+        public static MockService SetupGetEntitySetCount(this MockService mockService, string entitySetPath,
+            long count)
+        {
+            mockService
+                .Setup(c => c.Request.Method == "GET" &&
+                            c.Request.Path.Value == entitySetPath + "/$count",
+                    (b, c) =>
+                    {
+                        c.Response.StatusCode = 200;
+                        c.Response.WithDefaultODataHeaders();
+                        c.Response.ContentType = "text/plain";
+                        c.Response.Write(count.ToString());
+                    });
+
+            return mockService;
+        }
+
         public static MockService SetupGetWithEmptyResponse(this MockService mockService, string entityPropertyPath)
         {
             mockService

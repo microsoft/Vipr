@@ -63,5 +63,7 @@ namespace CSharpWriter
 
             return retVal;
         }
+
+        public static IEnumerable<Type> Empty { get { return Enumerable.Empty<Type>(); } }
     }
 }

@@ -144,5 +144,10 @@ namespace CSharpWriter
         {
             return odcmClass.Methods.Where(m => !m.IsBoundToCollection).Select(Method.ForEntityType);
         }
+
+        public static IEnumerable<Method> ForCountableCollectionInterface(OdcmClass odcmClass)
+        {
+            return new[] { new CollectionCountAsyncMethod() };
+        }
     }
 }
