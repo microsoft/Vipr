@@ -11,7 +11,7 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr
 {
-    public class Bootstrapper
+    internal class Bootstrapper
     {
         const string Usage = @"Vipr CLI Tool
 Usage:
@@ -105,9 +105,9 @@ Options:
             FileWriter.Write(MetadataToClientSource(edmxString), outputDirectoryPath);
         }
 
-        private IDictionary<string, string> MetadataToClientSource(string edmxString)
+        private TextFileCollection MetadataToClientSource(string edmxString)
         {
-            var model = OdcmReader.GenerateOdcmModel(new Dictionary<string, string> { { "$metadata", edmxString } });
+            var model = OdcmReader.GenerateOdcmModel(new TextFileCollection {new TextFile("$metadata", edmxString)});
 
             ExportOcdmModel(model);
 

@@ -216,7 +216,7 @@ namespace ViprCliUnitTests
         
         private void ValidateProxyGeneration(string metadata, string commandLine)
         {
-            var outputFiles = Any.FileAndContentsDictionary();
+            var outputFiles = Any.TextFileCollection();
 
             try
             {
@@ -234,11 +234,11 @@ namespace ViprCliUnitTests
             }
         }
 
-        private void ConfigureMocks(string metadata, OdcmModel model, IDictionary<string, string> outputFiles)
+        private void ConfigureMocks(string metadata, OdcmModel model, TextFileCollection outputTextFiles)
         {
             ConfigureReaderMock(metadata, model);
 
-            ConfigureWriterMock(model, outputFiles);
+            ConfigureWriterMock(model, outputTextFiles);
 
             ConfigureBootstrapperMock();
         }
@@ -254,11 +254,11 @@ namespace ViprCliUnitTests
                 .Returns(_writerMock.Object);
         }
 
-        private void ConfigureWriterMock(OdcmModel model, IDictionary<string, string> outputFiles)
+        private void ConfigureWriterMock(OdcmModel model, TextFileCollection outputTextFiles)
         {
             _writerMock
                 .Setup(w => w.GenerateProxy(It.Is<OdcmModel>(m => m == model)))
-                .Returns(outputFiles);
+                .Returns(outputTextFiles);
         }
 
         private void ConfigureReaderMock(string metadata, OdcmModel model)
@@ -267,8 +267,8 @@ namespace ViprCliUnitTests
                 .Setup(
                     r =>
                         r.GenerateOdcmModel(
-                            It.Is<Dictionary<string, string>>(
-                                d => d.ContainsKey("$metadata") && d["$metadata"].Equals(metadata))))
+                            It.Is<TextFileCollection>(
+                                g => g.Any(f => f.RelativePath.Equals("$metadata") && f.Contents.Equals(metadata)))))
                 .Returns(model);
         }
 
@@ -291,17 +291,17 @@ namespace ViprCliUnitTests
 
             var fileName = Any.Word();
             var metadataPath = Path.Combine(_workingDirectory, fileName);
-            var fileAndContent = new Dictionary<string, string> {{fileName, metadata}};
+            var fileGroup = new TextFileCollection {new TextFile(fileName, metadata)};
 
             try
             {
-                FileSystemHelpers.WriteAsTextFiles(fileAndContent);
+                FileSystemHelpers.WriteFiles(fileGroup);
 
                 action(metadataPath);
             }
             finally
             {
-                FileSystemHelpers.DeleteFiles(fileAndContent);
+                FileSystemHelpers.DeleteFiles(fileGroup);
             }
         }
     }

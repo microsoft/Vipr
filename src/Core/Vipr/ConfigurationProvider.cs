@@ -3,7 +3,7 @@ using Vipr.Core;
 
 namespace Vipr
 {
-    public class ConfigurationProvider : IConfigurationProvider
+    internal class ConfigurationProvider : IConfigurationProvider
     {
         private static IConfigurationProvider _instance;
 

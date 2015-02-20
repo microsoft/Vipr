@@ -7,7 +7,7 @@ namespace DoubleReader
 {
     public class DoubleReader2 : IOdcmReader
     {
-        public OdcmModel GenerateOdcmModel(IDictionary<string, string> serviceMetadata)
+        public OdcmModel GenerateOdcmModel(TextFileCollection serviceMetadata)
         {
             throw new NotImplementedException();
         }

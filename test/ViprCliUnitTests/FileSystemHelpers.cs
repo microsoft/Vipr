@@ -1,42 +1,42 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using FluentAssertions;
+using Vipr.Core;
 
 namespace ViprCliUnitTests
 {
     public static class FileSystemHelpers
     {
-        public static void WriteAsTextFiles(IDictionary<string, string> textFiles, string workingDirectory = null)
+        public static void WriteFiles(TextFileCollection textFileCollection, string workingDirectory = null)
         {
-            foreach (var textFile in textFiles)
+            foreach (var textFile in textFileCollection)
             {
-                var filePath = textFile.Key;
+                var filePath = textFile.RelativePath;
 
                 filePath = GetFilePath(workingDirectory, filePath);
                 
-                File.WriteAllText(filePath, textFile.Value);
+                File.WriteAllText(filePath, textFile.Contents);
             }
         }
 
-        public static void ValidateTextFiles(IDictionary<string, string> textFiles, string workingDirectory = null)
+        public static void ValidateTextFiles(TextFileCollection textFiles, string workingDirectory = null)
         {
-            foreach (var fileName in textFiles.Keys)
+            foreach (var file in textFiles)
             {
-                var filePath = fileName;
+                var filePath = file.RelativePath;
 
                 filePath = GetFilePath(workingDirectory, filePath);
 
                 File.ReadAllText(filePath)
-                    .Should().Be(textFiles[fileName]);
+                    .Should().Be(file.Contents);
             }
         }
 
-        public static void DeleteFiles(IDictionary<string, string> files, string workingDirectory = null)
+        public static void DeleteFiles(TextFileCollection textFiles, string workingDirectory = null)
         {
-            foreach (var fileName in files.Keys)
+            foreach (var file in textFiles)
             {
-                var filePath = fileName;
+                var filePath = file.RelativePath;
 
                 filePath = GetFilePath(workingDirectory, filePath);
 

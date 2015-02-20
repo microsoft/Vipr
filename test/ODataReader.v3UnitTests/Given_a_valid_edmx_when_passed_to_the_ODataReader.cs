@@ -6,6 +6,7 @@ using Microsoft.Its.Recipes;
 using ODataReader.v3;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Vipr.Core;
 using Xunit;
 
 namespace ODataReader.v3UnitTests
@@ -28,10 +29,11 @@ namespace ODataReader.v3UnitTests
                         Any.Schema(schema => schema.Add(
                             Any.EntityContainer()))))));
 
-            var serviceMetadata = new Dictionary<string, string>()
+            var serviceMetadata = new TextFileCollection
             {
-                {"$metadata", edmxElement.ToString()}
+                new TextFile("$metadata", edmxElement.ToString())
             };
+
             var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
 
             odcmModel.Should().NotBeNull("because a valid edmx should yield a valid model");

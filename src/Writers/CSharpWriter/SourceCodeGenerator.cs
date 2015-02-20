@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Vipr.Core;
 using Vipr.Core.CodeModel;
 
 namespace CSharpWriter
@@ -20,13 +21,13 @@ namespace CSharpWriter
             InitializeDependencies(serviceType);
         }
 
-        internal IDictionary<string, string> Generate(CSharpProject project)
+        internal TextFileCollection Generate(CSharpProject project)
         {
             Write(project);
 
-            return new Dictionary<string, string>
+            return new TextFileCollection
             {
-                {"CSharpProxy.cs", _builder.ToString()}
+                new TextFile("CSharpProxy.cs", _builder.ToString())
             };
         }
 

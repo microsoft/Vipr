@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using Microsoft.Its.Recipes;
 using Vipr;
+using Vipr.Core;
 using Xunit;
 
 namespace ViprCliUnitTests
@@ -11,13 +11,13 @@ namespace ViprCliUnitTests
         [Fact]
         public void When_no_files_are_specified_it_returns()
         {
-            FileWriter.Write(new Dictionary<string, string>());
+            FileWriter.Write(new TextFileCollection());
         }
 
         [Fact]
         public void When_outputDirectoryPath_is_not_specified_then_it_writes_the_files_to_the_working_directory()
         {
-            var files = Any.FileAndContentsDictionary();
+            var files = Any.TextFileCollection();
 
             try
             {
@@ -34,7 +34,7 @@ namespace ViprCliUnitTests
         [Fact]
         public void When_outputDirectoryPath_is_specified_and_exitst_then_it_writes_the_files_to_the_outputDirectoryPath()
         {
-            var files = Any.FileAndContentsDictionary();
+            var files = Any.TextFileCollection();
 
             var outputDirectoryPath = Any.Word();
 
@@ -57,7 +57,7 @@ namespace ViprCliUnitTests
         [Fact]
         public void When_outputDirectoryPath_is_specified_and_does_not_exitst_then_it_creates_the_directory_and_writes_the_files()
         {
-            var files = Any.FileAndContentsDictionary();
+            var files = Any.TextFileCollection();
 
             var outputDirectoryPath = Any.Word();
 

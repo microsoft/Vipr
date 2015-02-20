@@ -6,7 +6,7 @@ namespace Vipr
 {
     public static class TypeResolver
     {
-        public static T GetInstance<T>(string assemblyName) where T:class
+        internal static T GetInstance<T>(string assemblyName) where T:class
         {
             if (!typeof(T).IsInterface)
                 throw new InvalidOperationException(String.Format("{0} is not an interface.", typeof(T).Name));

@@ -1,23 +1,24 @@
 using System.Collections.Generic;
 using System.IO;
+using Vipr.Core;
 
 namespace Vipr
 {
-    public class FileWriter
+    internal class FileWriter
     {
-        public static void Write(IDictionary<string, string> fileNameToContents, string outputDirectoryPath = null)
+        public static void Write(TextFileCollection textFilesToWrite, string outputDirectoryPath = null)
         {
             if (!string.IsNullOrWhiteSpace(outputDirectoryPath) && !Directory.Exists(outputDirectoryPath))
                 Directory.CreateDirectory(outputDirectoryPath);
 
-            foreach (var file in fileNameToContents)
+            foreach (var file in textFilesToWrite)
             {
-                var filePath = file.Key;
+                var filePath = file.RelativePath;
 
                 if (!string.IsNullOrWhiteSpace(outputDirectoryPath))
                     filePath = Path.Combine(outputDirectoryPath, filePath);
 
-                File.WriteAllText(filePath, file.Value);
+                File.WriteAllText(filePath, file.Contents);
             }
         }
     }

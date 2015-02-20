@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Vipr
 {
-    public class MetadataResolver
+    internal class MetadataResolver
     {
         public static string GetMetadata(string metadataPath)
         {

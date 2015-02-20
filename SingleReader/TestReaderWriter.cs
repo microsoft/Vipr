@@ -6,14 +6,14 @@ namespace TestReaderWriter
 {
     public class TestReaderWriter:IOdcmReader, IOdcmWriter
     {
-        public OdcmModel GenerateOdcmModel(IDictionary<string, string> serviceMetadata)
+        public OdcmModel GenerateOdcmModel(TextFileCollection serviceMetadata)
         {
-            return new OdcmModel(new Dictionary<string, string> {{"$metadata", ""}});
+            return new OdcmModel(new TextFileCollection {new TextFile("$metadata", "")});
         }
 
-        public IDictionary<string, string> GenerateProxy(OdcmModel model)
+        public TextFileCollection GenerateProxy(OdcmModel model)
         {
-            return new Dictionary<string, string>();
+            return new TextFileCollection();
         }
     }
 }
