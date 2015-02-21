@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Microsoft.Its.Recipes;
 using Vipr;
 using Vipr.Core;
@@ -73,6 +74,39 @@ namespace ViprCliUnitTests
                 FileSystemHelpers.DeleteFiles(files, outputDirectoryPath);
 
                 Directory.Delete(outputDirectoryPath);
+            }
+        }
+
+        [Fact]
+        public void When_the_executing_assembly_is_executed_from_a_different_directory_files_are_written_to_that_directory()
+        {
+            var files = Any.TextFileCollection();
+
+            var currentDirectory = Environment.CurrentDirectory;
+
+            var workingDirectory = Path.Combine(Environment.CurrentDirectory, Any.Word());
+
+            var outputDirectoryPath = Any.Word();
+
+            try
+            {
+
+                Directory.CreateDirectory(workingDirectory);
+
+                Environment.CurrentDirectory = Path.Combine(workingDirectory);
+
+                FileWriter.Write(files, outputDirectoryPath);
+
+                FileSystemHelpers.ValidateTextFiles(files, outputDirectoryPath);
+            }
+            finally
+            {
+
+                FileSystemHelpers.DeleteFiles(files, outputDirectoryPath);
+
+                Directory.Delete(outputDirectoryPath);
+
+                Environment.CurrentDirectory = currentDirectory;
             }
         }
     }

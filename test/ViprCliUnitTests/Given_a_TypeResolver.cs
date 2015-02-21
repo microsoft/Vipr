@@ -28,7 +28,7 @@ namespace ViprCliUnitTests
         [Fact]
         public void When_the_assembly_cannot_be_found_it_throws_a_FileNotFoundException()
         {
-            Action getInstance = () => TypeResolver.GetInstance<ITestInterface>(Any.String(1));
+            Action getInstance = () => TypeResolver.GetInstance<ITestInterface>(Any.Word());
 
             getInstance.ShouldThrow<FileNotFoundException>("Because the assembly is not found.");
         }
