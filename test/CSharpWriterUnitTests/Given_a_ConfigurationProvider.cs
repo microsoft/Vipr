@@ -14,12 +14,12 @@ using Xunit;
 
 namespace CSharpWriterUnitTests
 {
-    public class Given_a_Configuration_Provider : CodeGenTestBase
+    public class Given_a_ConfigurationProvider : CodeGenTestBase
     {
         private OdcmModel _model;
 
         
-        public Given_a_Configuration_Provider()
+        public Given_a_ConfigurationProvider()
         {
             _model = Any.OdcmModel();
         }

@@ -57,6 +57,7 @@
     <Compile Include="Given_a_TypeResolver.cs" />
     <Compile Include="TestConfigurable.cs" />
     <Compile Include="TestSettings.cs" />
+    <Compile Include="TestSettings2.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FluentAssertions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">

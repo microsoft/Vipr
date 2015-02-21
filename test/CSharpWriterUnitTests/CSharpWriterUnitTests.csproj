@@ -152,7 +152,7 @@
     <Compile Include="Given_an_OdcmClass_Complex_Property_forced_to_pascal_case.cs" />
     <Compile Include="Given_an_OdcmParameter.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Property_forced_to_pascal_case.cs" />
-    <Compile Include="Given_a_Configuration_Provider.cs" />
+    <Compile Include="Given_a_ConfigurationProvider.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Abstract.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Derived.cs" />
     <Compile Include="Given_a_nullable_Primitive_OdcmProperty.cs" />

@@ -55,15 +55,7 @@
     <None Include="edmx.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="ExchangeClient.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ExchangeClient.cs</LastGenOutput>
-    </None>
-    <Compile Include="ExchangeClient.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExchangeClient.tt</DependentUpon>
-    </Compile>
+    <Compile Include="CSharpProxy.cs" />
     <Compile Include="ExchangeClient.Partial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="packages.config">
