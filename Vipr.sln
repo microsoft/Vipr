@@ -75,6 +75,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestReaderWriter", "test\Sh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoubleReader", "test\Shared\DoubleReader\DoubleReader.csproj", "{48AD9942-A216-4EEA-BB4B-DD336449042C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "package", "package", "{EF907DCB-E8CC-4F9F-8592-C19D1ED04EC2}"
+	ProjectSection(SolutionItems) = preProject
+		Microsoft.OData.ProxyExtensions.nuspec = Microsoft.OData.ProxyExtensions.nuspec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Android|Any CPU = Android|Any CPU
