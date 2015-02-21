@@ -1,0 +1,13 @@
+{
+    "ForcePropertyPascalCasing" :  true,
+    "NamespacePrefix": "Microsoft.Office365.SharePoint",
+    "OdcmNamespaceToProxyNamespace": {
+        "Microsoft.CoreServices": "CoreServices",
+        "Microsoft.FileServices": "FileServices"
+    },
+    "OdcmClassNameToProxyClassName": {
+        "Microsoft.CoreServices": {
+            "EntityContainer": "SharePointClient"
+        }
+    }
+}
