@@ -140,7 +140,7 @@ namespace CSharpWriterUnitTests
                     CompilerOptions = "/optimize",
                     GenerateExecutable = false,
                     GenerateInMemory = true,
-                    TreatWarningsAsErrors = false,
+                    TreatWarningsAsErrors = true,
                 };
             }
         }

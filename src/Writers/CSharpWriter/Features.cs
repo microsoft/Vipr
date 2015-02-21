@@ -74,7 +74,7 @@ namespace CSharpWriter
                 Feature.ForCountableCollection(odcmClass),
             };
 
-            if (!ConfigurationService.Settings.OmitUpcastMethods)
+            if (!ConfigurationService.Settings.OmitUpcastMethods && odcmClass.Base == null)
                 retVal.Add(Feature.ForUpcastMethods(odcmClass));
 
             return retVal;
