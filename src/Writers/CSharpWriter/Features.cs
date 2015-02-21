@@ -68,11 +68,16 @@ namespace CSharpWriter
 
         private static IEnumerable<Feature> ForOdcmClassEntity(OdcmEntityClass odcmClass)
         {
-            return new[]
+            var retVal = new List<Feature>
             {
                 Feature.ForOdcmClassEntity(odcmClass),
                 Feature.ForCountableCollection(odcmClass),
             };
+
+            if (!ConfigurationService.Settings.OmitUpcastMethods)
+                retVal.Add(Feature.ForUpcastMethods(odcmClass));
+
+            return retVal;
         }
 
         private static IEnumerable<Feature> ForOdcmClassComplex(OdcmClass odcmClass)

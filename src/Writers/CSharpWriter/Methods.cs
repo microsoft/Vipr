@@ -21,8 +21,6 @@ namespace CSharpWriter
 
             retVal.Add(new EnsureQueryMethod(odcmClass));
 
-            retVal.AddRange(Methods.ForConcreteUpcasts(odcmClass));
-
             if (!odcmClass.IsAbstract)
             {
                 retVal.Add(new ConcreteExecuteAsyncMethod(odcmClass));
@@ -32,13 +30,22 @@ namespace CSharpWriter
             return retVal;
         }
 
+        public static IEnumerable<Method> ForFetcherInterfaceUpcasts(OdcmClass odcmClass)
+        {
+            return odcmClass.NestedDerivedTypes()
+                    .Select(dr => new FetcherUpcastMethod(odcmClass, dr));
+        }
+
+        public static IEnumerable<Method> ForFetcherUpcasts(OdcmClass odcmClass)
+        {
+            return Methods.ForFetcherInterfaceUpcasts(odcmClass);
+        }
+
         public static IEnumerable<Method> ForFetcherInterface(OdcmClass odcmClass)
         {
             var retVal = new List<Method>();
 
             retVal.AddRange(Methods.ForEntityType(odcmClass));
-
-            retVal.AddRange(Methods.ForFetcherUpcasts(odcmClass));
 
             if (!odcmClass.IsAbstract)
             {
@@ -112,14 +119,6 @@ namespace CSharpWriter
             return GetMethodsBoundToEntityType(odcmClass);
         }
 
-        private static IEnumerable<Method> ForFetcherUpcasts(OdcmClass odcmClass)
-        {
-            return ConfigurationService.Settings.OmitFetcherUpcastMethods
-                ? Methods.Empty
-                : odcmClass.NestedDerivedTypes()
-                    .Select(dr => new FetcherUpcastMethod(odcmClass, dr));
-        }
-
         private static IEnumerable<Method> ForContainerAddToCollection(OdcmClass odcmClass)
         {
             return odcmClass.NavigationProperties()
@@ -127,11 +126,9 @@ namespace CSharpWriter
                     .Select(p => new ContainerAddToCollectionMethod(p));
         }
 
-        private static IEnumerable<Method> ForConcreteUpcasts(OdcmClass odcmClass)
+        internal static IEnumerable<Method> ForConcreteUpcasts(OdcmClass odcmClass)
         {
-            return ConfigurationService.Settings.OmitFetcherUpcastMethods
-                ? Methods.Empty
-                : odcmClass.NestedDerivedTypes()
+            return odcmClass.NestedDerivedTypes()
                     .Select(dr => new ConcreteUpcastMethod(odcmClass, dr));
         }
 

@@ -152,7 +152,7 @@ namespace CSharpWriterUnitTests
                 .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
                 .Returns(() => new CSharpWriterSettings
                 {
-                    OmitFetcherUpcastMethods = true
+                    OmitUpcastMethods = true
                 });
 
             var proxy = GetProxy(_model, configMock.Object);
@@ -176,7 +176,7 @@ namespace CSharpWriterUnitTests
                 .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
                 .Returns(() => new CSharpWriterSettings
                 {
-                    OmitFetcherUpcastMethods = false
+                    OmitUpcastMethods = false
                 });
 
             var proxy = GetProxy(_model, configMock.Object);

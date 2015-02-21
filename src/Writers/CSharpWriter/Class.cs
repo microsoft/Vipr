@@ -138,5 +138,25 @@ namespace CSharpWriter
                 Methods = global::CSharpWriter.Methods.ForGeneratedEdmModel(),
             };
         }
+
+        public static Class ForFetcherUpcastMethods(OdcmEntityClass odcmClass)
+        {
+            return new Class
+            {
+                AccessModifier = "internal ",
+                Identifier = NamesService.GetFetcherTypeName(odcmClass),
+                Methods = global::CSharpWriter.Methods.ForFetcherUpcasts(odcmClass),
+            };
+        }
+
+        public static Class ForConcreteIFetcherUpcastMethods(OdcmEntityClass odcmClass)
+        {
+            return new Class
+            {
+                AccessModifier = "public ",
+                Identifier = NamesService.GetConcreteTypeName(odcmClass),
+                Methods = global::CSharpWriter.Methods.ForConcreteUpcasts(odcmClass),
+            };
+        }
     }
 }

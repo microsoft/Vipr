@@ -88,5 +88,14 @@ namespace CSharpWriter
                 Methods = global::CSharpWriter.Methods.ForCountableCollectionInterface(odcmClass)
             };
         }
+
+        public static Interface ForFetcherUpcastMethods(OdcmEntityClass odcmClass)
+        {
+            return new Interface
+            {
+                Identifier = NamesService.GetFetcherInterfaceName(odcmClass),
+                Methods = global::CSharpWriter.Methods.ForFetcherInterfaceUpcasts(odcmClass),
+            };
+        }
     }
 }

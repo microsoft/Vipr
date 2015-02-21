@@ -16,7 +16,7 @@ namespace CSharpWriter.Settings
 
         public string NamespacePrefix { get; set; }
 
-        public bool OmitFetcherUpcastMethods { get; set; }
+        public bool OmitUpcastMethods { get; set; }
         
         public bool ForcePropertyPascalCasing { get; set; }
     }
