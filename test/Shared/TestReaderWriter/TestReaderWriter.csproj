@@ -43,7 +43,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Core\Vipr.Core\Vipr.Core.csproj">
+    <ProjectReference Include="..\..\..\src\Core\Vipr.Core\Vipr.Core.csproj">
       <Project>{04C24936-006A-4FD8-A872-EE55588C1CBE}</Project>
       <Name>Vipr.Core</Name>
     </ProjectReference>

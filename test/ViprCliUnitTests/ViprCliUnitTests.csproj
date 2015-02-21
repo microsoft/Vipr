@@ -101,11 +101,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DoubleReader\DoubleReader.csproj">
+    <ProjectReference Include="..\Shared\DoubleReader\DoubleReader.csproj">
       <Project>{48AD9942-A216-4EEA-BB4B-DD336449042C}</Project>
       <Name>DoubleReader</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SingleReader\TestReaderWriter.csproj">
+    <ProjectReference Include="..\Shared\TestReaderWriter\TestReaderWriter.csproj">
       <Project>{8B06C628-32B4-4AB0-A463-E4DE44545E3D}</Project>
       <Name>TestReaderWriter</Name>
     </ProjectReference>

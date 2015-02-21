@@ -71,9 +71,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ViprCliUnitTests", "ViprCli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViprCliUnitTests", "test\ViprCliUnitTests\ViprCliUnitTests.csproj", "{40977593-9DA2-4BE5-84C8-E156111CD133}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestReaderWriter", "SingleReader\TestReaderWriter.csproj", "{8B06C628-32B4-4AB0-A463-E4DE44545E3D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestReaderWriter", "test\Shared\TestReaderWriter\TestReaderWriter.csproj", "{8B06C628-32B4-4AB0-A463-E4DE44545E3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoubleReader", "DoubleReader\DoubleReader.csproj", "{48AD9942-A216-4EEA-BB4B-DD336449042C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoubleReader", "test\Shared\DoubleReader\DoubleReader.csproj", "{48AD9942-A216-4EEA-BB4B-DD336449042C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
