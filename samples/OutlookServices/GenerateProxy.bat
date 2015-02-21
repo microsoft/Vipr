@@ -1,1 +1,0 @@
-..\..\src\Core\Vipr\bin\Debug\Vipr.exe compile fromdisk src\Exchange.edmx.xml to src
