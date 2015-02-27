@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using Vipr.Core.CodeModel;
 
 namespace CSharpWriter
@@ -43,5 +44,7 @@ namespace CSharpWriter
         {
             return new[] { new EntityContainerConstructor(odcmContainer) };
         }
+
+        public static IEnumerable<Constructor> Empty { get { return Enumerable.Empty<Constructor>(); } }
     }
 }

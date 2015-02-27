@@ -38,23 +38,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.1.33.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\System.Collections.Immutable.1.1.33-beta\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
-    </Reference>
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeModel\OdcmCallingConvention.cs" />
     <Compile Include="CodeModel\OdcmClassKind.cs" />
     <Compile Include="CodeModel\OdcmAllowedVerbs.cs" />
+    <Compile Include="CodeModel\OdcmEntityClass.cs" />
+    <Compile Include="CodeModel\OdcmMediaClass.cs" />
+    <Compile Include="CodeModel\OdcmServiceClass.cs" />
     <Compile Include="CodeModel\OdcmVocabularyAnnotation.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\DeleteRestrictionsType.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\ExpandRestrictionsType.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\InsertRestrictionsType.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\UpdateRestrictionsType.cs" />
+    <Compile Include="IConfigurable.cs" />
     <Compile Include="IConfigurationProvider.cs" />
-    <Compile Include="IOdcmReader.cs" />    
+    <Compile Include="IOdcmReader.cs" />
     <Compile Include="CodeModel\OdcmClass.cs" />
     <Compile Include="CodeModel\OdcmEnum.cs" />
     <Compile Include="CodeModel\OdcmEnumMember.cs" />
@@ -69,9 +69,6 @@
     <Compile Include="IOdcmWriter.cs" />
     <Compile Include="OdcmExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

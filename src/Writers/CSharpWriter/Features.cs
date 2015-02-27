@@ -33,7 +33,7 @@ namespace CSharpWriter
 
                 case OdcmClassKind.MediaEntity:
                 case OdcmClassKind.Entity:
-                    return Features.ForOdcmClassEntity(odcmClass);
+                    return Features.ForOdcmClassEntity((OdcmEntityClass)odcmClass);
 
                 case OdcmClassKind.Service:
                     return Enumerable.Empty<Feature>();
@@ -62,33 +62,16 @@ namespace CSharpWriter
         {
             return new[]
             {
-                new Feature
-                {
-                    Classes = new[] {Class.ForEntityContainer(model, odcmClass)},
-                    Interfaces = new[] {Interface.ForEntityContainer(odcmClass)},
-                }
+                Feature.ForOdcmClassService(odcmClass, model),
             };
         }
 
-        private static IEnumerable<Feature> ForOdcmClassEntity(OdcmClass odcmClass)
+        private static IEnumerable<Feature> ForOdcmClassEntity(OdcmEntityClass odcmClass)
         {
             return new[]
             {
-                new Feature
-                {
-                    Classes = new[]
-                    {
-                        Class.ForConcrete(odcmClass),
-                        Class.ForFetcher(odcmClass),
-                        Class.ForCollection(odcmClass)
-                    },
-                    Interfaces = new[]
-                    {
-                        Interface.ForConcrete(odcmClass),
-                        Interface.ForFetcher(odcmClass),
-                        Interface.ForCollection(odcmClass)
-                    }
-                }
+                Feature.ForOdcmClassEntity(odcmClass),
+                Feature.ForCountableCollection(odcmClass),
             };
         }
 
@@ -96,10 +79,7 @@ namespace CSharpWriter
         {
             return new[]
             {
-                new Feature
-                {
-                    Classes = new[] {Class.ForComplex(odcmClass)}
-                }
+                Feature.ForOdcmClassComplex(odcmClass),
             };
         }
     }

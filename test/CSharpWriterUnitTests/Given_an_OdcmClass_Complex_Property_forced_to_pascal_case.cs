@@ -3,6 +3,7 @@
 
 using System;
 using System.ComponentModel;
+using CSharpWriter.Settings;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Moq;
@@ -25,9 +26,10 @@ namespace CSharpWriterUnitTests
 
         public Given_an_OdcmClass_Complex_Property_forced_to_pascal_case()
         {
-            var configurationProviderMock = new Mock<IConfigurationProvider>();
-            configurationProviderMock.Setup(c => c.ForcePropertyPascalCasing).Returns(true);
-            ConfigurationProvider = configurationProviderMock.Object;
+            SetConfiguration(new CSharpWriterSettings
+            {
+                ForcePropertyPascalCasing = true
+            });
 
             base.Init(m =>
             {

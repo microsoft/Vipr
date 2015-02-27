@@ -3,7 +3,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Vipr.Core;
 using Vipr.Core.CodeModel;
 
 namespace CSharpWriter
@@ -27,7 +26,7 @@ namespace CSharpWriter
             };
         }
 
-        public static Attribute ForMicrosoftOdataClientKey(OdcmClass odcmClass)
+        public static Attribute ForMicrosoftOdataClientKey(OdcmEntityClass odcmClass)
         {
             return new Attribute
             {

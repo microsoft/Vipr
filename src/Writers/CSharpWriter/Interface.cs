@@ -38,7 +38,7 @@ namespace CSharpWriter
                 Methods = global::CSharpWriter.Methods.ForConcreteInterface(odcmClass),
                 Namespace = odcmClass.Namespace,
                 Properties = global::CSharpWriter.Properties.ForConcreteInterface(odcmClass),
-                Interfaces = global::CSharpWriter.Interfaces.ForConcreteInterface(odcmClass)
+                Interfaces = global::CSharpWriter.ImplementedInterfaces.ForConcreteInterface(odcmClass)
             };
         }
 
@@ -48,14 +48,14 @@ namespace CSharpWriter
             {
                 Attributes = global::CSharpWriter.Attributes.ForFetcherInterface,
                 Identifier = NamesService.GetFetcherInterfaceName(odcmClass),
-                Interfaces = global::CSharpWriter.Interfaces.ForFetcherInterface(odcmClass),
+                Interfaces = global::CSharpWriter.ImplementedInterfaces.ForFetcherInterface(odcmClass),
                 Methods = global::CSharpWriter.Methods.ForFetcherInterface(odcmClass),
                 Namespace = odcmClass.Namespace,
                 Properties = global::CSharpWriter.Properties.ForFetcherInterface(odcmClass)
             };
         }
 
-        public static Interface ForCollection(OdcmClass odcmClass)
+        public static Interface ForCollection(OdcmEntityClass odcmClass)
         {
             return new Interface
             {
@@ -77,6 +77,15 @@ namespace CSharpWriter
                 Methods = global::CSharpWriter.Methods.ForEntityContainerInterface(odcmContainer),
                 Properties = global::CSharpWriter.Properties.ForEntityContainerInterface(odcmContainer),
                 Namespace = odcmContainer.Namespace
+            };
+        }
+
+        public static Interface ForCountableCollection(OdcmClass odcmClass)
+        {
+            return new Interface
+            {
+                Identifier = NamesService.GetCollectionInterfaceName(odcmClass),
+                Methods = global::CSharpWriter.Methods.ForCountableCollectionInterface(odcmClass)
             };
         }
     }

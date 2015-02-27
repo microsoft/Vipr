@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using CSharpWriter.Settings;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Moq;
@@ -19,9 +20,10 @@ namespace CSharpWriterUnitTests
 
         public Given_an_OdcmClass_Service_Property_forced_to_pascal_case()
         {
-            var configurationProviderMock = new Mock<IConfigurationProvider>();
-            configurationProviderMock.Setup(c => c.ForcePropertyPascalCasing).Returns(true);
-            ConfigurationProvider = configurationProviderMock.Object;
+            SetConfiguration(new CSharpWriterSettings
+            {
+                ForcePropertyPascalCasing = true
+            });
 
             base.Init(m =>
             {

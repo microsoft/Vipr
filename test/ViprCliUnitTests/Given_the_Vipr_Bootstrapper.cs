@@ -16,7 +16,7 @@ using Vipr.Core;
 using Vipr.Core.CodeModel;
 using Xunit;
 
-namespace ViprUnitTests
+namespace ViprCliUnitTests
 {
     public class Given_the_Vipr_Bootstrapper
     {
@@ -36,21 +36,71 @@ namespace ViprUnitTests
         [Fact]
         public void When_edmx_is_on_filesystem_it_is_given_to_the_reader_and_the_writers_output_is_written_to_disk()
         {
-            var inputFiles = Any.FileAndContentsDictionary(1);
-            var metadataPath = Path.Combine(_workingDirectory, inputFiles.First().Key);
-            var metadata = inputFiles.First().Value;
-
-            WriteAsTextFiles(inputFiles);
-
-            var commandLine = String.Format("compile fromdisk {0} to {1}", metadataPath, _workingDirectory);
-
-            ValidateProxyGeneration(metadata, commandLine);
-
-            DeleteFiles(inputFiles);
+            ValidateFromDiskGeneration();
         }
 
         [Fact]
         public void When_edmx_is_in_cloud_it_is_given_to_the_reader_and_the_writers_output_is_written_to_disk()
+        {
+            ValidateFromWebGeneration();
+        }
+
+        [Fact]
+        public void When_modelexport_is_set_it_exports_the_model()
+        {
+            var exportPath = Path.Combine(_workingDirectory, Any.Word());
+
+            ValidateFromDiskGeneration(string.Format(" --modelexport {0}", exportPath));
+
+            File.Exists(exportPath).Should().BeTrue("Because the model was to be exported.");
+
+            File.Delete(exportPath);
+        }
+
+        [Fact]
+        public void When_a_reader_implements_IConfigurable_then_SetConfigurationProvider_is_called()
+        {
+            var configurableReaderMock = _readerMock.As<IConfigurable>();
+            configurableReaderMock.Setup(c => c.SetConfigurationProvider(It.IsAny<IConfigurationProvider>()));
+
+            ValidateFromWebGeneration();
+
+            configurableReaderMock.Verify(c => c.SetConfigurationProvider(It.IsAny<IConfigurationProvider>()), Times.Once);
+        }
+
+        [Fact]
+        public void When_a_writer_implements_IConfigurable_then_SetConfigurationProvider_is_called()
+        {
+            var configurableWriterMock = _writerMock.As<IConfigurable>();
+            configurableWriterMock.Setup(c => c.SetConfigurationProvider(It.IsAny<IConfigurationProvider>()));
+
+            ValidateFromWebGeneration();
+
+            configurableWriterMock.Verify(c => c.SetConfigurationProvider(It.IsAny<IConfigurationProvider>()), Times.Once);
+        }
+
+        private void ValidateFromDiskGeneration(string optionalCommandLine = "")
+        {
+            var inputFiles = Any.FileAndContentsDictionary(1);
+            var metadataPath = Path.Combine(_workingDirectory, inputFiles.First().Key);
+            var metadata = inputFiles.First().Value;
+
+            try
+            {
+                WriteAsTextFiles(inputFiles);
+
+                var commandLine = String.Format("compile fromdisk {0} to {1}{2}", metadataPath, _workingDirectory,
+                    optionalCommandLine);
+
+                ValidateProxyGeneration(metadata, commandLine);
+            }
+            finally
+            {
+                DeleteFiles(inputFiles);
+            }
+        }
+
+        private void ValidateFromWebGeneration()
         {
             var metadataPath = Any.UriPath(1);
             var metadata = Any.String(1);
@@ -58,7 +108,7 @@ namespace ViprUnitTests
             using (var mockService = new MockService()
                 .Setup(r => r.Request.Path.ToString() == "/" + metadataPath &&
                             r.Request.Method == "GET",
-                       r => r.Response.Write(metadata))
+                    r => r.Response.Write(metadata))
                 .Start())
             {
                 var metadataUri = mockService.GetBaseAddress() + metadataPath;
@@ -67,43 +117,26 @@ namespace ViprUnitTests
                 ValidateProxyGeneration(metadata, commandLine);
             }
         }
-
-        [Fact]
-        public void When_loading_from_edmx_it_exports_the_model()
-        {
-            var inputFiles = Any.FileAndContentsDictionary(1);
-            var metadataPath = Path.Combine(_workingDirectory, inputFiles.First().Key);
-            var metadata = inputFiles.First().Value;
-            var exportPath = Path.Combine(_workingDirectory, Any.String());
-
-            WriteAsTextFiles(inputFiles);
-
-            var commandLine = String.Format("compile fromdisk {0} to {1} --modelexport {2}", metadataPath, _workingDirectory, exportPath);
-
-            ValidateProxyGeneration(metadata, commandLine);
-
-            DeleteFiles(inputFiles);
-
-            File.Exists(exportPath).Should().BeTrue("Because the model was to be exported.");
-                
-            File.Delete(exportPath);
-        }
-
+        
         private void ValidateProxyGeneration(string metadata, string commandLine)
         {
             var outputFiles = Any.FileAndContentsDictionary();
 
-            var model = Any.OdcmModel();
+            try
+            {
+                var model = Any.OdcmModel();
 
-            ConfigureMocks(metadata, model, outputFiles);
+                ConfigureMocks(metadata, model, outputFiles);
 
-            _bootstrapperMock.Object.Start(commandLine.Split(' '));
+                _bootstrapperMock.Object.Start(commandLine.Split(' '));
 
-            ValidateTextFiles(outputFiles);
-
-            DeleteFiles(outputFiles);
+                ValidateTextFiles(outputFiles);
+            }
+            finally
+            {
+                DeleteFiles(outputFiles);
+            }
         }
-
 
         private void WriteAsTextFiles(IDictionary<string, string> textFiles)
         {
@@ -129,7 +162,9 @@ namespace ViprUnitTests
             foreach (var fileName in files.Keys)
             {
                 var filePath = Path.Combine(_workingDirectory, fileName);
-                File.Delete(filePath);
+
+                if(File.Exists(filePath))
+                    File.Delete(filePath);
             }
         }
 

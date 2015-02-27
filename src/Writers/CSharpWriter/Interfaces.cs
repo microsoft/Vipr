@@ -9,59 +9,21 @@ namespace CSharpWriter
 {
     public class Interfaces
     {
-        public static IEnumerable<Type> ForFetcher(OdcmClass odcmClass)
-        {
-            return new List<Type> { new Type(NamesService.GetFetcherInterfaceName(odcmClass)) };
-        }
+        internal static IEnumerable<Interface> Empty { get { return Enumerable.Empty<Interface>(); } } 
 
-        public static IEnumerable<Type> ForConcrete(OdcmClass odcmClass)
+        internal static IEnumerable<Interface> ForOdcmClassEntity(OdcmEntityClass odcmClass)
         {
-            var retVal = new List<Type>
+            return new[]
             {
-                new Type(NamesService.GetConcreteInterfaceName(odcmClass)),
-                new Type(NamesService.GetFetcherInterfaceName(odcmClass))
+                Interface.ForConcrete(odcmClass),
+                Interface.ForFetcher(odcmClass),
+                Interface.ForCollection(odcmClass),
             };
-
-            return retVal;
         }
 
-        public static IEnumerable<Type> ForCollection(OdcmClass odcmClass)
+        internal static IEnumerable<Interface> ForOdcmClassService(OdcmClass odcmClass)
         {
-            return new List<Type> { new Type(NamesService.GetCollectionInterfaceName(odcmClass)) };
-        }
-
-        public static IEnumerable<Type> ForEntityContainer(OdcmClass odcmContainer)
-        {
-            return new List<Type> { new Type(NamesService.GetEntityContainerInterfaceName(odcmContainer)) };
-        }
-
-        public static IEnumerable<Type> ForConcreteInterface(OdcmClass odcmClass)
-        {
-            var retVal = new List<Type>();
-
-            var baseClass = odcmClass.Base as OdcmClass;
-
-            var interfaceIdentifier = baseClass == null ?
-                NamesService.GetExtensionTypeName("IEntityBase") :
-                NamesService.GetConcreteInterfaceName(baseClass);
-
-            retVal.Add(new Type(interfaceIdentifier));
-
-            return retVal;
-        }
-
-        public static IEnumerable<Type> ForFetcherInterface(OdcmClass odcmClass)
-        {
-            var retVal = new List<Type>();
-
-            var baseClass = odcmClass.Base as OdcmClass;
-
-            if (baseClass != null)
-            {
-                retVal.Add(new Type(NamesService.GetFetcherInterfaceName(baseClass)));
-            }
-
-            return retVal;
+            return new[] {Interface.ForEntityContainer(odcmClass)};
         }
     }
 }

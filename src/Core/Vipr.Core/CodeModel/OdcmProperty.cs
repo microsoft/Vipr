@@ -21,6 +21,8 @@ namespace Vipr.Core.CodeModel
 
         public bool IsNullable { get; set; }
 
+        public string DefaultValue { get; set; }
+
         public OdcmProperty(string name)
             : base(name)
         {

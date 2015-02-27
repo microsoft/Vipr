@@ -11,13 +11,13 @@ namespace CSharpWriter
     {
         private Class()
         {
-            Constructors = Enumerable.Empty<Constructor>();
-            Fields = Enumerable.Empty<Field>();
-            Indexers = Enumerable.Empty<Indexer>();
-            Interfaces = Enumerable.Empty<Type>();
-            Methods = Enumerable.Empty<Method>();
-            NestedClasses = Enumerable.Empty<Class>();
-            Properties = Enumerable.Empty<Property>();
+            Constructors = global::CSharpWriter.Constructors.Empty;
+            Fields = global::CSharpWriter.Fields.Empty;
+            Indexers = global::CSharpWriter.Indexers.Empty;
+            Interfaces = global::CSharpWriter.ImplementedInterfaces.Empty;
+            Methods = global::CSharpWriter.Methods.Empty;
+            NestedClasses = global::CSharpWriter.Classes.Empty;
+            Properties = global::CSharpWriter.Properties.Empty;
         }
 
         public string AbstractModifier { get; private set; }
@@ -44,7 +44,7 @@ namespace CSharpWriter
                 Constructors = global::CSharpWriter.Constructors.ForFetcher(odcmClass),
                 Fields = global::CSharpWriter.Fields.ForFetcher(odcmClass),
                 Identifier = NamesService.GetFetcherTypeName(odcmClass),
-                Interfaces = global::CSharpWriter.Interfaces.ForFetcher(odcmClass),
+                Interfaces = global::CSharpWriter.ImplementedInterfaces.ForFetcher(odcmClass),
                 Methods = global::CSharpWriter.Methods.ForFetcher(odcmClass),
                 Properties = global::CSharpWriter.Properties.ForFetcher(odcmClass),
             };
@@ -67,7 +67,7 @@ namespace CSharpWriter
             };
         }
 
-        public static Class ForConcrete(OdcmClass odcmClass)
+        public static Class ForConcrete(OdcmEntityClass odcmClass)
         {
             return new Class
             {
@@ -81,13 +81,13 @@ namespace CSharpWriter
                 Constructors = global::CSharpWriter.Constructors.ForConcrete(odcmClass),
                 Fields = global::CSharpWriter.Fields.ForConcrete(odcmClass),
                 Identifier = NamesService.GetConcreteTypeName(odcmClass),
-                Interfaces = global::CSharpWriter.Interfaces.ForConcrete(odcmClass),
+                Interfaces = global::CSharpWriter.ImplementedInterfaces.ForConcrete(odcmClass),
                 Methods = global::CSharpWriter.Methods.ForConcrete(odcmClass),
                 Properties = global::CSharpWriter.Properties.ForConcrete(odcmClass)
             };
         }
 
-        public static Class ForCollection(OdcmClass odcmClass)
+        public static Class ForCollection(OdcmEntityClass odcmClass)
         {
             return new Class
             {
@@ -95,10 +95,20 @@ namespace CSharpWriter
                 BaseClass = new Type(NamesService.GetExtensionTypeName("QueryableSet"),
                                      new Type(NamesService.GetConcreteInterfaceName(odcmClass))),
                 Constructors = global::CSharpWriter.Constructors.ForCollection(odcmClass),
-                Interfaces = global::CSharpWriter.Interfaces.ForCollection(odcmClass),
+                Interfaces = global::CSharpWriter.ImplementedInterfaces.ForCollection(odcmClass),
                 Identifier = NamesService.GetCollectionTypeName(odcmClass),
                 Methods = global::CSharpWriter.Methods.ForCollection(odcmClass),
                 Indexers = global::CSharpWriter.Indexers.ForCollection(odcmClass)
+            };
+        }
+
+        public static Class ForCountableCollection(OdcmClass odcmClass)
+        {
+            return new Class
+            {
+                AccessModifier = "internal ",
+                Identifier = NamesService.GetCollectionTypeName(odcmClass),
+                Methods = global::CSharpWriter.Methods.ForCountableCollectionInterface(odcmClass)
             };
         }
 
@@ -109,7 +119,7 @@ namespace CSharpWriter
                 AccessModifier = "public ",
                 Constructors = global::CSharpWriter.Constructors.ForEntityContainer(odcmContainer),
                 Fields = global::CSharpWriter.Fields.ForEntityContainer(odcmContainer),
-                Interfaces = global::CSharpWriter.Interfaces.ForEntityContainer(odcmContainer),
+                Interfaces = global::CSharpWriter.ImplementedInterfaces.ForEntityContainer(odcmContainer),
                 Identifier = NamesService.GetEntityContainerTypeName(odcmContainer),
                 NestedClasses = new[] { ForGeneratedEdmModel(odcmModel) },
                 Methods = global::CSharpWriter.Methods.ForEntityContainer(odcmContainer),

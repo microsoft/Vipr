@@ -85,7 +85,7 @@ namespace Microsoft.Its.Recipes
 
         public static OdcmClass OdcmClass(Action<OdcmClass> config = null)
         {
-            var retVal = new OdcmClass(Any.CSharpIdentifier(), Any.CSharpIdentifier(), OdcmClassKind.Complex);
+            var retVal = new OdcmClass(Any.CSharpIdentifier(), Any.CSharpIdentifier());
 
             if (config != null) config(retVal);
 
@@ -123,7 +123,7 @@ namespace Microsoft.Its.Recipes
 
         public static OdcmClass ComplexOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmClass> config = null)
         {
-            var retVal = new OdcmClass(Any.CSharpIdentifier(), odcmNamespace.Name, OdcmClassKind.Complex);
+            var retVal = new OdcmClass(Any.CSharpIdentifier(), odcmNamespace.Name);
 
             retVal.Properties.AddRange(Any.Sequence(i => Any.PrimitiveOdcmProperty(p => p.Class = retVal)));
 
@@ -165,9 +165,9 @@ namespace Microsoft.Its.Recipes
             return retVal;
         }
 
-        public static OdcmClass EntityOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmClass> config = null)
+        public static OdcmEntityClass EntityOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmEntityClass> config = null)
         {
-            var retVal = new OdcmClass(Any.CSharpIdentifier(), odcmNamespace.Name, OdcmClassKind.Entity);
+            var retVal = new OdcmEntityClass(Any.CSharpIdentifier(), odcmNamespace.Name);
 
             retVal.Properties.AddRange(Any.Sequence(i => Any.PrimitiveOdcmProperty(p => p.Class = retVal)));
 
@@ -195,9 +195,9 @@ namespace Microsoft.Its.Recipes
             return retVal;
         }
 
-        public static OdcmClass ServiceOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmClass> config = null)
+        public static OdcmServiceClass ServiceOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmServiceClass> config = null)
         {
-            var retVal = new OdcmClass(Any.CSharpIdentifier(), odcmNamespace.Name, OdcmClassKind.Service);
+            var retVal = new OdcmServiceClass(Any.CSharpIdentifier(), odcmNamespace.Name);
 
             var entities = odcmNamespace.Classes
                 .Where(c => c.Kind == OdcmClassKind.Entity);

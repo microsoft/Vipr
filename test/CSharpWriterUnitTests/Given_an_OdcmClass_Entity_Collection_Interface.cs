@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Vipr.Core;
+using Vipr.Core.CodeModel;
 using Type = System.Type;
 using Xunit;
 
@@ -85,8 +86,21 @@ namespace CSharpWriterUnitTests
             CollectionInterface.Should()
                 .HaveMethod(
                     CSharpAccessModifiers.Public,
-                    typeof(Task), "Add" + Class.Name + "Async",
+                    typeof(Task), 
+                    "Add" + Class.Name + "Async",
                     new[] { ConcreteInterface, typeof(bool) },
+                    "Because it allows adding elements to the Entity Set.");
+        }
+
+        [Fact]
+        public void It_has_a_CountAsync_method()
+        {
+            CollectionInterface.Should()
+                .HaveMethod(
+                    CSharpAccessModifiers.Public,
+                    typeof(Task<long>), 
+                    "CountAsync",
+                    new Type[0],
                     "Because it allows adding elements to the Entity Set.");
         }
 

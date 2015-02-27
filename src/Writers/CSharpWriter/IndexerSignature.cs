@@ -12,7 +12,7 @@ namespace CSharpWriter
         public bool IsSettable { get; protected set; }
         public bool IsGettable { get; protected set; }
 
-        public static IEnumerable<IndexerSignature> ForCollectionInterface(OdcmClass odcmClass)
+        public static IEnumerable<IndexerSignature> ForCollectionInterface(OdcmEntityClass odcmClass)
         {
             return new IndexerSignature[]
             {

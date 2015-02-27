@@ -43,6 +43,7 @@ namespace CSharpWriter
             _dependencies.Add("System.ComponentModel");
             _dependencies.Add("System.Linq");
             _dependencies.Add("System.Reflection");
+            _dependencies.Add("System.Threading.Tasks");
         }
 
         private void Write(CSharpProject project)
@@ -231,6 +232,15 @@ namespace CSharpWriter
             using (_builder.IndentBraced)
             {
                 _("return ExecuteAsyncInternal();");
+            }
+        }
+
+        private void Write(CollectionCountAsyncMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                _("return new DataServiceQuerySingle<long>(Context, _path + \"/$count\").GetValueAsync();");
             }
         }
 

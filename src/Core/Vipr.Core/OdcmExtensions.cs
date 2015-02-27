@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Vipr.Core.CodeModel;
@@ -12,12 +13,7 @@ namespace Vipr.Core
         public static IEnumerable<OdcmProperty> WhereIsNavigation(this IEnumerable<OdcmProperty> odcmProperties, bool isNavigation = true)
         {
             return odcmProperties
-                .Where(
-                    p =>
-                        isNavigation ==
-                        (p.Type is OdcmClass &&
-                         (((OdcmClass) p.Type).Kind == OdcmClassKind.Entity ||
-                          ((OdcmClass) p.Type).Kind == OdcmClassKind.MediaEntity)));
+                .Where(p => isNavigation == (p.Type is OdcmEntityClass || p.Type is OdcmMediaClass));
         }
 
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
