@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Vipr.Core;
 using Vipr.Core.CodeModel;
 
 namespace Microsoft.Its.Recipes
@@ -300,9 +301,12 @@ namespace Microsoft.Its.Recipes
             return retVal;
         }
 
-        public static IDictionary<string, string> ServiceMetadata()
+        public static TextFileCollection ServiceMetadata()
         {
-            return new Dictionary<string, string> { { "$metadata", "<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\"></edmx:Edmx>" } };
+            return new TextFileCollection
+            {
+                new TextFile("$metadata", "<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\"></edmx:Edmx>"),
+            };
         }
 
         public static Func<Task<String>> TokenGetterFunction(string token = "")

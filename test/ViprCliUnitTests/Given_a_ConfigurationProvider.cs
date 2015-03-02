@@ -1,19 +1,19 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Newtonsoft.Json;
 using Vipr;
+using ViprUnitTests;
 using Xunit;
 
-namespace ViprUnitTests
+namespace ViprCliUnitTests
 {
-    public class Given_the_Vipr_ConfigurationProvider
+    public class Given_a_ConfigurationProvider
     {
         private readonly string _workingDirectory;
 
-        public Given_the_Vipr_ConfigurationProvider()
+        public Given_a_ConfigurationProvider()
         {
             _workingDirectory = AppDomain.CurrentDomain.BaseDirectory;
         }

@@ -48,6 +48,7 @@
     <Compile Include="CodeModel\OdcmMediaClass.cs" />
     <Compile Include="CodeModel\OdcmServiceClass.cs" />
     <Compile Include="CodeModel\OdcmVocabularyAnnotation.cs" />
+    <Compile Include="TextFileCollection.cs" />
     <Compile Include="IConfigurable.cs" />
     <Compile Include="IConfigurationProvider.cs" />
     <Compile Include="IOdcmReader.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="CodeModel\OdcmType.cs" />
     <Compile Include="IOdcmWriter.cs" />
     <Compile Include="OdcmExtensions.cs" />
+    <Compile Include="TextFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

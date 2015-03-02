@@ -64,8 +64,11 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="ConfigurationProvider.cs" />
+    <Compile Include="FileWriter.cs" />
+    <Compile Include="MetadataResolver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
