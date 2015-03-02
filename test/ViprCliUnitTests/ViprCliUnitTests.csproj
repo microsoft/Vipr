@@ -49,8 +49,12 @@
       <Link>TestInputGenerator.cs</Link>
     </Compile>
     <Compile Include="Any.cs" />
-    <Compile Include="Given_the_Vipr_Bootstrapper.cs" />
-    <Compile Include="Given_the_Vipr_ConfigurationProvider.cs" />
+    <Compile Include="FileSystemHelpers.cs" />
+    <Compile Include="Given_a_Bootstrapper.cs" />
+    <Compile Include="Given_a_ConfigurationProvider.cs" />
+    <Compile Include="Given_a_FileWriter.cs" />
+    <Compile Include="Given_a_MetadataResolver.cs" />
+    <Compile Include="Given_a_TypeResolver.cs" />
     <Compile Include="TestConfigurable.cs" />
     <Compile Include="TestSettings.cs" />
   </ItemGroup>
@@ -88,6 +92,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Runtime" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -96,6 +101,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Shared\DoubleReader\DoubleReader.csproj">
+      <Project>{48AD9942-A216-4EEA-BB4B-DD336449042C}</Project>
+      <Name>DoubleReader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared\TestReaderWriter\TestReaderWriter.csproj">
+      <Project>{8B06C628-32B4-4AB0-A463-E4DE44545E3D}</Project>
+      <Name>TestReaderWriter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Core\Vipr.Core\Vipr.Core.csproj">
       <Project>{04C24936-006A-4FD8-A872-EE55588C1CBE}</Project>
       <Name>Vipr.Core</Name>
@@ -103,6 +116,14 @@
     <ProjectReference Include="..\..\src\Core\Vipr\Vipr.csproj">
       <Project>{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}</Project>
       <Name>Vipr</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Readers\ODataReader.v4\ODataReader.v4.csproj">
+      <Project>{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}</Project>
+      <Name>ODataReader.v4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Writers\CSharpWriter\CSharpWriter.csproj">
+      <Project>{EA55EFCF-3127-4E85-9A37-A645C06FFCC1}</Project>
+      <Name>CSharpWriter</Name>
     </ProjectReference>
     <ProjectReference Include="..\Shared\MockService\MockService.csproj">
       <Project>{A6C40F9C-833D-4FBD-B9F2-7800A3621875}</Project>

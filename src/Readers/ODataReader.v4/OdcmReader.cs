@@ -55,7 +55,7 @@ namespace ODataReader.v4
             new[] {"Edm", "GeometryCollection"}
         };
 
-        public OdcmModel GenerateOdcmModel(IDictionary<string, string> serviceMetadata)
+        public OdcmModel GenerateOdcmModel(TextFileCollection serviceMetadata)
         {
             var daemon = new ReaderDaemon();
             return daemon.GenerateOdcmModel(serviceMetadata);
@@ -68,15 +68,19 @@ namespace ODataReader.v4
             private IEdmModel _edmModel = null;
             private OdcmModel _odcmModel;
 
-            public OdcmModel GenerateOdcmModel(IDictionary<string, string> serviceMetadata)
+            public OdcmModel GenerateOdcmModel(TextFileCollection serviceMetadata)
             {
                 if (serviceMetadata == null)
                     throw new ArgumentNullException("serviceMetadata");
 
-                if (!serviceMetadata.ContainsKey(MetadataKey))
-                    throw new ArgumentException("Argument must contain value for key \"$metadata\"", "serviceMetadata");
+                var edmxFile = serviceMetadata.FirstOrDefault(f => f.RelativePath == MetadataKey);
 
-                var edmx = XElement.Parse(serviceMetadata[MetadataKey]);
+                if (edmxFile == null)
+                    throw new ArgumentException(
+                        String.Format("Argument must contain file with RelateivePath \"{0}", MetadataKey),
+                        "serviceMetadata");
+
+                var edmx = XElement.Parse(edmxFile.Contents);
 
                 IEnumerable<EdmError> errors;
                 if (!EdmxReader.TryParse(edmx.CreateReader(ReaderOptions.None), out _edmModel, out errors))

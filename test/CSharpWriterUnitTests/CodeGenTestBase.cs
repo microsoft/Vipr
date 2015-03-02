@@ -54,7 +54,9 @@ namespace CSharpWriterUnitTests
         {
             var writer = new CSharpWriter.CSharpWriter();
 
-            var proxySources = writer.GenerateProxy(model, _configurationProvider);
+            writer.SetConfigurationProvider(_configurationProvider);
+
+            var proxySources = writer.GenerateProxy(model);
 
             if (internalsVisibleTo != null && internalsVisibleTo.Any())
             {
@@ -64,10 +66,10 @@ namespace CSharpWriterUnitTests
                         .Select(s => string.Format("[assembly: InternalsVisibleTo(\"{0}\")]\n\n", s))
                         .Aggregate((a, i) => a + i);
 
-                foreach (var fileName in proxySources.Keys)
-                {
-                    proxySources[fileName] = internalsHeader + proxySources[fileName];
-                }
+                var originalProxySources = proxySources;
+
+                proxySources = new TextFileCollection();
+                proxySources.AddRange(originalProxySources.Select(file => new TextFile(file.RelativePath, internalsHeader + file.Contents)));
             }
 
             WriteProxySource(proxySources);
@@ -85,17 +87,17 @@ namespace CSharpWriterUnitTests
                 "System.IO.dll"
             };
 
-            return CompileText(referencedAssemblies, proxySources.Values.ToArray());
+            return CompileText(referencedAssemblies, proxySources.Select(f => f.Contents).ToArray());
         }
 
-        private static void WriteProxySource(IEnumerable<KeyValuePair<string, string>> proxySources)
+        private static void WriteProxySource(TextFileCollection proxySources)
         {
             if(Debugger.IsAttached)
-                foreach (var proxySource in proxySources)
+                foreach (var sourceFile in proxySources)
                 {
-                    Debug.WriteLine("-------- {0} ------", proxySource.Key);
-                    Debug.WriteLine(proxySource.Value);
-                    Debug.WriteLine("-------------------", proxySource.Key);
+                    Debug.WriteLine("-------- {0} ------", sourceFile.RelativePath);
+                    Debug.WriteLine(sourceFile.Contents);
+                    Debug.WriteLine("-------------------", sourceFile.RelativePath);
                 }
         }
 

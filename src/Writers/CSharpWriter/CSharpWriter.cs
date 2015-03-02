@@ -7,22 +7,24 @@ using Vipr.Core.CodeModel;
 
 namespace CSharpWriter
 {
-    public class CSharpWriter : IOdcmWriter
+    public class CSharpWriter : IOdcmWriter, IConfigurable
     {
         public CSharpWriter()
         {
         }
 
-        public IDictionary<string, string> GenerateProxy(OdcmModel model,
-            IConfigurationProvider configurationProvider = null)
+        public TextFileCollection GenerateProxy(OdcmModel model)
         {
-            ConfigurationService.Initialize(configurationProvider);
-
             var csProject = new CSharpProject(model);
 
             var codeGenerator = new SourceCodeGenerator(model.ServiceType);
 
             return codeGenerator.Generate(csProject);
+        }
+
+        public void SetConfigurationProvider(IConfigurationProvider configurationProvider)
+        {
+            ConfigurationService.Initialize(configurationProvider);
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.Its.Recipes;
 using ODataReader.v4;
 using System;
 using System.Collections.Generic;
+using Vipr.Core;
 using Vipr.Core.CodeModel;
 using Xunit;
 
@@ -42,10 +43,11 @@ namespace ODataReader.v4UnitTests
                 schemaNamespace = schema.Attribute("Namespace").Value;
             });
 
-            var serviceMetadata = new Dictionary<string, string>()
+            var serviceMetadata = new TextFileCollection
             {
-                {"$metadata", edmxElement.ToString()}
+                new TextFile("$metadata", edmxElement.ToString())
             };
+
             var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
 
             OdcmType odcmEnum;
@@ -82,10 +84,11 @@ namespace ODataReader.v4UnitTests
                 schemaNamespace = schema.Attribute("Namespace").Value;
             });
 
-            var serviceMetadata = new Dictionary<string, string>()
+            var serviceMetadata = new TextFileCollection
             {
-                {"$metadata", edmxElement.ToString()}
+                new TextFile("$metadata", edmxElement.ToString())
             };
+
             var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
 
             OdcmType odcmEnum;
@@ -124,10 +127,11 @@ namespace ODataReader.v4UnitTests
                 schemaNamespace = schema.Attribute("Namespace").Value;
             });
 
-            var serviceMetadata = new Dictionary<string, string>()
+            var serviceMetadata = new TextFileCollection
             {
-                {"$metadata", edmxElement.ToString()}
+                new TextFile("$metadata", edmxElement.ToString())
             };
+
             var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
 
             OdcmType odcmEnum;
@@ -169,10 +173,11 @@ namespace ODataReader.v4UnitTests
                 schemaNamespace = schema.Attribute("Namespace").Value;
             });
 
-            var serviceMetadata = new Dictionary<string, string>()
+            var serviceMetadata = new TextFileCollection
             {
-                {"$metadata", edmxElement.ToString()}
+                new TextFile("$metadata", edmxElement.ToString())
             };
+
             var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
 
             OdcmType odcmEnum;

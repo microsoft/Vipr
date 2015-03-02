@@ -4,8 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using System.Text;
 using DocoptNet;
 using Newtonsoft.Json;
 using Vipr.Core;
@@ -13,96 +11,80 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr
 {
-    public class Bootstrapper
+    internal class Bootstrapper
     {
         const string Usage = @"Vipr CLI Tool
 Usage:
-    vipr.exe compile example to <sourcePath>
-    vipr.exe compile fromdisk <metadataPath> to <sourcePath> [--modelexport=<modelExportPath>]
-    vipr.exe compile fromweb <metadataUri> to <sourcePath> [--modelexport=<modelExportPath>]
+    vipr.exe <inputFile> [--reader=<readerName>] [--writer=<writerName>] [--outputPath=<outputPath>] [--modelExport=<modelExportPath>] 
+
 Options:
-    --modelexport=<modelExportPath>     Export the OcdmModel generated from the given Edmx model as a json file.
+    --reader=<readerName>               Use the model reader defined in assembly readerName. Default is ODataReader.v4.
+    --writer=<writerName>               Use the client library writer defined in assembly writerName. Default is CSharpWriter.
+    --outputPath=<outputPath>           Use outputPath as the root directory for the generated proxy. Default is the current directory.
+    --modelExport=<modelExportPath>     Export the OcdmModel generated from the given Edmx model as a json file.
 ";
 
-        private string _ocdmModelExportPath = "";
         private IOdcmReader _odcmReader;
         private IOdcmWriter _odcmWriter;
+        private string _ocdmModelExportPath = String.Empty;
+        private string _readerName = "ODataReader.v4";
+        private string _writerName = "CSharpWriter";
+        private string _metadataPath = "http://services.odata.org/V4/TripPinServiceRW/$metadata";
+        private string _outputPath = "";
 
         public void Start(string[] args)
         {
-            var docopt = new Docopt();
+            GetCommandLineConfiguration(args);
 
-            IDictionary<string, ValueObject> res = new Dictionary<string, ValueObject>();
+            var edmxContents = MetadataResolver.GetMetadata(_metadataPath);
 
-            res = docopt.Apply(Usage, args, help: true, exit: true);
+            Console.WriteLine("Generating Client Library to {0}", _outputPath);
 
-            _ocdmModelExportPath = res["--modelexport"] == null ? String.Empty : res["--modelexport"].ToString();
-
-            string outputPath = res["<sourcePath>"].ToString();
-
-            string edmxContents = "";
-
-            var fromFile = res["fromdisk"].IsTrue;
-            var fromWeb = res["fromweb"].IsTrue;
-            var fromExample = !fromWeb && !fromFile;
-
-            if (fromWeb)
-            {
-                var uri = res["<metadataUri>"].ToString();
-
-                Console.WriteLine("Downloading service description from {0}.", uri);
-
-                edmxContents = LoadEdmxFromWeb(uri);
-            }
-
-            if (fromFile)
-            {
-                var path = res["<metadataPath>"].ToString();
-
-                Console.WriteLine("Loading service description from {0}.", path);
-
-                edmxContents = LoadEdmxFromFile(path);
-            }
-
-            if (fromExample)
-            {
-                Console.WriteLine("Downloading sample service description.");
-
-                edmxContents = LoadEdmxFromWeb("http://services.odata.org/V4/TripPinServiceRW/$metadata");
-            }
-
-            Console.WriteLine("Generating Client Library to {0}", outputPath);
-
-            ODataToFile(outputPath, edmxContents);
+            MetadataToClientSource(edmxContents, _outputPath);
 
             Console.WriteLine("Done.");
         }
 
-        private IOdcmReader OdcmReader
+        private void GetCommandLineConfiguration(string[] args)
+        {
+            var docopt = new Docopt();
+
+            IDictionary<string, ValueObject> res = docopt.Apply(Usage, args, help: true, exit: true);
+
+            _ocdmModelExportPath = res["--modelExport"] == null ? _ocdmModelExportPath : res["--modelExport"].ToString();
+
+            _readerName = res["--reader"] == null ? _readerName : res["--reader"].ToString();
+
+            _writerName = res["--writer"] == null ? _writerName : res["--writer"].ToString();
+
+            _outputPath = res["--outputPath"] == null ? _outputPath : res["--outputPath"].ToString();
+
+            _metadataPath = res["<inputFile>"] == null ? _metadataPath : res["<inputFile>"].ToString();
+        }
+
+        public IOdcmReader OdcmReader
         {
             get
             {
-                if (_odcmReader == null)
-                {
-                    _odcmReader = GetOdcmReader();
+                if (_odcmReader != null) return _odcmReader;
 
-                    ConfigurationProvider.SetConfigurationOn(_odcmReader);
-                }
+                _odcmReader = GetOdcmReader();
+
+                ConfigurationProvider.SetConfigurationOn(_odcmReader);
 
                 return _odcmReader;
             }
         }
 
-        private IOdcmWriter OdcmWriter
+        public IOdcmWriter OdcmWriter
         {
             get
             {
-                if (_odcmWriter == null)
-                {
-                    _odcmWriter = GetOdcmWriter();
+                if (_odcmWriter != null) return _odcmWriter;
 
-                    ConfigurationProvider.SetConfigurationOn(_odcmWriter);
-                }
+                _odcmWriter = GetOdcmWriter();
+
+                ConfigurationProvider.SetConfigurationOn(_odcmWriter);
 
                 return _odcmWriter;
             }
@@ -110,30 +92,22 @@ Options:
 
         protected virtual IOdcmReader GetOdcmReader()
         {
-            return new ODataReader.v4.OdcmReader();
+            return TypeResolver.GetInstance<IOdcmReader>(_readerName);
         }
 
         protected virtual IOdcmWriter GetOdcmWriter()
         {
-            return new CSharpWriter.CSharpWriter();
+            return TypeResolver.GetInstance<IOdcmWriter>(_writerName);
         }
 
-        private void ODataToFile(string outputDirectoryPath, string edmxString)
+        private void MetadataToClientSource(string edmxString, string outputDirectoryPath)
         {
-            foreach (var file in EdmxToClientSource(edmxString))
-            {
-                var filePath = file.Key;
-
-                if (!string.IsNullOrWhiteSpace(outputDirectoryPath))
-                    filePath = Path.Combine(outputDirectoryPath, filePath);
-
-                File.WriteAllText(filePath, file.Value);
-            }
+            FileWriter.Write(MetadataToClientSource(edmxString), outputDirectoryPath);
         }
 
-        private IDictionary<string, string> EdmxToClientSource(string edmxString)
+        private TextFileCollection MetadataToClientSource(string edmxString)
         {
-            var model = OdcmReader.GenerateOdcmModel(new Dictionary<string, string> { { "$metadata", edmxString } });
+            var model = OdcmReader.GenerateOdcmModel(new TextFileCollection {new TextFile("$metadata", edmxString)});
 
             ExportOcdmModel(model);
 
@@ -147,20 +121,6 @@ Options:
             var jss = new JsonSerializerSettings {PreserveReferencesHandling = PreserveReferencesHandling.Objects};
 
             File.WriteAllText(_ocdmModelExportPath, JsonConvert.SerializeObject(model, jss));
-        }
-
-        private static string LoadEdmxFromFile(string filepath)
-        {
-            return File.ReadAllText(filepath);
-        }
-
-        private static string LoadEdmxFromWeb(string uri)
-        {
-            var wc = new WebClient {Encoding = Encoding.UTF8};
-
-            var result = wc.DownloadString(new Uri(uri));
-
-            return result;
         }
     }
 }

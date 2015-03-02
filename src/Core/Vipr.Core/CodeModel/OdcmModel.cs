@@ -29,10 +29,10 @@ namespace Vipr.Core.CodeModel
 
         public ServiceType ServiceType { get; private set; }
 
-        public OdcmModel(IDictionary<string, string> serviceMetadata, ServiceType serviceType = ServiceType.ODataV4)
+        public OdcmModel(TextFileCollection serviceMetadata, ServiceType serviceType = ServiceType.ODataV4)
         {
             Namespaces = new List<OdcmNamespace>();
-            ServiceMetadata = serviceMetadata;
+            ServiceMetadata = serviceMetadata.ToDictionary(f => f.RelativePath, f => f.Contents);
             ServiceType = serviceType;
         }
 

@@ -9,6 +9,7 @@ using ODataReader.v4;
 
 using Vipr.Core.CodeModel;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;
+using Vipr.Core;
 
 namespace ODataReader.v4UnitTests
 {
@@ -73,12 +74,12 @@ namespace ODataReader.v4UnitTests
             annotationValue.NonDeletableNavigationProperties.Should().HaveCount(2).And.Contain("sectionGroups").And.Contain("sections");
         }
 
-        private IDictionary<string,string> GetOneNoteEdmModel()
+        private TextFileCollection GetOneNoteEdmModel()
         {
-            return new Dictionary<string, string>()
+            return new TextFileCollection
             {
-                {"$metadata", ODataReader.v4UnitTests.Properties.Resources.OneNoteExampleEdmx}
-            };
+                new TextFile("$metadata", ODataReader.v4UnitTests.Properties.Resources.OneNoteExampleEdmx)
+            };            
         }
     }
 }
