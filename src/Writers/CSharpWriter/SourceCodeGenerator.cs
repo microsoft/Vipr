@@ -622,8 +622,8 @@ namespace CSharpWriter
                         NamesService.GetExtensionTypeName("PagedCollection"),
                         NamesService.GetConcreteInterfaceName(property.OdcmType),
                         NamesService.GetConcreteTypeName(property.OdcmType),
-                        NamesService.GetExtensionTypeName("EntityCollectionImpl"),
-                        property.FieldName);
+                        "DataServiceCollection",
+                        property.Name);
                 }
             }
         }
@@ -782,10 +782,10 @@ namespace CSharpWriter
 
                 using (_builder.IndentBraced)
                 {
-                    _("if (this.{0} != value)", property.FieldName);
+                    _("if (this.{0} != value)", property.Name);
                     using (_builder.IndentBraced)
                     {
-                        _("this.{0} = ({1})value;", property.FieldName, property.FieldType);
+                        _("this.{0} = ({1})value;", property.Name, property.FieldType);
                     }
                 }
             }
@@ -917,7 +917,7 @@ namespace CSharpWriter
                 _("set");
                 using (_builder.IndentBraced)
                 {
-                    _("{0}.Clear();", property.FieldName);
+                    _("{0}.Clear();", property.Name);
                     _("if (value != null)");
 
                     using (_builder.IndentBraced)
@@ -926,7 +926,7 @@ namespace CSharpWriter
 
                         using (_builder.IndentBraced)
                         {
-                            _("{0}.Add(i);", property.FieldName);
+                            _("{0}.Add(i);", property.Name);
                         }
                     }
                 }
