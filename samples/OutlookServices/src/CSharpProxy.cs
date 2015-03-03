@@ -891,7 +891,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _DaysOfWeek.Clear();
+                DaysOfWeek.Clear();
 
                 if (value != null)
 
@@ -901,7 +901,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _DaysOfWeek.Add(i);
+                        DaysOfWeek.Add(i);
 
                     }
 
@@ -1865,7 +1865,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _Categories.Clear();
+                Categories.Clear();
 
                 if (value != null)
 
@@ -1875,7 +1875,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _Categories.Add(i);
+                        Categories.Add(i);
 
                     }
 
@@ -2245,7 +2245,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IFolder, Microsoft.Office365.OutlookServices.Folder>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Folder>) _FoldersConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IFolder, Microsoft.Office365.OutlookServices.Folder>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Folder>) Folders);
 
             }
 
@@ -2259,7 +2259,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IMessage, Microsoft.Office365.OutlookServices.Message>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Message>) _MessagesConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IMessage, Microsoft.Office365.OutlookServices.Message>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Message>) Messages);
 
             }
 
@@ -2281,11 +2281,11 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (this._RootFolder != value)
+                if (this.RootFolder != value)
 
                 {
 
-                    this._RootFolder = (Microsoft.Office365.OutlookServices.Folder)value;
+                    this.RootFolder = (Microsoft.Office365.OutlookServices.Folder)value;
 
                 }
 
@@ -2301,7 +2301,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.ICalendar, Microsoft.Office365.OutlookServices.Calendar>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Calendar>) _CalendarsConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.ICalendar, Microsoft.Office365.OutlookServices.Calendar>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Calendar>) Calendars);
 
             }
 
@@ -2323,11 +2323,11 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (this._Calendar != value)
+                if (this.Calendar != value)
 
                 {
 
-                    this._Calendar = (Microsoft.Office365.OutlookServices.Calendar)value;
+                    this.Calendar = (Microsoft.Office365.OutlookServices.Calendar)value;
 
                 }
 
@@ -2343,7 +2343,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.ICalendarGroup, Microsoft.Office365.OutlookServices.CalendarGroup>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.CalendarGroup>) _CalendarGroupsConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.ICalendarGroup, Microsoft.Office365.OutlookServices.CalendarGroup>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.CalendarGroup>) CalendarGroups);
 
             }
 
@@ -2357,7 +2357,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event>) _EventsConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Event>) Events);
 
             }
 
@@ -2371,7 +2371,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event>) _CalendarViewConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Event>) CalendarView);
 
             }
 
@@ -2385,7 +2385,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IContact, Microsoft.Office365.OutlookServices.Contact>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Contact>) _ContactsConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IContact, Microsoft.Office365.OutlookServices.Contact>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Contact>) Contacts);
 
             }
 
@@ -2399,7 +2399,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IContactFolder, Microsoft.Office365.OutlookServices.ContactFolder>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.ContactFolder>) _ContactFoldersConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IContactFolder, Microsoft.Office365.OutlookServices.ContactFolder>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.ContactFolder>) ContactFolders);
 
             }
 
@@ -3825,7 +3825,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IFolder, Microsoft.Office365.OutlookServices.Folder>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Folder>) _ChildFoldersConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IFolder, Microsoft.Office365.OutlookServices.Folder>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Folder>) ChildFolders);
 
             }
 
@@ -3839,7 +3839,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IMessage, Microsoft.Office365.OutlookServices.Message>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Message>) _MessagesConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IMessage, Microsoft.Office365.OutlookServices.Message>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Message>) Messages);
 
             }
 
@@ -4699,7 +4699,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _ToRecipients.Clear();
+                ToRecipients.Clear();
 
                 if (value != null)
 
@@ -4709,7 +4709,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _ToRecipients.Add(i);
+                        ToRecipients.Add(i);
 
                     }
 
@@ -4745,7 +4745,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _CcRecipients.Clear();
+                CcRecipients.Clear();
 
                 if (value != null)
 
@@ -4755,7 +4755,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _CcRecipients.Add(i);
+                        CcRecipients.Add(i);
 
                     }
 
@@ -4791,7 +4791,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _BccRecipients.Clear();
+                BccRecipients.Clear();
 
                 if (value != null)
 
@@ -4801,7 +4801,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _BccRecipients.Add(i);
+                        BccRecipients.Add(i);
 
                     }
 
@@ -4837,7 +4837,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _ReplyTo.Clear();
+                ReplyTo.Clear();
 
                 if (value != null)
 
@@ -4847,7 +4847,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _ReplyTo.Add(i);
+                        ReplyTo.Add(i);
 
                     }
 
@@ -5105,7 +5105,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IAttachment, Microsoft.Office365.OutlookServices.Attachment>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Attachment>) _AttachmentsConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IAttachment, Microsoft.Office365.OutlookServices.Attachment>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Attachment>) Attachments);
 
             }
 
@@ -6297,11 +6297,11 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (this._Item != value)
+                if (this.Item != value)
 
                 {
 
-                    this._Item = (Microsoft.Office365.OutlookServices.Item)value;
+                    this.Item = (Microsoft.Office365.OutlookServices.Item)value;
 
                 }
 
@@ -6699,7 +6699,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event>) _CalendarViewConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Event>) CalendarView);
 
             }
 
@@ -6713,7 +6713,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event>) _EventsConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Event>) Events);
 
             }
 
@@ -7259,7 +7259,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.ICalendar, Microsoft.Office365.OutlookServices.Calendar>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Calendar>) _CalendarsConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.ICalendar, Microsoft.Office365.OutlookServices.Calendar>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Calendar>) Calendars);
 
             }
 
@@ -8119,7 +8119,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _Attendees.Clear();
+                Attendees.Clear();
 
                 if (value != null)
 
@@ -8129,7 +8129,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _Attendees.Add(i);
+                        Attendees.Add(i);
 
                     }
 
@@ -8267,7 +8267,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IAttachment, Microsoft.Office365.OutlookServices.Attachment>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Attachment>) _AttachmentsConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IAttachment, Microsoft.Office365.OutlookServices.Attachment>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Attachment>) Attachments);
 
             }
 
@@ -8289,11 +8289,11 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (this._Calendar != value)
+                if (this.Calendar != value)
 
                 {
 
-                    this._Calendar = (Microsoft.Office365.OutlookServices.Calendar)value;
+                    this.Calendar = (Microsoft.Office365.OutlookServices.Calendar)value;
 
                 }
 
@@ -8309,7 +8309,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event>) _InstancesConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Event>) Instances);
 
             }
 
@@ -9421,7 +9421,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _EmailAddresses.Clear();
+                EmailAddresses.Clear();
 
                 if (value != null)
 
@@ -9431,7 +9431,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _EmailAddresses.Add(i);
+                        EmailAddresses.Add(i);
 
                     }
 
@@ -9467,7 +9467,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _ImAddresses.Clear();
+                ImAddresses.Clear();
 
                 if (value != null)
 
@@ -9477,7 +9477,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _ImAddresses.Add(i);
+                        ImAddresses.Add(i);
 
                     }
 
@@ -9753,7 +9753,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _HomePhones.Clear();
+                HomePhones.Clear();
 
                 if (value != null)
 
@@ -9763,7 +9763,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _HomePhones.Add(i);
+                        HomePhones.Add(i);
 
                     }
 
@@ -9799,7 +9799,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _BusinessPhones.Clear();
+                BusinessPhones.Clear();
 
                 if (value != null)
 
@@ -9809,7 +9809,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _BusinessPhones.Add(i);
+                        BusinessPhones.Add(i);
 
                     }
 
@@ -10329,7 +10329,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IContact, Microsoft.Office365.OutlookServices.Contact>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Contact>) _ContactsConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IContact, Microsoft.Office365.OutlookServices.Contact>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Contact>) Contacts);
 
             }
 
@@ -10343,7 +10343,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IContactFolder, Microsoft.Office365.OutlookServices.ContactFolder>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.ContactFolder>) _ChildFoldersConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IContactFolder, Microsoft.Office365.OutlookServices.ContactFolder>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.ContactFolder>) ChildFolders);
 
             }
 
