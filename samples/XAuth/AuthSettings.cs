@@ -9,6 +9,8 @@ namespace XAuth
         public string Username { get; set; }
         public string Password { get; set; }
 
+        public AuthSettings() { }
+
         public AuthSettings(Uri authority, string clientId, string username, string password)
         {
             Authority = authority;

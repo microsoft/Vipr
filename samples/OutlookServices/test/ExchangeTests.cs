@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Office365.OutlookServices;
 using System.Threading.Tasks;
@@ -20,8 +21,10 @@ namespace ExchangeManagedOMTests
         {
             var settings = Settings.ExchangePrd;
 
+            Its.Configuration.Settings.SettingsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config");
+
             var xauth =
-                new XAuth.Auth(settings.Auth);
+                new XAuth.Auth(Its.Configuration.Settings.Get<AuthSettings>());
 
             client = new OutlookServicesClient(settings.Environment.EndpointUri, () => xauth.GetAccessToken(settings.Environment.ResourceId));
         }
