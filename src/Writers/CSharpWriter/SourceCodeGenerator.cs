@@ -652,14 +652,14 @@ namespace CSharpWriter
 
                 using (_builder.IndentBraced)
                 {
-                    _("{0}.Clear();", property.FieldName);
+                    _("{0}.Clear();", property.Name);
                     _("if (value != null)");
                     using (_builder.IndentBraced)
                     {
                         _("foreach (var i in value)");
                         using (_builder.IndentBraced)
                         {
-                            _("{0}.Add(i);", property.FieldName);
+                            _("{0}.Add(i);", property.Name);
                         }
                     }
                 }
