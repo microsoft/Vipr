@@ -11,9 +11,11 @@ namespace CSharpWriterUnitTests
 {
     public static class DataServiceContextWrapperExtensions
     {
-        public static DataServiceContextWrapper WithDefaultResolvers(this DataServiceContextWrapper context, string @namespace)
+        public static DataServiceContextWrapper WithDefaultResolvers(this DataServiceContextWrapper context,
+            string @namespace)
         {
-            context.ResolveName = type => context.DefaultResolveNameInternal(type, @namespace, @namespace) ?? type.FullName;
+            context.ResolveName =
+                type => context.DefaultResolveNameInternal(type, @namespace, @namespace) ?? type.FullName;
             context.ResolveType = name => context.DefaultResolveTypeInternal(name, @namespace, @namespace);
 
             return context;
@@ -34,7 +36,7 @@ namespace CSharpWriterUnitTests
                     "<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\">" +
                     edmx + "</edmx:Edmx>";
 
-            if(Debugger.IsAttached)
+            if (Debugger.IsAttached)
                 Debug.WriteLine(edmx);
 
             var model = EdmxReader.Parse(XmlReader.Create(new StringReader(edmx)));
@@ -44,20 +46,26 @@ namespace CSharpWriterUnitTests
             return context;
         }
 
-        public static ReadOnlyQueryableSetBase CreateCollection(this DataServiceContextWrapper context, Type collectionType, Type instanceType, string path, object entity = null)
+        public static ReadOnlyQueryableSetBase CreateCollection(this DataServiceContextWrapper context,
+            Type collectionType, Type instanceType, string path, object entity = null)
         {
             return
-                Activator.CreateInstance(collectionType, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null,
+                Activator.CreateInstance(collectionType,
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null,
                     new[]
                     {
-                        context.GetType().GetMethod("CreateQuery", new []{typeof(string)}).MakeGenericMethod(instanceType).Invoke(context, new object[]{path}),
+                        context.GetType()
+                            .GetMethod("CreateQuery", new[] {typeof (string)})
+                            .MakeGenericMethod(instanceType)
+                            .Invoke(context, new object[] {path}),
                         context,
                         entity,
                         path
                     }, null) as ReadOnlyQueryableSetBase;
         }
 
-        public static RestShallowObjectFetcher CreateFetcher(this DataServiceContextWrapper context, Type fetcherType, string path)
+        public static RestShallowObjectFetcher CreateFetcher(this DataServiceContextWrapper context, Type fetcherType,
+            string path)
         {
             var instance =
                 Activator.CreateInstance(fetcherType) as
@@ -74,13 +82,31 @@ namespace CSharpWriterUnitTests
                 Activator.CreateInstance(concreteType) as
                     EntityBase;
 
-            typeof(BaseEntityType).GetProperty("Context", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(instance, context);
+            typeof (BaseEntityType).GetProperty("Context", BindingFlags.Instance | BindingFlags.NonPublic)
+                .SetValue(instance, context);
 
-            context.AddObject(concreteType.Name + "s", instance);
+            context.AddConcrete(concreteType, instance);
 
             context.SaveChangesAsync().Wait();
 
             return instance;
+        }
+
+        public static void AddConcrete(this DataServiceContextWrapper context, Type concreteType, object instance)
+        {
+            typeof (BaseEntityType).GetProperty("Context", BindingFlags.Instance | BindingFlags.NonPublic)
+                .SetValue(instance, context);
+
+            context.AddObject(concreteType.Name + "s", instance);
+        }
+
+        public static void AddRelatedConcrete(this DataServiceContextWrapper context, object instance, string propName,
+            object relatedInstance)
+        {
+            typeof (BaseEntityType).GetProperty("Context", BindingFlags.Instance | BindingFlags.NonPublic)
+                .SetValue(instance, context);
+
+            context.AddRelatedObject(instance, propName, relatedInstance);
         }
     }
 }
