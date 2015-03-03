@@ -18,30 +18,27 @@ namespace Microsoft.Office365.OutlookServices
 
     using System.Threading.Tasks;
 
-    public enum DayOfWeek : int
+    public enum MeetingMessageType : int
 
     {
 
-        Sunday
+        None
          = 0
         ,
-        Monday
+        MeetingRequest
          = 1
         ,
-        Tuesday
+        MeetingCancelled
          = 2
         ,
-        Wednesday
+        MeetingAccepted
          = 3
         ,
-        Thursday
+        MeetingTenativelyAccepted
          = 4
         ,
-        Friday
+        MeetingDeclined
          = 5
-        ,
-        Saturday
-         = 6
         ,
     }
 
@@ -78,18 +75,47 @@ namespace Microsoft.Office365.OutlookServices
 
     
 
-    public enum AttendeeType : int
+    public enum FreeBusyStatus : int
 
     {
 
-        Required
+        Free
          = 0
         ,
-        Optional
+        Tentative
          = 1
         ,
-        Resource
+        Busy
          = 2
+        ,
+        Oof
+         = 3
+        ,
+        WorkingElsewhere
+         = 4
+        ,
+        Unknown
+         = -1
+        ,
+    }
+
+    
+
+    public enum EventType : int
+
+    {
+
+        SingleInstance
+         = 0
+        ,
+        Occurrence
+         = 1
+        ,
+        Exception
+         = 2
+        ,
+        SeriesMaster
+         = 3
         ,
     }
 
@@ -121,73 +147,18 @@ namespace Microsoft.Office365.OutlookServices
 
     
 
-    public enum EventType : int
+    public enum AttendeeType : int
 
     {
 
-        SingleInstance
+        Required
          = 0
         ,
-        Occurrence
+        Optional
          = 1
         ,
-        Exception
+        Resource
          = 2
-        ,
-        SeriesMaster
-         = 3
-        ,
-    }
-
-    
-
-    public enum FreeBusyStatus : int
-
-    {
-
-        Free
-         = 0
-        ,
-        Tentative
-         = 1
-        ,
-        Busy
-         = 2
-        ,
-        Oof
-         = 3
-        ,
-        WorkingElsewhere
-         = 4
-        ,
-        Unknown
-         = -1
-        ,
-    }
-
-    
-
-    public enum MeetingMessageType : int
-
-    {
-
-        None
-         = 0
-        ,
-        MeetingRequest
-         = 1
-        ,
-        MeetingCancelled
-         = 2
-        ,
-        MeetingAccepted
-         = 3
-        ,
-        MeetingTenativelyAccepted
-         = 4
-        ,
-        MeetingDeclined
-         = 5
         ,
     }
 
@@ -219,18 +190,30 @@ namespace Microsoft.Office365.OutlookServices
 
     
 
-    public enum RecurrenceRangeType : int
+    public enum DayOfWeek : int
 
     {
 
-        EndDate
+        Sunday
          = 0
         ,
-        NoEnd
+        Monday
          = 1
         ,
-        Numbered
+        Tuesday
          = 2
+        ,
+        Wednesday
+         = 3
+        ,
+        Thursday
+         = 4
+        ,
+        Friday
+         = 5
+        ,
+        Saturday
+         = 6
         ,
     }
 
@@ -258,6 +241,143 @@ namespace Microsoft.Office365.OutlookServices
     }
 
     
+
+    public enum RecurrenceRangeType : int
+
+    {
+
+        EndDate
+         = 0
+        ,
+        NoEnd
+         = 1
+        ,
+        Numbered
+         = 2
+        ,
+    }
+
+    
+
+    public partial class ItemBody:Microsoft.OData.ProxyExtensions.ComplexTypeBase
+
+    {
+
+        private Microsoft.Office365.OutlookServices.BodyType _ContentType;
+
+        private System.String _Content;
+
+        public Microsoft.Office365.OutlookServices.BodyType ContentType
+
+        {
+
+            get
+
+            {
+
+                return _ContentType;
+
+            }
+
+            set
+
+            {
+
+                if (value != _ContentType)
+
+                {
+
+                    _ContentType = value;
+
+                    OnPropertyChanged("ContentType");
+
+                }
+
+            }
+
+        }
+
+        public System.String Content
+
+        {
+
+            get
+
+            {
+
+                return _Content;
+
+            }
+
+            set
+
+            {
+
+                if (value != _Content)
+
+                {
+
+                    _Content = value;
+
+                    OnPropertyChanged("Content");
+
+                }
+
+            }
+
+        }
+
+        public ItemBody(): base()
+
+        {
+
+        }
+
+    }
+
+    public partial class Recipient:Microsoft.OData.ProxyExtensions.ComplexTypeBase
+
+    {
+
+        private Microsoft.Office365.OutlookServices.EmailAddress _EmailAddress;
+
+        public Microsoft.Office365.OutlookServices.EmailAddress EmailAddress
+
+        {
+
+            get
+
+            {
+
+                return _EmailAddress;
+
+            }
+
+            set
+
+            {
+
+                if (value != _EmailAddress)
+
+                {
+
+                    _EmailAddress = value;
+
+                    OnPropertyChanged("EmailAddress");
+
+                }
+
+            }
+
+        }
+
+        public Recipient(): base()
+
+        {
+
+        }
+
+    }
 
     public partial class EmailAddress:Microsoft.OData.ProxyExtensions.ComplexTypeBase
 
@@ -335,13 +455,13 @@ namespace Microsoft.Office365.OutlookServices
 
     }
 
-    public partial class Recipient:Microsoft.OData.ProxyExtensions.ComplexTypeBase
+    public partial class Location:Microsoft.OData.ProxyExtensions.ComplexTypeBase
 
     {
 
-        private Microsoft.Office365.OutlookServices.EmailAddress _EmailAddress;
+        private System.String _DisplayName;
 
-        public Microsoft.Office365.OutlookServices.EmailAddress EmailAddress
+        public System.String DisplayName
 
         {
 
@@ -349,7 +469,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return _EmailAddress;
+                return _DisplayName;
 
             }
 
@@ -357,13 +477,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (value != _EmailAddress)
+                if (value != _DisplayName)
 
                 {
 
-                    _EmailAddress = value;
+                    _DisplayName = value;
 
-                    OnPropertyChanged("EmailAddress");
+                    OnPropertyChanged("DisplayName");
 
                 }
 
@@ -371,7 +491,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Recipient(): base()
+        public Location(): base()
 
         {
 
@@ -455,126 +575,6 @@ namespace Microsoft.Office365.OutlookServices
 
     }
 
-    public partial class ItemBody:Microsoft.OData.ProxyExtensions.ComplexTypeBase
-
-    {
-
-        private Microsoft.Office365.OutlookServices.BodyType _ContentType;
-
-        private System.String _Content;
-
-        public Microsoft.Office365.OutlookServices.BodyType ContentType
-
-        {
-
-            get
-
-            {
-
-                return _ContentType;
-
-            }
-
-            set
-
-            {
-
-                if (value != _ContentType)
-
-                {
-
-                    _ContentType = value;
-
-                    OnPropertyChanged("ContentType");
-
-                }
-
-            }
-
-        }
-
-        public System.String Content
-
-        {
-
-            get
-
-            {
-
-                return _Content;
-
-            }
-
-            set
-
-            {
-
-                if (value != _Content)
-
-                {
-
-                    _Content = value;
-
-                    OnPropertyChanged("Content");
-
-                }
-
-            }
-
-        }
-
-        public ItemBody(): base()
-
-        {
-
-        }
-
-    }
-
-    public partial class Location:Microsoft.OData.ProxyExtensions.ComplexTypeBase
-
-    {
-
-        private System.String _DisplayName;
-
-        public System.String DisplayName
-
-        {
-
-            get
-
-            {
-
-                return _DisplayName;
-
-            }
-
-            set
-
-            {
-
-                if (value != _DisplayName)
-
-                {
-
-                    _DisplayName = value;
-
-                    OnPropertyChanged("DisplayName");
-
-                }
-
-            }
-
-        }
-
-        public Location(): base()
-
-        {
-
-        }
-
-    }
-
     public partial class ResponseStatus:Microsoft.OData.ProxyExtensions.ComplexTypeBase
 
     {
@@ -651,21 +651,15 @@ namespace Microsoft.Office365.OutlookServices
 
     }
 
-    public partial class PhysicalAddress:Microsoft.OData.ProxyExtensions.ComplexTypeBase
+    public partial class PatternedRecurrence:Microsoft.OData.ProxyExtensions.ComplexTypeBase
 
     {
 
-        private System.String _Street;
+        private Microsoft.Office365.OutlookServices.RecurrencePattern _Pattern;
 
-        private System.String _City;
+        private Microsoft.Office365.OutlookServices.RecurrenceRange _Range;
 
-        private System.String _State;
-
-        private System.String _CountryOrRegion;
-
-        private System.String _PostalCode;
-
-        public System.String Street
+        public Microsoft.Office365.OutlookServices.RecurrencePattern Pattern
 
         {
 
@@ -673,7 +667,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return _Street;
+                return _Pattern;
 
             }
 
@@ -681,13 +675,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (value != _Street)
+                if (value != _Pattern)
 
                 {
 
-                    _Street = value;
+                    _Pattern = value;
 
-                    OnPropertyChanged("Street");
+                    OnPropertyChanged("Pattern");
 
                 }
 
@@ -695,7 +689,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public System.String City
+        public Microsoft.Office365.OutlookServices.RecurrenceRange Range
 
         {
 
@@ -703,7 +697,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return _City;
+                return _Range;
 
             }
 
@@ -711,13 +705,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (value != _City)
+                if (value != _Range)
 
                 {
 
-                    _City = value;
+                    _Range = value;
 
-                    OnPropertyChanged("City");
+                    OnPropertyChanged("Range");
 
                 }
 
@@ -725,97 +719,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public System.String State
-
-        {
-
-            get
-
-            {
-
-                return _State;
-
-            }
-
-            set
-
-            {
-
-                if (value != _State)
-
-                {
-
-                    _State = value;
-
-                    OnPropertyChanged("State");
-
-                }
-
-            }
-
-        }
-
-        public System.String CountryOrRegion
-
-        {
-
-            get
-
-            {
-
-                return _CountryOrRegion;
-
-            }
-
-            set
-
-            {
-
-                if (value != _CountryOrRegion)
-
-                {
-
-                    _CountryOrRegion = value;
-
-                    OnPropertyChanged("CountryOrRegion");
-
-                }
-
-            }
-
-        }
-
-        public System.String PostalCode
-
-        {
-
-            get
-
-            {
-
-                return _PostalCode;
-
-            }
-
-            set
-
-            {
-
-                if (value != _PostalCode)
-
-                {
-
-                    _PostalCode = value;
-
-                    OnPropertyChanged("PostalCode");
-
-                }
-
-            }
-
-        }
-
-        public PhysicalAddress(): base()
+        public PatternedRecurrence(): base()
 
         {
 
@@ -831,9 +735,9 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.Int32 _Interval;
 
-        private System.Int32 _DayOfMonth;
-
         private System.Int32 _Month;
+
+        private System.Int32 _DayOfMonth;
 
         private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.DayOfWeek> _DaysOfWeek;
 
@@ -901,36 +805,6 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public System.Int32 DayOfMonth
-
-        {
-
-            get
-
-            {
-
-                return _DayOfMonth;
-
-            }
-
-            set
-
-            {
-
-                if (value != _DayOfMonth)
-
-                {
-
-                    _DayOfMonth = value;
-
-                    OnPropertyChanged("DayOfMonth");
-
-                }
-
-            }
-
-        }
-
         public System.Int32 Month
 
         {
@@ -954,6 +828,36 @@ namespace Microsoft.Office365.OutlookServices
                     _Month = value;
 
                     OnPropertyChanged("Month");
+
+                }
+
+            }
+
+        }
+
+        public System.Int32 DayOfMonth
+
+        {
+
+            get
+
+            {
+
+                return _DayOfMonth;
+
+            }
+
+            set
+
+            {
+
+                if (value != _DayOfMonth)
+
+                {
+
+                    _DayOfMonth = value;
+
+                    OnPropertyChanged("DayOfMonth");
 
                 }
 
@@ -1215,45 +1119,21 @@ namespace Microsoft.Office365.OutlookServices
 
     }
 
-    public partial class PatternedRecurrence:Microsoft.OData.ProxyExtensions.ComplexTypeBase
+    public partial class PhysicalAddress:Microsoft.OData.ProxyExtensions.ComplexTypeBase
 
     {
 
-        private Microsoft.Office365.OutlookServices.RecurrencePattern _Pattern;
+        private System.String _Street;
 
-        private Microsoft.Office365.OutlookServices.RecurrenceRange _Range;
+        private System.String _City;
 
-        public Microsoft.Office365.OutlookServices.RecurrencePattern Pattern
+        private System.String _State;
 
-        {
+        private System.String _CountryOrRegion;
 
-            get
+        private System.String _PostalCode;
 
-            {
-
-                return _Pattern;
-
-            }
-
-            set
-
-            {
-
-                if (value != _Pattern)
-
-                {
-
-                    _Pattern = value;
-
-                    OnPropertyChanged("Pattern");
-
-                }
-
-            }
-
-        }
-
-        public Microsoft.Office365.OutlookServices.RecurrenceRange Range
+        public System.String Street
 
         {
 
@@ -1261,7 +1141,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return _Range;
+                return _Street;
 
             }
 
@@ -1269,13 +1149,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (value != _Range)
+                if (value != _Street)
 
                 {
 
-                    _Range = value;
+                    _Street = value;
 
-                    OnPropertyChanged("Range");
+                    OnPropertyChanged("Street");
 
                 }
 
@@ -1283,7 +1163,127 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public PatternedRecurrence(): base()
+        public System.String City
+
+        {
+
+            get
+
+            {
+
+                return _City;
+
+            }
+
+            set
+
+            {
+
+                if (value != _City)
+
+                {
+
+                    _City = value;
+
+                    OnPropertyChanged("City");
+
+                }
+
+            }
+
+        }
+
+        public System.String State
+
+        {
+
+            get
+
+            {
+
+                return _State;
+
+            }
+
+            set
+
+            {
+
+                if (value != _State)
+
+                {
+
+                    _State = value;
+
+                    OnPropertyChanged("State");
+
+                }
+
+            }
+
+        }
+
+        public System.String CountryOrRegion
+
+        {
+
+            get
+
+            {
+
+                return _CountryOrRegion;
+
+            }
+
+            set
+
+            {
+
+                if (value != _CountryOrRegion)
+
+                {
+
+                    _CountryOrRegion = value;
+
+                    OnPropertyChanged("CountryOrRegion");
+
+                }
+
+            }
+
+        }
+
+        public System.String PostalCode
+
+        {
+
+            get
+
+            {
+
+                return _PostalCode;
+
+            }
+
+            set
+
+            {
+
+                if (value != _PostalCode)
+
+                {
+
+                    _PostalCode = value;
+
+                    OnPropertyChanged("PostalCode");
+
+                }
+
+            }
+
+        }
+
+        public PhysicalAddress(): base()
 
         {
 
@@ -1466,6 +1466,622 @@ namespace Microsoft.Office365.OutlookServices
     }
 
     internal partial class EntityCollection
+
+    {
+
+        public global::System.Threading.Tasks.Task<System.Int64> CountAsync()
+
+        {
+
+            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+
+        }
+
+    }
+
+    [global::Microsoft.OData.Client.Key("Id")]
+
+    public abstract partial class Attachment:Microsoft.Office365.OutlookServices.Entity, Microsoft.Office365.OutlookServices.IAttachment, Microsoft.Office365.OutlookServices.IAttachmentFetcher
+
+    {
+
+        private System.String _Name;
+
+        private System.String _ContentType;
+
+        private System.Int32 _Size;
+
+        private System.Boolean _IsInline;
+
+        private System.Nullable<System.DateTimeOffset> _DateTimeLastModified;
+
+        public System.String Name
+
+        {
+
+            get
+
+            {
+
+                return _Name;
+
+            }
+
+            set
+
+            {
+
+                if (value != _Name)
+
+                {
+
+                    _Name = value;
+
+                    OnPropertyChanged("Name");
+
+                }
+
+            }
+
+        }
+
+        public System.String ContentType
+
+        {
+
+            get
+
+            {
+
+                return _ContentType;
+
+            }
+
+            set
+
+            {
+
+                if (value != _ContentType)
+
+                {
+
+                    _ContentType = value;
+
+                    OnPropertyChanged("ContentType");
+
+                }
+
+            }
+
+        }
+
+        public System.Int32 Size
+
+        {
+
+            get
+
+            {
+
+                return _Size;
+
+            }
+
+            set
+
+            {
+
+                if (value != _Size)
+
+                {
+
+                    _Size = value;
+
+                    OnPropertyChanged("Size");
+
+                }
+
+            }
+
+        }
+
+        public System.Boolean IsInline
+
+        {
+
+            get
+
+            {
+
+                return _IsInline;
+
+            }
+
+            set
+
+            {
+
+                if (value != _IsInline)
+
+                {
+
+                    _IsInline = value;
+
+                    OnPropertyChanged("IsInline");
+
+                }
+
+            }
+
+        }
+
+        public System.Nullable<System.DateTimeOffset> DateTimeLastModified
+
+        {
+
+            get
+
+            {
+
+                return _DateTimeLastModified;
+
+            }
+
+            set
+
+            {
+
+                if (value != _DateTimeLastModified)
+
+                {
+
+                    _DateTimeLastModified = value;
+
+                    OnPropertyChanged("DateTimeLastModified");
+
+                }
+
+            }
+
+        }
+
+        public Attachment()
+
+        {
+
+        }
+
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IAttachment> EnsureQuery()
+
+        {
+
+            if (this._query == null)
+
+            {
+
+                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Attachment, Microsoft.Office365.OutlookServices.IAttachment>();
+
+            }
+
+            return this._query;
+
+        }
+
+        
+
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IAttachment> _query;
+
+    }
+
+    internal partial class AttachmentFetcher:Microsoft.Office365.OutlookServices.EntityFetcher, Microsoft.Office365.OutlookServices.IAttachmentFetcher
+
+    {
+
+        public AttachmentFetcher()
+
+        {
+
+        }
+
+    }
+
+    internal partial class AttachmentCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IAttachment>, Microsoft.Office365.OutlookServices.IAttachmentCollection
+
+    {
+
+        internal AttachmentCollection(global::Microsoft.OData.Client.DataServiceQuery inner,Microsoft.OData.ProxyExtensions.DataServiceContextWrapper context,object entity,string path): base(inner, context, entity as Microsoft.OData.ProxyExtensions.EntityBase, path)
+
+        {
+
+        }
+
+        public Microsoft.Office365.OutlookServices.IAttachmentFetcher GetById(System.String id)
+
+        {
+
+            return this[id];
+
+        }
+
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IAttachment>> ExecuteAsync()
+
+        {
+
+            return ExecuteAsyncInternal();
+
+        }
+
+        public global::System.Threading.Tasks.Task AddAttachmentAsync(Microsoft.Office365.OutlookServices.IAttachment item, System.Boolean dontSave = false)
+
+        {
+
+            if (_entity == null)
+
+            {
+
+                Context.AddObject(_path, item);
+
+            }
+
+            else
+
+            {
+
+                var lastSlash = _path.LastIndexOf('/');
+
+                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+
+                Context.AddRelatedObject(_entity, shortPath, item);
+
+            }
+
+            if (!dontSave)
+
+            {
+
+                return Context.SaveChangesAsync();
+
+            }
+
+            else
+
+            {
+
+                var retVal = new global::System.Threading.Tasks.TaskCompletionSource<object>();
+
+                retVal.SetResult(null);
+
+                return retVal.Task;
+
+            }
+
+        }
+
+        public Microsoft.Office365.OutlookServices.IAttachmentFetcher this[System.String id]
+
+        {
+
+            get
+
+            {
+
+                var path = GetPath<Microsoft.Office365.OutlookServices.Attachment>((i) => i.Id == id);
+
+                var fetcher = new Microsoft.Office365.OutlookServices.AttachmentFetcher();
+
+                fetcher.Initialize(Context, path);
+
+                
+
+                return fetcher;
+
+            }
+
+        }
+
+    }
+
+    internal partial class AttachmentCollection
+
+    {
+
+        public global::System.Threading.Tasks.Task<System.Int64> CountAsync()
+
+        {
+
+            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+
+        }
+
+    }
+
+    [global::Microsoft.OData.Client.Key("Id")]
+
+    public abstract partial class Item:Microsoft.Office365.OutlookServices.Entity, Microsoft.Office365.OutlookServices.IItem, Microsoft.Office365.OutlookServices.IItemFetcher
+
+    {
+
+        private System.String _ChangeKey;
+
+        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<System.String> _Categories;
+
+        private System.Nullable<System.DateTimeOffset> _DateTimeCreated;
+
+        private System.Nullable<System.DateTimeOffset> _DateTimeLastModified;
+
+        public System.String ChangeKey
+
+        {
+
+            get
+
+            {
+
+                return _ChangeKey;
+
+            }
+
+            set
+
+            {
+
+                if (value != _ChangeKey)
+
+                {
+
+                    _ChangeKey = value;
+
+                    OnPropertyChanged("ChangeKey");
+
+                }
+
+            }
+
+        }
+
+        public System.Collections.Generic.IList<System.String> Categories
+
+        {
+
+            get
+
+            {
+
+                if (this._Categories == default(System.Collections.Generic.IList<System.String>))
+
+                {
+
+                    this._Categories = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<System.String>();
+
+                    this._Categories.SetContainer(() => GetContainingEntity("Categories"));
+
+                }
+
+                return this._Categories;
+
+            }
+
+            set
+
+            {
+
+                _Categories.Clear();
+
+                if (value != null)
+
+                {
+
+                    foreach (var i in value)
+
+                    {
+
+                        _Categories.Add(i);
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        public System.Nullable<System.DateTimeOffset> DateTimeCreated
+
+        {
+
+            get
+
+            {
+
+                return _DateTimeCreated;
+
+            }
+
+            set
+
+            {
+
+                if (value != _DateTimeCreated)
+
+                {
+
+                    _DateTimeCreated = value;
+
+                    OnPropertyChanged("DateTimeCreated");
+
+                }
+
+            }
+
+        }
+
+        public System.Nullable<System.DateTimeOffset> DateTimeLastModified
+
+        {
+
+            get
+
+            {
+
+                return _DateTimeLastModified;
+
+            }
+
+            set
+
+            {
+
+                if (value != _DateTimeLastModified)
+
+                {
+
+                    _DateTimeLastModified = value;
+
+                    OnPropertyChanged("DateTimeLastModified");
+
+                }
+
+            }
+
+        }
+
+        public Item()
+
+        {
+
+        }
+
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IItem> EnsureQuery()
+
+        {
+
+            if (this._query == null)
+
+            {
+
+                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Item, Microsoft.Office365.OutlookServices.IItem>();
+
+            }
+
+            return this._query;
+
+        }
+
+        
+
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IItem> _query;
+
+    }
+
+    internal partial class ItemFetcher:Microsoft.Office365.OutlookServices.EntityFetcher, Microsoft.Office365.OutlookServices.IItemFetcher
+
+    {
+
+        public ItemFetcher()
+
+        {
+
+        }
+
+    }
+
+    internal partial class ItemCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IItem>, Microsoft.Office365.OutlookServices.IItemCollection
+
+    {
+
+        internal ItemCollection(global::Microsoft.OData.Client.DataServiceQuery inner,Microsoft.OData.ProxyExtensions.DataServiceContextWrapper context,object entity,string path): base(inner, context, entity as Microsoft.OData.ProxyExtensions.EntityBase, path)
+
+        {
+
+        }
+
+        public Microsoft.Office365.OutlookServices.IItemFetcher GetById(System.String id)
+
+        {
+
+            return this[id];
+
+        }
+
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IItem>> ExecuteAsync()
+
+        {
+
+            return ExecuteAsyncInternal();
+
+        }
+
+        public global::System.Threading.Tasks.Task AddItemAsync(Microsoft.Office365.OutlookServices.IItem item, System.Boolean dontSave = false)
+
+        {
+
+            if (_entity == null)
+
+            {
+
+                Context.AddObject(_path, item);
+
+            }
+
+            else
+
+            {
+
+                var lastSlash = _path.LastIndexOf('/');
+
+                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+
+                Context.AddRelatedObject(_entity, shortPath, item);
+
+            }
+
+            if (!dontSave)
+
+            {
+
+                return Context.SaveChangesAsync();
+
+            }
+
+            else
+
+            {
+
+                var retVal = new global::System.Threading.Tasks.TaskCompletionSource<object>();
+
+                retVal.SetResult(null);
+
+                return retVal.Task;
+
+            }
+
+        }
+
+        public Microsoft.Office365.OutlookServices.IItemFetcher this[System.String id]
+
+        {
+
+            get
+
+            {
+
+                var path = GetPath<Microsoft.Office365.OutlookServices.Item>((i) => i.Id == id);
+
+                var fetcher = new Microsoft.Office365.OutlookServices.ItemFetcher();
+
+                fetcher.Initialize(Context, path);
+
+                
+
+                return fetcher;
+
+            }
+
+        }
+
+    }
+
+    internal partial class ItemCollection
 
     {
 
@@ -1817,7 +2433,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _FoldersConcrete.Clear();
+                Folders.Clear();
 
                 if (value != null)
 
@@ -1827,7 +2443,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _FoldersConcrete.Add(i);
+                        Folders.Add(i);
 
                     }
 
@@ -1865,7 +2481,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _MessagesConcrete.Clear();
+                Messages.Clear();
 
                 if (value != null)
 
@@ -1875,7 +2491,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _MessagesConcrete.Add(i);
+                        Messages.Add(i);
 
                     }
 
@@ -1949,7 +2565,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _CalendarsConcrete.Clear();
+                Calendars.Clear();
 
                 if (value != null)
 
@@ -1959,7 +2575,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _CalendarsConcrete.Add(i);
+                        Calendars.Add(i);
 
                     }
 
@@ -2033,7 +2649,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _CalendarGroupsConcrete.Clear();
+                CalendarGroups.Clear();
 
                 if (value != null)
 
@@ -2043,7 +2659,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _CalendarGroupsConcrete.Add(i);
+                        CalendarGroups.Add(i);
 
                     }
 
@@ -2081,7 +2697,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _EventsConcrete.Clear();
+                Events.Clear();
 
                 if (value != null)
 
@@ -2091,7 +2707,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _EventsConcrete.Add(i);
+                        Events.Add(i);
 
                     }
 
@@ -2129,7 +2745,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _CalendarViewConcrete.Clear();
+                CalendarView.Clear();
 
                 if (value != null)
 
@@ -2139,7 +2755,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _CalendarViewConcrete.Add(i);
+                        CalendarView.Add(i);
 
                     }
 
@@ -2177,7 +2793,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _ContactsConcrete.Clear();
+                Contacts.Clear();
 
                 if (value != null)
 
@@ -2187,7 +2803,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _ContactsConcrete.Add(i);
+                        Contacts.Add(i);
 
                     }
 
@@ -2225,7 +2841,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _ContactFoldersConcrete.Clear();
+                ContactFolders.Clear();
 
                 if (value != null)
 
@@ -2235,7 +2851,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _ContactFoldersConcrete.Add(i);
+                        ContactFolders.Add(i);
 
                     }
 
@@ -3257,7 +3873,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _ChildFoldersConcrete.Clear();
+                ChildFolders.Clear();
 
                 if (value != null)
 
@@ -3267,7 +3883,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _ChildFoldersConcrete.Add(i);
+                        ChildFolders.Add(i);
 
                     }
 
@@ -3305,7 +3921,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _MessagesConcrete.Clear();
+                Messages.Clear();
 
                 if (value != null)
 
@@ -3315,7 +3931,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _MessagesConcrete.Add(i);
+                        Messages.Add(i);
 
                     }
 
@@ -3754,306 +4370,6 @@ namespace Microsoft.Office365.OutlookServices
     }
 
     internal partial class FolderCollection
-
-    {
-
-        public global::System.Threading.Tasks.Task<System.Int64> CountAsync()
-
-        {
-
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
-
-        }
-
-    }
-
-    [global::Microsoft.OData.Client.Key("Id")]
-
-    public abstract partial class Item:Microsoft.Office365.OutlookServices.Entity, Microsoft.Office365.OutlookServices.IItem, Microsoft.Office365.OutlookServices.IItemFetcher
-
-    {
-
-        private System.String _ChangeKey;
-
-        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<System.String> _Categories;
-
-        private System.Nullable<System.DateTimeOffset> _DateTimeCreated;
-
-        private System.Nullable<System.DateTimeOffset> _DateTimeLastModified;
-
-        public System.String ChangeKey
-
-        {
-
-            get
-
-            {
-
-                return _ChangeKey;
-
-            }
-
-            set
-
-            {
-
-                if (value != _ChangeKey)
-
-                {
-
-                    _ChangeKey = value;
-
-                    OnPropertyChanged("ChangeKey");
-
-                }
-
-            }
-
-        }
-
-        public System.Collections.Generic.IList<System.String> Categories
-
-        {
-
-            get
-
-            {
-
-                if (this._Categories == default(System.Collections.Generic.IList<System.String>))
-
-                {
-
-                    this._Categories = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<System.String>();
-
-                    this._Categories.SetContainer(() => GetContainingEntity("Categories"));
-
-                }
-
-                return this._Categories;
-
-            }
-
-            set
-
-            {
-
-                _Categories.Clear();
-
-                if (value != null)
-
-                {
-
-                    foreach (var i in value)
-
-                    {
-
-                        _Categories.Add(i);
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        public System.Nullable<System.DateTimeOffset> DateTimeCreated
-
-        {
-
-            get
-
-            {
-
-                return _DateTimeCreated;
-
-            }
-
-            set
-
-            {
-
-                if (value != _DateTimeCreated)
-
-                {
-
-                    _DateTimeCreated = value;
-
-                    OnPropertyChanged("DateTimeCreated");
-
-                }
-
-            }
-
-        }
-
-        public System.Nullable<System.DateTimeOffset> DateTimeLastModified
-
-        {
-
-            get
-
-            {
-
-                return _DateTimeLastModified;
-
-            }
-
-            set
-
-            {
-
-                if (value != _DateTimeLastModified)
-
-                {
-
-                    _DateTimeLastModified = value;
-
-                    OnPropertyChanged("DateTimeLastModified");
-
-                }
-
-            }
-
-        }
-
-        public Item()
-
-        {
-
-        }
-
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IItem> EnsureQuery()
-
-        {
-
-            if (this._query == null)
-
-            {
-
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Item, Microsoft.Office365.OutlookServices.IItem>();
-
-            }
-
-            return this._query;
-
-        }
-
-        
-
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IItem> _query;
-
-    }
-
-    internal partial class ItemFetcher:Microsoft.Office365.OutlookServices.EntityFetcher, Microsoft.Office365.OutlookServices.IItemFetcher
-
-    {
-
-        public ItemFetcher()
-
-        {
-
-        }
-
-    }
-
-    internal partial class ItemCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IItem>, Microsoft.Office365.OutlookServices.IItemCollection
-
-    {
-
-        internal ItemCollection(global::Microsoft.OData.Client.DataServiceQuery inner,Microsoft.OData.ProxyExtensions.DataServiceContextWrapper context,object entity,string path): base(inner, context, entity as Microsoft.OData.ProxyExtensions.EntityBase, path)
-
-        {
-
-        }
-
-        public Microsoft.Office365.OutlookServices.IItemFetcher GetById(System.String id)
-
-        {
-
-            return this[id];
-
-        }
-
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IItem>> ExecuteAsync()
-
-        {
-
-            return ExecuteAsyncInternal();
-
-        }
-
-        public global::System.Threading.Tasks.Task AddItemAsync(Microsoft.Office365.OutlookServices.IItem item, System.Boolean dontSave = false)
-
-        {
-
-            if (_entity == null)
-
-            {
-
-                Context.AddObject(_path, item);
-
-            }
-
-            else
-
-            {
-
-                var lastSlash = _path.LastIndexOf('/');
-
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
-
-                Context.AddRelatedObject(_entity, shortPath, item);
-
-            }
-
-            if (!dontSave)
-
-            {
-
-                return Context.SaveChangesAsync();
-
-            }
-
-            else
-
-            {
-
-                var retVal = new global::System.Threading.Tasks.TaskCompletionSource<object>();
-
-                retVal.SetResult(null);
-
-                return retVal.Task;
-
-            }
-
-        }
-
-        public Microsoft.Office365.OutlookServices.IItemFetcher this[System.String id]
-
-        {
-
-            get
-
-            {
-
-                var path = GetPath<Microsoft.Office365.OutlookServices.Item>((i) => i.Id == id);
-
-                var fetcher = new Microsoft.Office365.OutlookServices.ItemFetcher();
-
-                fetcher.Initialize(Context, path);
-
-                
-
-                return fetcher;
-
-            }
-
-        }
-
-    }
-
-    internal partial class ItemCollection
 
     {
 
@@ -4823,7 +5139,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _AttachmentsConcrete.Clear();
+                Attachments.Clear();
 
                 if (value != null)
 
@@ -4833,7 +5149,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _AttachmentsConcrete.Add(i);
+                        Attachments.Add(i);
 
                     }
 
@@ -5594,322 +5910,6 @@ namespace Microsoft.Office365.OutlookServices
     }
 
     internal partial class MessageCollection
-
-    {
-
-        public global::System.Threading.Tasks.Task<System.Int64> CountAsync()
-
-        {
-
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
-
-        }
-
-    }
-
-    [global::Microsoft.OData.Client.Key("Id")]
-
-    public abstract partial class Attachment:Microsoft.Office365.OutlookServices.Entity, Microsoft.Office365.OutlookServices.IAttachment, Microsoft.Office365.OutlookServices.IAttachmentFetcher
-
-    {
-
-        private System.String _Name;
-
-        private System.String _ContentType;
-
-        private System.Int32 _Size;
-
-        private System.Boolean _IsInline;
-
-        private System.Nullable<System.DateTimeOffset> _DateTimeLastModified;
-
-        public System.String Name
-
-        {
-
-            get
-
-            {
-
-                return _Name;
-
-            }
-
-            set
-
-            {
-
-                if (value != _Name)
-
-                {
-
-                    _Name = value;
-
-                    OnPropertyChanged("Name");
-
-                }
-
-            }
-
-        }
-
-        public System.String ContentType
-
-        {
-
-            get
-
-            {
-
-                return _ContentType;
-
-            }
-
-            set
-
-            {
-
-                if (value != _ContentType)
-
-                {
-
-                    _ContentType = value;
-
-                    OnPropertyChanged("ContentType");
-
-                }
-
-            }
-
-        }
-
-        public System.Int32 Size
-
-        {
-
-            get
-
-            {
-
-                return _Size;
-
-            }
-
-            set
-
-            {
-
-                if (value != _Size)
-
-                {
-
-                    _Size = value;
-
-                    OnPropertyChanged("Size");
-
-                }
-
-            }
-
-        }
-
-        public System.Boolean IsInline
-
-        {
-
-            get
-
-            {
-
-                return _IsInline;
-
-            }
-
-            set
-
-            {
-
-                if (value != _IsInline)
-
-                {
-
-                    _IsInline = value;
-
-                    OnPropertyChanged("IsInline");
-
-                }
-
-            }
-
-        }
-
-        public System.Nullable<System.DateTimeOffset> DateTimeLastModified
-
-        {
-
-            get
-
-            {
-
-                return _DateTimeLastModified;
-
-            }
-
-            set
-
-            {
-
-                if (value != _DateTimeLastModified)
-
-                {
-
-                    _DateTimeLastModified = value;
-
-                    OnPropertyChanged("DateTimeLastModified");
-
-                }
-
-            }
-
-        }
-
-        public Attachment()
-
-        {
-
-        }
-
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IAttachment> EnsureQuery()
-
-        {
-
-            if (this._query == null)
-
-            {
-
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Attachment, Microsoft.Office365.OutlookServices.IAttachment>();
-
-            }
-
-            return this._query;
-
-        }
-
-        
-
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IAttachment> _query;
-
-    }
-
-    internal partial class AttachmentFetcher:Microsoft.Office365.OutlookServices.EntityFetcher, Microsoft.Office365.OutlookServices.IAttachmentFetcher
-
-    {
-
-        public AttachmentFetcher()
-
-        {
-
-        }
-
-    }
-
-    internal partial class AttachmentCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IAttachment>, Microsoft.Office365.OutlookServices.IAttachmentCollection
-
-    {
-
-        internal AttachmentCollection(global::Microsoft.OData.Client.DataServiceQuery inner,Microsoft.OData.ProxyExtensions.DataServiceContextWrapper context,object entity,string path): base(inner, context, entity as Microsoft.OData.ProxyExtensions.EntityBase, path)
-
-        {
-
-        }
-
-        public Microsoft.Office365.OutlookServices.IAttachmentFetcher GetById(System.String id)
-
-        {
-
-            return this[id];
-
-        }
-
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IAttachment>> ExecuteAsync()
-
-        {
-
-            return ExecuteAsyncInternal();
-
-        }
-
-        public global::System.Threading.Tasks.Task AddAttachmentAsync(Microsoft.Office365.OutlookServices.IAttachment item, System.Boolean dontSave = false)
-
-        {
-
-            if (_entity == null)
-
-            {
-
-                Context.AddObject(_path, item);
-
-            }
-
-            else
-
-            {
-
-                var lastSlash = _path.LastIndexOf('/');
-
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
-
-                Context.AddRelatedObject(_entity, shortPath, item);
-
-            }
-
-            if (!dontSave)
-
-            {
-
-                return Context.SaveChangesAsync();
-
-            }
-
-            else
-
-            {
-
-                var retVal = new global::System.Threading.Tasks.TaskCompletionSource<object>();
-
-                retVal.SetResult(null);
-
-                return retVal.Task;
-
-            }
-
-        }
-
-        public Microsoft.Office365.OutlookServices.IAttachmentFetcher this[System.String id]
-
-        {
-
-            get
-
-            {
-
-                var path = GetPath<Microsoft.Office365.OutlookServices.Attachment>((i) => i.Id == id);
-
-                var fetcher = new Microsoft.Office365.OutlookServices.AttachmentFetcher();
-
-                fetcher.Initialize(Context, path);
-
-                
-
-                return fetcher;
-
-            }
-
-        }
-
-    }
-
-    internal partial class AttachmentCollection
 
     {
 
@@ -6747,7 +6747,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _CalendarViewConcrete.Clear();
+                CalendarView.Clear();
 
                 if (value != null)
 
@@ -6757,7 +6757,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _CalendarViewConcrete.Add(i);
+                        CalendarView.Add(i);
 
                     }
 
@@ -6795,7 +6795,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _EventsConcrete.Clear();
+                Events.Clear();
 
                 if (value != null)
 
@@ -6805,7 +6805,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _EventsConcrete.Add(i);
+                        Events.Add(i);
 
                     }
 
@@ -7293,7 +7293,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _CalendarsConcrete.Clear();
+                Calendars.Clear();
 
                 if (value != null)
 
@@ -7303,7 +7303,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _CalendarsConcrete.Add(i);
+                        Calendars.Add(i);
 
                     }
 
@@ -7634,6 +7634,10 @@ namespace Microsoft.Office365.OutlookServices
         private Microsoft.Office365.OutlookServices.PatternedRecurrence _Recurrence;
 
         private Microsoft.Office365.OutlookServices.Recipient _Organizer;
+
+        private System.String _StartTimeZone;
+
+        private System.String _EndTimeZone;
 
         private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Attachment> _AttachmentsConcrete;
 
@@ -8195,6 +8199,66 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
+        public System.String StartTimeZone
+
+        {
+
+            get
+
+            {
+
+                return _StartTimeZone;
+
+            }
+
+            set
+
+            {
+
+                if (value != _StartTimeZone)
+
+                {
+
+                    _StartTimeZone = value;
+
+                    OnPropertyChanged("StartTimeZone");
+
+                }
+
+            }
+
+        }
+
+        public System.String EndTimeZone
+
+        {
+
+            get
+
+            {
+
+                return _EndTimeZone;
+
+            }
+
+            set
+
+            {
+
+                if (value != _EndTimeZone)
+
+                {
+
+                    _EndTimeZone = value;
+
+                    OnPropertyChanged("EndTimeZone");
+
+                }
+
+            }
+
+        }
+
         Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IAttachment> Microsoft.Office365.OutlookServices.IEvent.Attachments
 
         {
@@ -8279,7 +8343,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _AttachmentsConcrete.Clear();
+                Attachments.Clear();
 
                 if (value != null)
 
@@ -8289,7 +8353,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _AttachmentsConcrete.Add(i);
+                        Attachments.Add(i);
 
                     }
 
@@ -8363,7 +8427,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _InstancesConcrete.Clear();
+                Instances.Clear();
 
                 if (value != null)
 
@@ -8373,7 +8437,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _InstancesConcrete.Add(i);
+                        Instances.Add(i);
 
                     }
 
@@ -10313,7 +10377,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _ContactsConcrete.Clear();
+                Contacts.Clear();
 
                 if (value != null)
 
@@ -10323,7 +10387,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _ContactsConcrete.Add(i);
+                        Contacts.Add(i);
 
                     }
 
@@ -10361,7 +10425,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                _ChildFoldersConcrete.Clear();
+                ChildFolders.Clear();
 
                 if (value != null)
 
@@ -10371,7 +10435,7 @@ namespace Microsoft.Office365.OutlookServices
 
                     {
 
-                        _ChildFoldersConcrete.Add(i);
+                        ChildFolders.Add(i);
 
                     }
 
@@ -10885,96 +10949,6 @@ namespace Microsoft.Office365.OutlookServices
             
                 <Schema Namespace=""Microsoft.OutlookServices"" xmlns=""http://docs.oasis-open.org/odata/ns/edm"">
             
-                  <EnumType Name=""DayOfWeek"">
-            
-                    <Member Name=""Sunday"" Value=""0"" />
-            
-                    <Member Name=""Monday"" Value=""1"" />
-            
-                    <Member Name=""Tuesday"" Value=""2"" />
-            
-                    <Member Name=""Wednesday"" Value=""3"" />
-            
-                    <Member Name=""Thursday"" Value=""4"" />
-            
-                    <Member Name=""Friday"" Value=""5"" />
-            
-                    <Member Name=""Saturday"" Value=""6"" />
-            
-                  </EnumType>
-            
-                  <EnumType Name=""BodyType"">
-            
-                    <Member Name=""Text"" Value=""0"" />
-            
-                    <Member Name=""HTML"" Value=""1"" />
-            
-                  </EnumType>
-            
-                  <EnumType Name=""Importance"">
-            
-                    <Member Name=""Low"" Value=""0"" />
-            
-                    <Member Name=""Normal"" Value=""1"" />
-            
-                    <Member Name=""High"" Value=""2"" />
-            
-                  </EnumType>
-            
-                  <EnumType Name=""AttendeeType"">
-            
-                    <Member Name=""Required"" Value=""0"" />
-            
-                    <Member Name=""Optional"" Value=""1"" />
-            
-                    <Member Name=""Resource"" Value=""2"" />
-            
-                  </EnumType>
-            
-                  <EnumType Name=""ResponseType"">
-            
-                    <Member Name=""None"" Value=""0"" />
-            
-                    <Member Name=""Organizer"" Value=""1"" />
-            
-                    <Member Name=""TentativelyAccepted"" Value=""2"" />
-            
-                    <Member Name=""Accepted"" Value=""3"" />
-            
-                    <Member Name=""Declined"" Value=""4"" />
-            
-                    <Member Name=""NotResponded"" Value=""5"" />
-            
-                  </EnumType>
-            
-                  <EnumType Name=""EventType"">
-            
-                    <Member Name=""SingleInstance"" Value=""0"" />
-            
-                    <Member Name=""Occurrence"" Value=""1"" />
-            
-                    <Member Name=""Exception"" Value=""2"" />
-            
-                    <Member Name=""SeriesMaster"" Value=""3"" />
-            
-                  </EnumType>
-            
-                  <EnumType Name=""FreeBusyStatus"">
-            
-                    <Member Name=""Free"" Value=""0"" />
-            
-                    <Member Name=""Tentative"" Value=""1"" />
-            
-                    <Member Name=""Busy"" Value=""2"" />
-            
-                    <Member Name=""Oof"" Value=""3"" />
-            
-                    <Member Name=""WorkingElsewhere"" Value=""4"" />
-            
-                    <Member Name=""Unknown"" Value=""-1"" />
-            
-                  </EnumType>
-            
                   <EnumType Name=""MeetingMessageType"">
             
                     <Member Name=""None"" Value=""0"" />
@@ -10991,143 +10965,7 @@ namespace Microsoft.Office365.OutlookServices
             
                   </EnumType>
             
-                  <EnumType Name=""RecurrencePatternType"">
-            
-                    <Member Name=""Daily"" Value=""0"" />
-            
-                    <Member Name=""Weekly"" Value=""1"" />
-            
-                    <Member Name=""AbsoluteMonthly"" Value=""2"" />
-            
-                    <Member Name=""RelativeMonthly"" Value=""3"" />
-            
-                    <Member Name=""AbsoluteYearly"" Value=""4"" />
-            
-                    <Member Name=""RelativeYearly"" Value=""5"" />
-            
-                  </EnumType>
-            
-                  <EnumType Name=""RecurrenceRangeType"">
-            
-                    <Member Name=""EndDate"" Value=""0"" />
-            
-                    <Member Name=""NoEnd"" Value=""1"" />
-            
-                    <Member Name=""Numbered"" Value=""2"" />
-            
-                  </EnumType>
-            
-                  <EnumType Name=""WeekIndex"">
-            
-                    <Member Name=""First"" Value=""0"" />
-            
-                    <Member Name=""Second"" Value=""1"" />
-            
-                    <Member Name=""Third"" Value=""2"" />
-            
-                    <Member Name=""Fourth"" Value=""3"" />
-            
-                    <Member Name=""Last"" Value=""4"" />
-            
-                  </EnumType>
-            
-                  <ComplexType Name=""EmailAddress"">
-            
-                    <Property Name=""Name"" Type=""Edm.String"" />
-            
-                    <Property Name=""Address"" Type=""Edm.String"" />
-            
-                  </ComplexType>
-            
-                  <ComplexType Name=""Recipient"">
-            
-                    <Property Name=""EmailAddress"" Type=""Microsoft.OutlookServices.EmailAddress"" />
-            
-                  </ComplexType>
-            
-                  <ComplexType Name=""Attendee"" BaseType=""Microsoft.OutlookServices.Recipient"">
-            
-                    <Property Name=""Status"" Type=""Microsoft.OutlookServices.ResponseStatus"" />
-            
-                    <Property Name=""Type"" Type=""Microsoft.OutlookServices.AttendeeType"" />
-            
-                  </ComplexType>
-            
-                  <ComplexType Name=""ItemBody"">
-            
-                    <Property Name=""ContentType"" Type=""Microsoft.OutlookServices.BodyType"" />
-            
-                    <Property Name=""Content"" Type=""Edm.String"" />
-            
-                  </ComplexType>
-            
-                  <ComplexType Name=""Location"">
-            
-                    <Property Name=""DisplayName"" Type=""Edm.String"" />
-            
-                  </ComplexType>
-            
-                  <ComplexType Name=""ResponseStatus"">
-            
-                    <Property Name=""Response"" Type=""Microsoft.OutlookServices.ResponseType"" />
-            
-                    <Property Name=""Time"" Type=""Edm.DateTimeOffset"" />
-            
-                  </ComplexType>
-            
-                  <ComplexType Name=""PhysicalAddress"">
-            
-                    <Property Name=""Street"" Type=""Edm.String"" />
-            
-                    <Property Name=""City"" Type=""Edm.String"" />
-            
-                    <Property Name=""State"" Type=""Edm.String"" />
-            
-                    <Property Name=""CountryOrRegion"" Type=""Edm.String"" />
-            
-                    <Property Name=""PostalCode"" Type=""Edm.String"" />
-            
-                  </ComplexType>
-            
-                  <ComplexType Name=""RecurrencePattern"">
-            
-                    <Property Name=""Type"" Type=""Microsoft.OutlookServices.RecurrencePatternType"" />
-            
-                    <Property Name=""Interval"" Type=""Edm.Int32"" Nullable=""false"" />
-            
-                    <Property Name=""DayOfMonth"" Type=""Edm.Int32"" Nullable=""false"" />
-            
-                    <Property Name=""Month"" Type=""Edm.Int32"" Nullable=""false"" />
-            
-                    <Property Name=""DaysOfWeek"" Type=""Collection(Microsoft.OutlookServices.DayOfWeek)"" />
-            
-                    <Property Name=""FirstDayOfWeek"" Type=""Microsoft.OutlookServices.DayOfWeek"" />
-            
-                    <Property Name=""Index"" Type=""Microsoft.OutlookServices.WeekIndex"" />
-            
-                  </ComplexType>
-            
-                  <ComplexType Name=""RecurrenceRange"">
-            
-                    <Property Name=""Type"" Type=""Microsoft.OutlookServices.RecurrenceRangeType"" />
-            
-                    <Property Name=""StartDate"" Type=""Edm.DateTimeOffset"" />
-            
-                    <Property Name=""EndDate"" Type=""Edm.DateTimeOffset"" />
-            
-                    <Property Name=""NumberOfOccurrences"" Type=""Edm.Int32"" Nullable=""false"" />
-            
-                  </ComplexType>
-            
-                  <ComplexType Name=""PatternedRecurrence"">
-            
-                    <Property Name=""Pattern"" Type=""Microsoft.OutlookServices.RecurrencePattern"" />
-            
-                    <Property Name=""Range"" Type=""Microsoft.OutlookServices.RecurrenceRange"" />
-            
-                  </ComplexType>
-            
-                  <EntityType Name=""Entity"" Abstract=""true"">
+                  <EntityType Abstract=""true"" Name=""Entity"">
             
                     <Key>
             
@@ -11139,81 +10977,21 @@ namespace Microsoft.Office365.OutlookServices
             
                   </EntityType>
             
-                  <EntityType Name=""User"" BaseType=""Microsoft.OutlookServices.Entity"">
+                  <EntityType Abstract=""true"" BaseType=""Microsoft.OutlookServices.Entity"" Name=""Attachment"">
             
-                    <Property Name=""DisplayName"" Type=""Edm.String"" />
+                    <Property Name=""Name"" Type=""Edm.String"" />
             
-                    <Property Name=""Alias"" Type=""Edm.String"" />
+                    <Property Name=""ContentType"" Type=""Edm.String"" />
             
-                    <Property Name=""MailboxGuid"" Type=""Edm.Guid"" />
+                    <Property Name=""Size"" Nullable=""false"" Type=""Edm.Int32"" />
             
-                    <NavigationProperty Name=""Folders"" Type=""Collection(Microsoft.OutlookServices.Folder)"" ContainsTarget=""true"" />
+                    <Property Name=""IsInline"" Nullable=""false"" Type=""Edm.Boolean"" />
             
-                    <NavigationProperty Name=""Messages"" Type=""Collection(Microsoft.OutlookServices.Message)"" ContainsTarget=""true"" />
-            
-                    <NavigationProperty Name=""RootFolder"" Type=""Microsoft.OutlookServices.Folder"" ContainsTarget=""true"" />
-            
-                    <NavigationProperty Name=""Calendars"" Type=""Collection(Microsoft.OutlookServices.Calendar)"" ContainsTarget=""true"" />
-            
-                    <NavigationProperty Name=""Calendar"" Type=""Microsoft.OutlookServices.Calendar"" ContainsTarget=""true"" />
-            
-                    <NavigationProperty Name=""CalendarGroups"" Type=""Collection(Microsoft.OutlookServices.CalendarGroup)"" ContainsTarget=""true"" />
-            
-                    <NavigationProperty Name=""Events"" Type=""Collection(Microsoft.OutlookServices.Event)"" ContainsTarget=""true"" />
-            
-                    <NavigationProperty Name=""CalendarView"" Type=""Collection(Microsoft.OutlookServices.Event)"" ContainsTarget=""true"" />
-            
-                    <NavigationProperty Name=""Contacts"" Type=""Collection(Microsoft.OutlookServices.Contact)"" ContainsTarget=""true"" />
-            
-                    <NavigationProperty Name=""ContactFolders"" Type=""Collection(Microsoft.OutlookServices.ContactFolder)"" ContainsTarget=""true"" />
+                    <Property Name=""DateTimeLastModified"" Type=""Edm.DateTimeOffset"" />
             
                   </EntityType>
             
-                  <Action Name=""SendMail"" IsBound=""true"" EntitySetPath=""bindingParameter"">
-            
-                    <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.User"" />
-            
-                    <Parameter Name=""Message"" Type=""Microsoft.OutlookServices.Message"" Nullable=""false"" />
-            
-                    <Parameter Name=""SaveToSentItems"" Type=""Edm.Boolean"" />
-            
-                  </Action>
-            
-                  <EntityType Name=""Folder"" BaseType=""Microsoft.OutlookServices.Entity"">
-            
-                    <Property Name=""ParentFolderId"" Type=""Edm.String"" />
-            
-                    <Property Name=""DisplayName"" Type=""Edm.String"" />
-            
-                    <Property Name=""ChildFolderCount"" Type=""Edm.Int32"" />
-            
-                    <NavigationProperty Name=""ChildFolders"" Type=""Collection(Microsoft.OutlookServices.Folder)"" ContainsTarget=""true"" />
-            
-                    <NavigationProperty Name=""Messages"" Type=""Collection(Microsoft.OutlookServices.Message)"" ContainsTarget=""true"" />
-            
-                  </EntityType>
-            
-                  <Action Name=""Copy"" IsBound=""true"" EntitySetPath=""bindingParameter"">
-            
-                    <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Folder"" />
-            
-                    <Parameter Name=""DestinationId"" Type=""Edm.String"" />
-            
-                    <ReturnType Type=""Microsoft.OutlookServices.Folder"" />
-            
-                  </Action>
-            
-                  <Action Name=""Move"" IsBound=""true"" EntitySetPath=""bindingParameter"">
-            
-                    <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Folder"" />
-            
-                    <Parameter Name=""DestinationId"" Type=""Edm.String"" />
-            
-                    <ReturnType Type=""Microsoft.OutlookServices.Folder"" />
-            
-                  </Action>
-            
-                  <EntityType Name=""Item"" BaseType=""Microsoft.OutlookServices.Entity"" Abstract=""true"">
+                  <EntityType Abstract=""true"" BaseType=""Microsoft.OutlookServices.Entity"" Name=""Item"">
             
                     <Property Name=""ChangeKey"" Type=""Edm.String"" />
             
@@ -11225,7 +11003,81 @@ namespace Microsoft.Office365.OutlookServices
             
                   </EntityType>
             
-                  <EntityType Name=""Message"" BaseType=""Microsoft.OutlookServices.Item"">
+                  <EntityType BaseType=""Microsoft.OutlookServices.Entity"" Name=""User"">
+            
+                    <Property Name=""DisplayName"" Type=""Edm.String"" />
+            
+                    <Property Name=""Alias"" Type=""Edm.String"" />
+            
+                    <Property Name=""MailboxGuid"" Type=""Edm.Guid"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""Folders"" Type=""Collection(Microsoft.OutlookServices.Folder)"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""Messages"" Type=""Collection(Microsoft.OutlookServices.Message)"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""RootFolder"" Type=""Microsoft.OutlookServices.Folder"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""Calendars"" Type=""Collection(Microsoft.OutlookServices.Calendar)"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""Calendar"" Type=""Microsoft.OutlookServices.Calendar"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""CalendarGroups"" Type=""Collection(Microsoft.OutlookServices.CalendarGroup)"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""Events"" Type=""Collection(Microsoft.OutlookServices.Event)"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""CalendarView"" Type=""Collection(Microsoft.OutlookServices.Event)"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""Contacts"" Type=""Collection(Microsoft.OutlookServices.Contact)"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""ContactFolders"" Type=""Collection(Microsoft.OutlookServices.ContactFolder)"" />
+            
+                  </EntityType>
+            
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""SendMail"">
+            
+                    <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.User"" />
+            
+                    <Parameter Name=""Message"" Nullable=""false"" Type=""Microsoft.OutlookServices.Message"" />
+            
+                    <Parameter Name=""SaveToSentItems"" Type=""Edm.Boolean"" />
+            
+                  </Action>
+            
+                  <EntityType BaseType=""Microsoft.OutlookServices.Entity"" Name=""Folder"">
+            
+                    <Property Name=""ParentFolderId"" Type=""Edm.String"" />
+            
+                    <Property Name=""DisplayName"" Type=""Edm.String"" />
+            
+                    <Property Name=""ChildFolderCount"" Type=""Edm.Int32"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""ChildFolders"" Type=""Collection(Microsoft.OutlookServices.Folder)"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""Messages"" Type=""Collection(Microsoft.OutlookServices.Message)"" />
+            
+                  </EntityType>
+            
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""Copy"">
+            
+                    <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Folder"" />
+            
+                    <Parameter Name=""DestinationId"" Type=""Edm.String"" />
+            
+                    <ReturnType Type=""Microsoft.OutlookServices.Folder"" />
+            
+                  </Action>
+            
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""Move"">
+            
+                    <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Folder"" />
+            
+                    <Parameter Name=""DestinationId"" Type=""Edm.String"" />
+            
+                    <ReturnType Type=""Microsoft.OutlookServices.Folder"" />
+            
+                  </Action>
+            
+                  <EntityType BaseType=""Microsoft.OutlookServices.Item"" Name=""Message"">
             
                     <Property Name=""Subject"" Type=""Edm.String"" />
             
@@ -11267,11 +11119,51 @@ namespace Microsoft.Office365.OutlookServices
             
                     <Property Name=""IsRead"" Type=""Edm.Boolean"" />
             
-                    <NavigationProperty Name=""Attachments"" Type=""Collection(Microsoft.OutlookServices.Attachment)"" ContainsTarget=""true"" />
+                    <NavigationProperty ContainsTarget=""true"" Name=""Attachments"" Type=""Collection(Microsoft.OutlookServices.Attachment)"" />
             
                   </EntityType>
             
-                  <Action Name=""Copy"" IsBound=""true"" EntitySetPath=""bindingParameter"">
+                  <ComplexType Name=""ItemBody"">
+            
+                    <Property Name=""ContentType"" Type=""Microsoft.OutlookServices.BodyType"" />
+            
+                    <Property Name=""Content"" Type=""Edm.String"" />
+            
+                  </ComplexType>
+            
+                  <EnumType Name=""BodyType"">
+            
+                    <Member Name=""Text"" Value=""0"" />
+            
+                    <Member Name=""HTML"" Value=""1"" />
+            
+                  </EnumType>
+            
+                  <EnumType Name=""Importance"">
+            
+                    <Member Name=""Low"" Value=""0"" />
+            
+                    <Member Name=""Normal"" Value=""1"" />
+            
+                    <Member Name=""High"" Value=""2"" />
+            
+                  </EnumType>
+            
+                  <ComplexType Name=""Recipient"">
+            
+                    <Property Name=""EmailAddress"" Type=""Microsoft.OutlookServices.EmailAddress"" />
+            
+                  </ComplexType>
+            
+                  <ComplexType Name=""EmailAddress"">
+            
+                    <Property Name=""Name"" Type=""Edm.String"" />
+            
+                    <Property Name=""Address"" Type=""Edm.String"" />
+            
+                  </ComplexType>
+            
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""Copy"">
             
                     <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Message"" />
             
@@ -11281,7 +11173,7 @@ namespace Microsoft.Office365.OutlookServices
             
                   </Action>
             
-                  <Action Name=""Move"" IsBound=""true"" EntitySetPath=""bindingParameter"">
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""Move"">
             
                     <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Message"" />
             
@@ -11291,7 +11183,7 @@ namespace Microsoft.Office365.OutlookServices
             
                   </Action>
             
-                  <Action Name=""CreateReply"" IsBound=""true"" EntitySetPath=""bindingParameter"">
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""CreateReply"">
             
                     <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Message"" />
             
@@ -11299,7 +11191,7 @@ namespace Microsoft.Office365.OutlookServices
             
                   </Action>
             
-                  <Action Name=""CreateReplyAll"" IsBound=""true"" EntitySetPath=""bindingParameter"">
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""CreateReplyAll"">
             
                     <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Message"" />
             
@@ -11307,7 +11199,7 @@ namespace Microsoft.Office365.OutlookServices
             
                   </Action>
             
-                  <Action Name=""CreateForward"" IsBound=""true"" EntitySetPath=""bindingParameter"">
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""CreateForward"">
             
                     <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Message"" />
             
@@ -11315,7 +11207,7 @@ namespace Microsoft.Office365.OutlookServices
             
                   </Action>
             
-                  <Action Name=""Reply"" IsBound=""true"" EntitySetPath=""bindingParameter"">
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""Reply"">
             
                     <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Message"" />
             
@@ -11323,7 +11215,7 @@ namespace Microsoft.Office365.OutlookServices
             
                   </Action>
             
-                  <Action Name=""ReplyAll"" IsBound=""true"" EntitySetPath=""bindingParameter"">
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""ReplyAll"">
             
                     <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Message"" />
             
@@ -11331,7 +11223,7 @@ namespace Microsoft.Office365.OutlookServices
             
                   </Action>
             
-                  <Action Name=""Forward"" IsBound=""true"" EntitySetPath=""bindingParameter"">
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""Forward"">
             
                     <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Message"" />
             
@@ -11341,57 +11233,43 @@ namespace Microsoft.Office365.OutlookServices
             
                   </Action>
             
-                  <Action Name=""Send"" IsBound=""true"" EntitySetPath=""bindingParameter"">
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""Send"">
             
                     <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Message"" />
             
                   </Action>
             
-                  <EntityType Name=""Attachment"" BaseType=""Microsoft.OutlookServices.Entity"" Abstract=""true"">
-            
-                    <Property Name=""Name"" Type=""Edm.String"" />
-            
-                    <Property Name=""ContentType"" Type=""Edm.String"" />
-            
-                    <Property Name=""Size"" Type=""Edm.Int32"" Nullable=""false"" />
-            
-                    <Property Name=""IsInline"" Type=""Edm.Boolean"" Nullable=""false"" />
-            
-                    <Property Name=""DateTimeLastModified"" Type=""Edm.DateTimeOffset"" />
-            
-                  </EntityType>
-            
-                  <EntityType Name=""FileAttachment"" BaseType=""Microsoft.OutlookServices.Attachment"">
+                  <EntityType BaseType=""Microsoft.OutlookServices.Attachment"" Name=""FileAttachment"">
             
                     <Property Name=""ContentId"" Type=""Edm.String"" />
             
                     <Property Name=""ContentLocation"" Type=""Edm.String"" />
             
-                    <Property Name=""IsContactPhoto"" Type=""Edm.Boolean"" Nullable=""false"" />
+                    <Property Name=""IsContactPhoto"" Nullable=""false"" Type=""Edm.Boolean"" />
             
                     <Property Name=""ContentBytes"" Type=""Edm.Binary"" />
             
                   </EntityType>
             
-                  <EntityType Name=""ItemAttachment"" BaseType=""Microsoft.OutlookServices.Attachment"">
+                  <EntityType BaseType=""Microsoft.OutlookServices.Attachment"" Name=""ItemAttachment"">
             
-                    <NavigationProperty Name=""Item"" Type=""Microsoft.OutlookServices.Item"" ContainsTarget=""true"" />
+                    <NavigationProperty ContainsTarget=""true"" Name=""Item"" Type=""Microsoft.OutlookServices.Item"" />
             
                   </EntityType>
             
-                  <EntityType Name=""Calendar"" BaseType=""Microsoft.OutlookServices.Entity"">
+                  <EntityType BaseType=""Microsoft.OutlookServices.Entity"" Name=""Calendar"">
             
                     <Property Name=""Name"" Type=""Edm.String"" />
             
                     <Property Name=""ChangeKey"" Type=""Edm.String"" />
             
-                    <NavigationProperty Name=""CalendarView"" Type=""Collection(Microsoft.OutlookServices.Event)"" ContainsTarget=""true"" />
+                    <NavigationProperty ContainsTarget=""true"" Name=""CalendarView"" Type=""Collection(Microsoft.OutlookServices.Event)"" />
             
-                    <NavigationProperty Name=""Events"" Type=""Collection(Microsoft.OutlookServices.Event)"" ContainsTarget=""true"" />
+                    <NavigationProperty ContainsTarget=""true"" Name=""Events"" Type=""Collection(Microsoft.OutlookServices.Event)"" />
             
                   </EntityType>
             
-                  <EntityType Name=""CalendarGroup"" BaseType=""Microsoft.OutlookServices.Entity"">
+                  <EntityType BaseType=""Microsoft.OutlookServices.Entity"" Name=""CalendarGroup"">
             
                     <Property Name=""Name"" Type=""Edm.String"" />
             
@@ -11399,11 +11277,11 @@ namespace Microsoft.Office365.OutlookServices
             
                     <Property Name=""ClassId"" Type=""Edm.Guid"" />
             
-                    <NavigationProperty Name=""Calendars"" Type=""Collection(Microsoft.OutlookServices.Calendar)"" ContainsTarget=""true"" />
+                    <NavigationProperty ContainsTarget=""true"" Name=""Calendars"" Type=""Collection(Microsoft.OutlookServices.Calendar)"" />
             
                   </EntityType>
             
-                  <EntityType Name=""Event"" BaseType=""Microsoft.OutlookServices.Item"">
+                  <EntityType BaseType=""Microsoft.OutlookServices.Item"" Name=""Event"">
             
                     <Property Name=""Subject"" Type=""Edm.String"" />
             
@@ -11441,15 +11319,191 @@ namespace Microsoft.Office365.OutlookServices
             
                     <Property Name=""Organizer"" Type=""Microsoft.OutlookServices.Recipient"" />
             
-                    <NavigationProperty Name=""Attachments"" Type=""Collection(Microsoft.OutlookServices.Attachment)"" ContainsTarget=""true"" />
+                    <Property Name=""StartTimeZone"" Type=""Edm.String"" />
             
-                    <NavigationProperty Name=""Calendar"" Type=""Microsoft.OutlookServices.Calendar"" ContainsTarget=""true"" />
+                    <Property Name=""EndTimeZone"" Type=""Edm.String"" />
             
-                    <NavigationProperty Name=""Instances"" Type=""Collection(Microsoft.OutlookServices.Event)"" ContainsTarget=""true"" />
+                    <NavigationProperty ContainsTarget=""true"" Name=""Attachments"" Type=""Collection(Microsoft.OutlookServices.Attachment)"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""Calendar"" Type=""Microsoft.OutlookServices.Calendar"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""Instances"" Type=""Collection(Microsoft.OutlookServices.Event)"" />
             
                   </EntityType>
             
-                  <Action Name=""Accept"" IsBound=""true"" EntitySetPath=""bindingParameter"">
+                  <ComplexType Name=""Location"">
+            
+                    <Property Name=""DisplayName"" Type=""Edm.String"" />
+            
+                  </ComplexType>
+            
+                  <EnumType Name=""FreeBusyStatus"">
+            
+                    <Member Name=""Free"" Value=""0"" />
+            
+                    <Member Name=""Tentative"" Value=""1"" />
+            
+                    <Member Name=""Busy"" Value=""2"" />
+            
+                    <Member Name=""Oof"" Value=""3"" />
+            
+                    <Member Name=""WorkingElsewhere"" Value=""4"" />
+            
+                    <Member Name=""Unknown"" Value=""-1"" />
+            
+                  </EnumType>
+            
+                  <EnumType Name=""EventType"">
+            
+                    <Member Name=""SingleInstance"" Value=""0"" />
+            
+                    <Member Name=""Occurrence"" Value=""1"" />
+            
+                    <Member Name=""Exception"" Value=""2"" />
+            
+                    <Member Name=""SeriesMaster"" Value=""3"" />
+            
+                  </EnumType>
+            
+                  <ComplexType BaseType=""Microsoft.OutlookServices.Recipient"" Name=""Attendee"">
+            
+                    <Property Name=""Status"" Type=""Microsoft.OutlookServices.ResponseStatus"" />
+            
+                    <Property Name=""Type"" Type=""Microsoft.OutlookServices.AttendeeType"" />
+            
+                  </ComplexType>
+            
+                  <ComplexType Name=""ResponseStatus"">
+            
+                    <Property Name=""Response"" Type=""Microsoft.OutlookServices.ResponseType"" />
+            
+                    <Property Name=""Time"" Type=""Edm.DateTimeOffset"" />
+            
+                  </ComplexType>
+            
+                  <EnumType Name=""ResponseType"">
+            
+                    <Member Name=""None"" Value=""0"" />
+            
+                    <Member Name=""Organizer"" Value=""1"" />
+            
+                    <Member Name=""TentativelyAccepted"" Value=""2"" />
+            
+                    <Member Name=""Accepted"" Value=""3"" />
+            
+                    <Member Name=""Declined"" Value=""4"" />
+            
+                    <Member Name=""NotResponded"" Value=""5"" />
+            
+                  </EnumType>
+            
+                  <EnumType Name=""AttendeeType"">
+            
+                    <Member Name=""Required"" Value=""0"" />
+            
+                    <Member Name=""Optional"" Value=""1"" />
+            
+                    <Member Name=""Resource"" Value=""2"" />
+            
+                  </EnumType>
+            
+                  <ComplexType Name=""PatternedRecurrence"">
+            
+                    <Property Name=""Pattern"" Type=""Microsoft.OutlookServices.RecurrencePattern"" />
+            
+                    <Property Name=""Range"" Type=""Microsoft.OutlookServices.RecurrenceRange"" />
+            
+                  </ComplexType>
+            
+                  <ComplexType Name=""RecurrencePattern"">
+            
+                    <Property Name=""Type"" Type=""Microsoft.OutlookServices.RecurrencePatternType"" />
+            
+                    <Property Name=""Interval"" Nullable=""false"" Type=""Edm.Int32"" />
+            
+                    <Property Name=""Month"" Nullable=""false"" Type=""Edm.Int32"" />
+            
+                    <Property Name=""DayOfMonth"" Nullable=""false"" Type=""Edm.Int32"" />
+            
+                    <Property Name=""DaysOfWeek"" Type=""Collection(Microsoft.OutlookServices.DayOfWeek)"" />
+            
+                    <Property Name=""FirstDayOfWeek"" Type=""Microsoft.OutlookServices.DayOfWeek"" />
+            
+                    <Property Name=""Index"" Type=""Microsoft.OutlookServices.WeekIndex"" />
+            
+                  </ComplexType>
+            
+                  <EnumType Name=""RecurrencePatternType"">
+            
+                    <Member Name=""Daily"" Value=""0"" />
+            
+                    <Member Name=""Weekly"" Value=""1"" />
+            
+                    <Member Name=""AbsoluteMonthly"" Value=""2"" />
+            
+                    <Member Name=""RelativeMonthly"" Value=""3"" />
+            
+                    <Member Name=""AbsoluteYearly"" Value=""4"" />
+            
+                    <Member Name=""RelativeYearly"" Value=""5"" />
+            
+                  </EnumType>
+            
+                  <EnumType Name=""DayOfWeek"">
+            
+                    <Member Name=""Sunday"" Value=""0"" />
+            
+                    <Member Name=""Monday"" Value=""1"" />
+            
+                    <Member Name=""Tuesday"" Value=""2"" />
+            
+                    <Member Name=""Wednesday"" Value=""3"" />
+            
+                    <Member Name=""Thursday"" Value=""4"" />
+            
+                    <Member Name=""Friday"" Value=""5"" />
+            
+                    <Member Name=""Saturday"" Value=""6"" />
+            
+                  </EnumType>
+            
+                  <EnumType Name=""WeekIndex"">
+            
+                    <Member Name=""First"" Value=""0"" />
+            
+                    <Member Name=""Second"" Value=""1"" />
+            
+                    <Member Name=""Third"" Value=""2"" />
+            
+                    <Member Name=""Fourth"" Value=""3"" />
+            
+                    <Member Name=""Last"" Value=""4"" />
+            
+                  </EnumType>
+            
+                  <ComplexType Name=""RecurrenceRange"">
+            
+                    <Property Name=""Type"" Type=""Microsoft.OutlookServices.RecurrenceRangeType"" />
+            
+                    <Property Name=""StartDate"" Type=""Edm.DateTimeOffset"" />
+            
+                    <Property Name=""EndDate"" Type=""Edm.DateTimeOffset"" />
+            
+                    <Property Name=""NumberOfOccurrences"" Nullable=""false"" Type=""Edm.Int32"" />
+            
+                  </ComplexType>
+            
+                  <EnumType Name=""RecurrenceRangeType"">
+            
+                    <Member Name=""EndDate"" Value=""0"" />
+            
+                    <Member Name=""NoEnd"" Value=""1"" />
+            
+                    <Member Name=""Numbered"" Value=""2"" />
+            
+                  </EnumType>
+            
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""Accept"">
             
                     <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Event"" />
             
@@ -11457,7 +11511,7 @@ namespace Microsoft.Office365.OutlookServices
             
                   </Action>
             
-                  <Action Name=""Decline"" IsBound=""true"" EntitySetPath=""bindingParameter"">
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""Decline"">
             
                     <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Event"" />
             
@@ -11465,7 +11519,7 @@ namespace Microsoft.Office365.OutlookServices
             
                   </Action>
             
-                  <Action Name=""TentativelyAccept"" IsBound=""true"" EntitySetPath=""bindingParameter"">
+                  <Action EntitySetPath=""bindingParameter"" IsBound=""true"" Name=""TentativelyAccept"">
             
                     <Parameter Name=""bindingParameter"" Type=""Microsoft.OutlookServices.Event"" />
             
@@ -11473,7 +11527,7 @@ namespace Microsoft.Office365.OutlookServices
             
                   </Action>
             
-                  <EntityType Name=""Contact"" BaseType=""Microsoft.OutlookServices.Item"">
+                  <EntityType BaseType=""Microsoft.OutlookServices.Item"" Name=""Contact"">
             
                     <Property Name=""ParentFolderId"" Type=""Edm.String"" />
             
@@ -11537,21 +11591,35 @@ namespace Microsoft.Office365.OutlookServices
             
                   </EntityType>
             
-                  <EntityType Name=""ContactFolder"" BaseType=""Microsoft.OutlookServices.Entity"">
+                  <ComplexType Name=""PhysicalAddress"">
+            
+                    <Property Name=""Street"" Type=""Edm.String"" />
+            
+                    <Property Name=""City"" Type=""Edm.String"" />
+            
+                    <Property Name=""State"" Type=""Edm.String"" />
+            
+                    <Property Name=""CountryOrRegion"" Type=""Edm.String"" />
+            
+                    <Property Name=""PostalCode"" Type=""Edm.String"" />
+            
+                  </ComplexType>
+            
+                  <EntityType BaseType=""Microsoft.OutlookServices.Entity"" Name=""ContactFolder"">
             
                     <Property Name=""ParentFolderId"" Type=""Edm.String"" />
             
                     <Property Name=""DisplayName"" Type=""Edm.String"" />
             
-                    <NavigationProperty Name=""Contacts"" Type=""Collection(Microsoft.OutlookServices.Contact)"" ContainsTarget=""true"" />
+                    <NavigationProperty ContainsTarget=""true"" Name=""Contacts"" Type=""Collection(Microsoft.OutlookServices.Contact)"" />
             
-                    <NavigationProperty Name=""ChildFolders"" Type=""Collection(Microsoft.OutlookServices.ContactFolder)"" ContainsTarget=""true"" />
+                    <NavigationProperty ContainsTarget=""true"" Name=""ChildFolders"" Type=""Collection(Microsoft.OutlookServices.ContactFolder)"" />
             
                   </EntityType>
             
                   <EntityContainer Name=""EntityContainer"">
             
-                    <EntitySet Name=""Users"" EntityType=""Microsoft.OutlookServices.User"" />
+                    <EntitySet EntityType=""Microsoft.OutlookServices.User"" Name=""Users"" />
             
                     <Singleton Name=""Me"" Type=""Microsoft.OutlookServices.User"" />
             
@@ -11645,6 +11713,117 @@ namespace Microsoft.Office365.OutlookServices
     }
 
     public partial interface IEntityCollection
+
+    {
+
+        global::System.Threading.Tasks.Task<System.Int64> CountAsync();
+
+    }
+
+    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
+
+    public partial interface IAttachment:Microsoft.Office365.OutlookServices.IEntity
+
+    {
+
+        System.String Name
+        {get;set;}
+
+        System.String ContentType
+        {get;set;}
+
+        System.Int32 Size
+        {get;set;}
+
+        System.Boolean IsInline
+        {get;set;}
+
+        System.Nullable<System.DateTimeOffset> DateTimeLastModified
+        {get;set;}
+
+    }
+
+    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
+
+    public partial interface IAttachmentFetcher:Microsoft.Office365.OutlookServices.IEntityFetcher
+
+    {
+
+    }
+
+    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
+
+    public partial interface IAttachmentCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IAttachment>
+
+    {
+
+        Microsoft.Office365.OutlookServices.IAttachmentFetcher GetById(System.String id);
+
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IAttachment>> ExecuteAsync();
+
+        global::System.Threading.Tasks.Task AddAttachmentAsync(Microsoft.Office365.OutlookServices.IAttachment item, System.Boolean dontSave = false);
+
+         Microsoft.Office365.OutlookServices.IAttachmentFetcher this[System.String id]
+
+        {get;}
+
+    }
+
+    public partial interface IAttachmentCollection
+
+    {
+
+        global::System.Threading.Tasks.Task<System.Int64> CountAsync();
+
+    }
+
+    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
+
+    public partial interface IItem:Microsoft.Office365.OutlookServices.IEntity
+
+    {
+
+        System.String ChangeKey
+        {get;set;}
+
+        System.Collections.Generic.IList<System.String> Categories
+        {get;set;}
+
+        System.Nullable<System.DateTimeOffset> DateTimeCreated
+        {get;set;}
+
+        System.Nullable<System.DateTimeOffset> DateTimeLastModified
+        {get;set;}
+
+    }
+
+    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
+
+    public partial interface IItemFetcher:Microsoft.Office365.OutlookServices.IEntityFetcher
+
+    {
+
+    }
+
+    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
+
+    public partial interface IItemCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IItem>
+
+    {
+
+        Microsoft.Office365.OutlookServices.IItemFetcher GetById(System.String id);
+
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IItem>> ExecuteAsync();
+
+        global::System.Threading.Tasks.Task AddItemAsync(Microsoft.Office365.OutlookServices.IItem item, System.Boolean dontSave = false);
+
+         Microsoft.Office365.OutlookServices.IItemFetcher this[System.String id]
+
+        {get;}
+
+    }
+
+    public partial interface IItemCollection
 
     {
 
@@ -11848,60 +12027,6 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IItem:Microsoft.Office365.OutlookServices.IEntity
-
-    {
-
-        System.String ChangeKey
-        {get;set;}
-
-        System.Collections.Generic.IList<System.String> Categories
-        {get;set;}
-
-        System.Nullable<System.DateTimeOffset> DateTimeCreated
-        {get;set;}
-
-        System.Nullable<System.DateTimeOffset> DateTimeLastModified
-        {get;set;}
-
-    }
-
-    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
-
-    public partial interface IItemFetcher:Microsoft.Office365.OutlookServices.IEntityFetcher
-
-    {
-
-    }
-
-    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
-
-    public partial interface IItemCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IItem>
-
-    {
-
-        Microsoft.Office365.OutlookServices.IItemFetcher GetById(System.String id);
-
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IItem>> ExecuteAsync();
-
-        global::System.Threading.Tasks.Task AddItemAsync(Microsoft.Office365.OutlookServices.IItem item, System.Boolean dontSave = false);
-
-         Microsoft.Office365.OutlookServices.IItemFetcher this[System.String id]
-
-        {get;}
-
-    }
-
-    public partial interface IItemCollection
-
-    {
-
-        global::System.Threading.Tasks.Task<System.Int64> CountAsync();
-
-    }
-
-    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
-
     public partial interface IMessage:Microsoft.Office365.OutlookServices.IItem
 
     {
@@ -12041,63 +12166,6 @@ namespace Microsoft.Office365.OutlookServices
     }
 
     public partial interface IMessageCollection
-
-    {
-
-        global::System.Threading.Tasks.Task<System.Int64> CountAsync();
-
-    }
-
-    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
-
-    public partial interface IAttachment:Microsoft.Office365.OutlookServices.IEntity
-
-    {
-
-        System.String Name
-        {get;set;}
-
-        System.String ContentType
-        {get;set;}
-
-        System.Int32 Size
-        {get;set;}
-
-        System.Boolean IsInline
-        {get;set;}
-
-        System.Nullable<System.DateTimeOffset> DateTimeLastModified
-        {get;set;}
-
-    }
-
-    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
-
-    public partial interface IAttachmentFetcher:Microsoft.Office365.OutlookServices.IEntityFetcher
-
-    {
-
-    }
-
-    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
-
-    public partial interface IAttachmentCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IAttachment>
-
-    {
-
-        Microsoft.Office365.OutlookServices.IAttachmentFetcher GetById(System.String id);
-
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IAttachment>> ExecuteAsync();
-
-        global::System.Threading.Tasks.Task AddAttachmentAsync(Microsoft.Office365.OutlookServices.IAttachment item, System.Boolean dontSave = false);
-
-         Microsoft.Office365.OutlookServices.IAttachmentFetcher this[System.String id]
-
-        {get;}
-
-    }
-
-    public partial interface IAttachmentCollection
 
     {
 
@@ -12398,6 +12466,12 @@ namespace Microsoft.Office365.OutlookServices
         {get;set;}
 
         Microsoft.Office365.OutlookServices.Recipient Organizer
+        {get;set;}
+
+        System.String StartTimeZone
+        {get;set;}
+
+        System.String EndTimeZone
         {get;set;}
 
         Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IAttachment> Attachments
