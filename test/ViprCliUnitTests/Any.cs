@@ -51,7 +51,7 @@ namespace Microsoft.Its.Recipes
 
         private static IDictionary<string, string> StringDictionary()
         {
-            return Any.Sequence(x => Any.String()).ToDictionary(x => x, x => Any.String());
+            return Any.Sequence(x => Any.String(10)).ToDictionary(x => x, x => Any.String());
         }
     }
 }

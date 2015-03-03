@@ -23,8 +23,12 @@ namespace ExchangeManagedOMTests
 
             Its.Configuration.Settings.SettingsDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config");
 
+            var authSettings = Its.Configuration.Settings.Get<AuthSettings>();
+
+            if(String.IsNullOrWhiteSpace(authSettings.ClientId))
+                throw new Exception(String.Format("Create a file called AuthSettings.json in {0} and provide your O365 credentials via this JSON object:\r\n {1}", Its.Configuration.Settings.SettingsDirectory, AuthSettings.GetJsonTemplate()));
             var xauth =
-                new XAuth.Auth(Its.Configuration.Settings.Get<AuthSettings>());
+                new XAuth.Auth(authSettings);
 
             client = new OutlookServicesClient(settings.Environment.EndpointUri, () => xauth.GetAccessToken(settings.Environment.ResourceId));
         }

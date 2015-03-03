@@ -97,7 +97,7 @@
       <HintPath>..\packages\Microsoft.OData.Client.6.10.0\lib\net40\Microsoft.OData.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.OData.ProxyExtensions">
-      <HintPath>..\..\..\..\..\code\ODataLibTestProj\Microsoft.OData.ProxyExtensions.dll</HintPath>
+      <HintPath>..\src\Microsoft.OData.ProxyExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
