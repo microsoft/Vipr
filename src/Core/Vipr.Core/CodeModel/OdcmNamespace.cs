@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,6 +9,8 @@ namespace Vipr.Core.CodeModel
 {
     public class OdcmNamespace : OdcmAnnotatedObject
     {
+        private static readonly OdcmNamespace EdmNamespace = new OdcmNamespace("Edm");
+
         public List<OdcmType> Types { get; private set; }
 
         public OdcmNamespace(string name)
@@ -32,9 +35,22 @@ namespace Vipr.Core.CodeModel
             }
         }
 
+        public static OdcmNamespace Edm { get { return EdmNamespace; } }
+
         public bool HasBoundOperations(string fullNamespace)
         {
             return Classes.Any(c => c.Methods.Any());
+        }
+
+        public static OdcmNamespace GetWellKnownNamespace(string @namespace)
+        {
+            switch (@namespace)
+            {
+                case "Edm":
+                    return EdmNamespace;
+                default:
+                    throw new InvalidOperationException(String.Format("The namespace {0} is not known.", @namespace));
+            }
         }
     }
 }

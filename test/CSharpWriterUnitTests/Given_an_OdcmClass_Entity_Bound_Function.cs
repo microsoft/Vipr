@@ -90,7 +90,7 @@ namespace CSharpWriterUnitTests
         public void When_the_return_type_is_primitive_it_is_mapped_to_a_DotNet_Primitive()
         {
             Init(model => model.Namespaces[0].Classes.First()
-                .Methods.Add(_method = Any.OdcmMethod(m => m.ReturnType = new OdcmPrimitiveType("Stream", "Edm"))));
+                .Methods.Add(_method = Any.OdcmMethod(m => m.ReturnType = new OdcmPrimitiveType("Stream", OdcmNamespace.Edm))));
 
             _expectedReturnType = typeof(Task<>).MakeGenericType(typeof(Microsoft.OData.Client.DataServiceStreamLink));
 

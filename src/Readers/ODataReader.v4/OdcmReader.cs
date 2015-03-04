@@ -108,7 +108,7 @@ namespace ODataReader.v4
             {
                 foreach (var entry in PrimitiveTypes)
                 {
-                    _odcmModel.AddType(new OdcmPrimitiveType(entry[1], entry[0]));
+                    _odcmModel.AddType(new OdcmPrimitiveType(entry[1], OdcmNamespace.GetWellKnownNamespace(entry[0])));
                 }
             }
 
@@ -126,6 +126,8 @@ namespace ODataReader.v4
 
             private void WriteNamespaceShallow(IEdmModel edmModel, string @namespace)
             {
+                _odcmModel.AddNamespace(@namespace);
+
                 var namespaceElements = from elements in edmModel.SchemaElements
                                         where string.Equals(elements.Namespace, @namespace)
                                         select elements;
@@ -149,29 +151,30 @@ namespace ODataReader.v4
 
                 foreach (var enumType in enumTypes)
                 {
-                    _odcmModel.AddType(new OdcmEnum(enumType.Name, enumType.Namespace));
+                    _odcmModel.AddType(new OdcmEnum(enumType.Name, ResolveNamespace(enumType.Namespace)));
                 }
 
                 foreach (var complexType in complexTypes)
                 {
-                    _odcmModel.AddType(new OdcmClass(complexType.Name, complexType.Namespace));
+                    _odcmModel.AddType(new OdcmClass(complexType.Name, ResolveNamespace(complexType.Namespace)));
                 }
 
                 foreach (var entityType in entityTypes)
                 {
                     if (entityType.HasStream)
                     {
-                        _odcmModel.AddType(new OdcmMediaClass(entityType.Name, entityType.Namespace));
+                        _odcmModel.AddType(new OdcmMediaClass(entityType.Name, ResolveNamespace(entityType.Namespace)));
                     }
                     else
                     {
-                        _odcmModel.AddType(new OdcmEntityClass(entityType.Name, entityType.Namespace));
+                        _odcmModel.AddType(new OdcmEntityClass(entityType.Name, ResolveNamespace(entityType.Namespace)));
                     }
                 }
 
                 foreach (var entityContainer in entityContainers)
                 {
-                    _odcmModel.AddType(new OdcmServiceClass(entityContainer.Name, entityContainer.Namespace));
+                    _odcmModel.AddType(new OdcmServiceClass(entityContainer.Name,
+                        ResolveNamespace(entityContainer.Namespace)));
                 }
             }
 
@@ -515,6 +518,17 @@ namespace ODataReader.v4
                 }
 
                 return type;
+            }
+
+            private OdcmNamespace ResolveNamespace(string @namespace)
+            {
+                OdcmNamespace odcmNamespace;
+                if (!_odcmModel.TryResolveNamespace(@namespace, out odcmNamespace))
+                {
+                    throw new InvalidOperationException();
+                }
+
+                return odcmNamespace;
             }
         }
     }

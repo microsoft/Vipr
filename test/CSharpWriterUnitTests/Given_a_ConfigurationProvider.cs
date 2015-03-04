@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using CSharpWriter;
 using CSharpWriter.Settings;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
@@ -94,7 +93,7 @@ namespace CSharpWriterUnitTests
                 new Dictionary<string, IDictionary<string, string>>
                 {
                     {
-                        _model.EntityContainer.Namespace, new Dictionary<string, string>
+                        _model.EntityContainer.Namespace.Name, new Dictionary<string, string>
                         {
                             {_model.EntityContainer.Name, newEntityContainerName}
                         }
@@ -113,7 +112,7 @@ namespace CSharpWriterUnitTests
             var proxy = GetProxy(_model, configMock.Object);
 
             proxy.GetClasses()
-                .Where(c => c.Namespace == _model.EntityContainer.Namespace)
+                .Where(c => c.Namespace == _model.EntityContainer.Namespace.Name)
                 .Select(c => c.Name)
                 .Should()
                     .Contain(newEntityContainerName)

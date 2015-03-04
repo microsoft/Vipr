@@ -112,7 +112,7 @@ namespace CSharpWriter
             };
         }
 
-        internal static Class ForEntityContainer(OdcmModel odcmModel, OdcmClass odcmContainer)
+        internal static Class ForEntityContainer(OdcmModel odcmModel, OdcmServiceClass odcmContainer)
         {
             return new Class
             {

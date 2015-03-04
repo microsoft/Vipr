@@ -36,7 +36,7 @@ namespace CSharpWriter
                 Attributes = global::CSharpWriter.Attributes.ForConcreteInterface,
                 Identifier = NamesService.GetConcreteInterfaceName(odcmClass),
                 Methods = global::CSharpWriter.Methods.ForConcreteInterface(odcmClass),
-                Namespace = odcmClass.Namespace,
+                Namespace = NamesService.GetNamespaceName(odcmClass.Namespace),
                 Properties = global::CSharpWriter.Properties.ForConcreteInterface(odcmClass),
                 Interfaces = global::CSharpWriter.ImplementedInterfaces.ForConcreteInterface(odcmClass)
             };
@@ -50,7 +50,7 @@ namespace CSharpWriter
                 Identifier = NamesService.GetFetcherInterfaceName(odcmClass),
                 Interfaces = global::CSharpWriter.ImplementedInterfaces.ForFetcherInterface(odcmClass),
                 Methods = global::CSharpWriter.Methods.ForFetcherInterface(odcmClass),
-                Namespace = odcmClass.Namespace,
+                Namespace = NamesService.GetNamespaceName(odcmClass.Namespace),
                 Properties = global::CSharpWriter.Properties.ForFetcherInterface(odcmClass)
             };
         }
@@ -61,7 +61,7 @@ namespace CSharpWriter
             {
                 Attributes = global::CSharpWriter.Attributes.ForCollectionInterface,
                 Identifier = NamesService.GetCollectionInterfaceName(odcmClass),
-                Namespace = odcmClass.Namespace,
+                Namespace = NamesService.GetNamespaceName(odcmClass.Namespace),
                 Methods = global::CSharpWriter.Methods.ForCollectionInterface(odcmClass),
                 Indexers = IndexerSignature.ForCollectionInterface(odcmClass),
                 Interfaces = new[] { new Type(NamesService.GetExtensionTypeName("IReadOnlyQueryableSetBase"), new Type(NamesService.GetConcreteInterfaceName(odcmClass))) }
@@ -76,7 +76,7 @@ namespace CSharpWriter
                 Interfaces = null,
                 Methods = global::CSharpWriter.Methods.ForEntityContainerInterface(odcmContainer),
                 Properties = global::CSharpWriter.Properties.ForEntityContainerInterface(odcmContainer),
-                Namespace = odcmContainer.Namespace
+                Namespace = NamesService.GetNamespaceName(odcmContainer.Namespace),
             };
         }
 

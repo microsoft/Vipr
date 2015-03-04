@@ -26,13 +26,13 @@ namespace CSharpWriterUnitTests
 
             _model.Namespaces.Add(@namespace1);
 
-            _model.AddType(new OdcmEnum(Any.CSharpIdentifier(1, 10), @namespace1.Name));
+            _model.AddType(new OdcmEnum(Any.CSharpIdentifier(1, 10), @namespace1));
 
             var @namespace2 = Any.EmptyOdcmNamespace();
 
             _model.Namespaces.Add(@namespace2);
 
-            _model.AddType(new OdcmEnum(Any.CSharpIdentifier(1, 10), @namespace2.Name));
+            _model.AddType(new OdcmEnum(Any.CSharpIdentifier(1, 10), @namespace2));
 
             var proxy = GetProxy(_model);
 
@@ -47,7 +47,7 @@ namespace CSharpWriterUnitTests
 
             _model.Namespaces.Add(@namespace);
 
-            _model.AddType(Any.OdcmEnum(e => e.Namespace = "EDM"));
+            _model.AddType(Any.OdcmEnum(e => e.Namespace = OdcmNamespace.Edm));
 
             var proxy = GetProxy(_model);
 

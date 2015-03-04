@@ -76,7 +76,7 @@ namespace Microsoft.Its.Recipes
 
         public static OdcmEnum OdcmEnum(Action<OdcmEnum> config = null)
         {
-            var retVal = new OdcmEnum(Any.CSharpIdentifier(), Any.CSharpIdentifier());
+            var retVal = new OdcmEnum(Any.CSharpIdentifier(), Any.EmptyOdcmNamespace());
             retVal.UnderlyingType = Any.EnumUnderlyingType();
 
             if (config != null) config(retVal);
@@ -86,7 +86,7 @@ namespace Microsoft.Its.Recipes
 
         public static OdcmClass OdcmClass(Action<OdcmClass> config = null)
         {
-            var retVal = new OdcmClass(Any.CSharpIdentifier(), Any.CSharpIdentifier());
+            var retVal = new OdcmClass(Any.CSharpIdentifier(), Any.OdcmNamespace());
 
             if (config != null) config(retVal);
 
@@ -104,7 +104,7 @@ namespace Microsoft.Its.Recipes
 
         private static OdcmType PrimitiveOdcmType(Action<OdcmType> config = null)
         {
-            var retVal = new OdcmPrimitiveType("String", "Edm");
+            var retVal = new OdcmPrimitiveType("String", Vipr.Core.CodeModel.OdcmNamespace.Edm);
 
             if (config != null) config(retVal);
 
@@ -114,7 +114,7 @@ namespace Microsoft.Its.Recipes
         private static OdcmPrimitiveType EnumUnderlyingType(Action<OdcmPrimitiveType> config = null)
         {
             List<string> underlyingTypes = new List<string>() { "Byte", "SByte", "Int16", "Int32", "Int64" };
-            var retVal = new OdcmPrimitiveType(underlyingTypes.RandomElement(), "Edm");
+            var retVal = new OdcmPrimitiveType(underlyingTypes.RandomElement(), Vipr.Core.CodeModel.OdcmNamespace.Edm);
 
             if (config != null) config(retVal);
 
@@ -124,7 +124,7 @@ namespace Microsoft.Its.Recipes
 
         public static OdcmClass ComplexOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmClass> config = null)
         {
-            var retVal = new OdcmClass(Any.CSharpIdentifier(), odcmNamespace.Name);
+            var retVal = new OdcmClass(Any.CSharpIdentifier(), odcmNamespace);
 
             retVal.Properties.AddRange(Any.Sequence(i => Any.PrimitiveOdcmProperty(p => p.Class = retVal)));
 
@@ -168,7 +168,7 @@ namespace Microsoft.Its.Recipes
 
         public static OdcmEntityClass EntityOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmEntityClass> config = null)
         {
-            var retVal = new OdcmEntityClass(Any.CSharpIdentifier(), odcmNamespace.Name);
+            var retVal = new OdcmEntityClass(Any.CSharpIdentifier(), odcmNamespace);
 
             retVal.Properties.AddRange(Any.Sequence(i => Any.PrimitiveOdcmProperty(p => p.Class = retVal)));
 
@@ -198,7 +198,7 @@ namespace Microsoft.Its.Recipes
 
         public static OdcmServiceClass ServiceOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmServiceClass> config = null)
         {
-            var retVal = new OdcmServiceClass(Any.CSharpIdentifier(), odcmNamespace.Name);
+            var retVal = new OdcmServiceClass(Any.CSharpIdentifier(), odcmNamespace);
 
             var entities = odcmNamespace.Classes
                 .Where(c => c.Kind == OdcmClassKind.Entity);

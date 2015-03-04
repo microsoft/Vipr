@@ -28,7 +28,7 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void When_it_is_generated_it_has_the_right_namespace_and_name()
         {
-            var @enum = Any.OdcmEnum(e => e.Namespace = _namespace.Name);
+            var @enum = Any.OdcmEnum(e => e.Namespace = _namespace);
 
             _model.AddType(@enum);
 
@@ -40,13 +40,13 @@ namespace CSharpWriterUnitTests
                 .Should().Be(@enum.Name);
 
             enumTypes.First().Namespace
-                .Should().Be(@enum.Namespace);
+                .Should().Be(@enum.Namespace.Name);
         }
 
         [Fact]
         public void When_it_has_no_members_then_its_proxy_exposes_it_as_empty()
         {
-            var @enum = Any.OdcmEnum(e => e.Namespace = _namespace.Name);
+            var @enum = Any.OdcmEnum(e => e.Namespace = _namespace);
 
             _model.AddType(@enum);
 
@@ -66,7 +66,7 @@ namespace CSharpWriterUnitTests
         {
             var @enum = Any.OdcmEnum(e =>
                 {
-                    e.Namespace = _namespace.Name;
+                    e.Namespace = _namespace;
                     e.UnderlyingType = null;
                 });
 
@@ -86,7 +86,7 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void When_it_has_members_without_values_then_its_proxy_exposes_it_with_the_members()
         {
-            var @enum = Any.OdcmEnum(e => e.Namespace = _namespace.Name);
+            var @enum = Any.OdcmEnum(e => e.Namespace = _namespace);
 
             @enum.Members.Add(Any.OdcmEnumMember());
             @enum.Members.Add(Any.OdcmEnumMember());
@@ -115,7 +115,7 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void When_it_has_members_with_values_then_its_proxy_exposes_it_with_the_members_and_values()
         {
-            var @enum = Any.OdcmEnum(e => e.Namespace = _namespace.Name);
+            var @enum = Any.OdcmEnum(e => e.Namespace = _namespace);
 
             Any.Sequence(x => x, 127)
                 .RandomSubset(3).ToList()

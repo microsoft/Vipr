@@ -52,7 +52,7 @@ namespace CSharpWriter
             };
         }
 
-        public static Feature ForOdcmClassService(OdcmClass odcmClass, OdcmModel model)
+        public static Feature ForOdcmClassService(OdcmServiceClass odcmClass, OdcmModel model)
         {
             return new Feature
             {

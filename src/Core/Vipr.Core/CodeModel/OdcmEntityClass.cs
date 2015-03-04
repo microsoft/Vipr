@@ -10,7 +10,7 @@ namespace Vipr.Core.CodeModel
     {
         public List<OdcmProperty> Key { get; private set; }
 
-        public OdcmEntityClass(string name, string @namespace) :
+        public OdcmEntityClass(string name, OdcmNamespace @namespace) :
             base(name, @namespace)
         {
             Kind = OdcmClassKind.Entity;

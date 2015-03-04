@@ -5,7 +5,7 @@ namespace Vipr.Core.CodeModel
 {
     public class OdcmPrimitiveType : OdcmType
     {
-        public OdcmPrimitiveType(string name, string @namespace)
+        public OdcmPrimitiveType(string name, OdcmNamespace @namespace)
             : base(name, @namespace)
         {
         }

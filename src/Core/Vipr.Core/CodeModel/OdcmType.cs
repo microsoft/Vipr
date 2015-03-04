@@ -7,9 +7,9 @@ namespace Vipr.Core.CodeModel
     {
         public readonly static string Global = "global";
 
-        public string Namespace { get; set; }
+        public OdcmNamespace Namespace { get; set; }
 
-        public OdcmType(string name, string @namespace)
+        public OdcmType(string name, OdcmNamespace @namespace)
             : base(name)
         {
             Namespace = @namespace;
@@ -17,7 +17,7 @@ namespace Vipr.Core.CodeModel
 
         public string FullName
         {
-            get { return Namespace + "." + Name; }
+            get { return Namespace.Name + "." + Name; }
         }
 
         public override string CanonicalName()

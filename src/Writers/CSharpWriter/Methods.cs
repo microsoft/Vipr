@@ -89,7 +89,7 @@ namespace CSharpWriter
             return Methods.ForEntityType(odcmContainer);
         }
 
-        public static IEnumerable<Method> ForEntityContainer(OdcmClass odcmContainer)
+        public static IEnumerable<Method> ForEntityContainer(OdcmServiceClass odcmContainer)
         {
             return Methods.ForEntityContainerInterface(odcmContainer)
                 .Concat(Methods.ForContainerAddToCollection(odcmContainer))

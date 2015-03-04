@@ -42,7 +42,7 @@ namespace CSharpWriter
             throw new NotImplementedException(string.Format("OdcmClassKind {0} is not recognized", odcmClass.Kind));
         }
 
-        public static IEnumerable<Feature> ForEntityContainer(OdcmClass odcmClass, OdcmModel model)
+        public static IEnumerable<Feature> ForEntityContainer(OdcmServiceClass odcmClass, OdcmModel model)
         {
             switch (odcmClass.Kind)
             {
@@ -58,7 +58,7 @@ namespace CSharpWriter
             throw new NotImplementedException(string.Format("OdcmClassKind {0} is not recognized", odcmClass.Kind));
         }
 
-        private static IEnumerable<Feature> ForOdcmClassService(OdcmClass odcmClass, OdcmModel model)
+        private static IEnumerable<Feature> ForOdcmClassService(OdcmServiceClass odcmClass, OdcmModel model)
         {
             return new[]
             {

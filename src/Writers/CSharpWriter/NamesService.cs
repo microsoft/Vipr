@@ -27,7 +27,7 @@ namespace CSharpWriter
                 return new Identifier(string.Empty, "void");
             }
 
-            if (string.Equals(odcmType.Namespace, "Edm", StringComparison.OrdinalIgnoreCase))
+            if (odcmType.Namespace == OdcmNamespace.Edm)
             {
                 return GetPrimitiveTypeName(odcmType);
             }
@@ -206,12 +206,12 @@ namespace CSharpWriter
 
         private static Identifier ResolveIdentifier(OdcmType odcmType)
         {
-            return ResolveIdentifier(odcmType.Namespace, odcmType.Name);
+            return ResolveIdentifier(odcmType.Namespace.Name, odcmType.Name);
         }
 
         private static Identifier ResolveIdentifier(OdcmClass odcmContainer)
         {
-            return ResolveIdentifier(odcmContainer.Namespace, odcmContainer.Name);
+            return ResolveIdentifier(odcmContainer.Namespace.Name, odcmContainer.Name);
         }
 
         private static Identifier ResolveIdentifier(string @namespace, string name)
