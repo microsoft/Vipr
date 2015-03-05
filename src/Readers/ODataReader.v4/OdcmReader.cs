@@ -181,6 +181,9 @@ namespace ODataReader.v4
                                         where string.Equals(elements.Namespace, @namespace)
                                         select elements;
 
+                var allElements = from elements in edmModel.SchemaElements
+                                        select elements;
+
                 var types = from element in namespaceElements
                             where element.SchemaElementKind == EdmSchemaElementKind.TypeDefinition
                             select element as IEdmType;
@@ -198,11 +201,11 @@ namespace ODataReader.v4
                                        where element.SchemaElementKind == EdmSchemaElementKind.EntityContainer
                                        select element as IEdmEntityContainer;
 
-                var actions = from element in namespaceElements
+                var actions = from element in allElements
                               where element.SchemaElementKind == EdmSchemaElementKind.Action && ((IEdmAction)element).IsBound
                               select element as IEdmAction;
 
-                var functions = from element in namespaceElements
+                var functions = from element in allElements
                                 where element.SchemaElementKind == EdmSchemaElementKind.Function && ((IEdmFunction)element).IsBound
                                 select element as IEdmFunction;
 
@@ -441,7 +444,7 @@ namespace ODataReader.v4
 
                 var isBoundToCollection = operation.IsBound && operation.Parameters.First().Type.IsCollection();
 
-                var odcmMethod = new OdcmMethod(operation.Name)
+                var odcmMethod = new OdcmMethod(operation.Name, operation.Namespace)
                 {
                     IsComposable = operation.IsFunction() && ((IEdmFunction)operation).IsComposable,
                     IsBoundToCollection = isBoundToCollection,
