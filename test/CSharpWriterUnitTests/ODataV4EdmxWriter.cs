@@ -14,7 +14,7 @@ namespace CSharpWriterUnitTests
 
             if (addEdmxTag) sb.AppendFormat("<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\">");
             sb.AppendFormat("<edmx:DataServices>");
-            sb.Append(odcmModel.Namespaces.Select(ToEdmx).Aggregate((c, n) => c + "\n" + n));
+            if(odcmModel.Namespaces.Any()) sb.Append(odcmModel.Namespaces.Select(ToEdmx).Aggregate((c, n) => c + "\n" + n));
             sb.AppendFormat("</edmx:DataServices>");
             if (addEdmxTag) sb.AppendFormat("</edmx:Edmx>");
 
@@ -26,7 +26,7 @@ namespace CSharpWriterUnitTests
             var sb = new StringBuilder();
 
             sb.AppendFormat("<Schema Namespace=\"{0}\" xmlns=\"http://docs.oasis-open.org/odata/ns/edm\">", odcmNamespace.Name);
-            sb.Append(odcmNamespace.Classes.Select(ToEdmx).Aggregate((c, n) => c + "\n" + n));
+            if(odcmNamespace.Classes.Any()) sb.Append(odcmNamespace.Classes.Select(ToEdmx).Aggregate((c, n) => c + "\n" + n));
             sb.AppendFormat("</Schema>");
 
             return sb.ToString();
@@ -81,6 +81,22 @@ namespace CSharpWriterUnitTests
             sb.AppendFormat("</{0}>", tagName);
 
             return sb.ToString();
+        }
+
+        public static string ToEdmx(this OdcmEnum odcmEnum)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendFormat("<EnumType Name=\"{0}\">", odcmEnum.Name);
+            if (odcmEnum.Members.Any()) sb.Append(odcmEnum.Members.Select(ToEdmx).Aggregate((c, n) => c + "\n" + n));
+            sb.AppendFormat("</EnumType>");
+
+            return sb.ToString();
+        }
+
+        private static string ToEdmx(OdcmEnumMember odcmEnumMember)
+        {
+            return String.Format("Member Name=\"{0}\"/>", odcmEnumMember.Name);
         }
 
         private static string GetKeyNode(OdcmEntityClass odcmClass)
@@ -145,6 +161,9 @@ namespace CSharpWriterUnitTests
                     break;
                 case OdcmClassKind.Entity:
                     tagName = "EntityType";
+                    break;
+                case OdcmClassKind.MediaEntity:
+                    tagName = "MediaEntity";
                     break;
                 case OdcmClassKind.Service:
                     tagName = "EntityContainer";
