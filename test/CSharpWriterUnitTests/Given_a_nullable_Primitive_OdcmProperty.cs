@@ -31,7 +31,11 @@ namespace CSharpWriterUnitTests
 
             _class = Any.EntityOdcmClass(_namespace);
 
-            _property = Any.PrimitiveOdcmProperty(p => p.IsNullable = true);
+            _property = Any.PrimitiveOdcmProperty(p =>
+            {
+                p.IsNullable = true;
+                p.Class = _class;
+            });
 
             _class.Properties.Add(_property);
 

@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Its.Recipes;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 using Moq;
@@ -52,6 +53,9 @@ namespace CSharpWriterUnitTests
 
         public Assembly GetProxy(OdcmModel model, IConfigurationProvider _configurationProvider = null, IEnumerable<string> internalsVisibleTo = null)
         {
+            if (model.ServiceMetadata["$metadata"] == TestConstants.ODataV4.EmptyEdmx)
+                model.ServiceMetadata["$metadata"] = model.ToEdmx(true);
+
             var writer = new CSharpWriter.CSharpWriter();
 
             writer.SetConfigurationProvider(_configurationProvider);

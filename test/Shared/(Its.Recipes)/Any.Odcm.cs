@@ -305,7 +305,7 @@ namespace Microsoft.Its.Recipes
         {
             return new TextFileCollection
             {
-                new TextFile("$metadata", "<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\"></edmx:Edmx>"),
+                new TextFile("$metadata", TestConstants.ODataV4.EmptyEdmx),
             };
         }
 

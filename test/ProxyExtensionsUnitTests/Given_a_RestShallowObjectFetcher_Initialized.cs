@@ -17,7 +17,7 @@ namespace ProxyExtensionsUnitTests
 
         public Given_a_RestShallowObjectFetcher_Initialized()
         {
-            _path = Any.String();
+            _path = Any.String(1);
 
             _baseUri = Any.Uri(allowQuerystring: false);
 

@@ -48,6 +48,9 @@
     <Compile Include="..\Shared\%28Its.Recipes%29\TestInputGenerator.cs">
       <Link>TestInputGenerator.cs</Link>
     </Compile>
+    <Compile Include="..\Shared\TestConstants\OData.V4.cs">
+      <Link>TestConstants\OData.V4.cs</Link>
+    </Compile>
     <Compile Include="Any.cs" />
     <Compile Include="FileSystemHelpers.cs" />
     <Compile Include="Given_a_Bootstrapper.cs" />
