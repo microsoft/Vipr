@@ -344,7 +344,7 @@ namespace CSharpWriter
             using (_builder.IndentBraced)
             {
                 _("string resolvedType;");
-                _("resolvedType = Context.DefaultResolveNameInternal(clientType,  \"{0}\", \"{1}\");", method.ClientNamespace, method.ServerNamespace);
+                _("resolvedType = Context.DefaultResolveNameInternal(clientType,  \"{0}\", \"{1}\");", method.ServerNamespace, method.ClientNamespace);
                 _("if (!string.IsNullOrEmpty(resolvedType))");
                 using (_builder.IndentBraced)
                 {

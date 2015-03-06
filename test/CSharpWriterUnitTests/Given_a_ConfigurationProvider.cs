@@ -428,8 +428,8 @@ namespace CSharpWriterUnitTests
             var requestBody = reader.ReadToEndAsync().Result;
             request.Body.Seek(0, SeekOrigin.Begin);
 
-            return !requestBody.Contains(oldNamespace) &&
-                   requestBody.Contains(newNamespace);
+            return requestBody.Contains(oldNamespace) &&
+                   !requestBody.Contains(newNamespace);
         }
 
         private Assembly GetProxyWithChangedNamespaces(string namespacePrefix, Dictionary<string, string> namespaceMap)
