@@ -14,6 +14,8 @@ namespace CSharpWriter
 
         public CollectionGetByIdIndexer(OdcmEntityClass odcmClass)
         {
+            ParameterToPropertyMap = odcmClass.Key.ToDictionary(Parameter.FromProperty, p => p);
+
             Parameters = global::CSharpWriter.Parameters.GetKeyParameters(odcmClass);
             ReturnType = new Type(NamesService.GetFetcherInterfaceName(odcmClass));
             OdcmClass = odcmClass;

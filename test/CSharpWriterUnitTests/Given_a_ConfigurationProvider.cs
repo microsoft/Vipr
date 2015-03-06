@@ -1,12 +1,21 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System;
+using System.IO;
+using System.Reflection;
+using System.Threading.Tasks;
 using CSharpWriter.Settings;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
+using Microsoft.MockService;
+using Microsoft.MockService.Extensions.ODataV4;
+using Microsoft.OData.ProxyExtensions;
+using Microsoft.Owin;
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 using Xunit;
@@ -46,6 +55,115 @@ namespace CSharpWriterUnitTests
                     .Contain(namespaceMap.Values)
                     .And
                     .NotContain(namespaceMap.Keys);
+        }
+
+        [Fact]
+        public void When_it_changes_a_namespace_then_requests_OdataType_is_set_to_the_old_namespace()
+        {
+            var oldNamespace = _model.EntityContainer.Namespace;
+
+            var namespacePrefix = Any.CSharpIdentifier();
+
+            var namespaceRename = Any.CSharpIdentifier();
+
+            var newNamespace = new OdcmNamespace(namespacePrefix + "." + namespaceRename);
+
+            var namespaceMap = new Dictionary<string, string> { { oldNamespace.Name, namespaceRename } };
+
+            var proxy = GetProxyWithChangedNamespaces(namespacePrefix, namespaceMap);
+
+            var @class = oldNamespace.Classes.OfType<OdcmEntityClass>().First();
+
+            var entityArtifacts = GetEntityArtifactsFromNewNamespace(@class, newNamespace, proxy, oldNamespace);
+
+            using (var mockService = new MockService()
+                    .Start())
+            {
+                mockService
+                    .Setup(c => c.Request.Method == "POST" &&
+                                c.Request.Path.Value == @class.GetDefaultEntitySetPath() &&
+                                IsNamespaceReplaced(c.Request, oldNamespace.Name, newNamespace.Name),
+                        (b, c) =>
+                        {
+                            c.Response.StatusCode = 201;
+                            c.Response.WithDefaultODataHeaders();
+                            c.Response.WithODataEntityResponseBody(mockService.GetBaseAddress(),
+                                @class.GetDefaultEntitySetName(), null);
+                        });
+
+                var collection = mockService
+                    .CreateContainer(proxy.GetClass(newNamespace.Name, _model.EntityContainer.Name))
+                    .GetPropertyValue<ReadOnlyQueryableSetBase>(entityArtifacts.Class.GetDefaultEntitySetName());
+
+                var instance = entityArtifacts.ConcreteType.Initialize(@class.GetSampleKeyArguments().ToArray());
+
+                var task = collection.InvokeMethod<Task>("Add" + @class.Name + "Async", args: new[] { instance, false });
+
+                task.Wait();
+            }
+        }
+
+        [Fact(Skip = "https://github.com/Microsoft/Vipr/issues/43")]
+        public void When_it_changes_a_namespace_then_responses_odata_type_is_translated_to_new_namespace()
+        {
+            var oldNamespace = _model.EntityContainer.Namespace; 
+            
+            var namespacePrefix = Any.CSharpIdentifier();
+
+            var namespaceRename = Any.CSharpIdentifier();
+
+            var newNamespace = new OdcmNamespace(namespacePrefix + "." + namespaceRename);
+
+            var namespaceMap = new Dictionary<string, string> { { oldNamespace.Name, namespaceRename } };
+
+            var entityClasses = oldNamespace.Classes.OfType<OdcmEntityClass>().ToList();
+
+            var baseClass = entityClasses.Where(c => c.Base == null).RandomElement();
+
+            entityClasses.Remove(baseClass);
+
+            baseClass.IsAbstract = true;
+
+            var derivedClass = entityClasses.RandomElement();
+
+            entityClasses.Remove(derivedClass);
+
+            derivedClass.Base = baseClass;
+
+            entityClasses.RandomElement().Base = baseClass;
+
+            var proxy = GetProxyWithChangedNamespaces(namespacePrefix, namespaceMap);
+
+            var entityArtifacts = GetEntityArtifactsFromNewNamespace(derivedClass, newNamespace, proxy, oldNamespace);
+
+            var responseObject = entityArtifacts.ConcreteType.Initialize(derivedClass.GetSampleKeyArguments().Concat(baseClass.GetSampleKeyArguments()).ToArray());
+
+            var responseOdataType = String.Format("#{0}.{1}", oldNamespace.Name, derivedClass.Name);
+
+            var singletonPath = baseClass.GetDefaultSingletonPath();
+
+            using (var mockService = new MockService(true)
+                    .Start())
+            {
+                mockService
+                    .Setup(c => c.Request.Method == "GET" &&
+                                c.Request.Path.Value == singletonPath,
+                        (b, c) =>
+                        {
+                            c.Response.StatusCode = 200;
+                            c.Response.WithDefaultODataHeaders();
+                            c.Response.WithODataEntityResponseBody(mockService.GetBaseAddress(),
+                                baseClass.GetDefaultEntitySetName(), responseObject, new JProperty("@odata.type", new JValue(responseOdataType)));
+                        });
+
+                var fetcher = mockService
+                    .CreateContainer(proxy.GetClass(newNamespace.Name, _model.EntityContainer.Name))
+                    .GetPropertyValue<RestShallowObjectFetcher>(baseClass.GetDefaultSingletonName());
+
+                var task = fetcher.ExecuteAsync();
+
+                var result = task.GetPropertyValue<EntityBase>("Result");
+            }
         }
 
         [Fact]
@@ -301,6 +419,45 @@ namespace CSharpWriterUnitTests
         private static string GetPascalCaseName(OdcmProperty property)
         {
             return property.Name.Substring(0, 1).ToUpper() + property.Name.Substring(1);
+        }
+
+        private bool IsNamespaceReplaced(IOwinRequest request, string oldNamespace, string newNamespace)
+        {
+            request.Body.Seek(0, SeekOrigin.Begin);
+            var reader = new StreamReader(request.Body);
+            var requestBody = reader.ReadToEndAsync().Result;
+            request.Body.Seek(0, SeekOrigin.Begin);
+
+            return !requestBody.Contains(oldNamespace) &&
+                   requestBody.Contains(newNamespace);
+        }
+
+        private Assembly GetProxyWithChangedNamespaces(string namespacePrefix, Dictionary<string, string> namespaceMap)
+        {
+            var configMock = new Mock<IConfigurationProvider>(MockBehavior.Loose);
+
+            configMock
+                .Setup(c => c.GetConfiguration<CSharpWriterSettings>())
+                .Returns(() => new CSharpWriterSettings
+                {
+                    NamespacePrefix = namespacePrefix,
+                    OdcmNamespaceToProxyNamespace = namespaceMap
+                });
+
+            var proxy = GetProxy(_model, configMock.Object);
+            return proxy;
+        }
+
+        private static EntityArtifacts GetEntityArtifactsFromNewNamespace(OdcmEntityClass @class, OdcmNamespace newNamespace,
+            Assembly proxy, OdcmNamespace oldNamespace)
+        {
+            @class.Namespace = newNamespace;
+
+            var entityArtifacts = @class.GetArtifactsFrom(proxy);
+
+            @class.Namespace = oldNamespace;
+
+            return entityArtifacts;
         }
     }
 }

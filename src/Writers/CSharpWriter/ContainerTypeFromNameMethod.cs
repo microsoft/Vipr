@@ -13,7 +13,7 @@ namespace CSharpWriter
 
         public ContainerTypeFromNameMethod(OdcmClass odcmContainer)
         {
-            ClientNamespace = odcmContainer.Namespace.Name;
+            ClientNamespace = NamesService.GetNamespaceName(odcmContainer.Namespace);
             IsPublic = false;
             Name = "ResolveTypeFromName";
             Parameters = new[] { new Parameter(new Type(new Identifier("System", "String")), "typeName"), };

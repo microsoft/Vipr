@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Microsoft.Owin;
 using Newtonsoft.Json.Linq;
 
@@ -14,13 +16,18 @@ namespace Microsoft.MockService.Extensions.ODataV4
             return owinResponse;
         }
 
-        internal static IOwinResponse WithODataEntityResponseBody(this IOwinResponse owinResponse, string baseAddress, 
-            string entitySetName, object response)
+        public static IOwinResponse WithODataEntityResponseBody(this IOwinResponse owinResponse, string baseAddress, 
+            string entitySetName, object response, params JProperty[] additionalProperties)
         {
             if (response == null)
                 return owinResponse;
 
             var jObject = JObject.FromObject(response);
+
+            foreach (var additionalProperty in additionalProperties.Reverse())
+            {
+                jObject.AddFirst(additionalProperty);
+            }
 
             jObject.AddOdataContext(baseAddress, entitySetName);
 
