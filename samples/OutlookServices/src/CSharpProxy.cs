@@ -2433,6 +2433,10 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
+
                 Folders.Clear();
 
                 if (value != null)
@@ -2480,6 +2484,10 @@ namespace Microsoft.Office365.OutlookServices
             set
 
             {
+
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
 
                 Messages.Clear();
 
@@ -2565,6 +2573,10 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
+
                 Calendars.Clear();
 
                 if (value != null)
@@ -2649,6 +2661,10 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
+
                 CalendarGroups.Clear();
 
                 if (value != null)
@@ -2696,6 +2712,10 @@ namespace Microsoft.Office365.OutlookServices
             set
 
             {
+
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
 
                 Events.Clear();
 
@@ -2745,6 +2765,10 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
+
                 CalendarView.Clear();
 
                 if (value != null)
@@ -2793,6 +2817,10 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
+
                 Contacts.Clear();
 
                 if (value != null)
@@ -2840,6 +2868,10 @@ namespace Microsoft.Office365.OutlookServices
             set
 
             {
+
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
 
                 ContactFolders.Clear();
 
@@ -3873,6 +3905,10 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
+
                 ChildFolders.Clear();
 
                 if (value != null)
@@ -3920,6 +3956,10 @@ namespace Microsoft.Office365.OutlookServices
             set
 
             {
+
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
 
                 Messages.Clear();
 
@@ -5138,6 +5178,10 @@ namespace Microsoft.Office365.OutlookServices
             set
 
             {
+
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
 
                 Attachments.Clear();
 
@@ -6747,6 +6791,10 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
+
                 CalendarView.Clear();
 
                 if (value != null)
@@ -6794,6 +6842,10 @@ namespace Microsoft.Office365.OutlookServices
             set
 
             {
+
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
 
                 Events.Clear();
 
@@ -7292,6 +7344,10 @@ namespace Microsoft.Office365.OutlookServices
             set
 
             {
+
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
 
                 Calendars.Clear();
 
@@ -8343,6 +8399,10 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
+
                 Attachments.Clear();
 
                 if (value != null)
@@ -8426,6 +8486,10 @@ namespace Microsoft.Office365.OutlookServices
             set
 
             {
+
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
 
                 Instances.Clear();
 
@@ -10377,6 +10441,10 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
+
                 Contacts.Clear();
 
                 if (value != null)
@@ -10424,6 +10492,10 @@ namespace Microsoft.Office365.OutlookServices
             set
 
             {
+
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
 
                 ChildFolders.Clear();
 
@@ -10887,7 +10959,7 @@ namespace Microsoft.Office365.OutlookServices
 
             global::System.Type resolvedType;
 
-            resolvedType = Context.DefaultResolveTypeInternal(typeName,  "Microsoft.OutlookServices", "Microsoft.OutlookServices");
+            resolvedType = Context.DefaultResolveTypeInternal(typeName,  "Microsoft.Office365.OutlookServices", "Microsoft.OutlookServices");
 
             if (resolvedType != null)
 
@@ -10907,7 +10979,7 @@ namespace Microsoft.Office365.OutlookServices
 
             string resolvedType;
 
-            resolvedType = Context.DefaultResolveNameInternal(clientType,  "Microsoft.OutlookServices", "Microsoft.OutlookServices");
+            resolvedType = Context.DefaultResolveNameInternal(clientType,  "Microsoft.OutlookServices", "Microsoft.Office365.OutlookServices");
 
             if (!string.IsNullOrEmpty(resolvedType))
 
