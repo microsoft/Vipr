@@ -130,7 +130,7 @@ namespace Microsoft.Office365.SharePoint.CoreServices
 
             global::System.Type resolvedType;
 
-            resolvedType = Context.DefaultResolveTypeInternal(typeName,  "Microsoft.CoreServices", "Microsoft.CoreServices");
+            resolvedType = Context.DefaultResolveTypeInternal(typeName,  "Microsoft.Office365.SharePoint.CoreServices", "Microsoft.CoreServices");
 
             if (resolvedType != null)
 
@@ -150,7 +150,7 @@ namespace Microsoft.Office365.SharePoint.CoreServices
 
             string resolvedType;
 
-            resolvedType = Context.DefaultResolveNameInternal(clientType,  "Microsoft.CoreServices", "Microsoft.CoreServices");
+            resolvedType = Context.DefaultResolveNameInternal(clientType,  "Microsoft.CoreServices", "Microsoft.Office365.SharePoint.CoreServices");
 
             if (!string.IsNullOrEmpty(resolvedType))
 
@@ -2908,7 +2908,7 @@ namespace Microsoft.Office365.SharePoint.FileServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.SharePoint.FileServices.IItem, Microsoft.Office365.SharePoint.FileServices.Item>(Context, (Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.SharePoint.FileServices.Item>) _childrenConcrete);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.SharePoint.FileServices.IItem, Microsoft.Office365.SharePoint.FileServices.Item>(Context, (DataServiceCollection<Microsoft.Office365.SharePoint.FileServices.Item>) Children);
 
             }
 
@@ -2994,7 +2994,11 @@ namespace Microsoft.Office365.SharePoint.FileServices
 
             {
 
-                _childrenConcrete.Clear();
+                if (this.Context == null)
+
+                    throw new InvalidOperationException("Not Initialized");
+
+                Children.Clear();
 
                 if (value != null)
 
@@ -3004,7 +3008,7 @@ namespace Microsoft.Office365.SharePoint.FileServices
 
                     {
 
-                        _childrenConcrete.Add(i);
+                        Children.Add(i);
 
                     }
 
