@@ -496,12 +496,18 @@ namespace CSharpWriter
 
         private void WriteEntityMethodBodyStart(Method method)
         {
-            _("if (this.Context == null)");
-            _("    throw new InvalidOperationException(\"Not Initialized\");");
+            WriteInitializationEnforcer();
+
             _("Uri myUri = this.GetUrl();");
             _("if (myUri == (Uri) null)");
             _(" throw new Exception(\"cannot find entity\");");
             _("Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + \"/{0}\");", method.ModelName);
+        }
+
+        private void WriteInitializationEnforcer()
+        {
+            _("if (this.Context == null)");
+            _("    throw new InvalidOperationException(\"Not Initialized\");");
         }
 
         private void WriteSignature(MethodSignature method, bool isForInterface = false)
@@ -652,6 +658,8 @@ namespace CSharpWriter
 
                 using (_builder.IndentBraced)
                 {
+                    WriteInitializationEnforcer();
+
                     _("{0}.Clear();", property.Name);
                     _("if (value != null)");
                     using (_builder.IndentBraced)

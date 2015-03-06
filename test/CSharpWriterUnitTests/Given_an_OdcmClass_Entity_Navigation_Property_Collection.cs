@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Reflection;
 using CSharpWriterUnitTests;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
@@ -230,35 +231,20 @@ public class Given_an_OdcmClass_Entity_Uninitialized : NavigationPropertyTestBas
     }
 
     [Fact]
-    public void When_not_bound_to_Context_and_updated_through_Concrete_accessor_then_does_not_throw_exception()
+    public void When_not_bound_to_Context_and_updated_through_Concrete_accessor_then_throws_InvalidOperationException()
     {
-        var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
+        var instance = Activator.CreateInstance(ConcreteType);
 
-        using (_mockedService = new MockService()
-            .SetupPostEntity(TargetEntity, entityKeyValues)
-            .SetupPostEntityPropertyChanges(TargetEntity, entityKeyValues, NavigationProperty)
-            .Start())
-        {
-            var context = _mockedService
-                .GetDefaultContext(Model);
+        var relatedInstance = Activator.CreateInstance(NavTargetConcreteType);
 
-            var instance = Activator.CreateInstance(ConcreteType);
+        var collection = Activator.CreateInstance(typeof(List<>).MakeGenericType(NavTargetConcreteType));
 
-            var relatedInstance = Activator.CreateInstance(NavTargetConcreteType);
+        collection.InvokeMethod("Add", new[] { relatedInstance });
 
-            var collection = Activator.CreateInstance(typeof(List<>).MakeGenericType(NavTargetConcreteType));
+        Action act = () => instance.SetPropertyValue(NavigationProperty.Name, collection);
 
-            collection.InvokeMethod("Add", new[] { relatedInstance });
-
-            instance.SetPropertyValue(NavigationProperty.Name, collection);
-
-            context
-                .AddConcrete(ConcreteType, instance);
-
-            context
-                .AddRelatedConcrete(instance, NavigationProperty.Name, relatedInstance);
-
-            context.SaveChangesAsync().Wait();
-        }
+        act.ShouldThrow<TargetInvocationException>()
+            .WithInnerException<InvalidOperationException>()
+            .WithInnerMessage("Not Initialized");
     }
 }
