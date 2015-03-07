@@ -14,6 +14,10 @@ namespace Microsoft.MockService.Extensions.ODataV4
         {
             var actualPath = request.Path.Value;
 
+            if (!uriArguments.Any())
+                return actualPath.Equals(entityMethodPath)
+                       || (actualPath.Length > entityMethodPath.Length && actualPath[entityMethodPath.Length] == '/');
+
             var methodPathStart = entityMethodPath + "(";
 
             if (!actualPath.StartsWith(methodPathStart))

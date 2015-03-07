@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using Vipr.Core.CodeModel;
 
 namespace CSharpWriter
 {
@@ -37,6 +38,16 @@ namespace CSharpWriter
                 genericParameterString = string.Format("<{0}>", genericParameterString);
 
             return String.Format("{0}{1}", TypeIdentifier, genericParameterString);
+        }
+
+        public static Type TaskOf(Type type)
+        {
+            return new Type(new Identifier("System.Threading.Tasks", "Task"), type);
+        }
+
+        public static Type IEnmerableOf(Type type)
+        {
+            return new Type(new Identifier("System.Collections.Generic", "IEnumerable"), type);
         }
     }
 }

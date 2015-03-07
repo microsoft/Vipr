@@ -1,0 +1,234 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
+using Microsoft.Its.Recipes;
+using Microsoft.MockService;
+using Vipr.Core.CodeModel;
+using Xunit;
+
+namespace CSharpWriterUnitTests
+{
+    public abstract class Given_an_OdcmClass_Entity_Bound_Function_Base : EntityTestBase
+    {
+        protected OdcmMethod Method;
+        protected Func<Type, Type> ReturnTypeGenerator;
+        protected bool IsCollection;
+        protected Type ExpectedReturnType;
+        protected string ExpectedMethodName;
+
+        protected void Init(Action<OdcmMethod> config = null)
+        {
+            Init(model => model.Namespaces[0].Classes.First()
+                .Methods.Add(Method = Any.OdcmMethod(m =>
+                {
+                    m.ReturnType = model.Namespaces[0].Classes.First();
+                    m.IsCollection = IsCollection;
+
+                    if (config != null) config(m);
+                })));
+
+            ExpectedReturnType = ReturnTypeGenerator(ConcreteInterface);
+
+            ExpectedMethodName = Method.Name + "Async";
+        }
+
+        [Fact]
+        public void The_Concrete_interface_exposes_the_method()
+        {
+            ConcreteInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                ExpectedReturnType,
+                ExpectedMethodName,
+                GetMethodParameterTypes());
+        }
+
+        [Fact]
+        public void The_Concrete_class_exposes_the_async_method()
+        {
+            ConcreteType.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                true,
+                ExpectedReturnType,
+                ExpectedMethodName,
+                GetMethodParameterTypes());
+        }
+
+        [Fact]
+        public void The_Fetcher_interface_exposes_the_method()
+        {
+            FetcherInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                ExpectedReturnType,
+                ExpectedMethodName,
+                GetMethodParameterTypes());
+        }
+
+        [Fact]
+        public void The_Fetcher_class_exposes_the_async_method()
+        {
+            FetcherType.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                true,
+                ExpectedReturnType,
+                ExpectedMethodName,
+                GetMethodParameterTypes());
+        }
+
+        [Fact]
+        public void The_Collection_interface_does_not_expose_the_method()
+        {
+            CollectionInterface.Should().NotHaveMethod(ExpectedMethodName);
+        }
+
+        [Fact]
+        public void The_Collection_class_does_not_expose_the_method()
+        {
+            CollectionType.Should().NotHaveMethod(ExpectedMethodName);
+        }
+
+        [Fact]
+        public void When_the_return_type_is_primitive_it_is_mapped_to_an_IEnumerable_of_DotNet_Primitives()
+        {
+            Init(model => model.Namespaces[0].Classes.First()
+                .Methods.Add(Method = Any.OdcmMethod(m =>
+                {
+                    m.ReturnType = new OdcmPrimitiveType("Stream", OdcmNamespace.Edm);
+                    m.IsCollection = IsCollection;
+                })));
+
+            ExpectedReturnType = ReturnTypeGenerator(typeof(Microsoft.OData.Client.DataServiceStreamLink));
+
+            ExpectedMethodName = Method.Name + "Async";
+
+            var methodInfos = new[]
+            {
+                ConcreteInterface.GetMethod(ExpectedMethodName),
+                ConcreteType.GetMethod(ExpectedMethodName),
+                FetcherInterface.GetMethod(ExpectedMethodName),
+                FetcherType.GetMethod(ExpectedMethodName)
+            };
+
+            foreach (var methodInfo in methodInfos)
+            {
+                methodInfo.ReturnType
+                    .Should().Be(ExpectedReturnType);
+            }
+        }
+
+        private IEnumerable<Type> GetMethodParameterTypes()
+        {
+            return Method.Parameters.Select(p => Proxy.GetClass(p.Type.Namespace, p.Type.Name));
+        }
+
+        [Fact]
+        public void When_the_verb_is_POST_the_Concrete_passes_parameters_on_the_URI_and_in_the_body()
+        {
+            base.Init(m =>
+            {
+                Method = Any.OdcmMethodPost();
+                Method.Class = Class;
+                Method.ReturnType = Class;
+                Method.IsCollection = IsCollection;
+                Class.Methods.Add(Method);
+            });
+
+            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var instancePath = Class.GetDefaultEntityPath(entityKeyValues);
+
+            using (var mockService = new MockService(true)
+                .SetupPostEntity(TargetEntity, entityKeyValues)
+                .Start())
+            {
+                var concrete = mockService
+                    .GetDefaultContext(Model)
+                    .CreateConcrete(ConcreteType);
+
+                mockService.ValidateParameterPassing("POST", concrete, instancePath, Method,
+                    mockService.GetOdataJsonInstance(TargetEntity));
+            }
+        }
+
+        [Fact]
+        public void When_the_verb_is_POST_the_Fetcher_passes_parameters_on_the_URI_and_in_the_body()
+        {
+            base.Init(m =>
+            {
+                Method = Any.OdcmMethodPost();
+                Method.Class = Class;
+                Method.ReturnType = Class;
+                Method.IsCollection = IsCollection;
+                Class.Methods.Add(Method);
+            });
+
+            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var fetcherPath = Class.GetDefaultEntityPath(entityKeyValues);
+
+            using (var mockService = new MockService()
+                .Start())
+            {
+                var fetcher = mockService
+                    .GetDefaultContext(Model)
+                    .CreateFetcher(FetcherType, fetcherPath);
+
+                mockService.ValidateParameterPassing("POST", fetcher, fetcherPath, Method,
+                    mockService.GetOdataJsonInstance(TargetEntity));
+            }
+        }
+
+        [Fact]
+        public void When_the_verb_is_GET_the_Concrete_passes_parameters_on_the_URI()
+        {
+            base.Init(m =>
+            {
+                Method = Any.OdcmMethodGet();
+                Method.Class = Class;
+                Method.ReturnType = Class;
+                Method.IsCollection = IsCollection;
+                Class.Methods.Add(Method);
+            });
+
+            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var instancePath = Class.GetDefaultEntityPath(entityKeyValues);
+
+            using (var mockService = new MockService()
+                .SetupPostEntity(TargetEntity, entityKeyValues)
+                .Start())
+            {
+                var concrete = mockService
+                    .GetDefaultContext(Model)
+                    .CreateConcrete(ConcreteType);
+
+                mockService.ValidateParameterPassing("GET", concrete, instancePath, Method,
+                    mockService.GetOdataJsonInstance(TargetEntity));
+            }
+        }
+
+        [Fact]
+        public void When_the_verb_is_GET_the_Fetcher_passes_parameters_on_the_URI()
+        {
+            base.Init(m =>
+            {
+                Method = Any.OdcmMethodGet();
+                Method.Class = Class;
+                Method.ReturnType = Class;
+                Method.IsCollection = IsCollection;
+                Class.Methods.Add(Method);
+            });
+
+            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var fetcherPath = Class.GetDefaultEntityPath(entityKeyValues);
+
+            using (var mockService = new MockService()
+                .Start())
+            {
+                var fetcher = mockService
+                    .GetDefaultContext(Model)
+                    .CreateFetcher(FetcherType, fetcherPath);
+
+                mockService.ValidateParameterPassing("GET", fetcher, fetcherPath, Method,
+                    mockService.GetOdataJsonInstance(TargetEntity));
+            }
+        }
+    }
+}

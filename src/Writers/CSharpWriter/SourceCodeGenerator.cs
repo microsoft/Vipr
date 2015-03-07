@@ -453,7 +453,7 @@ namespace CSharpWriter
             }
         }
 
-        private void Write(EntityFunctionMethod method)
+        private void Write(EntityInstanceFunctionMethod method)
         {
             WriteSignature(method);
             using (_builder.IndentBraced)
@@ -461,6 +461,22 @@ namespace CSharpWriter
                 WriteEntityMethodBodyStart(method);
                 _("return ({0}) Enumerable.Single<{1}>(await this.Context.ExecuteAsync<{1}>(requestUri, \"{2}\", true, new OperationParameter[]",
                     method.ReturnType.GenericParameters.First(), method.InstanceName, method.HttpMethod);
+                using (_builder.IndentBraced)
+                {
+                    WriteMethodOperationParameters(method);
+                }
+                _("));");
+            }
+        }
+
+        private void Write(EntityCollectionFunctionMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                WriteEntityMethodBodyStart(method);
+                _("return (await this.Context.ExecuteAsync<{0}>(requestUri, \"{1}\", false, new OperationParameter[]",
+                    method.InstanceName, method.HttpMethod);
                 using (_builder.IndentBraced)
                 {
                     WriteMethodOperationParameters(method);
