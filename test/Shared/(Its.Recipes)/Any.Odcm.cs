@@ -226,6 +226,8 @@ namespace Microsoft.Its.Recipes
         {
             var retVal = new OdcmMethod(Any.CSharpIdentifier());
 
+            retVal.Namespace = Any.EmptyOdcmNamespace();
+
             retVal.Verbs = EnumValue<OdcmAllowedVerbs>();
 
             retVal.Parameters.AddRange(
@@ -259,6 +261,8 @@ namespace Microsoft.Its.Recipes
         public static OdcmMethod OdcmMethodGet(Action<OdcmMethod> config = null)
         {
             var retVal = new OdcmMethod(Any.CSharpIdentifier());
+
+            retVal.Namespace = Any.EmptyOdcmNamespace();
 
             retVal.Verbs = OdcmAllowedVerbs.Get;
 

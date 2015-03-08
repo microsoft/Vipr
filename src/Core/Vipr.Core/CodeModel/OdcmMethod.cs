@@ -8,6 +8,8 @@ namespace Vipr.Core.CodeModel
 {
     public class OdcmMethod : OdcmAnnotatedObject
     {
+        public OdcmNamespace Namespace { get; set; }
+
         public OdcmClass Class { get; set; }
 
         public OdcmAllowedVerbs Verbs { get; set; }
@@ -34,5 +36,7 @@ namespace Vipr.Core.CodeModel
         {
             return MakeCanonicalName(Name, ReturnType, Parameters.ToArray());
         }
+
+        public string FullName { get { return Namespace.Name + "." + Name; } }
     }
 }

@@ -136,8 +136,10 @@
     <Compile Include="EnumType.cs" />
     <Compile Include="Given_an_Indenter.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Base.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Bound_Function_Collection.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function_Collection.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Collection.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Bound_Function_Instance.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function_Instance.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Instance.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_CountAsync_Method.cs" />
@@ -157,7 +159,7 @@
     <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_VoidMethod.cs" />
     <Compile Include="Given_an_OdcmClass_Service_Bound_VoidMethod.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function_Base.cs" />
-    <Compile Include="Given_an_OdcmClass_Service_Bound_Function.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Bound_Function_Base.cs" />
     <Compile Include="Given_an_OdcmClass_Service_Property_forced_to_pascal_case.cs" />
     <Compile Include="Given_an_OdcmClass_Complex_Property_forced_to_pascal_case.cs" />
     <Compile Include="Given_an_OdcmParameter.cs" />

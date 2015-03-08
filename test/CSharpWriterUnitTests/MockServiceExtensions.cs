@@ -111,7 +111,7 @@ namespace CSharpWriterUnitTests
 
             mockService
                 .SetupMethod(httpMethod,
-                    instancePath + "/" + method.Name,
+                    instancePath + "/" + method.FullName,
                     uriArguments.ToTestReadableStringCollection(),
                     ArgumentOfTupleExtensions.ToJObject(bodyArguments),
                     response);

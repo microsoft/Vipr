@@ -38,7 +38,7 @@ namespace CSharpWriterUnitTests
                 .Start())
             {
                 mockService.SetupMethod("GET",
-                    "/" + Method.Name,
+                    "/" + Method.FullName,
                     null,
                     null,
                     mockService.GetOdataJsonInstance(TargetEntity, responseKeyValues));

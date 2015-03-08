@@ -43,7 +43,7 @@ namespace CSharpWriter
             }
 
             IsAsync = true;
-            ModelName = odcmMethod.Name;
+            ModelName = odcmMethod.FullName;
             Name = odcmMethod.Name + "Async";
             Parameters = odcmMethod.Parameters.Select(Parameter.FromOdcmParameter);
         }

@@ -57,7 +57,7 @@ namespace CSharpWriterUnitTests
                 var instanceAndPath = instanceGenerator(mockService, TargetEntity);
 
                 mockService.SetupMethod("GET",
-                    instanceAndPath.Item1 + "/" + Method.Name,
+                    instanceAndPath.Item1 + "/" + Method.FullName,
                     null,
                     null,
                     mockService.GetOdataJsonInstance(TargetEntity, responseKeyValues));
