@@ -6,7 +6,6 @@ using FluentAssertions;
 using Microsoft.Its.Recipes;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.MockService;
 using Vipr.Core.CodeModel;
 using Xunit;

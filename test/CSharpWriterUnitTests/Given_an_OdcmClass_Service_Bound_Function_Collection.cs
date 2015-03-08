@@ -1,7 +1,10 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System.Collections;
 using System.Collections.Generic;
+using FluentAssertions;
+using Microsoft.Its.Recipes;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,9 +16,9 @@ using Xunit;
 
 namespace CSharpWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Collection_Bound_Function_Collection : Given_an_OdcmClass_Entity_Collection_Bound_Function_Base
+    public class Given_an_OdcmClass_Service_Bound_Function_Collection : Given_an_OdcmClass_Service_Bound_Function_Base
     {
-        public Given_an_OdcmClass_Entity_Collection_Bound_Function_Collection()
+        public Given_an_OdcmClass_Service_Bound_Function_Collection()
         {
             IsCollection = true;
 
@@ -25,16 +28,15 @@ namespace CSharpWriterUnitTests
         }
 
         [Fact]
-        public void The_Collection_parses_the_response()
+        public void The_Service_parses_the_response()
         {
             Func<MockService, EntityArtifacts, Tuple<string, object>> instanceGenerator =
                 (m, e) =>
                 {
-                    var collectionPath = Class.GetDefaultEntitySetPath();
-                    var instance = m.GetDefaultContext(Model)
-                        .CreateCollection(CollectionType, ConcreteType, collectionPath);
+                    var instance = m.
+                        CreateContainer(EntityContainerType, Any.TokenGetterFunction());
 
-                    return new Tuple<string, object>(collectionPath, instance);
+                    return new Tuple<string, object>(String.Empty, instance);
                 };
 
             ValidateCollectionResponseParsing(instanceGenerator);

@@ -3,6 +3,7 @@
 
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Its.Recipes;
 using Microsoft.MockService;
 using Microsoft.MockService.Extensions.ODataV4;
 using Microsoft.OData.ProxyExtensions;
@@ -11,9 +12,9 @@ using Xunit;
 
 namespace CSharpWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Collection_Bound_Function_Instance : Given_an_OdcmClass_Entity_Collection_Bound_Function_Base
+    public class Given_an_OdcmClass_Service_Bound_Function_Instance : Given_an_OdcmClass_Service_Bound_Function_Base
     {
-        public Given_an_OdcmClass_Entity_Collection_Bound_Function_Instance()
+        public Given_an_OdcmClass_Service_Bound_Function_Instance()
         {
             IsCollection = false;
 
@@ -23,7 +24,7 @@ namespace CSharpWriterUnitTests
         }
 
         [Fact]
-        public void The_Collection_parses_the_response()
+        public void The_Service_parses_the_response()
         {
             Init(m =>
             {
@@ -31,24 +32,21 @@ namespace CSharpWriterUnitTests
                 m.Parameters.Clear();
             });
 
-            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var responseKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var collectionPath = Class.GetDefaultEntityPath(entityKeyValues);
 
             using (var mockService = new MockService()
                 .Start())
             {
                 mockService.SetupMethod("GET",
-                    collectionPath + "/" + Method.Name,
+                    "/" + Method.Name,
                     null,
                     null,
                     mockService.GetOdataJsonInstance(TargetEntity, responseKeyValues));
 
-                var collection = mockService
-                    .GetDefaultContext(Model)
-                    .CreateCollection(CollectionType, ConcreteType, collectionPath);
+                var service = mockService
+                    .CreateContainer(EntityContainerType, Any.TokenGetterFunction());
 
-                var result = collection.InvokeMethod<Task>(Method.Name + "Async").GetPropertyValue<EntityBase>("Result");
+                var result = service.InvokeMethod<Task>(Method.Name + "Async").GetPropertyValue<EntityBase>("Result");
 
                 result.ValidatePropertyValues(responseKeyValues);
             }
