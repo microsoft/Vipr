@@ -64,9 +64,10 @@
     <Compile Include="ContainerNameFromTypeMethod.cs" />
     <Compile Include="ContainerTypeFromNameMethod.cs" />
     <Compile Include="CSharpProject.cs" />
+    <Compile Include="EntityCollectionFunctionMethod.cs" />
     <Compile Include="EntityContainerConstructor.cs" />
+    <Compile Include="EntityInstanceFunctionMethod.cs" />
     <Compile Include="EntityVoidMethod.cs" />
-    <Compile Include="EntityFunctionMethod.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="EnumMember.cs" />
     <Compile Include="Enums.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Properties.cs" />
     <Compile Include="ContainerNavigationCollectionProperty.cs" />
     <Compile Include="ContainerNavigationProperty.cs" />
+    <Compile Include="ServerMethod.cs" />
     <Compile Include="Settings\CSharpWriterSettings.cs" />
     <Compile Include="SourceCodeGenerator.cs" />
     <Compile Include="StringExtensions.cs" />

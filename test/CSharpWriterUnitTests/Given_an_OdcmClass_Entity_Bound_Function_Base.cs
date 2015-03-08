@@ -14,8 +14,8 @@ namespace CSharpWriterUnitTests
         protected OdcmMethod Method;
         protected Func<Type, Type> ReturnTypeGenerator;
         protected bool IsCollection;
-        protected Type ExpectedReturnType;
-        protected string ExpectedMethodName;
+        private Type _expectedReturnType;
+        private string _expectedMethodName;
 
         protected void Init(Action<OdcmMethod> config = null)
         {
@@ -28,9 +28,9 @@ namespace CSharpWriterUnitTests
                     if (config != null) config(m);
                 })));
 
-            ExpectedReturnType = ReturnTypeGenerator(ConcreteInterface);
+            _expectedReturnType = ReturnTypeGenerator(ConcreteInterface);
 
-            ExpectedMethodName = Method.Name + "Async";
+            _expectedMethodName = Method.Name + "Async";
         }
 
         [Fact]
@@ -38,8 +38,8 @@ namespace CSharpWriterUnitTests
         {
             ConcreteInterface.Should().HaveMethod(
                 CSharpAccessModifiers.Public,
-                ExpectedReturnType,
-                ExpectedMethodName,
+                _expectedReturnType,
+                _expectedMethodName,
                 GetMethodParameterTypes());
         }
 
@@ -49,8 +49,8 @@ namespace CSharpWriterUnitTests
             ConcreteType.Should().HaveMethod(
                 CSharpAccessModifiers.Public,
                 true,
-                ExpectedReturnType,
-                ExpectedMethodName,
+                _expectedReturnType,
+                _expectedMethodName,
                 GetMethodParameterTypes());
         }
 
@@ -59,8 +59,8 @@ namespace CSharpWriterUnitTests
         {
             FetcherInterface.Should().HaveMethod(
                 CSharpAccessModifiers.Public,
-                ExpectedReturnType,
-                ExpectedMethodName,
+                _expectedReturnType,
+                _expectedMethodName,
                 GetMethodParameterTypes());
         }
 
@@ -70,21 +70,21 @@ namespace CSharpWriterUnitTests
             FetcherType.Should().HaveMethod(
                 CSharpAccessModifiers.Public,
                 true,
-                ExpectedReturnType,
-                ExpectedMethodName,
+                _expectedReturnType,
+                _expectedMethodName,
                 GetMethodParameterTypes());
         }
 
         [Fact]
         public void The_Collection_interface_does_not_expose_the_method()
         {
-            CollectionInterface.Should().NotHaveMethod(ExpectedMethodName);
+            CollectionInterface.Should().NotHaveMethod(_expectedMethodName);
         }
 
         [Fact]
         public void The_Collection_class_does_not_expose_the_method()
         {
-            CollectionType.Should().NotHaveMethod(ExpectedMethodName);
+            CollectionType.Should().NotHaveMethod(_expectedMethodName);
         }
 
         [Fact]
@@ -97,22 +97,22 @@ namespace CSharpWriterUnitTests
                     m.IsCollection = IsCollection;
                 })));
 
-            ExpectedReturnType = ReturnTypeGenerator(typeof(Microsoft.OData.Client.DataServiceStreamLink));
+            _expectedReturnType = ReturnTypeGenerator(typeof(Microsoft.OData.Client.DataServiceStreamLink));
 
-            ExpectedMethodName = Method.Name + "Async";
+            _expectedMethodName = Method.Name + "Async";
 
             var methodInfos = new[]
             {
-                ConcreteInterface.GetMethod(ExpectedMethodName),
-                ConcreteType.GetMethod(ExpectedMethodName),
-                FetcherInterface.GetMethod(ExpectedMethodName),
-                FetcherType.GetMethod(ExpectedMethodName)
+                ConcreteInterface.GetMethod(_expectedMethodName),
+                ConcreteType.GetMethod(_expectedMethodName),
+                FetcherInterface.GetMethod(_expectedMethodName),
+                FetcherType.GetMethod(_expectedMethodName)
             };
 
             foreach (var methodInfo in methodInfos)
             {
                 methodInfo.ReturnType
-                    .Should().Be(ExpectedReturnType);
+                    .Should().Be(_expectedReturnType);
             }
         }
 
