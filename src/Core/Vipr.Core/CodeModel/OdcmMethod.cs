@@ -26,9 +26,11 @@ namespace Vipr.Core.CodeModel
 
         public OdcmType ReturnType { get; set; }
 
-        public OdcmMethod(string name)
+        public OdcmMethod(string name, OdcmNamespace @namespace)
             : base(name)
         {
+            Namespace = @namespace;
+
             Parameters = new List<OdcmParameter>();
         }
 

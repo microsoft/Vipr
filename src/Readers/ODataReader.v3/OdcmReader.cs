@@ -404,7 +404,7 @@ namespace ODataReader.v3
 
                 bool isBoundToCollection = operation.IsBindable && operation.Parameters.First().Type.IsCollection();
 
-                var odcmMethod = new OdcmMethod(operation.Name)
+                var odcmMethod = new OdcmMethod(operation.Name, odcmClass.Namespace)
                 {
                     Verbs = operation.IsSideEffecting ? OdcmAllowedVerbs.Post : OdcmAllowedVerbs.Any,
                     IsBoundToCollection = isBoundToCollection,

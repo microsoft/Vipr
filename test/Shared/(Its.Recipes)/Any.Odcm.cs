@@ -224,9 +224,7 @@ namespace Microsoft.Its.Recipes
 
         public static OdcmMethod OdcmMethod(Action<OdcmMethod> config = null)
         {
-            var retVal = new OdcmMethod(Any.CSharpIdentifier());
-
-            retVal.Namespace = Any.EmptyOdcmNamespace();
+            var retVal = new OdcmMethod(Any.CSharpIdentifier(), Any.EmptyOdcmNamespace());
 
             retVal.Verbs = EnumValue<OdcmAllowedVerbs>();
 
@@ -260,9 +258,7 @@ namespace Microsoft.Its.Recipes
 
         public static OdcmMethod OdcmMethodGet(Action<OdcmMethod> config = null)
         {
-            var retVal = new OdcmMethod(Any.CSharpIdentifier());
-
-            retVal.Namespace = Any.EmptyOdcmNamespace();
+            var retVal = new OdcmMethod(Any.CSharpIdentifier(), Any.EmptyOdcmNamespace());
 
             retVal.Verbs = OdcmAllowedVerbs.Get;
 

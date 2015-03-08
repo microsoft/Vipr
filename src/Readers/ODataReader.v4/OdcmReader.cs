@@ -444,7 +444,7 @@ namespace ODataReader.v4
 
                 var isBoundToCollection = operation.IsBound && operation.Parameters.First().Type.IsCollection();
 
-                var odcmMethod = new OdcmMethod(operation.Name)
+                var odcmMethod = new OdcmMethod(operation.Name, odcmClass.Namespace)
                 {
                     IsComposable = operation.IsFunction() && ((IEdmFunction)operation).IsComposable,
                     IsBoundToCollection = isBoundToCollection,
