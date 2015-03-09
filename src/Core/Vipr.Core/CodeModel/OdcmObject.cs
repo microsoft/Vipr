@@ -10,6 +10,8 @@ namespace Vipr.Core.CodeModel
     {
         public string Name { get; private set; }
 
+        public string Description { get; set; }
+
         /// <summary>
         /// A collection of VocabularyAnnotations that have been applied to this OdcmAnnotatedObject.
         /// </summary>

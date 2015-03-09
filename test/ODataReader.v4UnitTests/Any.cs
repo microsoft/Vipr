@@ -150,6 +150,19 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
+            public static XElement DescriptionAnnotation(string description, Action<XElement> config = null)
+            {
+                string descriptionAnnotationString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Core.V1.Description");
+
+                XElement element = XElement.Parse(descriptionAnnotationString);
+                element.AddAttribute("String", description);
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
             public static XElement Edmx(Action<XElement> config = null)
             {
                 XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Edmx_element);

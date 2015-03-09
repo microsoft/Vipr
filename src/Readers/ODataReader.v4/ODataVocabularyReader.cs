@@ -125,13 +125,6 @@ namespace ODataReader.v4
                                 elementType.SchemaElementKind, elementType.Name));
                     }
                 }
-                else
-                {
-                    throw new NotSupportedException(
-                        string.Format(
-                            "Annotation from Namespace {0} named {1} has not been registered; Vipr does not currently support custom annotations.",
-                            odcmAnnotation.Namespace, odcmAnnotation.Name));
-                }
             }
         }
 
