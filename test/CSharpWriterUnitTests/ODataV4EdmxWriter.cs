@@ -160,10 +160,8 @@ namespace CSharpWriterUnitTests
                     tagName = "ComplexType";
                     break;
                 case OdcmClassKind.Entity:
-                    tagName = "EntityType";
-                    break;
                 case OdcmClassKind.MediaEntity:
-                    tagName = "MediaEntity";
+                    tagName = "EntityType";
                     break;
                 case OdcmClassKind.Service:
                     tagName = "EntityContainer";

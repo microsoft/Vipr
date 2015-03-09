@@ -48,7 +48,7 @@ namespace Vipr.Core.CodeModel
 
         public void AddType(OdcmType type)
         {
-            string @namespace = type.Namespace.CanonicalName();
+            string @namespace = type.Namespace.Name;
             OdcmNamespace odcmNamespace = null;
             foreach (OdcmNamespace candidate in Namespaces)
             {

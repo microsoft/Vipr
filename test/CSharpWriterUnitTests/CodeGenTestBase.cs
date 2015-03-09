@@ -84,6 +84,7 @@ namespace CSharpWriterUnitTests
                 typeof(Microsoft.OData.Edm.EdmConcurrencyMode).Assembly.Location,
                 typeof(Microsoft.OData.ProxyExtensions.LowerCasePropertyAttribute).Assembly.Location,
                 "System.Core.dll",
+                "System.Xml.ReaderWriter.dll",
                 "System.Xml.dll",
                 "System.Runtime.dll",
                 "System.Linq.Expressions.dll",

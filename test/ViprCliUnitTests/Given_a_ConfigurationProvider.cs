@@ -22,14 +22,12 @@ namespace ViprCliUnitTests
         [Fact]
         public void It_loads_configuration_from_the_dotConfig_directory()
         {
-            Console.WriteLine(Settings.SettingsDirectory);
             ValidateLoadingConfiguraiton<TestSettings>(Any.TestSettings());
         }
 
         [Fact]
         public void When_executed_from_a_different_directory_It_loads_configuration_from_the_dotConfig_directory()
         {
-            Console.WriteLine(Settings.SettingsDirectory);
             _workingDirectory = Path.Combine(Environment.CurrentDirectory, Any.Word());
 
             Directory.CreateDirectory(_workingDirectory);
@@ -68,10 +66,8 @@ namespace ViprCliUnitTests
                 configurable.ConfigurationProvider.Should()
                     .NotBeNull("Because the ConfigurationProvider should call SetConfigurationProviderOn");
 
-                Console.WriteLine(Environment.CurrentDirectory);
-                Console.WriteLine(Settings.SettingsDirectory);
                 var providedSettings = configurable.ConfigurationProvider.GetConfiguration<T>();
-                Console.WriteLine(Settings.SettingsDirectory);
+
                 providedSettings.Should().Be(testSettings);
             }
             finally
@@ -96,8 +92,7 @@ namespace ViprCliUnitTests
             };
 
             var settingsJson = JsonConvert.SerializeObject(testSettings, serializerSettings);
-            Console.WriteLine(configFilePath);
-            Console.WriteLine(settingsJson);
+
             File.WriteAllText(configFilePath, settingsJson);
         }
     }

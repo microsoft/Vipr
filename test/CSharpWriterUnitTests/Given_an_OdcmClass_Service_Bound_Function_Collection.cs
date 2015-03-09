@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Collections;
 using System.Collections.Generic;
-using FluentAssertions;
+using System.Xml;
 using Microsoft.Its.Recipes;
 using System;
 using System.Linq;
@@ -20,6 +19,8 @@ namespace CSharpWriterUnitTests
     {
         public Given_an_OdcmClass_Service_Bound_Function_Collection()
         {
+            var net40PreLoader = new XmlDocument().BaseURI;
+
             IsCollection = true;
 
             ReturnTypeGenerator = (t) => typeof (Task<>).MakeGenericType(typeof (IEnumerable<>).MakeGenericType(t));

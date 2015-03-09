@@ -6,10 +6,8 @@ using System.Linq;
 
 namespace Vipr.Core.CodeModel
 {
-    public class OdcmMethod : OdcmAnnotatedObject
+    public class OdcmMethod : OdcmType
     {
-        public OdcmNamespace Namespace { get; set; }
-
         public OdcmClass Class { get; set; }
 
         public OdcmAllowedVerbs Verbs { get; set; }
@@ -27,10 +25,8 @@ namespace Vipr.Core.CodeModel
         public OdcmType ReturnType { get; set; }
 
         public OdcmMethod(string name, OdcmNamespace @namespace)
-            : base(name)
+            : base(name, @namespace)
         {
-            Namespace = @namespace;
-
             Parameters = new List<OdcmParameter>();
         }
 
