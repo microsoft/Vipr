@@ -52,6 +52,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EDMX", "EDMX", "{7E0558B9-4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{63D78AF4-61E2-42F6-B21F-15B101B8A1CC}"
 	ProjectSection(SolutionItems) = preProject
+		.nuget\nuget.config = .nuget\nuget.config
+		.nuget\NuGet.targets = .nuget\NuGet.targets
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
@@ -74,11 +76,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestReaderWriter", "test\Shared\TestReaderWriter\TestReaderWriter.csproj", "{8B06C628-32B4-4AB0-A463-E4DE44545E3D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoubleReader", "test\Shared\DoubleReader\DoubleReader.csproj", "{48AD9942-A216-4EEA-BB4B-DD336449042C}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "package", "package", "{EF907DCB-E8CC-4F9F-8592-C19D1ED04EC2}"
-	ProjectSection(SolutionItems) = preProject
-		Microsoft.OData.ProxyExtensions.nuspec = Microsoft.OData.ProxyExtensions.nuspec
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
