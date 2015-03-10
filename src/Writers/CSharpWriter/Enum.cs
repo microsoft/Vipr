@@ -10,12 +10,14 @@ namespace CSharpWriter
     public class Enum
     {
         public string Name { get; private set; }
+        public string Description { get; private set; }
         public IEnumerable<EnumMember> Members { get; private set; }
         public string UnderlyingType { get; private set; }
 
         public Enum(OdcmEnum odcmEnum)
         {
             Name = odcmEnum.Name;
+            Description = odcmEnum.Description;
             // if no Underlying type is specified then default to 'int'.
             UnderlyingType =
                 odcmEnum.UnderlyingType == null

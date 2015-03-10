@@ -6,6 +6,7 @@ namespace CSharpWriter
     public class InterfaceProperty : ExplicitlyImplementableMember
     {
         public string Name { get; protected set; }
+        public string Description { get; protected set; }
         public Type Type { get; protected set; }
         public bool PrivateGet = false;
         public bool PrivateSet = false;

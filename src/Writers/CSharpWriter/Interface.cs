@@ -10,6 +10,7 @@ namespace CSharpWriter
     internal class Interface : AttributableStructure
     {
         public Identifier Identifier { get; private set; }
+        public string Description { get; private set; }
 
         public string Namespace { get; private set; }
 
@@ -35,6 +36,7 @@ namespace CSharpWriter
             {
                 Attributes = global::CSharpWriter.Attributes.ForConcreteInterface,
                 Identifier = NamesService.GetConcreteInterfaceName(odcmClass),
+                Description = odcmClass.Description,
                 Methods = global::CSharpWriter.Methods.ForConcreteInterface(odcmClass),
                 Namespace = odcmClass.Namespace,
                 Properties = global::CSharpWriter.Properties.ForConcreteInterface(odcmClass),
@@ -73,6 +75,7 @@ namespace CSharpWriter
             return new Interface
             {
                 Identifier = NamesService.GetEntityContainerInterfaceName(odcmContainer),
+                Description = odcmContainer.Description,
                 Interfaces = null,
                 Methods = global::CSharpWriter.Methods.ForEntityContainerInterface(odcmContainer),
                 Properties = global::CSharpWriter.Properties.ForEntityContainerInterface(odcmContainer),
