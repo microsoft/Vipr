@@ -12,5 +12,6 @@ namespace CSharpWriter
         public IEnumerable<String> GenericParameters { get; protected set; }
         public bool IsAsync { get; protected set; }
         public string Name { get; protected set; }
+        public string Description { get; protected set; }
     }
 }

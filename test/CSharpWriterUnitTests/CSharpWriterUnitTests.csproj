@@ -121,6 +121,8 @@
     <Compile Include="..\Shared\%28Its.Recipes%29\TestInputGenerator.cs">
       <Link>%28Its.Recipes%29\TestInputGenerator.cs</Link>
     </Compile>
+    <Compile Include="AnnotationUnitTests\Given_an_OdcmObject_with_Description.cs" />
+    <Compile Include="AnnotationUnitTests\XMLDocumentTestBase.cs" />
     <Compile Include="..\Shared\TestConstants\OData.V4.cs">
       <Link>TestConstants\OData.V4.cs</Link>
     </Compile>
@@ -248,6 +250,7 @@
     <None Include="..\..\test\Shared\Edmx\OneNote.edmx.xml">
       <Link>Edmx\OneNote.edmx.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="..\..\test\Shared\Edmx\Sharepoint.edmx.xml">
       <Link>Edmx\Sharepoint.edmx.xml</Link>

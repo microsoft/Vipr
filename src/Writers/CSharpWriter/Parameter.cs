@@ -10,6 +10,8 @@ namespace CSharpWriter
     {
         public string Name { get; private set; }
 
+        public string Description { get; private set; }
+
         public Type Type { get; private set; }
 
         public string DefaultValue { get; private set; }
@@ -41,6 +43,7 @@ namespace CSharpWriter
             return new Parameter
             {
                 Name = odcmParameter.Name,
+                Description = odcmParameter.Description,
                 Type = odcmParameter.IsCollection
                     ? new Type(new Identifier("System.Collections.Generic", "ICollection"), new Type(NamesService.GetConcreteTypeName(odcmParameter.Type)))
                     : TypeService.GetParameterType(odcmParameter)

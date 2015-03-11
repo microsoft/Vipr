@@ -13,6 +13,7 @@ namespace CSharpWriter
         protected Property(OdcmProperty property)
             : this(property.Name)
         {
+            Description = property.Description;
         }
 
         protected Property(string name)

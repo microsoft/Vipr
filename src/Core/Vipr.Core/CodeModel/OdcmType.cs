@@ -3,7 +3,7 @@
 
 namespace Vipr.Core.CodeModel
 {
-    public abstract class OdcmType : OdcmAnnotatedObject
+    public abstract class OdcmType : OdcmObject
     {
         public readonly static string Global = "global";
 

@@ -103,6 +103,7 @@ namespace CSharpWriter
 
         private void Write(Enum @enum)
         {
+            WriteDescription(@enum.Description);
             _("public enum {0} : {1}", @enum.Name, @enum.UnderlyingType);
             using (_builder.IndentBraced)
             {
@@ -135,6 +136,7 @@ namespace CSharpWriter
 
         private void Write(Class @class)
         {
+            WriteDescription(@class.Description);
             Write(@class.Attributes);
 
             _("{0}{1}partial class {2}{3}", @class.AccessModifier, @class.AbstractModifier, @class.Identifier.Name,
@@ -548,6 +550,7 @@ namespace CSharpWriter
 
             var template = isForInterface ? "{3}{4} {6}{7}({8});" : "{0}{1}{2}{3}{4} {5}{6}{7}({8})";
 
+            WriteMethodDescription(method);
             _(template, accessModifier, asyncModifier, staticModifier, overrideModifier, method.ReturnType, explicitName, method.Name,
                 genericParameters, method.Parameters.ToParametersString());
         }
@@ -817,6 +820,7 @@ namespace CSharpWriter
 
         private void WriteDeclaration(Property property, bool isForInterface = false)
         {
+            WriteDescription(property.Description);
             var accessModifier = property.IsPublic ? "public " : "private ";
 
             var template = isForInterface ? "{1} {3};" : "{0}{1} {2}{3}";
@@ -833,6 +837,7 @@ namespace CSharpWriter
 
         private void Write(Interface @interface)
         {
+            WriteDescription(@interface.Description);
             Write(@interface.Attributes);
             _("public partial interface {0}{1}", @interface.Identifier.Name, GetInheritenceString(@interface.Interfaces));
 
@@ -979,7 +984,39 @@ namespace CSharpWriter
 
         private void WriteDeclaration(InterfaceProperty property)
         {
+            WriteDescription(property.Description);
             WritePropertyDeclaration(property.Type.ToString(), property.Name);
+        }
+
+        private void WriteDescription(string description)
+        {
+            if(!string.IsNullOrEmpty(description))
+            {
+                _builder.Write("/// <summary>");
+                _builder.Write("/// " + description);
+                _builder.Write("/// </summary>");
+            }
+        }
+
+        private void WriteMethodDescription(MethodSignature method)
+        {
+            if (!string.IsNullOrEmpty(method.Description))
+            {
+                _builder.Write("/// <summary>");
+                _builder.Write("/// " + method.Description);
+                _builder.Write("/// </summary>");
+            }
+
+            if (method.Parameters != null)
+            {
+                var parameters = method.Parameters.Where(p => !string.IsNullOrEmpty(p.Description));
+                foreach (var param in parameters)
+                {
+                    _builder.Write(string.Format("/// <param name=\"{0}\">", param.Name));
+                    _builder.Write("/// " + param.Description);
+                    _builder.Write("/// </param>");
+                }
+            }
         }
 
         private void WritePropertyDeclaration(string typeName, string name)

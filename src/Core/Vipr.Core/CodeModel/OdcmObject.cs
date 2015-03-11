@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Vipr.Core.CodeModel
 {
@@ -9,9 +10,25 @@ namespace Vipr.Core.CodeModel
     {
         public string Name { get; private set; }
 
+        /// <summary>
+        /// String for Core.Description annotation value
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// String for Core.LongDescription annotation value
+        /// </summary>
+        public string LongDescription { get; set; }
+
+        /// <summary>
+        /// A collection of VocabularyAnnotations that have been applied to this OdcmAnnotatedObject.
+        /// </summary>
+        public List<OdcmVocabularyAnnotation> Annotations { get; set; }
+
         public OdcmObject(string name)
         {
             Name = name;
+            Annotations = new List<OdcmVocabularyAnnotation>();
         }
 
         public virtual string CanonicalName()

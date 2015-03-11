@@ -23,6 +23,7 @@ namespace CSharpWriter
         public string AbstractModifier { get; private set; }
         public string AccessModifier { get; private set; }
         public Type BaseClass { get; private set; }
+        public string Description { get; private set; }
         public IEnumerable<Field> Fields { get; private set; }
         public Identifier Identifier { get; private set; }
         public IEnumerable<Indexer> Indexers { get; private set; }
@@ -61,6 +62,7 @@ namespace CSharpWriter
                     new Type(odcmClass.Base == null
                         ? NamesService.GetExtensionTypeName("ComplexTypeBase")
                         : NamesService.GetPublicTypeName(odcmClass.Base)),
+                Description = odcmClass.Description,
                 Fields = global::CSharpWriter.Fields.ForComplex(odcmClass),
                 Identifier = NamesService.GetConcreteTypeName(odcmClass),
                 Properties = global::CSharpWriter.Properties.ForComplex(odcmClass),
@@ -79,6 +81,7 @@ namespace CSharpWriter
                         ? NamesService.GetExtensionTypeName("EntityBase")
                         : NamesService.GetConcreteTypeName(odcmClass.Base)),
                 Constructors = global::CSharpWriter.Constructors.ForConcrete(odcmClass),
+                Description = odcmClass.Description,
                 Fields = global::CSharpWriter.Fields.ForConcrete(odcmClass),
                 Identifier = NamesService.GetConcreteTypeName(odcmClass),
                 Interfaces = global::CSharpWriter.ImplementedInterfaces.ForConcrete(odcmClass),
@@ -118,6 +121,7 @@ namespace CSharpWriter
             {
                 AccessModifier = "public ",
                 Constructors = global::CSharpWriter.Constructors.ForEntityContainer(odcmContainer),
+                Description = odcmContainer.Description,
                 Fields = global::CSharpWriter.Fields.ForEntityContainer(odcmContainer),
                 Interfaces = global::CSharpWriter.ImplementedInterfaces.ForEntityContainer(odcmContainer),
                 Identifier = NamesService.GetEntityContainerTypeName(odcmContainer),

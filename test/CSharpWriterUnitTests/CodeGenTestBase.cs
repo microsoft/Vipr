@@ -51,14 +51,50 @@ namespace CSharpWriterUnitTests
                 {"TimeOfDay", typeof (DateTimeOffset)},
             };
 
-        public Assembly GetProxy(OdcmModel model, IConfigurationProvider _configurationProvider = null, IEnumerable<string> internalsVisibleTo = null)
+        protected List<string> ReferencedAssemblies = new List<string>
+        {
+                typeof(Microsoft.OData.Client.BaseEntityType).Assembly.Location,
+                typeof(Microsoft.OData.Edm.EdmConcurrencyMode).Assembly.Location,
+                typeof(Microsoft.OData.ProxyExtensions.LowerCasePropertyAttribute).Assembly.Location,
+                "System.dll",
+                "System.Core.dll",
+                "System.Diagnostics.Debug.dll",
+                "System.IO.dll",
+                "System.Linq.dll",
+                "System.Linq.Expressions.dll",
+                "System.ObjectModel.dll",
+                "System.Reflection.dll",
+                "System.Runtime.dll",
+                "System.Threading.Tasks.dll",
+                "System.Xml.ReaderWriter.dll",
+                "System.Xml.dll"
+            };
+
+        public Assembly GetProxy(OdcmModel model, IConfigurationProvider configurationProvider = null, IEnumerable<string> internalsVisibleTo = null)
+        {
+            var proxySources = GetProxySources(model, configurationProvider, internalsVisibleTo);
+            return CompileText(ReferencedAssemblies, proxySources.Select(f => f.Contents).ToArray());
+        }
+
+        private static void WriteProxySource(TextFileCollection proxySources)
+        {
+            if(Debugger.IsAttached)
+                foreach (var sourceFile in proxySources)
+                {
+                    Debug.WriteLine("-------- {0} ------", sourceFile.RelativePath);
+                    Debug.WriteLine(sourceFile.Contents);
+                    Debug.WriteLine("-------------------", sourceFile.RelativePath);
+                }
+        }
+
+        protected TextFileCollection GetProxySources(OdcmModel model, IConfigurationProvider configurationProvider = null, IEnumerable<string> internalsVisibleTo = null)
         {
             if (model.ServiceMetadata["$metadata"] == TestConstants.ODataV4.EmptyEdmx)
                 model.ServiceMetadata["$metadata"] = model.ToEdmx(true);
 
             var writer = new CSharpWriter.CSharpWriter();
 
-            writer.SetConfigurationProvider(_configurationProvider);
+            writer.SetConfigurationProvider(configurationProvider);
 
             var proxySources = writer.GenerateProxy(model);
 
@@ -77,44 +113,13 @@ namespace CSharpWriterUnitTests
             }
 
             WriteProxySource(proxySources);
-
-            var referencedAssemblies = new List<string>
-            {
-                typeof(Microsoft.OData.Client.BaseEntityType).Assembly.Location,
-                typeof(Microsoft.OData.Edm.EdmConcurrencyMode).Assembly.Location,
-                typeof(Microsoft.OData.ProxyExtensions.LowerCasePropertyAttribute).Assembly.Location,
-                "System.dll",
-                "System.Core.dll",
-                "System.Diagnostics.Debug.dll",
-                "System.IO.dll",
-                "System.Linq.dll",
-                "System.Linq.Expressions.dll",
-                "System.ObjectModel.dll",
-                "System.Reflection.dll",
-                "System.Runtime.dll",
-                "System.Threading.Tasks.dll",
-                "System.Xml.ReaderWriter.dll",
-                "System.Xml.dll"
-            };
-
-            return CompileText(referencedAssemblies, proxySources.Select(f => f.Contents).ToArray());
-        }
-
-        private static void WriteProxySource(TextFileCollection proxySources)
-        {
-            if(Debugger.IsAttached)
-                foreach (var sourceFile in proxySources)
-                {
-                    Debug.WriteLine("-------- {0} ------", sourceFile.RelativePath);
-                    Debug.WriteLine(sourceFile.Contents);
-                    Debug.WriteLine("-------------------", sourceFile.RelativePath);
-                }
+            return proxySources;
         }
 
         public Assembly CompileText(IEnumerable<string> referencedAssemblies, params string[] cSharpSources)
         {
             var compilerParams = GetCompilerParameters();
-            
+
             var profileDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
                 "Reference Assemblies\\Microsoft\\Framework\\.NETPortable\\v4.5\\Profile\\Profile259\\");
 
@@ -131,7 +136,7 @@ namespace CSharpWriterUnitTests
             throw new Exception(text);
         }
 
-        private static CompilerParameters GetCompilerParameters()
+        protected static CompilerParameters GetCompilerParameters()
         {
             if (Debugger.IsAttached)
             {
