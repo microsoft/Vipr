@@ -39,6 +39,7 @@ namespace ODataReader.v4UnitTests
             var schemaNamespace = string.Empty;
             var enumName = string.Empty;            
             var description = Any.Paragraph(Any.Int(10, 20));
+            var longDescription = Any.Paragraph(Any.Int(15, 25));
 
             var edmxElement = Any.Csdl.EdmxToSchema(schema =>
             {
@@ -46,6 +47,7 @@ namespace ODataReader.v4UnitTests
                 {                    
                     enumName = enumType.Attribute("Name").Value;
                     enumType.Add(Any.Csdl.DescriptionAnnotation(description));
+                    enumType.Add(Any.Csdl.LongDescriptionAnnotation(longDescription));
                 }));
                 schema.Add(Any.Csdl.EntityContainer());
                 schemaNamespace = schema.Attribute("Namespace").Value;
@@ -60,6 +62,9 @@ namespace ODataReader.v4UnitTests
             odcmEnum.Description.
                 Should().
                 BeEquivalentTo(description, "because EnumType description annotation should be captured in OdcmObject");
+            odcmEnum.LongDescription.
+                Should().
+                BeEquivalentTo(longDescription, "because EnumType long description annotation should be captured in OdcmObject");
         }
 
         [Fact]
@@ -68,6 +73,7 @@ namespace ODataReader.v4UnitTests
             var complexTypeName = string.Empty;
             var schemaNamespace = string.Empty;            
             var description = Any.Paragraph(Any.Int(10, 20));
+            var longDescription = Any.Paragraph(Any.Int(15, 25));
 
             var edmxElement = Any.Csdl.EdmxToSchema(schema =>
             {
@@ -75,6 +81,7 @@ namespace ODataReader.v4UnitTests
                 {                    
                     complexTypeName = complexType.Attribute("Name").Value;
                     complexType.Add(Any.Csdl.DescriptionAnnotation(description));
+                    complexType.Add(Any.Csdl.LongDescriptionAnnotation(longDescription));
                 }));
                 schema.Add(Any.Csdl.EntityContainer());
                 schemaNamespace = schema.Attribute("Namespace").Value;
@@ -89,6 +96,9 @@ namespace ODataReader.v4UnitTests
             odcmComplexType.Description.
                 Should().
                 BeEquivalentTo(description, "because ComplexType description annotation should be captured in OdcmObject");
+            odcmComplexType.LongDescription.
+                Should().
+                BeEquivalentTo(longDescription, "because ComplexType long description annotation should be captured in OdcmObject");
         }
 
         [Fact]
@@ -97,6 +107,7 @@ namespace ODataReader.v4UnitTests
             var entityTypeName = string.Empty;
             var schemaNamespace = string.Empty;            
             var description = Any.Paragraph(Any.Int(10, 20));
+            var longDescription = Any.Paragraph(Any.Int(15, 25));
 
             var edmxElement = Any.Csdl.EdmxToSchema(schema =>
             {
@@ -105,6 +116,7 @@ namespace ODataReader.v4UnitTests
                 {
                     entityTypeName = entityType.Attribute("Name").Value;                                      
                     entityType.Add(Any.Csdl.DescriptionAnnotation(description));
+                    entityType.Add(Any.Csdl.LongDescriptionAnnotation(longDescription));
                 }));
                 schema.Add(Any.Csdl.EntityContainer());
             });
@@ -118,6 +130,9 @@ namespace ODataReader.v4UnitTests
             odcmEntityType.Description.
                 Should().
                 BeEquivalentTo(description, "because EntityType description annotation should be captured in OdcmObject");
+            odcmEntityType.LongDescription.
+                Should().
+                BeEquivalentTo(longDescription, "because EntityType long description annotation should be captured in OdcmObject");
         }
 
         [Fact]
@@ -126,6 +141,7 @@ namespace ODataReader.v4UnitTests
             var entityContainerName = string.Empty;
             var schemaNamespace = string.Empty;
             var description = Any.Paragraph(Any.Int(10, 20));
+            var longDescription = Any.Paragraph(Any.Int(15, 25));
 
             var edmxElement = Any.Csdl.EdmxToSchema(schema =>
             {
@@ -134,6 +150,7 @@ namespace ODataReader.v4UnitTests
                 {
                     entityContainerName = entityContainer.Attribute("Name").Value;
                     entityContainer.Add(Any.Csdl.DescriptionAnnotation(description));
+                    entityContainer.Add(Any.Csdl.LongDescriptionAnnotation(longDescription));
                 }));
             });
 
@@ -146,6 +163,9 @@ namespace ODataReader.v4UnitTests
             odcmEntityContainer.Description.
                 Should().
                 BeEquivalentTo(description, "because EntityContainer description annotation should be captured in OdcmObject");
+            odcmEntityContainer.LongDescription.
+                Should().
+                BeEquivalentTo(longDescription, "because EntityContainer long description annotation should be captured in OdcmObject");
         }
 
         [Fact]
@@ -153,7 +173,8 @@ namespace ODataReader.v4UnitTests
         {
             var complexTypeName = string.Empty;            
             var schemaNamespace = string.Empty;
-            var description = Any.Paragraph(Any.Int(10, 20));            
+            var description = Any.Paragraph(Any.Int(10, 20));
+            var longDescription = Any.Paragraph(Any.Int(15, 25));
 
             var edmxElement = Any.Csdl.EdmxToSchema(schema =>
             {
@@ -163,6 +184,7 @@ namespace ODataReader.v4UnitTests
                         {
                             property.AddAttribute("Type", Any.Csdl.RandomPrimitiveType());
                             property.Add(Any.Csdl.DescriptionAnnotation(description));
+                            property.Add(Any.Csdl.LongDescriptionAnnotation(longDescription));
                         });                    
                     complexType.Add(structuralProperty);
                     complexTypeName = complexType.Attribute("Name").Value;
@@ -182,7 +204,13 @@ namespace ODataReader.v4UnitTests
                 .Properties[0]
                 .Description
                 .Should()
-                .BeEquivalentTo(description, "because Structural Property description annotation should be captured in OdcmObject");            
+                .BeEquivalentTo(description, "because Structural Property description annotation should be captured in OdcmObject");
+            odcmComplexType
+                .As<OdcmClass>()
+                .Properties[0]
+                .LongDescription
+                .Should()
+                .BeEquivalentTo(longDescription, "because Structural Property long description annotation should be captured in OdcmObject");
         }
 
         [Fact]
@@ -191,6 +219,7 @@ namespace ODataReader.v4UnitTests
             var entityTypeName = string.Empty;
             var schemaNamespace = string.Empty;
             var description = Any.Paragraph(Any.Int(10, 20));
+            var longDescription = Any.Paragraph(Any.Int(15, 25));
 
             var edmxElement = Any.Csdl.EdmxToSchema(schema =>
             {
@@ -202,6 +231,7 @@ namespace ODataReader.v4UnitTests
                     {
                         property.AddAttribute("Type", string.Format("Collection({0}.{1})", schemaNamespace, entityTypeName));
                         property.Add(Any.Csdl.DescriptionAnnotation(description));
+                        property.Add(Any.Csdl.LongDescriptionAnnotation(longDescription));
                     });
                     entityType.Add(navigationProperty);                    
                 }));
@@ -220,6 +250,12 @@ namespace ODataReader.v4UnitTests
                 .Description
                 .Should()
                 .BeEquivalentTo(description, "because Navigation Property description annotation should be captured in OdcmObject");
+            odcmentityType
+                .As<OdcmClass>()
+                .Properties[0]
+                .LongDescription
+                .Should()
+                .BeEquivalentTo(longDescription, "because Navigation Property long description annotation should be captured in OdcmObject");
         }
 
         [Fact]
@@ -229,6 +265,8 @@ namespace ODataReader.v4UnitTests
             var schemaNamespace = string.Empty;
             var description1 = Any.Paragraph(Any.Int(10, 20));
             var description2 = Any.Paragraph(Any.Int(10, 20));
+            var longDescription1 = Any.Paragraph(Any.Int(15, 25));
+            var longDescription2 = Any.Paragraph(Any.Int(15, 25));
 
             var edmxElement = Any.Csdl.EdmxToSchema(schema =>
             {
@@ -242,6 +280,7 @@ namespace ODataReader.v4UnitTests
                 {
                     action.AddAttribute("IsBound", "true");
                     action.Add(Any.Csdl.DescriptionAnnotation(description1));
+                    action.Add(Any.Csdl.LongDescriptionAnnotation(longDescription1));
                     action.Add(Any.Csdl.Parameter(param =>
                     {
                         param.SetAttributeValue("Name", "bindingParameter");
@@ -251,6 +290,7 @@ namespace ODataReader.v4UnitTests
                     {
                         param.AddAttribute("Type", Any.Csdl.RandomPrimitiveType());
                         param.Add(Any.Csdl.DescriptionAnnotation(description2));
+                        param.Add(Any.Csdl.LongDescriptionAnnotation(longDescription2));
                     }));
                 }));
                 schema.Add(Any.Csdl.EntityContainer());
@@ -266,10 +306,17 @@ namespace ODataReader.v4UnitTests
             odcmMethod.Description
                 .Should()
                 .BeEquivalentTo(description1, "because Action description annotation should be captured in OdcmObject");
+            odcmMethod.LongDescription
+                .Should()
+                .BeEquivalentTo(longDescription1, "because Action long description annotation should be captured in OdcmObject");
             odcmMethod.Parameters[0]
                 .Description
                 .Should()
                 .BeEquivalentTo(description2, "because Parameter description annotation should be captured in OdcmObject");
+            odcmMethod.Parameters[0]
+                .LongDescription
+                .Should()
+                .BeEquivalentTo(longDescription2, "because Parameter long description annotation should be captured in OdcmObject");
         }
 
         [Fact]
@@ -279,6 +326,8 @@ namespace ODataReader.v4UnitTests
             var schemaNamespace = string.Empty;
             var description1 = Any.Paragraph(Any.Int(10, 20));
             var description2 = Any.Paragraph(Any.Int(10, 20));
+            var longDescription1 = Any.Paragraph(Any.Int(15, 25));
+            var longDescription2 = Any.Paragraph(Any.Int(15, 25));
 
             var edmxElement = Any.Csdl.EdmxToSchema(schema =>
             {
@@ -292,6 +341,7 @@ namespace ODataReader.v4UnitTests
                 {
                     function.AddAttribute("IsBound", "true");
                     function.Add(Any.Csdl.DescriptionAnnotation(description1));
+                    function.Add(Any.Csdl.LongDescriptionAnnotation(longDescription1));
                     function.Add(Any.Csdl.Parameter(param =>
                     {
                         param.SetAttributeValue("Name", "bindingParameter");
@@ -301,6 +351,7 @@ namespace ODataReader.v4UnitTests
                     {
                         param.AddAttribute("Type", Any.Csdl.RandomPrimitiveType());
                         param.Add(Any.Csdl.DescriptionAnnotation(description2));
+                        param.Add(Any.Csdl.LongDescriptionAnnotation(longDescription2));
                     }));
                 }));
                 schema.Add(Any.Csdl.EntityContainer());
@@ -316,10 +367,17 @@ namespace ODataReader.v4UnitTests
             odcmMethod.Description
                 .Should()
                 .BeEquivalentTo(description1, "because Function description annotation should be captured in OdcmObject");
+            odcmMethod.LongDescription
+                .Should()
+                .BeEquivalentTo(longDescription1, "because Function long description annotation should be captured in OdcmObject");
             odcmMethod.Parameters[0]
                 .Description
                 .Should()
                 .BeEquivalentTo(description2, "because Parameter description annotation should be captured in OdcmObject");
+            odcmMethod.Parameters[0]
+                .LongDescription
+                .Should()
+                .BeEquivalentTo(longDescription2, "because Parameter long description annotation should be captured in OdcmObject");
         }
 
         [Fact]
@@ -329,6 +387,7 @@ namespace ODataReader.v4UnitTests
             var schemaNamespace = string.Empty;
             var entityContainerName = string.Empty;
             var description = Any.Paragraph(Any.Int(10, 20));
+            var longDescription = Any.Paragraph(Any.Int(15, 25));
 
             var edmxElement = Any.Csdl.EdmxToSchema(schema =>
             {
@@ -343,7 +402,8 @@ namespace ODataReader.v4UnitTests
                     entityContainer.Add(Any.Csdl.EntitySet(entitySet => 
                     {
                         entitySet.AddAttribute("EntityType", string.Format("{0}.{1}", schemaNamespace, entityTypeName));
-                        entitySet.Add(Any.Csdl.DescriptionAnnotation(description));                        
+                        entitySet.Add(Any.Csdl.DescriptionAnnotation(description));
+                        entitySet.Add(Any.Csdl.LongDescriptionAnnotation(longDescription));
                     }));
                     entityContainerName = entityContainer.Attribute("Name").Value;
                 }));
@@ -359,6 +419,9 @@ namespace ODataReader.v4UnitTests
             odcmProperty.Description
                 .Should()
                 .BeEquivalentTo(description, "because EntitySet description annotation should be captured in OdcmObject");
+            odcmProperty.LongDescription
+                .Should()
+                .BeEquivalentTo(longDescription, "because EntitySet long description annotation should be captured in OdcmObject");
         }
 
         [Fact]
@@ -368,6 +431,7 @@ namespace ODataReader.v4UnitTests
             var schemaNamespace = string.Empty;
             var entityContainerName = string.Empty;
             var description = Any.Paragraph(Any.Int(10, 20));
+            var longDescription = Any.Paragraph(Any.Int(15, 25));
 
             var edmxElement = Any.Csdl.EdmxToSchema(schema =>
             {
@@ -383,6 +447,7 @@ namespace ODataReader.v4UnitTests
                     {
                         singleton.AddAttribute("Type", string.Format("{0}.{1}", schemaNamespace, entityTypeName));
                         singleton.Add(Any.Csdl.DescriptionAnnotation(description));
+                        singleton.Add(Any.Csdl.LongDescriptionAnnotation(longDescription));
                     }));
                     entityContainerName = entityContainer.Attribute("Name").Value;
                 }));
@@ -398,6 +463,9 @@ namespace ODataReader.v4UnitTests
             odcmProperty.Description
                 .Should()
                 .BeEquivalentTo(description, "because Singleton description annotation should be captured in OdcmObject");
+            odcmProperty.LongDescription
+                .Should()
+                .BeEquivalentTo(longDescription, "because Singleton long description annotation should be captured in OdcmObject");
         }
 
         [Fact]
@@ -407,6 +475,7 @@ namespace ODataReader.v4UnitTests
             var schemaNamespace = string.Empty;
             var actionName = string.Empty;
             var description = Any.Paragraph(Any.Int(10, 20));
+            var longDescription = Any.Paragraph(Any.Int(15, 25));
 
             var edmxElement = Any.Csdl.EdmxToSchema(schema =>
             {
@@ -423,6 +492,7 @@ namespace ODataReader.v4UnitTests
                     {
                         action.AddAttribute("Action", string.Format("{0}.{1}", schemaNamespace, actionName));
                         action.Add(Any.Csdl.DescriptionAnnotation(description));
+                        action.Add(Any.Csdl.LongDescriptionAnnotation(longDescription));
                     }));
                     entityContainerName = entityContainer.Attribute("Name").Value;
                 }));
@@ -438,6 +508,9 @@ namespace ODataReader.v4UnitTests
             odcmMethod.Description
                 .Should()
                 .BeEquivalentTo(description, "because Action Import description annotation should be captured in OdcmObject");
+            odcmMethod.LongDescription
+                .Should()
+                .BeEquivalentTo(longDescription, "because Action Import long description annotation should be captured in OdcmObject");
         }
 
         [Fact]
@@ -447,6 +520,7 @@ namespace ODataReader.v4UnitTests
             var schemaNamespace = string.Empty;
             var functionName = string.Empty;
             var description = Any.Paragraph(Any.Int(10, 20));
+            var longDescription = Any.Paragraph(Any.Int(15, 25));
 
             var edmxElement = Any.Csdl.EdmxToSchema(schema =>
             {
@@ -463,6 +537,7 @@ namespace ODataReader.v4UnitTests
                     {
                         function.AddAttribute("Function", string.Format("{0}.{1}", schemaNamespace, functionName));
                         function.Add(Any.Csdl.DescriptionAnnotation(description));
+                        function.Add(Any.Csdl.LongDescriptionAnnotation(longDescription));
                     }));
                     entityContainerName = entityContainer.Attribute("Name").Value;
                 }));
@@ -478,6 +553,9 @@ namespace ODataReader.v4UnitTests
             odcmMethod.Description
                 .Should()
                 .BeEquivalentTo(description, "because Function Import description annotation should be captured in OdcmObject");
+            odcmMethod.LongDescription
+                .Should()
+                .BeEquivalentTo(longDescription, "because Function Import long description annotation should be captured in OdcmObject");
         }
     }
 }

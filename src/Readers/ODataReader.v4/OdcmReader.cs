@@ -116,6 +116,7 @@ namespace ODataReader.v4
             {
                 odcmObject.Annotations = ODataVocabularyReader.GetOdcmAnnotations(_edmModel, annotatableEdmEntity).ToList();
                 odcmObject.Description = _edmModel.GetDescriptionAnnotation(annotatableEdmEntity);
+                odcmObject.LongDescription = _edmModel.GetLongDescriptionAnnotation(annotatableEdmEntity);
             }
 
             private void WriteNamespaces()
