@@ -22,17 +22,6 @@ namespace ODataReader.v4UnitTests
             _odcmReader = new OdcmReader();
         }
 
-        private OdcmModel GetOdcmModel(XElement edmxElement)
-        {
-            var serviceMetadata = new TextFileCollection
-            {
-                new TextFile("$metadata", edmxElement.ToString())
-            };
-
-            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
-            return odcmModel;
-        }
-
         [Fact]
         public void When_EnumType_is_annotated_then_its_OdcmObject_has_Description_set()
         {
@@ -259,7 +248,7 @@ namespace ODataReader.v4UnitTests
         }
 
         [Fact]
-        public void When_Action_is_annotated_then_its_OdcmObject_has_Description_set()
+        public void When_Action_and_Parameters_are_annotated_then_their_OdcmObject_has_Description_set()
         {
             var entityTypeName = string.Empty;
             var schemaNamespace = string.Empty;
@@ -320,7 +309,7 @@ namespace ODataReader.v4UnitTests
         }
 
         [Fact]
-        public void When_Function_is_annotated_then_its_OdcmObject_has_Description_set()
+        public void When_Function_and_Parameters_are_annotated_then_their_OdcmObject_has_Description_set()
         {
             var entityTypeName = string.Empty;
             var schemaNamespace = string.Empty;
@@ -556,6 +545,17 @@ namespace ODataReader.v4UnitTests
             odcmMethod.LongDescription
                 .Should()
                 .BeEquivalentTo(longDescription, "because Function Import long description annotation should be captured in OdcmObject");
+        }
+
+        private OdcmModel GetOdcmModel(XElement edmxElement)
+        {
+            var serviceMetadata = new TextFileCollection
+            {
+                new TextFile("$metadata", edmxElement.ToString())
+            };
+
+            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
+            return odcmModel;
         }
     }
 }

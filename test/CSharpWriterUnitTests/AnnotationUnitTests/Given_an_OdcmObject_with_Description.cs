@@ -19,51 +19,6 @@ using Xunit;
 
 namespace CSharpWriterUnitTests
 {
-    public class XMLDocumentTestBase : CodeGenTestBase
-    {
-        public string GetProxyXmlDocumentContent(OdcmModel model, IConfigurationProvider configurationProvider = null, IEnumerable<string> internalsVisibleTo = null)
-        {
-            var proxySources = GetProxySources(model, configurationProvider, internalsVisibleTo);
-            return GetXmlDocumentContent(ReferencedAssemblies, proxySources.Select(f => f.Contents).ToArray());
-        }
-
-        private string GetXmlDocumentContent(IEnumerable<string> referencedAssemblies, params string[] cSharpSources)
-        {
-            const string XMLDOCUMENTDOC = "temp.xml";
-            if (File.Exists(XMLDOCUMENTDOC))
-            {
-                File.Delete(XMLDOCUMENTDOC);
-            }
-
-            var compilerParams = GetCompilerParameters();
-            compilerParams.CompilerOptions += " /doc:" + XMLDOCUMENTDOC;
-            compilerParams.ReferencedAssemblies.AddRange(new[] { "System.dll" });
-
-            if (referencedAssemblies != null)
-            {
-                compilerParams.ReferencedAssemblies.AddRange(referencedAssemblies.ToArray());
-            }
-
-            var provider = new CSharpCodeProvider();
-            var compile = provider.CompileAssemblyFromSource(compilerParams, cSharpSources);
-
-            if (!compile.Errors.HasErrors)
-            {
-                if (!File.Exists(XMLDOCUMENTDOC))
-                {
-                    throw new Exception("XML Document Doc was not created by the compiler for a successful compilation.");
-                }
-
-                var xmlContent = File.ReadAllText(XMLDOCUMENTDOC);
-                File.Delete(XMLDOCUMENTDOC);
-                return xmlContent;
-            }
-
-            var text = compile.Errors.Cast<CompilerError>().Aggregate("Compile error: ", (c, ce) => c + ("\r\n" + ce.ToString()));
-            throw new Exception(text);
-        }
-    }
-
     public class Given_an_OdcmObject_with_Description : XMLDocumentTestBase
     {
         private OdcmModel _model;
@@ -271,7 +226,7 @@ namespace CSharpWriterUnitTests
         }
 
         [Fact]
-        public void When_Navigation_OdcmProperty_has_Description_then_concrete_class_properties_has_the_right_summary_tag()
+        public void When_Navigation_OdcmProperty_has_Description_then_concrete_class_properties_have_the_right_summary_tags()
         {
             var property = Any.EntityOdcmProperty(_namespace, p => p.Description = Any.Paragraph(Any.Int(10, 20)));
             var @class = Any.EntityOdcmClass(_namespace, c => c.Properties.Add(property));

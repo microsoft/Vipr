@@ -120,6 +120,7 @@
       <Link>%28Its.Recipes%29\TestInputGenerator.cs</Link>
     </Compile>
     <Compile Include="AnnotationUnitTests\Given_an_OdcmObject_with_Description.cs" />
+    <Compile Include="AnnotationUnitTests\XMLDocumentTestBase.cs" />
     <Compile Include="AssemblyAssertionExtensions.cs" />
     <Compile Include="AssemblyExtensions.cs" />
     <Compile Include="CodeGenTestBase.cs" />
