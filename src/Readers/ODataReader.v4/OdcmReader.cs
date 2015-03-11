@@ -112,9 +112,11 @@ namespace ODataReader.v4
                 }
             }
 
-            private void AddVocabularyAnnotations(OdcmObject odcmObject, object annotatableEdmEntity)
+            private void AddVocabularyAnnotations(OdcmObject odcmObject, IEdmVocabularyAnnotatable annotatableEdmEntity)
             {
                 odcmObject.Annotations = ODataVocabularyReader.GetOdcmAnnotations(_edmModel, annotatableEdmEntity).ToList();
+                odcmObject.Description = _edmModel.GetDescriptionAnnotation(annotatableEdmEntity);
+                odcmObject.LongDescription = _edmModel.GetLongDescriptionAnnotation(annotatableEdmEntity);
             }
 
             private void WriteNamespaces()
@@ -159,9 +161,7 @@ namespace ODataReader.v4
 
                 foreach (var complexType in complexTypes)
                 {
-                    var odcmClass = new OdcmClass(complexType.Name, complexType.Namespace);
-                    _odcmModel.AddType(odcmClass);
-                    AddVocabularyAnnotations(odcmClass, complexType);
+                    _odcmModel.AddType(new OdcmClass(complexType.Name, complexType.Namespace));
                 }
 
                 foreach (var entityType in entityTypes)
@@ -172,17 +172,13 @@ namespace ODataReader.v4
                     }
                     else
                     {
-                        var odcmEntityClass = new OdcmEntityClass(entityType.Name, entityType.Namespace);
-                        _odcmModel.AddType(odcmEntityClass);
-                        AddVocabularyAnnotations(odcmEntityClass, entityType);
+                        _odcmModel.AddType(new OdcmEntityClass(entityType.Name, entityType.Namespace));
                     }
                 }
 
                 foreach (var entityContainer in entityContainers)
                 {
-                    var odcmServiceClass = new OdcmServiceClass(entityContainer.Name, entityContainer.Namespace);
-                    _odcmModel.AddType(odcmServiceClass);
-                    AddVocabularyAnnotations(odcmServiceClass, entityContainer);
+                    _odcmModel.AddType(new OdcmServiceClass(entityContainer.Name, entityContainer.Namespace));
                 }
             }
 
@@ -228,6 +224,7 @@ namespace ODataReader.v4
                     odcmEnum.UnderlyingType =
                         (OdcmPrimitiveType)ResolveType(enumType.UnderlyingType.Name, enumType.UnderlyingType.Namespace);
                     odcmEnum.IsFlags = enumType.IsFlags;
+                    AddVocabularyAnnotations(odcmEnum, enumType);
 
                     foreach (var enumMember in enumType.Members)
                     {
@@ -248,6 +245,7 @@ namespace ODataReader.v4
 
                     odcmClass.IsAbstract = complexType.IsAbstract;
                     odcmClass.IsOpen = complexType.IsOpen;
+                    AddVocabularyAnnotations(odcmClass, complexType);
 
                     if (complexType.BaseType != null)
                     {
@@ -283,6 +281,7 @@ namespace ODataReader.v4
 
                     odcmClass.IsAbstract = entityType.IsAbstract;
                     odcmClass.IsOpen = entityType.IsOpen;
+                    AddVocabularyAnnotations(odcmClass, entityType);
 
                     if (entityType.BaseType != null)
                     {
@@ -348,6 +347,8 @@ namespace ODataReader.v4
                         throw new InvalidOperationException();
                     }
 
+                    AddVocabularyAnnotations(odcmClass, entityContainer);
+
                     var entitySets = from element in entityContainer.Elements
                         where element.ContainerElementKind == EdmContainerElementKind.EntitySet
                         select element as IEdmEntitySet;
@@ -369,7 +370,7 @@ namespace ODataReader.v4
                         select element as IEdmActionImport;
                     foreach (var actionImport in actionImports)
                     {
-                        WriteMethod(odcmClass, actionImport.Action);
+                        WriteMethod(odcmClass, actionImport.Action, actionImport);
                     }
 
                     var functionImports = from element in entityContainer.Elements
@@ -377,7 +378,7 @@ namespace ODataReader.v4
                         select element as IEdmFunctionImport;
                     foreach (var functionImport in functionImports)
                     {
-                        WriteMethod(odcmClass, functionImport.Function);
+                        WriteMethod(odcmClass, functionImport.Function, functionImport);
                     }
                 }
             }
@@ -446,7 +447,7 @@ namespace ODataReader.v4
                 return TryFindProperty(odcmClass.Base, keyProperty, out odcmProperty);
             }
 
-            private void WriteMethod(OdcmClass odcmClass, IEdmOperation operation)
+            private void WriteMethod(OdcmClass odcmClass, IEdmOperation operation, IEdmOperationImport operationImport = null)
             {
                 var parameters = operation.IsBound
                     ? (from parameter in operation.Parameters
@@ -465,6 +466,11 @@ namespace ODataReader.v4
                 };
 
                 AddVocabularyAnnotations(odcmMethod, operation);
+
+                if (operationImport != null)
+                {
+                    AddVocabularyAnnotations(odcmMethod, operationImport);
+                }
 
                 odcmClass.Methods.Add(odcmMethod);
 
