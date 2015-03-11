@@ -9,7 +9,7 @@ namespace Vipr.Core.CodeModel
 
         public string InText { get; set; }
 
-        public OdcmAnnotatedObject(string name)
+        protected OdcmAnnotatedObject(string name)
             : base(name)
         {
         }

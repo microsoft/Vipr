@@ -7,7 +7,7 @@ namespace CSharpWriter
     {
         public GeneratedEdmModelCreateXmlReaderMethod()
         {
-            IsPublic = false;
+            Visibility = Visibility.Private;
             IsStatic = true;
             Name = "CreateXmlReader";
             Parameters = new[] { new Parameter(new Type(new Identifier("System", "String")), "edmxToParse") };

@@ -35,8 +35,8 @@ namespace ODataV4TestClient.Extensions
 
     public interface IEntityBase
     {
-        global::System.Threading.Tasks.Task UpdateAsync(bool dontSave = false);
-        global::System.Threading.Tasks.Task DeleteAsync(bool dontSave = false);
+        global::System.Threading.Tasks.Task UpdateAsync(bool deferSaveChanges = false);
+        global::System.Threading.Tasks.Task DeleteAsync(bool deferSaveChanges = false);
     }
 
     internal class RestShallowObjectFetcher : BaseEntityType
@@ -935,21 +935,21 @@ namespace ODataV4TestClient.Extensions
             return uri;
         }
 
-        public global::System.Threading.Tasks.Task UpdateAsync(bool dontSave = false)
+        public global::System.Threading.Tasks.Task UpdateAsync(bool deferSaveChanges = false)
         {
             Context.UpdateObject(this);
-            return SaveAsNeeded(dontSave);
+            return SaveAsNeeded(deferSaveChanges);
         }
 
-        public global::System.Threading.Tasks.Task DeleteAsync(bool dontSave = false)
+        public global::System.Threading.Tasks.Task DeleteAsync(bool deferSaveChanges = false)
         {
             Context.DeleteObject(this);
-            return SaveAsNeeded(dontSave);
+            return SaveAsNeeded(deferSaveChanges);
         }
 
-        protected internal global::System.Threading.Tasks.Task SaveAsNeeded(bool dontSave)
+        protected internal global::System.Threading.Tasks.Task SaveAsNeeded(bool deferSaveChanges)
         {
-            if (!dontSave)
+            if (!deferSaveChanges)
             {
                 return Context.SaveChangesAsync();
             }
@@ -1617,7 +1617,7 @@ namespace ODataV4TestClient.Extensions
     {
         string ContentType { get; }
         global::System.Threading.Tasks.Task<global::Microsoft.OData.Client.DataServiceStreamResponse> DownloadAsync();
-        global::System.Threading.Tasks.Task UploadAsync(global::System.IO.Stream stream, string contentType, bool dontSave = false, bool closeStream = false);
+        global::System.Threading.Tasks.Task UploadAsync(global::System.IO.Stream stream, string contentType, bool deferSaveChanges = false, bool closeStream = false);
     }
 
     internal class StreamFetcher : IStreamFetcher
@@ -1643,7 +1643,7 @@ namespace ODataV4TestClient.Extensions
             _propertyName = propertyName;
         }
 
-        public global::System.Threading.Tasks.Task UploadAsync(global::System.IO.Stream stream, string contentType, bool dontSave = false, bool closeStream = false)
+        public global::System.Threading.Tasks.Task UploadAsync(global::System.IO.Stream stream, string contentType, bool deferSaveChanges = false, bool closeStream = false)
         {
             var args = new global::Microsoft.OData.Client.DataServiceRequestArgs
             {
@@ -1659,7 +1659,7 @@ namespace ODataV4TestClient.Extensions
 
             _entity.OnPropertyChanged(_propertyName);
 
-            return _entity.SaveAsNeeded(dontSave);
+            return _entity.SaveAsNeeded(deferSaveChanges);
         }
 
         public global::System.Threading.Tasks.Task<global::Microsoft.OData.Client.DataServiceStreamResponse> DownloadAsync()
@@ -2937,7 +2937,7 @@ namespace ODataV4TestClient
             return base.ExecuteAsyncInternal();
         }
 
-        public global::System.Threading.Tasks.Task AddProductAsync(IProduct item, bool dontSave = false)
+        public global::System.Threading.Tasks.Task AddProductAsync(IProduct item, bool deferSaveChanges = false)
         {
             if (_entity == null)
             {
@@ -2950,7 +2950,7 @@ namespace ODataV4TestClient
                 Context.AddRelatedObject(_entity, shortPath, item);
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
             {
                 return Context.SaveChangesAsync();
             }
@@ -2975,7 +2975,7 @@ namespace ODataV4TestClient
 
         global::System.Threading.Tasks.Task<IPagedCollection<IProduct>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddProductAsync(IProduct item, bool dontSave = false);
+        global::System.Threading.Tasks.Task AddProductAsync(IProduct item, bool deferSaveChanges = false);
     }
 
     internal partial class SuppliedProductCollection : ODataV4TestClient.Extensions.QueryableSet<ISuppliedProduct>, ISuppliedProductCollection
@@ -3012,7 +3012,7 @@ namespace ODataV4TestClient
             return base.ExecuteAsyncInternal();
         }
 
-        public global::System.Threading.Tasks.Task AddSuppliedProductAsync(ISuppliedProduct item, bool dontSave = false)
+        public global::System.Threading.Tasks.Task AddSuppliedProductAsync(ISuppliedProduct item, bool deferSaveChanges = false)
         {
             if (_entity == null)
             {
@@ -3025,7 +3025,7 @@ namespace ODataV4TestClient
                 Context.AddRelatedObject(_entity, shortPath, item);
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
             {
                 return Context.SaveChangesAsync();
             }
@@ -3050,7 +3050,7 @@ namespace ODataV4TestClient
 
         global::System.Threading.Tasks.Task<IPagedCollection<ISuppliedProduct>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddSuppliedProductAsync(ISuppliedProduct item, bool dontSave = false);
+        global::System.Threading.Tasks.Task AddSuppliedProductAsync(ISuppliedProduct item, bool deferSaveChanges = false);
     }
 
     internal partial class SupplierCollection : ODataV4TestClient.Extensions.QueryableSet<ISupplier>, ISupplierCollection
@@ -3087,7 +3087,7 @@ namespace ODataV4TestClient
             return base.ExecuteAsyncInternal();
         }
 
-        public global::System.Threading.Tasks.Task AddSupplierAsync(ISupplier item, bool dontSave = false)
+        public global::System.Threading.Tasks.Task AddSupplierAsync(ISupplier item, bool deferSaveChanges = false)
         {
             if (_entity == null)
             {
@@ -3100,7 +3100,7 @@ namespace ODataV4TestClient
                 Context.AddRelatedObject(_entity, shortPath, item);
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
             {
                 return Context.SaveChangesAsync();
             }
@@ -3125,7 +3125,7 @@ namespace ODataV4TestClient
 
         global::System.Threading.Tasks.Task<IPagedCollection<ISupplier>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddSupplierAsync(ISupplier item, bool dontSave = false);
+        global::System.Threading.Tasks.Task AddSupplierAsync(ISupplier item, bool deferSaveChanges = false);
     }
 
     internal partial class AccountCollection : ODataV4TestClient.Extensions.QueryableSet<IAccount>, IAccountCollection
@@ -3162,7 +3162,7 @@ namespace ODataV4TestClient
             return base.ExecuteAsyncInternal();
         }
 
-        public global::System.Threading.Tasks.Task AddAccountAsync(IAccount item, bool dontSave = false)
+        public global::System.Threading.Tasks.Task AddAccountAsync(IAccount item, bool deferSaveChanges = false)
         {
             if (_entity == null)
             {
@@ -3175,7 +3175,7 @@ namespace ODataV4TestClient
                 Context.AddRelatedObject(_entity, shortPath, item);
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
             {
                 return Context.SaveChangesAsync();
             }
@@ -3200,7 +3200,7 @@ namespace ODataV4TestClient
 
         global::System.Threading.Tasks.Task<IPagedCollection<IAccount>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddAccountAsync(IAccount item, bool dontSave = false);
+        global::System.Threading.Tasks.Task AddAccountAsync(IAccount item, bool deferSaveChanges = false);
     }
 
     internal partial class PaymentInstrumentCollection : ODataV4TestClient.Extensions.QueryableSet<IPaymentInstrument>, IPaymentInstrumentCollection
@@ -3237,7 +3237,7 @@ namespace ODataV4TestClient
             return base.ExecuteAsyncInternal();
         }
 
-        public global::System.Threading.Tasks.Task AddPaymentInstrumentAsync(IPaymentInstrument item, bool dontSave = false)
+        public global::System.Threading.Tasks.Task AddPaymentInstrumentAsync(IPaymentInstrument item, bool deferSaveChanges = false)
         {
             if (_entity == null)
             {
@@ -3250,7 +3250,7 @@ namespace ODataV4TestClient
                 Context.AddRelatedObject(_entity, shortPath, item);
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
             {
                 return Context.SaveChangesAsync();
             }
@@ -3275,7 +3275,7 @@ namespace ODataV4TestClient
 
         global::System.Threading.Tasks.Task<IPagedCollection<IPaymentInstrument>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddPaymentInstrumentAsync(IPaymentInstrument item, bool dontSave = false);
+        global::System.Threading.Tasks.Task AddPaymentInstrumentAsync(IPaymentInstrument item, bool deferSaveChanges = false);
     }
 }
 

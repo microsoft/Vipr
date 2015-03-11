@@ -1,8 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Vipr.Core.CodeModel
 {
@@ -11,9 +10,13 @@ namespace Vipr.Core.CodeModel
         public List<OdcmProperty> Key { get; private set; }
 
         public OdcmEntityClass(string name, OdcmNamespace @namespace) :
-            base(name, @namespace)
+            this(name, @namespace, OdcmClassKind.Entity)
         {
-            Kind = OdcmClassKind.Entity;
+        }
+
+        protected OdcmEntityClass(string name, OdcmNamespace @namespace, OdcmClassKind kind) :
+            base(name, @namespace, kind)
+        {
             Key = new List<OdcmProperty>();
         }
     }

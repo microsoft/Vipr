@@ -7,7 +7,7 @@ namespace CSharpWriter
     {
         public GeneratedEdmModelLoadModelFromStringMethod()
         {
-            IsPublic = false;
+            Visibility = Visibility.Private;
             IsStatic = true;
             Name = "LoadModelFromString";
             ReturnType = new Type(new Identifier("global::Microsoft.OData.Edm", "IEdmModel"));

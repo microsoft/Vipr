@@ -4,11 +4,9 @@
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using ODataReader.v4;
-using System.Collections.Generic;
-using Vipr.Core;
+using System.Linq;
 using Vipr.Core.CodeModel;
 using Xunit;
-using Xunit.Sdk;
 
 namespace ODataReader.v4UnitTests
 {
@@ -24,52 +22,17 @@ namespace ODataReader.v4UnitTests
         [Fact]
         public void It_returns_one_OdcmEntityClass_for_each_EntityType()
         {
-            var entityTypeName = string.Empty;
-            var schemaNamespace = string.Empty;
-            var propertyCount = 0;
-            var keyCount = 0;
+            var testCase = new EdmxTestCase()
+                .AddEntityType(EdmxTestCase.Keys.EntityType);
 
-            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
-            {
-                schemaNamespace = schema.Attribute("Namespace").Value;
-                schema.Add(Any.Csdl.EntityType(entityType =>
-                {
-                    entityTypeName = entityType.Attribute("Name").Value;
-                    entityType.Add(Any.Csdl.Key(key =>
-                    {
-                        foreach (
-                            var property in
-                                Any.Sequence(
-                                    i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType(), false),
-                                    Any.Int(1, 2)))
-                        {
-                            entityType.Add(property);
-                            key.Add(Any.Csdl.PropertyRef(property.Attribute("Name").Value));
-                            keyCount++;
-                        }
-                    }));
-                    foreach (
-                        var property in
-                            Any.Sequence(
-                                i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType()),
-                                Any.Int(1, 3)))
-                    {
-                        entityType.Add(property);
-                        propertyCount++;
-                    }
-                }));
-                schema.Add(Any.Csdl.EntityContainer());
-            });
+            var entityTypeTestNode = testCase[EdmxTestCase.Keys.EntityType];
+            var keyCount = (from x in entityTypeTestNode.Element.Descendants() where x.Name.LocalName.Equals("PropertyRef") select x).Count();
+            var propertyCount = (from x in entityTypeTestNode.Element.Descendants() where x.Name.LocalName.Equals("Property") select x).Count();
 
-            var serviceMetadata = new TextFileCollection
-            {
-                new TextFile("$metadata", edmxElement.ToString())
-            };
-
-            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
-
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+            
             OdcmType odcmEntityType;
-            odcmModel.TryResolveType(entityTypeName, schemaNamespace, out odcmEntityType)
+            odcmModel.TryResolveType(entityTypeTestNode.Name, entityTypeTestNode.Namespace, out odcmEntityType)
                 .Should()
                 .BeTrue("because an entity type in the schema should result in an OdcmType");
             odcmEntityType
@@ -80,7 +43,7 @@ namespace ODataReader.v4UnitTests
                 .Be(keyCount, "because each property reference added to the key of an entity type should result in an OdcmClass property");
             odcmEntityType.As<OdcmEntityClass>().Properties.Count
                 .Should()
-                .Be(propertyCount + keyCount, "because each property added to an entity type should result in an OdcmClass property");
+                .Be(propertyCount, "because each property added to an entity type should result in an OdcmClass property");
             odcmEntityType.As<OdcmEntityClass>().IsAbstract
                 .Should()
                 .BeFalse("because an entity type with no Abstract facet should be false in the OdcmModel");
@@ -92,53 +55,15 @@ namespace ODataReader.v4UnitTests
         [Fact]
         public void When_Abstract_is_set_it_returns_an_OdcmEntityClass_with_IsAbstract_set()
         {
-            var entityTypeName = string.Empty;
-            var schemaNamespace = string.Empty;
-            var propertyCount = 0;
-            var keyCount = 0;
+            var testCase = new EdmxTestCase()
+                .AddEntityType(EdmxTestCase.Keys.EntityType, (_, entityType) => entityType.AddAttribute("Abstract", true));
 
-            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
-            {
-                schemaNamespace = schema.Attribute("Namespace").Value;
-                schema.Add(Any.Csdl.EntityType(entityType =>
-                {
-                    entityTypeName = entityType.Attribute("Name").Value;
-                    entityType.Add(Any.Csdl.Key(key =>
-                    {
-                        foreach (
-                            var property in
-                                Any.Sequence(
-                                    i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType(), false),
-                                    Any.Int(1, 2)))
-                        {
-                            entityType.Add(property);
-                            key.Add(Any.Csdl.PropertyRef(property.Attribute("Name").Value));
-                            keyCount++;
-                        }
-                    }));
-                    foreach (
-                        var property in
-                            Any.Sequence(
-                                i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType()),
-                                Any.Int(1, 3)))
-                    {
-                        entityType.Add(property);
-                        propertyCount++;
-                    }
-                    entityType.AddAttribute("Abstract", true);
-                }));
-                schema.Add(Any.Csdl.EntityContainer());
-            });
+            var entityTypeTestNode = testCase[EdmxTestCase.Keys.EntityType];
 
-            var serviceMetadata = new TextFileCollection
-            {
-                new TextFile("$metadata", edmxElement.ToString())
-            };
-
-            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
-
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+            
             OdcmType odcmEntityType;
-            odcmModel.TryResolveType(entityTypeName, schemaNamespace, out odcmEntityType)
+            odcmModel.TryResolveType(entityTypeTestNode.Name, entityTypeTestNode.Namespace, out odcmEntityType)
                 .Should()
                 .BeTrue("because an entity type in the schema should result in an OdcmType");
             odcmEntityType
@@ -152,53 +77,15 @@ namespace ODataReader.v4UnitTests
         [Fact]
         public void When_OpenType_is_set_it_returns_an_OdcmEntityClass_with_IsOpen_set()
         {
-            var entityTypeName = string.Empty;
-            var schemaNamespace = string.Empty;
-            var propertyCount = 0;
-            var keyCount = 0;
+            var testCase = new EdmxTestCase()
+                .AddEntityType(EdmxTestCase.Keys.EntityType, (_, entityType) => entityType.AddAttribute("OpenType", true));
 
-            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
-            {
-                schemaNamespace = schema.Attribute("Namespace").Value;
-                schema.Add(Any.Csdl.EntityType(entityType =>
-                {
-                    entityTypeName = entityType.Attribute("Name").Value;
-                    entityType.Add(Any.Csdl.Key(key =>
-                    {
-                        foreach (
-                            var property in
-                                Any.Sequence(
-                                    i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType(), false),
-                                    Any.Int(1, 2)))
-                        {
-                            entityType.Add(property);
-                            key.Add(Any.Csdl.PropertyRef(property.Attribute("Name").Value));
-                            keyCount++;
-                        }
-                    }));
-                    foreach (
-                        var property in
-                            Any.Sequence(
-                                i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType()),
-                                Any.Int(1, 3)))
-                    {
-                        entityType.Add(property);
-                        propertyCount++;
-                    }
-                    entityType.AddAttribute("OpenType", true);
-                }));
-                schema.Add(Any.Csdl.EntityContainer());
-            });
+            var entityTypeTestNode = testCase[EdmxTestCase.Keys.EntityType];
 
-            var serviceMetadata = new TextFileCollection
-            {
-                new TextFile("$metadata", edmxElement.ToString())
-            };
-
-            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
-
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+            
             OdcmType odcmEntityType;
-            odcmModel.TryResolveType(entityTypeName, schemaNamespace, out odcmEntityType)
+            odcmModel.TryResolveType(entityTypeTestNode.Name, entityTypeTestNode.Namespace, out odcmEntityType)
                 .Should()
                 .BeTrue("because an entity type in the schema should result in an OdcmType");
             odcmEntityType
@@ -212,53 +99,15 @@ namespace ODataReader.v4UnitTests
         [Fact]
         public void When_HasStream_is_set_it_returns_an_OdcmMediaClass()
         {
-            var entityTypeName = string.Empty;
-            var schemaNamespace = string.Empty;
-            var propertyCount = 0;
-            var keyCount = 0;
+            var testCase = new EdmxTestCase()
+                .AddEntityType(EdmxTestCase.Keys.EntityType, (_, entityType) => entityType.AddAttribute("HasStream", true));
 
-            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
-            {
-                schemaNamespace = schema.Attribute("Namespace").Value;
-                schema.Add(Any.Csdl.EntityType(entityType =>
-                {
-                    entityTypeName = entityType.Attribute("Name").Value;
-                    entityType.Add(Any.Csdl.Key(key =>
-                    {
-                        foreach (
-                            var property in
-                                Any.Sequence(
-                                    i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType(), false),
-                                    Any.Int(1, 2)))
-                        {
-                            entityType.Add(property);
-                            key.Add(Any.Csdl.PropertyRef(property.Attribute("Name").Value));
-                            keyCount++;
-                        }
-                    }));
-                    foreach (
-                        var property in
-                            Any.Sequence(
-                                i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType()),
-                                Any.Int(1, 3)))
-                    {
-                        entityType.Add(property);
-                        propertyCount++;
-                    }
-                    entityType.AddAttribute("HasStream", true);
-                }));
-                schema.Add(Any.Csdl.EntityContainer());
-            });
+            var entityTypeTestNode = testCase[EdmxTestCase.Keys.EntityType];
 
-            var serviceMetadata = new TextFileCollection
-            {
-                new TextFile("$metadata", edmxElement.ToString())
-            };
-
-            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
-
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+            
             OdcmType odcmEntityType;
-            odcmModel.TryResolveType(entityTypeName, schemaNamespace, out odcmEntityType)
+            odcmModel.TryResolveType(entityTypeTestNode.Name, entityTypeTestNode.Namespace, out odcmEntityType)
                 .Should()
                 .BeTrue("because an entity type in the schema should result in an OdcmType");
             odcmEntityType
@@ -267,76 +116,26 @@ namespace ODataReader.v4UnitTests
         }
 
         [Fact]
-        public void When_BaseType_is_set_it_returns_an_OdcmEntityClass_with_a_BaseType_set()
+        public void When_BaseType_is_set_it_returns_an_OdcmEntityClass_with_a_BaseType()
         {
-            var baseTypeName = string.Empty;
-            var entityTypeName = string.Empty;
-            var schemaNamespace = string.Empty;
-            var propertyCount = 0;
-            var keyCount = 0;
+            var testCase = new EdmxTestCase()
+                .AddEntityType(EdmxTestCase.Keys.EntityTypeBase, (_, entityType) => entityType.AddAttribute("Abstract", true))
+                .AddEntityType(EdmxTestCase.Keys.EntityType, (_, entityType) => entityType.AddAttribute("BaseType", _[EdmxTestCase.Keys.EntityTypeBase].FullName()));
 
-            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
-            {
-                schemaNamespace = schema.GetAttribute("Namespace");
-                schema.Add(Any.Csdl.EntityType(entityType =>
-                {
-                    baseTypeName = entityType.GetAttribute("Name");
-                    entityType.AddAttribute("Abstract", true);
-                    entityType.Add(Any.Csdl.Key(key =>
-                    {
-                        foreach (
-                            var property in
-                                Any.Sequence(
-                                    i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType(), false),
-                                    Any.Int(1, 2)))
-                        {
-                            entityType.Add(property);
-                            key.Add(Any.Csdl.PropertyRef(property.GetAttribute("Name")));
-                            keyCount++;
-                        }
-                    }));
-                    foreach (
-                        var property in
-                            Any.Sequence(
-                                i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType()),
-                                Any.Int(1, 3)))
-                    {
-                        entityType.Add(property);
-                        propertyCount++;
-                    }
-                }));
-                schema.Add(Any.Csdl.EntityType(schemaNamespace + "." + baseTypeName, entityType =>
-                {
-                    entityTypeName = entityType.GetAttribute("Name");
-                    foreach (
-                        var property in
-                            Any.Sequence(
-                                i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType()),
-                                Any.Int(1, 3)))
-                    {
-                        entityType.Add(property);
-                        propertyCount++;
-                    }
-                }));
-                schema.Add(Any.Csdl.EntityContainer());
-            });
+            var baseEntityTypeTestNode = testCase[EdmxTestCase.Keys.EntityTypeBase];
+            var entityTypeTestNode = testCase[EdmxTestCase.Keys.EntityType];
 
-            var serviceMetadata = new TextFileCollection
-            {
-                new TextFile("$metadata", edmxElement.ToString())
-            };
-
-            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
-
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+            
             OdcmType odcmBaseType;
-            odcmModel.TryResolveType(baseTypeName, schemaNamespace, out odcmBaseType)
+            odcmModel.TryResolveType(baseEntityTypeTestNode.Name, baseEntityTypeTestNode.Namespace, out odcmBaseType)
                 .Should()
                 .BeTrue("because an entity type in the schema should result in an OdcmType");
             odcmBaseType
                 .Should()
                 .BeOfType<OdcmEntityClass>("because entity types should result in an OdcmClass");
             OdcmType odcmEntityType;
-            odcmModel.TryResolveType(entityTypeName, schemaNamespace, out odcmEntityType)
+            odcmModel.TryResolveType(entityTypeTestNode.Name, entityTypeTestNode.Namespace, out odcmEntityType)
                 .Should()
                 .BeTrue("because an entity type in the schema should result in an OdcmType");
             odcmEntityType
@@ -353,69 +152,200 @@ namespace ODataReader.v4UnitTests
         }
 
         [Fact]
+        public void When_BaseType_is_set_and_only_derived_EntityType_has_Key_it_returns_an_OdcmEntityClass_using_Key_of_derived_EntityType()
+        {
+            var testCase = new EdmxTestCase()
+                .AddEntityType(EdmxTestCase.Keys.EntityTypeBase, true, (_, entityType) => entityType.AddAttribute("Abstract", true))
+                .AddEntityType(EdmxTestCase.Keys.EntityType, (_, entityType) => entityType.AddAttribute("BaseType", _[EdmxTestCase.Keys.EntityTypeBase].FullName()));
+
+            var baseEntityTypeTestNode = testCase[EdmxTestCase.Keys.EntityTypeBase];
+            var entityTypeTestNode = testCase[EdmxTestCase.Keys.EntityType];
+            var keyCount = (from x in entityTypeTestNode.Element.Descendants() where x.Name.LocalName.Equals("PropertyRef") select x).Count();
+
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+            
+            OdcmType odcmBaseType;
+            odcmModel.TryResolveType(baseEntityTypeTestNode.Name, baseEntityTypeTestNode.Namespace, out odcmBaseType)
+                .Should()
+                .BeTrue("because an entity type in the schema should result in an OdcmType");
+            odcmBaseType
+                .Should()
+                .BeOfType<OdcmEntityClass>("because entity types should result in an OdcmClass");
+            OdcmType odcmEntityType;
+            odcmModel.TryResolveType(entityTypeTestNode.Name, entityTypeTestNode.Namespace, out odcmEntityType)
+                .Should()
+                .BeTrue("because an entity type in the schema should result in an OdcmType");
+            odcmEntityType
+                .Should()
+                .BeOfType<OdcmEntityClass>("because entity types should result in an OdcmClass");
+            odcmEntityType.As<OdcmEntityClass>().Base
+                .Should()
+                .Be(odcmBaseType,
+                    "because an entity type with a base type set should have a corresponding OdcmClass and base OdcmClass");
+            odcmBaseType.As<OdcmEntityClass>().Derived
+                .Should()
+                .Contain(odcmEntityType.As<OdcmEntityClass>(),
+                    "because an entity type with a base type set should have a correspond OdcmClass that derives from a base OdcmClass");
+            odcmEntityType.As<OdcmEntityClass>().Key
+                .Count().Should().Be(keyCount, "because the Key of an OdcmEntityClass should have the same number of OdcmProperties as there are properties in the entity type key");
+            (from key in odcmEntityType.As<OdcmEntityClass>().Key
+             where
+                 (from x in entityTypeTestNode.Element.Descendants()
+                  where x.Name.LocalName.Equals("PropertyRef") && x.GetAttribute("Name").Equals(key.CanonicalName())
+                  select x).Any()
+             select key).Count().Should().Be(keyCount, "because the Key of an OdcmEntityClass should have the corresponding OdcmProperties as in the entity type key");
+        }
+
+        [Fact]
+        public void When_BaseType_is_set_and_only_base_EntityType_has_Key_it_returns_an_OdcmEntityClass_using_Key_of_base_EntityType()
+        {
+            var testCase = new EdmxTestCase()
+                .AddEntityType(EdmxTestCase.Keys.EntityTypeBase, (_, entityType) => entityType.AddAttribute("Abstract", true))
+                .AddEntityType(EdmxTestCase.Keys.EntityType, true, (_, entityType) => entityType.AddAttribute("BaseType", _[EdmxTestCase.Keys.EntityTypeBase].FullName()));
+
+            var baseEntityTypeTestNode = testCase[EdmxTestCase.Keys.EntityTypeBase];
+            var entityTypeTestNode = testCase[EdmxTestCase.Keys.EntityType];
+            var keyCount = (from x in baseEntityTypeTestNode.Element.Descendants() where x.Name.LocalName.Equals("PropertyRef") select x).Count();
+
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+            
+            OdcmType odcmBaseType;
+            odcmModel.TryResolveType(baseEntityTypeTestNode.Name, baseEntityTypeTestNode.Namespace, out odcmBaseType)
+                .Should()
+                .BeTrue("because an entity type in the schema should result in an OdcmType");
+            odcmBaseType
+                .Should()
+                .BeOfType<OdcmEntityClass>("because entity types should result in an OdcmClass");
+            OdcmType odcmEntityType;
+            odcmModel.TryResolveType(entityTypeTestNode.Name, entityTypeTestNode.Namespace, out odcmEntityType)
+                .Should()
+                .BeTrue("because an entity type in the schema should result in an OdcmType");
+            odcmEntityType
+                .Should()
+                .BeOfType<OdcmEntityClass>("because entity types should result in an OdcmClass");
+            odcmEntityType.As<OdcmEntityClass>().Base
+                .Should()
+                .Be(odcmBaseType,
+                    "because an entity type with a base type set should have a corresponding OdcmClass and base OdcmClass");
+            odcmBaseType.As<OdcmEntityClass>().Derived
+                .Should()
+                .Contain(odcmEntityType.As<OdcmEntityClass>(),
+                    "because an entity type with a base type set should have a correspond OdcmClass that derives from a base OdcmClass");
+            odcmEntityType.As<OdcmEntityClass>().Key
+                .Count().Should().Be(keyCount, "because the Key of an OdcmEntityClass should have the same number of OdcmProperties as there are properties in the entity type key");
+            (from key in odcmEntityType.As<OdcmEntityClass>().Key
+             where
+                 (from x in baseEntityTypeTestNode.Element.Descendants()
+                  where x.Name.LocalName.Equals("PropertyRef") && x.GetAttribute("Name").Equals(key.CanonicalName())
+                  select x).Any()
+             select key).Count().Should().Be(keyCount, "because the Key of an OdcmEntityClass should have the corresponding OdcmProperties as in the entity type key");
+        }
+
+        [Fact]
+        public void When_BaseType_is_set_and_both_have_Keys_it_returns_an_OdcmEntityClass_using_Key_of_derived_EntityType()
+        {
+            var testCase = new EdmxTestCase()
+                .AddEntityType(EdmxTestCase.Keys.EntityTypeBase, (_, entityType) => entityType.AddAttribute("Abstract", true))
+                .AddEntityType(EdmxTestCase.Keys.EntityType, (_, entityType) => entityType.AddAttribute("BaseType", _[EdmxTestCase.Keys.EntityTypeBase].FullName()));
+
+            var baseEntityTypeTestNode = testCase[EdmxTestCase.Keys.EntityTypeBase];
+            var entityTypeTestNode = testCase[EdmxTestCase.Keys.EntityType];
+            var keyCount = (from x in entityTypeTestNode.Element.Descendants() where x.Name.LocalName.Equals("PropertyRef") select x).Count();
+
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+            
+            OdcmType odcmBaseType;
+            odcmModel.TryResolveType(baseEntityTypeTestNode.Name, baseEntityTypeTestNode.Namespace, out odcmBaseType)
+                .Should()
+                .BeTrue("because an entity type in the schema should result in an OdcmType");
+            odcmBaseType
+                .Should()
+                .BeOfType<OdcmEntityClass>("because entity types should result in an OdcmClass");
+            OdcmType odcmEntityType;
+            odcmModel.TryResolveType(entityTypeTestNode.Name, entityTypeTestNode.Namespace, out odcmEntityType)
+                .Should()
+                .BeTrue("because an entity type in the schema should result in an OdcmType");
+            odcmEntityType
+                .Should()
+                .BeOfType<OdcmEntityClass>("because entity types should result in an OdcmClass");
+            odcmEntityType.As<OdcmEntityClass>().Base
+                .Should()
+                .Be(odcmBaseType,
+                    "because an entity type with a base type set should have a corresponding OdcmClass and base OdcmClass");
+            odcmBaseType.As<OdcmEntityClass>().Derived
+                .Should()
+                .Contain(odcmEntityType.As<OdcmEntityClass>(),
+                    "because an entity type with a base type set should have a correspond OdcmClass that derives from a base OdcmClass");
+            odcmEntityType.As<OdcmEntityClass>().Key
+                .Count().Should().Be(keyCount, "because the Key of an OdcmEntityClass should have the same number of OdcmProperties as there are properties in the entity type key");
+            (from key in odcmEntityType.As<OdcmEntityClass>().Key
+             where
+                 (from x in entityTypeTestNode.Element.Descendants()
+                  where x.Name.LocalName.Equals("PropertyRef") && x.GetAttribute("Name").Equals(key.CanonicalName())
+                  select x).Any()
+             select key).Count().Should().Be(keyCount, "because the Key of an OdcmEntityClass should have the corresponding OdcmProperties as in the entity type key");
+        }
+
+        [Fact]
+        public void When_a_Property_references_a_ComplexType_it_returns_an_OdcmEntityClass_with_a_property_having_the_corresponding_OdcmComplexType()
+        {
+            string complexTypePropertyName = string.Empty;
+
+            var testCase = new EdmxTestCase()
+                .AddComplexType(EdmxTestCase.Keys.ComplexType)
+                .AddEntityType(EdmxTestCase.Keys.EntityType, (_, entityType) =>
+                {
+                    var property = Any.Csdl.Property(_[EdmxTestCase.Keys.ComplexType].FullName());
+                    complexTypePropertyName = property.Attribute("Name").Value;
+                    entityType.Add(property);
+                });
+
+            var complexTypeTestNode = testCase[EdmxTestCase.Keys.ComplexType];
+            var entityTypeTestNode = testCase[EdmxTestCase.Keys.EntityType];
+            var keyCount = (from x in entityTypeTestNode.Element.Descendants() where x.Name.LocalName.Equals("PropertyRef") select x).Count();
+
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+
+            OdcmType odcmComplexType;
+            odcmModel.TryResolveType(complexTypeTestNode.Name, complexTypeTestNode.Namespace, out odcmComplexType)
+                .Should()
+                .BeTrue("because a complex type in the schema should result in an OdcmType");
+            odcmComplexType
+                .Should()
+                .BeOfType<OdcmComplexClass>("because complex types should result in an OdcmComplexClass");
+            OdcmType odcmEntityType;
+            odcmModel.TryResolveType(entityTypeTestNode.Name, entityTypeTestNode.Namespace, out odcmEntityType)
+                .Should()
+                .BeTrue("because an entity type in the schema should result in an OdcmType");
+            odcmEntityType
+                .Should()
+                .BeOfType<OdcmEntityClass>("because entity types should result in an OdcmEntityClass");
+            var complexProperty = (from property in odcmEntityType.As<OdcmEntityClass>().Properties
+                                   where property.Name.Equals(complexTypePropertyName)
+                                   select property).FirstOrDefault();
+            complexProperty
+                .Should()
+                .NotBeNull("because a property referencing a complex type should result in a property in the OdcmEntityClass");
+            complexProperty.Type
+                .Should()
+                .Be(odcmComplexType, "because a property referencing a complex type should result in a property with a type matching the OdcmComplexClass of the property");
+        }
+
+        [Fact]
         public void When_an_action_is_bound_to_an_entity_type_there_is_a_method_on_the_OdcmClass()
         {
-            var entityTypeName = string.Empty;
-            var schemaNamespace = string.Empty;
-            var propertyCount = 0;
-            var keyCount = 0;
-            var parameterCount = 0;
-            var actionName = string.Empty;
+            var testCase = new EdmxTestCase()
+                .AddEntityType(EdmxTestCase.Keys.EntityType)
+                .AddBoundAction(EdmxTestCase.Keys.Action, EdmxTestCase.Keys.EntityType);
 
-            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
-            {
-                schemaNamespace = schema.GetAttribute("Namespace");
-                schema.Add(Any.Csdl.EntityType(entityType =>
-                {
-                    entityTypeName = entityType.GetAttribute("Name");
-                    entityType.Add(Any.Csdl.Key(key =>
-                    {
-                        foreach (
-                            var property in
-                                Any.Sequence(
-                                    i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType(), false),
-                                    Any.Int(1, 2)))
-                        {
-                            entityType.Add(property);
-                            key.Add(Any.Csdl.PropertyRef(property.GetAttribute("Name")));
-                            keyCount++;
-                        }
-                    }));
-                    foreach (
-                        var property in
-                            Any.Sequence(
-                                i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType()),
-                                Any.Int(1, 3)))
-                    {
-                        entityType.Add(property);
-                        propertyCount++;
-                    }
-                }));
-                schema.Add(Any.Csdl.Action(Any.Csdl.RandomPrimitiveType(), action =>
-                {
-                    actionName = action.GetAttribute("Name");
-                    action.AddAttribute("IsBound", true);
-                    action.Add(Any.Csdl.Parameter(schemaNamespace + "." + entityTypeName));
-                    foreach (
-                        var parameter in
-                            Any.Sequence(i => Any.Csdl.Parameter(Any.Csdl.RandomPrimitiveType()), Any.Int(1, 3)))
-                    {
-                        action.Add(parameter);
-                        parameterCount++;
-                    }
-                }));
-                schema.Add(Any.Csdl.EntityContainer());
-            });
+            var entityTypeTestNode = testCase[EdmxTestCase.Keys.EntityType];
+            var actionTestNode = testCase[EdmxTestCase.Keys.Action];
+            var parameterCount = (from x in actionTestNode.Element.Descendants() where x.Name.LocalName.Equals("Parameter") select x).Count() - 1;
 
-            var serviceMetadata = new TextFileCollection
-            {
-                new TextFile("$metadata", edmxElement.ToString())
-            };
-
-            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
-
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+            
             OdcmType odcmEntityType;
-            odcmModel.TryResolveType(entityTypeName, schemaNamespace, out odcmEntityType)
+            odcmModel.TryResolveType(entityTypeTestNode.Name, entityTypeTestNode.Namespace, out odcmEntityType)
                 .Should()
                 .BeTrue("because an entity type in the schema should result in an OdcmType");
             odcmEntityType
@@ -423,9 +353,9 @@ namespace ODataReader.v4UnitTests
                 .BeOfType<OdcmEntityClass>("because entity types should result in an OdcmClass");
             odcmEntityType.As<OdcmEntityClass>().Methods
                 .Should()
-                .Contain(odcmMethod => odcmMethod.Name == actionName, "because an action bound to an entity type should result in a method in the OdcmClass");
+                .Contain(odcmMethod => odcmMethod.Name == actionTestNode.Name, "because an action bound to an entity type should result in a method in the OdcmClass");
             odcmEntityType.As<OdcmEntityClass>()
-                .Methods.Find(odcmMethod => odcmMethod.Name == actionName)
+                .Methods.Find(odcmMethod => odcmMethod.Name == actionTestNode.Name)
                 .Parameters.Count
                 .Should()
                 .Be(parameterCount,
@@ -435,67 +365,18 @@ namespace ODataReader.v4UnitTests
         [Fact]
         public void When_a_function_is_bound_to_an_entity_type_there_is_a_method_on_the_OdcmClass()
         {
-            var entityTypeName = string.Empty;
-            var schemaNamespace = string.Empty;
-            var propertyCount = 0;
-            var keyCount = 0;
-            var parameterCount = 0;
-            var functionName = string.Empty;
+            var testCase = new EdmxTestCase()
+                .AddEntityType(EdmxTestCase.Keys.EntityType)
+                .AddBoundFunction(EdmxTestCase.Keys.Function, EdmxTestCase.Keys.EntityType);
 
-            var edmxElement = Any.Csdl.EdmxToSchema(schema =>
-            {
-                schemaNamespace = schema.GetAttribute("Namespace");
-                schema.Add(Any.Csdl.EntityType(entityType =>
-                {
-                    entityTypeName = entityType.GetAttribute("Name");
-                    entityType.Add(Any.Csdl.Key(key =>
-                    {
-                        foreach (
-                            var property in
-                                Any.Sequence(
-                                    i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType(), false),
-                                    Any.Int(1, 2)))
-                        {
-                            entityType.Add(property);
-                            key.Add(Any.Csdl.PropertyRef(property.GetAttribute("Name")));
-                            keyCount++;
-                        }
-                    }));
-                    foreach (
-                        var property in
-                            Any.Sequence(
-                                i => Any.Csdl.Property(Any.Csdl.RandomPrimitiveType()),
-                                Any.Int(1, 3)))
-                    {
-                        entityType.Add(property);
-                        propertyCount++;
-                    }
-                }));
-                schema.Add(Any.Csdl.Function(Any.Csdl.RandomPrimitiveType(), function =>
-                {
-                    functionName = function.GetAttribute("Name");
-                    function.AddAttribute("IsBound", true);
-                    function.Add(Any.Csdl.Parameter(schemaNamespace + "." + entityTypeName));
-                    foreach (
-                        var parameter in
-                            Any.Sequence(i => Any.Csdl.Parameter(Any.Csdl.RandomPrimitiveType()), Any.Int(1, 3)))
-                    {
-                        function.Add(parameter);
-                        parameterCount++;
-                    }
-                }));
-                schema.Add(Any.Csdl.EntityContainer());
-            });
+            var entityTypeTestNode = testCase[EdmxTestCase.Keys.EntityType];
+            var functionTestNode = testCase[EdmxTestCase.Keys.Function];
+            var parameterCount = (from x in functionTestNode.Element.Descendants() where x.Name.LocalName.Equals("Parameter") select x).Count() - 1;
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
 
-            var serviceMetadata = new TextFileCollection
-            {
-                new TextFile("$metadata", edmxElement.ToString())
-            };
-
-            var odcmModel = _odcmReader.GenerateOdcmModel(serviceMetadata);
 
             OdcmType odcmEntityType;
-            odcmModel.TryResolveType(entityTypeName, schemaNamespace, out odcmEntityType)
+            odcmModel.TryResolveType(entityTypeTestNode.Name, entityTypeTestNode.Namespace, out odcmEntityType)
                 .Should()
                 .BeTrue("because an entity type in the schema should result in an OdcmType");
             odcmEntityType
@@ -503,9 +384,9 @@ namespace ODataReader.v4UnitTests
                 .BeOfType<OdcmEntityClass>("because entity types should result in an OdcmClass");
             odcmEntityType.As<OdcmEntityClass>().Methods
                 .Should()
-                .Contain(odcmMethod => odcmMethod.Name == functionName, "because a function bound to an entity type should result in a method in the OdcmClass");
+                .Contain(odcmMethod => odcmMethod.Name == functionTestNode.Name, "because a function bound to an entity type should result in a method in the OdcmClass");
             odcmEntityType.As<OdcmEntityClass>()
-                .Methods.Find(odcmMethod => odcmMethod.Name == functionName)
+                .Methods.Find(odcmMethod => odcmMethod.Name == functionTestNode.Name)
                 .Parameters.Count
                 .Should()
                 .Be(parameterCount,

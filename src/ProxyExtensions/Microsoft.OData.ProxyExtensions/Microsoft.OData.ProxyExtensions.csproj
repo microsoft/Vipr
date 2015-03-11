@@ -45,11 +45,13 @@
     <Compile Include="IBatchElementResult.cs" />
     <Compile Include="IConcreteTypeAccessor.cs" />
     <Compile Include="IEntityBase.cs" />
+    <Compile Include="IMediaEntityBase.cs" />
     <Compile Include="IPagedCollection.cs" />
     <Compile Include="IReadOnlyQueryableSet.cs" />
     <Compile Include="IReadOnlyQueryableSetBase.cs" />
     <Compile Include="IStreamFetcher.cs" />
     <Compile Include="LowerCasePropertyAttribute.cs" />
+    <Compile Include="MediaEntityBase.cs" />
     <Compile Include="NonEntityTypeCollectionImpl.cs" />
     <Compile Include="PagedCollection.cs" />
     <Compile Include="StreamFetcher.cs" />

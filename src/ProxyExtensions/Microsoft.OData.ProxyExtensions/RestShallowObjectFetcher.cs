@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 using System;
 using Microsoft.OData.Client;
 
@@ -6,26 +9,15 @@ namespace Microsoft.OData.ProxyExtensions
     public class RestShallowObjectFetcher : BaseEntityType
     {
         private string _path;
-
         private bool _isInitialized;
 
         public new DataServiceContextWrapper Context
         {
-            get
-            {
-                return (DataServiceContextWrapper)base.Context;
-            }
-            private set
-            {
-                base.Context = value;
-            }
+            get { return (DataServiceContextWrapper) base.Context; }
+            private set { base.Context = value; }
         }
 
-        public RestShallowObjectFetcher() { }
-
-        public void Initialize(
-            DataServiceContextWrapper context,
-            string path)
+        public void Initialize(DataServiceContextWrapper context, string path)
         {
             Context = context;
             _path = path;
@@ -36,10 +28,10 @@ namespace Microsoft.OData.ProxyExtensions
         {
             ThrowIfNotInitialized();
 
-            return propertyName == null ? this._path : this._path + "/" + propertyName;
+            return propertyName == null ? _path : _path + "/" + propertyName;
         }
 
-        protected System.Uri GetUrl()
+        protected Uri GetUrl()
         {
             ThrowIfNotInitialized();
 
@@ -51,7 +43,7 @@ namespace Microsoft.OData.ProxyExtensions
         {
             ThrowIfNotInitialized();
 
-            return new ReadOnlyQueryableSet<TIInstance>(this.Context.CreateQuery<TInstance>(this.GetPath(null)), this.Context);
+            return new ReadOnlyQueryableSet<TIInstance>(Context.CreateQuery<TInstance>(GetPath(null)), Context);
         }
 
         private void ThrowIfNotInitialized()

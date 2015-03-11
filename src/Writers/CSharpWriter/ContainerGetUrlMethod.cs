@@ -7,8 +7,7 @@ namespace CSharpWriter
     {
         public ContainerGetUrlMethod()
         {
-            IsPublic = false;
-
+            Visibility = Visibility.Private;
             Name = "GetUrl";
             Parameters = new Parameter[] { };
             ReturnType = new Type(new Identifier("System", "Uri"));

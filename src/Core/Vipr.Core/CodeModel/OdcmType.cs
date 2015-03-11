@@ -5,11 +5,9 @@ namespace Vipr.Core.CodeModel
 {
     public abstract class OdcmType : OdcmAnnotatedObject
     {
-        public readonly static string Global = "global";
-
         public OdcmNamespace Namespace { get; set; }
 
-        public OdcmType(string name, OdcmNamespace @namespace)
+        protected OdcmType(string name, OdcmNamespace @namespace)
             : base(name)
         {
             Namespace = @namespace;

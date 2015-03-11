@@ -12,7 +12,7 @@ namespace CSharpWriter
 
         private FetcherExpandMethod(OdcmClass odcmClass)
         {
-            IsPublic = true;
+            Visibility = Visibility.Public;
             Name = "Expand";
             GenericParameters = new[] { "TTarget" };
             Parameters = new[]

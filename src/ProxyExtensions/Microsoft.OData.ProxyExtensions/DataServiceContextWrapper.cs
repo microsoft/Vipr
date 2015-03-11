@@ -1,7 +1,12 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.OData.Client;
 using Microsoft.OData.Core;
 
@@ -9,11 +14,8 @@ namespace Microsoft.OData.ProxyExtensions
 {
     public partial class DataServiceContextWrapper : DataServiceContext
     {
-        private object _syncLock = new object();
-        private string _accessToken;
-        private global::System.Func<global::System.Threading.Tasks.Task<string>> _accessTokenGetter;
-        private System.Func<System.Threading.Tasks.Task> _accessTokenSetter;
-        private HashSet<EntityBase> _modifiedEntities = new HashSet<EntityBase>();
+        private readonly Func<Task<string>> _accessTokenGetter;
+        private readonly HashSet<EntityBase> _modifiedEntities = new HashSet<EntityBase>();
 
         public void UpdateObject(EntityBase entity)
         {
@@ -24,29 +26,16 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
-        private async global::System.Threading.Tasks.Task SetToken()
-        {
-            var token = await _accessTokenGetter();
-            lock (_syncLock)
-            {
-                _accessToken = token;
-            }
-        }
-
-        public DataServiceContextWrapper(Uri serviceRoot, global::Microsoft.OData.Client.ODataProtocolVersion maxProtocolVersion, global::System.Func<global::System.Threading.Tasks.Task<string>> accessTokenGetter)
+        public DataServiceContextWrapper(Uri serviceRoot, ODataProtocolVersion maxProtocolVersion, Func<Task<string>> accessTokenGetter)
             : base(serviceRoot, maxProtocolVersion)
         {
             _accessTokenGetter = accessTokenGetter;
-            _accessTokenSetter = SetToken;
 
             IgnoreMissingProperties = true;
 
-            BuildingRequest += (sender, args) =>
-            {
-                args.Headers.Add("Authorization", "Bearer " + _accessToken);
-            };
+            BuildingRequest += (sender, args) => args.Headers.Add("Authorization", "Bearer " + _accessTokenGetter().Result);
 
-            Configurations.RequestPipeline.OnEntryStarting((args) =>
+            Configurations.RequestPipeline.OnEntryStarting(args =>
             {
                 var entity = (EntityBase)args.Entity;
 
@@ -71,7 +60,7 @@ namespace Microsoft.OData.ProxyExtensions
                 args.Entry.Properties = properties;
             });
 
-            Configurations.ResponsePipeline.OnEntityMaterialized((args) =>
+            Configurations.ResponsePipeline.OnEntityMaterialized(args =>
             {
                 var entity = (EntityBase)args.Entity;
 
@@ -83,14 +72,14 @@ namespace Microsoft.OData.ProxyExtensions
 
         partial void OnCreated();
 
-        public System.Type DefaultResolveTypeInternal(string typeName, string fullNamespace, string languageDependentNamespace)
+        public Type DefaultResolveTypeInternal(string typeName, string fullNamespace, string languageDependentNamespace)
         {
             return DefaultResolveType(typeName, fullNamespace, languageDependentNamespace);
         }
 
-        public string DefaultResolveNameInternal(global::System.Type clientType, string fullNamespace, string languageDependentNamespace)
+        public string DefaultResolveNameInternal(Type clientType, string fullNamespace, string languageDependentNamespace)
         {
-            if (clientType.Namespace.Equals(languageDependentNamespace, global::System.StringComparison.Ordinal))
+            if (clientType.Namespace.Equals(languageDependentNamespace, StringComparison.Ordinal))
             {
                 return string.Concat(fullNamespace, ".", clientType.Name);
             }
@@ -98,17 +87,14 @@ namespace Microsoft.OData.ProxyExtensions
             return string.Empty;
         }
 
-        public async System.Threading.Tasks.Task<TInterface> ExecuteSingleAsync<TSource, TInterface>(DataServiceQuery<TSource> inner)
+        public async Task<TInterface> ExecuteSingleAsync<TSource, TInterface>(DataServiceQuery<TSource> inner)
         {
             try
             {
-                await SetToken();
-                return await global::System.Threading.Tasks.Task.Factory.FromAsync<TInterface>(
+                return await Task.Factory.FromAsync(
                     inner.BeginExecute,
-                    new global::System.Func<global::System.IAsyncResult, TInterface>(i =>
-                        global::System.Linq.Enumerable.SingleOrDefault(
-                            global::System.Linq.Enumerable.Cast<TInterface>(inner.EndExecute(i)))),
-                    global::System.Threading.Tasks.TaskCreationOptions.None);
+                    i => inner.EndExecute(i).Cast<TInterface>().SingleOrDefault(),
+                    TaskCreationOptions.None);
             }
             catch (Exception ex)
             {
@@ -123,15 +109,13 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
-        public async System.Threading.Tasks.Task<IBatchElementResult[]> ExecuteBatchAsync(params IReadOnlyQueryableSetBase[] queries)
+        public async Task<IBatchElementResult[]> ExecuteBatchAsync(params IReadOnlyQueryableSetBase[] queries)
         {
             try
             {
                 var requests = (from i in queries select (DataServiceRequest)i.Query).ToArray();
 
-                await SetToken();
-
-                var responses = await global::System.Threading.Tasks.Task.Factory.FromAsync<DataServiceRequest[], DataServiceResponse>(
+                var responses = await Task.Factory.FromAsync<DataServiceRequest[], DataServiceResponse>(
                     (q, callback, state) => BeginExecuteBatch(callback, state, q), // need to reorder parameters
                     EndExecuteBatch,
                     requests,
@@ -147,7 +131,7 @@ namespace Microsoft.OData.ProxyExtensions
 
                     var pcType = typeof(PagedCollection<,>).MakeGenericType(tInterface, tConcrete);
                     var pcTypeInfo = pcType.GetTypeInfo();
-                    var PCCreator = pcTypeInfo.GetDeclaredMethod("Create");
+                    var pcCreator = pcTypeInfo.GetDeclaredMethod("Create");
 
                     // Handle an error response. 
                     // from http://msdn.microsoft.com/en-us/library/dd744838(v=vs.110).aspx
@@ -157,7 +141,7 @@ namespace Microsoft.OData.ProxyExtensions
                     }
                     else
                     {
-                        retVal[index] = new BatchElementResult((IPagedCollection)PCCreator.Invoke(null, new object[] { this, response }));
+                        retVal[index] = new BatchElementResult((IPagedCollection)pcCreator.Invoke(null, new object[] { this, response }));
                     }
 
                     index++;
@@ -178,7 +162,7 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
-        public async System.Threading.Tasks.Task<System.IO.Stream> GetStreamAsync(Uri requestUriTmp, IDictionary<string, string> headers = null)
+        public async Task<Stream> GetStreamAsync(Uri requestUriTmp, IDictionary<string, string> headers)
         {
             using (var client = new System.Net.Http.HttpClient())
             {
@@ -219,15 +203,13 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
-        public async System.Threading.Tasks.Task<DataServiceStreamResponse> GetReadStreamAsync(EntityBase entity, string streamName, string contentType)
+        public async Task<DataServiceStreamResponse> GetReadStreamAsync(EntityBase entity, string streamName, string contentType)
         {
             try
             {
-                await SetToken();
-
                 if (!string.IsNullOrEmpty(streamName))
                 {
-                    var resp = await global::System.Threading.Tasks.Task.Factory.FromAsync<object, string, DataServiceRequestArgs, DataServiceStreamResponse>(
+                    var resp = await Task.Factory.FromAsync<object, string, DataServiceRequestArgs, DataServiceStreamResponse>(
                         BeginGetReadStream,
                         EndGetReadStream,
                         entity,
@@ -238,7 +220,7 @@ namespace Microsoft.OData.ProxyExtensions
                 }
                 else
                 {
-                    var resp = await global::System.Threading.Tasks.Task.Factory.FromAsync<object, DataServiceRequestArgs, DataServiceStreamResponse>(
+                    var resp = await Task.Factory.FromAsync<object, DataServiceRequestArgs, DataServiceStreamResponse>(
                         BeginGetReadStream,
                         EndGetReadStream,
                         entity,
@@ -261,22 +243,18 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
-        public async System.Threading.Tasks.Task<IPagedCollection<TInterface>> ExecuteAsync<TSource, TInterface>(DataServiceQuery<TSource> inner) where TSource : TInterface
+        public async Task<IPagedCollection<TInterface>> ExecuteAsync<TSource, TInterface>(DataServiceQuery<TSource> inner) where TSource : TInterface
         {
             try
             {
-                await SetToken();
-                return await global::System.Threading.Tasks.Task.Factory.FromAsync<
-                    IPagedCollection<TInterface>>(inner.BeginExecute,
-                        new global::System.Func<global::System.IAsyncResult, IPagedCollection<TInterface>>(
-                            r =>
-                            {
-                                var innerResult = (QueryOperationResponse<TSource>)inner.EndExecute(r);
-
-
-                                return new PagedCollection<TInterface, TSource>(this, innerResult);
-                            }
-                            ), global::System.Threading.Tasks.TaskCreationOptions.None);
+                return await Task.Factory.FromAsync(
+                    inner.BeginExecute,
+                    new Func<IAsyncResult, IPagedCollection<TInterface>>(
+                        r =>
+                            new PagedCollection<TInterface, TSource>(
+                                this,
+                                (QueryOperationResponse<TSource>) inner.EndExecute(r))),
+                    TaskCreationOptions.None);
             }
             catch (Exception ex)
             {
@@ -291,56 +269,41 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
-        public new global::System.Threading.Tasks.Task<global::System.Collections.Generic.IEnumerable<T>> ExecuteAsync<T>(
-            global::System.Uri uri,
-            string httpMethod,
-            bool singleResult,
-            params OperationParameter[] operationParameters)
+        public new Task<IEnumerable<T>> ExecuteAsync<T>(Uri uri, string httpMethod, bool singleResult, params OperationParameter[] operationParameters)
         {
-            return ExecuteAsyncInternal<T>(uri, httpMethod, singleResult, (System.IO.Stream)null, operationParameters);
+            return ExecuteAsyncInternal<T>(uri, httpMethod, singleResult, null, operationParameters);
         }
 
-        public global::System.Threading.Tasks.Task<global::System.Collections.Generic.IEnumerable<T>> ExecuteAsync<T>(
-            global::System.Uri uri,
-            string httpMethod,
-            bool singleResult,
-            System.IO.Stream stream,
-            params OperationParameter[] operationParameters)
+        public Task<IEnumerable<T>> ExecuteAsync<T>(Uri uri, string httpMethod, bool singleResult, Stream stream, params OperationParameter[] operationParameters)
         {
-            return ExecuteAsyncInternal<T>(uri, httpMethod, singleResult, stream ?? new System.IO.MemoryStream(), operationParameters);
+            return ExecuteAsyncInternal<T>(uri, httpMethod, singleResult, stream ?? new MemoryStream(), operationParameters);
         }
 
-        public async global::System.Threading.Tasks.Task<global::System.Collections.Generic.IEnumerable<T>> ExecuteAsyncInternal<T>(
-            global::System.Uri uri,
-            string httpMethod,
-            bool singleResult,
-            System.IO.Stream stream,
-            params OperationParameter[] operationParameters)
+        public async Task<IEnumerable<T>> ExecuteAsyncInternal<T>(Uri uri, string httpMethod, bool singleResult, Stream stream, params OperationParameter[] operationParameters)
         {
             try
             {
-                await SetToken();
-
                 if (stream != null)
                 {
-                    Configurations.RequestPipeline.OnMessageCreating = (global::Microsoft.OData.Client.DataServiceClientRequestMessageArgs args) =>
+                    Configurations.RequestPipeline.OnMessageCreating = args =>
                     {
                         args.Headers.Remove("Content-Length");
 
-                        var msg = new global::Microsoft.OData.Client.HttpWebRequestMessage(args);
+                        var msg = new HttpWebRequestMessage(args);
 
-                        global::System.Threading.Tasks.Task.Factory.FromAsync<System.IO.Stream>(msg.BeginGetRequestStream, msg.EndGetRequestStream, null).ContinueWith
-                            (s => stream.CopyTo(s.Result))
+                        Task.Factory.FromAsync<Stream>(msg.BeginGetRequestStream, msg.EndGetRequestStream, null)
+                            .ContinueWith(s => stream.CopyTo(s.Result))
                             .Wait();
 
                         return msg;
                     };
                 }
 
-                return await global::System.Threading.Tasks.Task.Factory.FromAsync<global::System.Collections.Generic.IEnumerable<T>>
-                    (
-                        (callback, state) => BeginExecute<T>(uri, callback, state, httpMethod, singleResult, operationParameters),
-                        EndExecute<T>, global::System.Threading.Tasks.TaskCreationOptions.None);
+                return await Task.Factory.FromAsync<IEnumerable<T>>(
+                    (callback, state) =>
+                        BeginExecute<T>(uri, callback, state, httpMethod, singleResult, operationParameters),
+                    EndExecute<T>,
+                    TaskCreationOptions.None);
             }
             catch (Exception ex)
             {
@@ -362,46 +325,35 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
-        public new global::System.Threading.Tasks.Task ExecuteAsync(
-            global::System.Uri uri,
-            string httpMethod,
-            params OperationParameter[] operationParameters)
+        public new Task ExecuteAsync(Uri uri, string httpMethod, params OperationParameter[] operationParameters)
         {
-            return ExecuteAsync(uri, httpMethod, (System.IO.Stream)null, operationParameters);
+            return ExecuteAsync(uri, httpMethod, null, operationParameters);
         }
 
-        public async global::System.Threading.Tasks.Task ExecuteAsync(
-            global::System.Uri uri,
-            string httpMethod,
-            System.IO.Stream stream,
-            params OperationParameter[] operationParameters
-            )
+        public async Task ExecuteAsync(Uri uri, string httpMethod, Stream stream, params OperationParameter[] operationParameters)
         {
             try
             {
-                await SetToken();
                 if (stream != null)
                 {
-                    Configurations.RequestPipeline.OnMessageCreating = (global::Microsoft.OData.Client.DataServiceClientRequestMessageArgs args) =>
+                    Configurations.RequestPipeline.OnMessageCreating = args =>
                     {
                         args.Headers.Remove("Content-Length");
 
-                        var msg = new global::Microsoft.OData.Client.HttpWebRequestMessage(args);
+                        var msg = new HttpWebRequestMessage(args);
 
-                        global::System.Threading.Tasks.Task.Factory.FromAsync<System.IO.Stream>(msg.BeginGetRequestStream, msg.EndGetRequestStream, null).ContinueWith
-                            (s => stream.CopyTo(s.Result))
+                        Task.Factory.FromAsync<Stream>(msg.BeginGetRequestStream, msg.EndGetRequestStream, null)
+                            .ContinueWith(s => stream.CopyTo(s.Result))
                             .Wait();
 
                         return msg;
                     };
                 }
 
-                await global::System.Threading.Tasks.Task.Factory.FromAsync
-                    (
-                        new global::System.Func<global::System.AsyncCallback, object, global::System.IAsyncResult>(
-                            (callback, state) => BeginExecute(uri, callback, state, httpMethod, operationParameters)),
-                        new global::System.Action<global::System.IAsyncResult>((i) => EndExecute(i)),
-                        global::System.Threading.Tasks.TaskCreationOptions.None);
+                await Task.Factory.FromAsync(
+                    (callback, state) => BeginExecute(uri, callback, state, httpMethod, operationParameters),
+                    new Action<IAsyncResult>(i => EndExecute(i)),
+                    TaskCreationOptions.None);
             }
             catch (Exception ex)
             {
@@ -423,16 +375,14 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
-        public async System.Threading.Tasks.Task<QueryOperationResponse<TSource>> ExecuteAsync<TSource, TInterface>(DataServiceQueryContinuation<TSource> token)
+        public async Task<QueryOperationResponse<TSource>> ExecuteAsync<TSource, TInterface>(DataServiceQueryContinuation<TSource> token)
         {
             try
             {
-                await SetToken();
-
-                return await global::System.Threading.Tasks.Task.Factory.FromAsync<QueryOperationResponse<TSource>>(
+                return await Task.Factory.FromAsync(
                     (callback, state) => BeginExecute(token, callback, state),
-                    (i) => (QueryOperationResponse<TSource>)EndExecute<TSource>(i),
-                    global::System.Threading.Tasks.TaskCreationOptions.None);
+                    i => (QueryOperationResponse<TSource>)EndExecute<TSource>(i),
+                    TaskCreationOptions.None);
             }
             catch (Exception ex)
             {
@@ -447,17 +397,16 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
-        public async new System.Threading.Tasks.Task<DataServiceResponse> SaveChangesAsync(SaveChangesOptions options)
+        public async new Task<DataServiceResponse> SaveChangesAsync(SaveChangesOptions options)
         {
             try
             {
-                await SetToken();
-                var result = await global::System.Threading.Tasks.Task.Factory.FromAsync<SaveChangesOptions, DataServiceResponse>(
+                var result = await Task.Factory.FromAsync(
                     BeginSaveChanges,
-                    new global::System.Func<global::System.IAsyncResult, DataServiceResponse>(EndSaveChanges),
+                    new Func<IAsyncResult, DataServiceResponse>(EndSaveChanges),
                     options,
                     null,
-                    global::System.Threading.Tasks.TaskCreationOptions.None);
+                    TaskCreationOptions.None);
 
                 foreach (var i in _modifiedEntities)
                 {
@@ -480,36 +429,25 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
-        public new System.Threading.Tasks.Task<DataServiceResponse> SaveChangesAsync()
+        public new Task<DataServiceResponse> SaveChangesAsync()
         {
             return SaveChangesAsync(SaveChangesOptions.None);
         }
 
 #if NOTYET
-        public async System.Threading.Tasks.Task<IPagedCollection<TSource>> LoadPropertyAsync<TSource>(string path, object entity)
+        public async Task<IPagedCollection<TInterface>> LoadPropertyAsync<TSource, TInterface>(string path, object entity) where TSource : TInterface
         {
             try
             {
-                await SetToken();
-                return await global::System.Threading.Tasks.Task.Factory.FromAsync<
-                    IPagedCollection<TSource>>(
-                    (AsyncCallback callback, object state) =>
-                    {
-                        return BeginLoadProperty(entity, path, callback, state);
-                    },
-                    new global::System.Func<global::System.IAsyncResult, IPagedCollection<TSource>>(
-                        r =>
-                        {
-                            var innerResult = (QueryOperationResponse<TSource>)EndLoadProperty(r);
-
-                            return new PagedCollection<TSource>(this, innerResult);
-                        }
-                        ), global::System.Threading.Tasks.TaskCreationOptions.None);
+                return await Task.Factory.FromAsync(
+                    (callback, state) => BeginLoadProperty(entity, path, callback, state),
+                    new Func<IAsyncResult, IPagedCollection<TInterface>>(
+                        r => new PagedCollection<TInterface, TSource>(this, (QueryOperationResponse<TSource>) EndLoadProperty(r))),
+                    TaskCreationOptions.None);
             }
             catch (Exception ex)
             {
                 var newException = ProcessException(ex);
-
                 if (newException != null)
                 {
                     throw newException;
@@ -522,29 +460,36 @@ namespace Microsoft.OData.ProxyExtensions
 
         public static Exception ProcessException(Exception ex)
         {
-            if (ex is DataServiceRequestException)
+            var dataServiceRequestException = ex as DataServiceRequestException;
+            if (dataServiceRequestException != null)
             {
-                var response = ((DataServiceRequestException)ex).Response.FirstOrDefault();
+                var response = dataServiceRequestException.Response.FirstOrDefault();
 
                 if (response != null)
                 {
-                    return ProcessError((DataServiceRequestException)ex, ex.InnerException as DataServiceClientException, response.Headers);
+                    return ProcessError(dataServiceRequestException, dataServiceRequestException.InnerException as DataServiceClientException, response.Headers);
                 }
             }
 
-            if (ex is DataServiceQueryException)
+            var dataServiceQueryException = ex as DataServiceQueryException;
+            if (dataServiceQueryException != null)
             {
-                return ProcessError((DataServiceQueryException)ex, ex.InnerException as DataServiceClientException, ((DataServiceQueryException)ex).Response.Headers);
+                return ProcessError(dataServiceQueryException, dataServiceQueryException.InnerException as DataServiceClientException,
+                    dataServiceQueryException.Response.Headers);
             }
 
-            if (ex is DataServiceClientException)
+            var dataServiceClientException = ex as DataServiceClientException;
+            if (dataServiceClientException != null)
             {
-                return ProcessError(ex, (DataServiceClientException)ex, new Dictionary<string, string> { { "Content-Type", ex.Message.StartsWith("<") ? "application/xml" : "application/json" } });
+                return ProcessError(dataServiceClientException, dataServiceClientException,
+                    new Dictionary<string, string>
+                    {
+                        {"Content-Type", dataServiceClientException.Message.StartsWith("<") ? "application/xml" : "application/json"}
+                    });
             }
 
             return null;
         }
-
 
         private static Exception ProcessError(Exception outer, DataServiceClientException inner, IDictionary<string, string> headers)
         {
@@ -575,7 +520,7 @@ namespace Microsoft.OData.ProxyExtensions
             return null;
         }
 
-        private static async System.Threading.Tasks.Task<Exception> ProcessErrorAsync(System.Net.Http.HttpResponseMessage response)
+        private static async Task<Exception> ProcessErrorAsync(System.Net.Http.HttpResponseMessage response)
         {
             if (response.Content == null)
             {
@@ -589,7 +534,7 @@ namespace Microsoft.OData.ProxyExtensions
 
             using (var stream = await response.Content.ReadAsStreamAsync())
             {
-                var headers = Enumerable.ToDictionary(response.Content.Headers, i => i.Key, i => i.Value.FirstOrDefault());
+                var headers = response.Content.Headers.ToDictionary(i => i.Key, i => i.Value.FirstOrDefault());
 
                 var httpMessage = new HttpWebResponseMessage(
                     headers,
@@ -611,13 +556,13 @@ namespace Microsoft.OData.ProxyExtensions
             return null;
         }
 
-        private static System.IO.StreamWriter WriteToStream(string contents)
+        private static StreamWriter WriteToStream(string contents)
         {
-            var stream = new System.IO.MemoryStream();
-            var writer = new System.IO.StreamWriter(stream);
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
             writer.Write(contents);
             writer.Flush();
-            stream.Seek(0, System.IO.SeekOrigin.Begin);
+            stream.Seek(0, SeekOrigin.Begin);
             return writer;
         }
     }

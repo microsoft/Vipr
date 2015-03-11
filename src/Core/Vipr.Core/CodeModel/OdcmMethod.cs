@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Vipr.Core.CodeModel
 {
@@ -34,7 +33,5 @@ namespace Vipr.Core.CodeModel
         {
             return MakeCanonicalName(Name, ReturnType, Parameters.ToArray());
         }
-
-        public string FullName { get { return Namespace.Name + "." + Name; } }
     }
 }

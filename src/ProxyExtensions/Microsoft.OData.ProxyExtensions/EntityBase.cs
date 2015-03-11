@@ -1,10 +1,15 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Microsoft.OData.Client;
 
 namespace Microsoft.OData.ProxyExtensions
 {
-    public class EntityBase : BaseEntityType
+    public class EntityBase : BaseEntityType, IEntityBase
     {
         private Lazy<HashSet<string>> _changedProperties = new Lazy<HashSet<string>>(true);
 
@@ -18,7 +23,7 @@ namespace Microsoft.OData.ProxyExtensions
             return new Tuple<EntityBase, string>(this, propertyName);
         }
 
-        public virtual void OnPropertyChanged([global::System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             _changedProperties.Value.Add(propertyName);
             if (Context != null)
@@ -59,7 +64,7 @@ namespace Microsoft.OData.ProxyExtensions
             return null;
         }
 
-        protected System.Uri GetUrl()
+        protected Uri GetUrl()
         {
             if (Context == null)
             {
@@ -72,35 +77,34 @@ namespace Microsoft.OData.ProxyExtensions
             return uri;
         }
 
-        /// <param name=""dontSave"">true to delay saving until batch is saved; false to save immediately.</param>
-        public global::System.Threading.Tasks.Task UpdateAsync(bool dontSave = false)
+        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
+        public Task UpdateAsync(bool deferSaveChanges = false)
         {
             if (Context == null) throw new InvalidOperationException("Not Initialized");
             Context.UpdateObject(this);
-            return SaveAsNeeded(dontSave);
+            return SaveChangesAsync(deferSaveChanges);
         }
 
-        /// <param name=""dontSave"">true to delay saving until batch is saved; false to save immediately.</param>
-        public global::System.Threading.Tasks.Task DeleteAsync(bool dontSave = false)
+        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
+        public Task DeleteAsync(bool deferSaveChanges = false)
         {
             if (Context == null) throw new InvalidOperationException("Not Initialized");
             Context.DeleteObject(this);
-            return SaveAsNeeded(dontSave);
+            return SaveChangesAsync(deferSaveChanges);
         }
 
-        /// <param name=""dontSave"">true to delay saving until batch is saved; false to save immediately.</param>
-        public global::System.Threading.Tasks.Task SaveAsNeeded(bool dontSave)
+        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
+        /// <param name="saveChangesOption">Save changes option to control how change requests are sent to the service.</param>
+        public Task SaveChangesAsync(bool deferSaveChanges = false, SaveChangesOptions saveChangesOption = SaveChangesOptions.None)
         {
-            if (!dontSave)
+            if (deferSaveChanges)
             {
-                return Context.SaveChangesAsync();
-            }
-            else
-            {
-                var retVal = new global::System.Threading.Tasks.TaskCompletionSource<object>();
+                var retVal = new TaskCompletionSource<object>();
                 retVal.SetResult(null);
                 return retVal.Task;
             }
+
+            return Context.SaveChangesAsync(saveChangesOption);
         }
 
         protected IReadOnlyQueryableSet<TInterface> CreateQuery<TInstance, TInterface>()
