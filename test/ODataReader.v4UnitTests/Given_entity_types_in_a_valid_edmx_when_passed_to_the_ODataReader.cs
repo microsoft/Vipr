@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using FluentAssertions;
+using Microsoft.Its.Recipes;
 using ODataReader.v4;
 using System.Linq;
 using Vipr.Core.CodeModel;
@@ -186,13 +187,13 @@ namespace ODataReader.v4UnitTests
                 .Contain(odcmEntityType.As<OdcmEntityClass>(),
                     "because an entity type with a base type set should have a correspond OdcmClass that derives from a base OdcmClass");
             odcmEntityType.As<OdcmEntityClass>().Key
-                .Count().Should().Be(keyCount, "");
+                .Count().Should().Be(keyCount, "because the Key of an OdcmEntityClass should have the same number of OdcmProperties as there are properties in the entity type key");
             (from key in odcmEntityType.As<OdcmEntityClass>().Key
-                where
-                    (from x in entityTypeTestNode.Element.Descendants()
-                        where x.Name.LocalName.Equals("PropertyRef") && x.GetAttribute("Name").Equals(key.CanonicalName())
-                        select x).Any()
-                select key).Count().Should().Be(keyCount, "");
+             where
+                 (from x in entityTypeTestNode.Element.Descendants()
+                  where x.Name.LocalName.Equals("PropertyRef") && x.GetAttribute("Name").Equals(key.CanonicalName())
+                  select x).Any()
+             select key).Count().Should().Be(keyCount, "because the Key of an OdcmEntityClass should have the corresponding OdcmProperties as in the entity type key");
         }
 
         [Fact]
@@ -231,13 +232,13 @@ namespace ODataReader.v4UnitTests
                 .Contain(odcmEntityType.As<OdcmEntityClass>(),
                     "because an entity type with a base type set should have a correspond OdcmClass that derives from a base OdcmClass");
             odcmEntityType.As<OdcmEntityClass>().Key
-                .Count().Should().Be(keyCount, "");
+                .Count().Should().Be(keyCount, "because the Key of an OdcmEntityClass should have the same number of OdcmProperties as there are properties in the entity type key");
             (from key in odcmEntityType.As<OdcmEntityClass>().Key
              where
                  (from x in baseEntityTypeTestNode.Element.Descendants()
                   where x.Name.LocalName.Equals("PropertyRef") && x.GetAttribute("Name").Equals(key.CanonicalName())
                   select x).Any()
-             select key).Count().Should().Be(keyCount, "");
+             select key).Count().Should().Be(keyCount, "because the Key of an OdcmEntityClass should have the corresponding OdcmProperties as in the entity type key");
         }
 
         [Fact]
@@ -276,13 +277,58 @@ namespace ODataReader.v4UnitTests
                 .Contain(odcmEntityType.As<OdcmEntityClass>(),
                     "because an entity type with a base type set should have a correspond OdcmClass that derives from a base OdcmClass");
             odcmEntityType.As<OdcmEntityClass>().Key
-                .Count().Should().Be(keyCount, "");
+                .Count().Should().Be(keyCount, "because the Key of an OdcmEntityClass should have the same number of OdcmProperties as there are properties in the entity type key");
             (from key in odcmEntityType.As<OdcmEntityClass>().Key
              where
                  (from x in entityTypeTestNode.Element.Descendants()
                   where x.Name.LocalName.Equals("PropertyRef") && x.GetAttribute("Name").Equals(key.CanonicalName())
                   select x).Any()
-             select key).Count().Should().Be(keyCount, "");
+             select key).Count().Should().Be(keyCount, "because the Key of an OdcmEntityClass should have the corresponding OdcmProperties as in the entity type key");
+        }
+
+        [Fact]
+        public void When_BaseType_blah()
+        {
+            string complexTypePropertyName = string.Empty;
+
+            var testCase = new EdmxTestCase()
+                .AddComplexType(EdmxTestCase.Keys.ComplexType)
+                .AddEntityType(EdmxTestCase.Keys.EntityType, (_, entityType) =>
+                {
+                    var property = Any.Csdl.Property(_[EdmxTestCase.Keys.ComplexType].FullName());
+                    complexTypePropertyName = property.Attribute("Name").Value;
+                    entityType.Add(property);
+                });
+
+            var complexTypeTestNode = testCase[EdmxTestCase.Keys.ComplexType];
+            var entityTypeTestNode = testCase[EdmxTestCase.Keys.EntityType];
+            var keyCount = (from x in entityTypeTestNode.Element.Descendants() where x.Name.LocalName.Equals("PropertyRef") select x).Count();
+
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+
+            OdcmType odcmComplexType;
+            odcmModel.TryResolveType(complexTypeTestNode.Name, complexTypeTestNode.Namespace, out odcmComplexType)
+                .Should()
+                .BeTrue("because a complex type in the schema should result in an OdcmType");
+            odcmComplexType
+                .Should()
+                .BeOfType<OdcmComplexClass>("because complex types should result in an OdcmComplexClass");
+            OdcmType odcmEntityType;
+            odcmModel.TryResolveType(entityTypeTestNode.Name, entityTypeTestNode.Namespace, out odcmEntityType)
+                .Should()
+                .BeTrue("because an entity type in the schema should result in an OdcmType");
+            odcmEntityType
+                .Should()
+                .BeOfType<OdcmEntityClass>("because entity types should result in an OdcmEntityClass");
+            var complexProperty = (from property in odcmEntityType.As<OdcmEntityClass>().Properties
+                                   where property.Name.Equals(complexTypePropertyName)
+                                   select property);
+            complexProperty.Count()
+                .Should()
+                .Be(1, "because a property referencing a complex type should result in a property in the OdcmEntityClass");
+            complexProperty.First().Type
+                .Should()
+                .Be(odcmComplexType, "because a property referencing a complex type should result in a property with a type matching the OdcmComplexClass of the property");
         }
 
         [Fact]
