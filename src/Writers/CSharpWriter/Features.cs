@@ -29,7 +29,7 @@ namespace CSharpWriter
             switch (odcmClass.Kind)
             {
                 case OdcmClassKind.Complex:
-                    return Features.ForOdcmClassComplex(odcmClass);
+                    return Features.ForOdcmClassComplex((OdcmComplexClass)odcmClass);
 
                 case OdcmClassKind.MediaEntity:
                 case OdcmClassKind.Entity:
@@ -52,7 +52,7 @@ namespace CSharpWriter
                     return Enumerable.Empty<Feature>();
 
                 case OdcmClassKind.Service:
-                    return Features.ForOdcmClassService(odcmClass, model);
+                    return Features.ForOdcmClassService((OdcmServiceClass)odcmClass, model);
             }
 
             throw new NotImplementedException(string.Format("OdcmClassKind {0} is not recognized", odcmClass.Kind));
@@ -80,7 +80,7 @@ namespace CSharpWriter
             return retVal;
         }
 
-        private static IEnumerable<Feature> ForOdcmClassComplex(OdcmClass odcmClass)
+        private static IEnumerable<Feature> ForOdcmClassComplex(OdcmComplexClass odcmClass)
         {
             return new[]
             {

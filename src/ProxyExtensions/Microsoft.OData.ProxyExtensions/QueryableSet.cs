@@ -1,5 +1,7 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.OData.Client;
 
@@ -7,46 +9,40 @@ namespace Microsoft.OData.ProxyExtensions
 {
     public class QueryableSet<TSource> : ReadOnlyQueryableSetBase<TSource>
     {
-        protected string _path;
-        protected object _entity;
+        protected string Path;
+        protected object Entity;
 
         public void SetContainer(Func<EntityBase> entity, string property)
         {
             // Unneeded
         }
 
-        protected System.Uri GetUrl()
+        protected Uri GetUrl()
         {
-            return new Uri(Context.BaseUri.ToString().TrimEnd('/') + "/" + _path);
+            return new Uri(Context.BaseUri.ToString().TrimEnd('/') + "/" + Path);
         }
 
         protected string GetPath<TInstance>(Expression<Func<TInstance, bool>> whereExpression) where TInstance : TSource
         {
-            var query = (DataServiceQuery)System.Linq.Queryable.Where(Context.CreateQuery<TInstance>(_path), whereExpression);
+            var query =
+                (DataServiceQuery) System.Linq.Queryable.Where(Context.CreateQuery<TInstance>(Path), whereExpression);
 
             var path = query.RequestUri.ToString().Substring(Context.BaseUri.ToString().TrimEnd('/').Length + 1);
 
             return path;
         }
 
-        public QueryableSet(
-            DataServiceQuery inner,
-            DataServiceContextWrapper context,
-            EntityBase entity,
-            string path)
+        public QueryableSet(DataServiceQuery inner, DataServiceContextWrapper context, EntityBase entity, string path)
             : base(inner, context)
         {
             Initialize(inner, context, entity, path);
         }
 
-        public void Initialize(DataServiceQuery inner,
-            DataServiceContextWrapper context,
-            EntityBase entity,
-            string path)
+        public void Initialize(DataServiceQuery inner, DataServiceContextWrapper context, EntityBase entity, string path)
         {
-            base.Initialize(inner, context);
-            _path = path;
-            _entity = entity;
+            Initialize(inner, context);
+            Path = path;
+            Entity = entity;
         }
     }
 }

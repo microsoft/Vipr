@@ -86,6 +86,7 @@ namespace CSharpWriter
                 case "Stream": return new Identifier("Microsoft.OData.Client", "DataServiceStreamLink");
                 case "String": return new Identifier("System", "String");
                 case "TimeOfDay": return new Identifier("System", "DateTimeOffset");
+                case "IStream":return new Identifier("System.IO", "Stream");
             }
 
             return null;

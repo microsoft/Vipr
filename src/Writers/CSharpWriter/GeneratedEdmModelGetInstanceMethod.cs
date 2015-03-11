@@ -7,7 +7,7 @@ namespace CSharpWriter
     {
         public GeneratedEdmModelGetInstanceMethod()
         {
-            IsPublic = true;
+            Visibility = Visibility.Public;
             IsStatic = true;
             Name = "GetInstance";
             ReturnType = new Type(new Identifier("global::Microsoft.OData.Edm", "IEdmModel"));

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Vipr.Core.CodeModel
 {
-    public class OdcmClass : OdcmType
+    public abstract class OdcmClass : OdcmType
     {
         public bool IsAbstract { get; set; }
 
@@ -21,10 +21,10 @@ namespace Vipr.Core.CodeModel
 
         public List<OdcmMethod> Methods { get; private set; }
 
-        public OdcmClass(string name, OdcmNamespace @namespace)
+        public OdcmClass(string name, OdcmNamespace @namespace, OdcmClassKind kind)
             : base(name, @namespace)
         {
-            Kind = OdcmClassKind.Complex;
+            Kind = kind;
             Properties = new List<OdcmProperty>();
             Methods = new List<OdcmMethod>();
             Derived = new List<OdcmClass>();

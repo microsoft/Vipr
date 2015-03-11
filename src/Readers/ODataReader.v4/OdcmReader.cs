@@ -86,7 +86,7 @@ namespace ODataReader.v4
                 if (!EdmxReader.TryParse(edmx.CreateReader(ReaderOptions.None), out _edmModel, out errors))
                 {
                     Debug.Assert(errors != null, "errors != null");
-                    
+
                     if (errors.FirstOrDefault() == null)
                     {
                         throw new InvalidOperationException();
@@ -128,7 +128,7 @@ namespace ODataReader.v4
                 foreach (var declaredNamespace in _edmModel.DeclaredNamespaces)
                 {
                     WriteNamespaceDeep(_edmModel, declaredNamespace);
-            }
+                }
             }
 
             private void WriteNamespaceShallow(IEdmModel edmModel, string @namespace)
@@ -136,25 +136,25 @@ namespace ODataReader.v4
                 _odcmModel.AddNamespace(@namespace);
 
                 var namespaceElements = from elements in edmModel.SchemaElements
-                    where string.Equals(elements.Namespace, @namespace)
-                    select elements;
+                                        where string.Equals(elements.Namespace, @namespace)
+                                        select elements;
 
                 var types = from element in namespaceElements
-                    where element.SchemaElementKind == EdmSchemaElementKind.TypeDefinition
-                    select element as IEdmType;
+                            where element.SchemaElementKind == EdmSchemaElementKind.TypeDefinition
+                            select element as IEdmType;
                 var complexTypes = from element in types
-                    where element.TypeKind == EdmTypeKind.Complex
-                    select element as IEdmComplexType;
+                                   where element.TypeKind == EdmTypeKind.Complex
+                                   select element as IEdmComplexType;
                 var entityTypes = from element in types
-                    where element.TypeKind == EdmTypeKind.Entity
-                    select element as IEdmEntityType;
+                                  where element.TypeKind == EdmTypeKind.Entity
+                                  select element as IEdmEntityType;
                 var enumTypes = from elements in types
-                    where elements.TypeKind == EdmTypeKind.Enum
-                    select elements as IEdmEnumType;
+                                where elements.TypeKind == EdmTypeKind.Enum
+                                select elements as IEdmEnumType;
 
                 var entityContainers = from element in namespaceElements
-                    where element.SchemaElementKind == EdmSchemaElementKind.EntityContainer
-                    select element as IEdmEntityContainer;
+                                       where element.SchemaElementKind == EdmSchemaElementKind.EntityContainer
+                                       select element as IEdmEntityContainer;
 
                 foreach (var enumType in enumTypes)
                 {
@@ -163,7 +163,7 @@ namespace ODataReader.v4
 
                 foreach (var complexType in complexTypes)
                 {
-                    _odcmModel.AddType(new OdcmClass(complexType.Name, ResolveNamespace(complexType.Namespace)));
+                    _odcmModel.AddType(new OdcmComplexClass(complexType.Name, ResolveNamespace(complexType.Namespace)));
                 }
 
                 foreach (var entityType in entityTypes)
@@ -180,8 +180,7 @@ namespace ODataReader.v4
 
                 foreach (var entityContainer in entityContainers)
                 {
-                    _odcmModel.AddType(new OdcmServiceClass(entityContainer.Name,
-                        ResolveNamespace(entityContainer.Namespace)));
+                    _odcmModel.AddType(new OdcmServiceClass(entityContainer.Name, ResolveNamespace(entityContainer.Namespace)));
                 }
             }
 
@@ -210,11 +209,11 @@ namespace ODataReader.v4
 
                 var actions = from element in namespaceElements
                               where element.SchemaElementKind == EdmSchemaElementKind.Action && ((IEdmAction)element).IsBound
-                    select element as IEdmAction;
+                              select element as IEdmAction;
 
                 var functions = from element in namespaceElements
                                 where element.SchemaElementKind == EdmSchemaElementKind.Function && ((IEdmFunction)element).IsBound
-                    select element as IEdmFunction;
+                                select element as IEdmFunction;
 
                 foreach (var enumType in enumTypes)
                 {
@@ -265,7 +264,7 @@ namespace ODataReader.v4
                         if (!baseClass.Derived.Contains(odcmClass))
                         {
                             baseClass.Derived.Add(odcmClass);
-                    }
+                        }
                     }
 
                     foreach (var property in complexType.DeclaredProperties)
@@ -301,7 +300,7 @@ namespace ODataReader.v4
                         if (!baseClass.Derived.Contains(odcmClass))
                         {
                             baseClass.Derived.Add(odcmClass);
-                    }
+                        }
                     }
 
                     foreach (var property in entityType.DeclaredProperties)
@@ -321,13 +320,13 @@ namespace ODataReader.v4
                         {
                             //TODO: need to create a warning...
                         }
-
+                        
                         odcmClass.Key.Add(property);
                     }
 
                     var entityTypeActions = from element in actions
                                             where IsOperationBoundTo(element, entityType)
-                        select element;
+                                            select element;
                     foreach (var action in entityTypeActions)
                     {
                         WriteMethod(odcmClass, action);
@@ -335,7 +334,7 @@ namespace ODataReader.v4
 
                     var entityTypeFunctions = from element in functions
                                               where IsOperationBoundTo(element, entityType)
-                        select element;
+                                              select element;
                     foreach (var function in entityTypeFunctions)
                     {
                         WriteMethod(odcmClass, function);
@@ -353,32 +352,32 @@ namespace ODataReader.v4
                     AddVocabularyAnnotations(odcmClass, entityContainer);
 
                     var entitySets = from element in entityContainer.Elements
-                        where element.ContainerElementKind == EdmContainerElementKind.EntitySet
-                        select element as IEdmEntitySet;
+                                     where element.ContainerElementKind == EdmContainerElementKind.EntitySet
+                                     select element as IEdmEntitySet;
                     foreach (var entitySet in entitySets)
                     {
                         WriteProperty(odcmClass, entitySet);
                     }
 
                     var singletons = from element in entityContainer.Elements
-                        where element.ContainerElementKind == EdmContainerElementKind.Singleton
-                        select element as IEdmSingleton;
+                                     where element.ContainerElementKind == EdmContainerElementKind.Singleton
+                                     select element as IEdmSingleton;
                     foreach (var singleton in singletons)
                     {
                         WriteProperty(odcmClass, singleton);
                     }
 
                     var actionImports = from element in entityContainer.Elements
-                        where element.ContainerElementKind == EdmContainerElementKind.ActionImport
-                        select element as IEdmActionImport;
+                                        where element.ContainerElementKind == EdmContainerElementKind.ActionImport
+                                        select element as IEdmActionImport;
                     foreach (var actionImport in actionImports)
                     {
                         WriteMethod(odcmClass, actionImport.Action, actionImport);
                     }
 
                     var functionImports = from element in entityContainer.Elements
-                        where element.ContainerElementKind == EdmContainerElementKind.FunctionImport
-                        select element as IEdmFunctionImport;
+                                          where element.ContainerElementKind == EdmContainerElementKind.FunctionImport
+                                          select element as IEdmFunctionImport;
                     foreach (var functionImport in functionImports)
                     {
                         WriteMethod(odcmClass, functionImport.Function, functionImport);
@@ -389,7 +388,7 @@ namespace ODataReader.v4
             private bool IsOperationBoundTo(IEdmOperation operation, IEdmEntityType entityType)
             {
                 if (!operation.IsBound)
-            {
+                {
                     return false;
                 }
 
@@ -454,8 +453,8 @@ namespace ODataReader.v4
             {
                 var parameters = operation.IsBound
                     ? (from parameter in operation.Parameters
-                        where parameter != operation.Parameters.First()
-                        select parameter)
+                       where parameter != operation.Parameters.First()
+                       select parameter)
                     : (operation.Parameters);
 
                 var isBoundToCollection = operation.IsBound && operation.Parameters.First().Type.IsCollection();

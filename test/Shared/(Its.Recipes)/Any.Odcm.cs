@@ -49,8 +49,17 @@ namespace Microsoft.Its.Recipes
 
             retVal.Types.AddRange(Any.Sequence(s => Any.ComplexOdcmClass(retVal)));
 
-            var classes = Any.Sequence(s => Any.EntityOdcmClass(retVal)).ToArray();
+            var classes = Any.Sequence(s => Any.EntityOdcmClass(retVal))
+                .Concat(Any.Sequence(s => Any.MediaOdcmClass(retVal), count: 2)).ToArray();
 
+            foreach (var @class in (from @class in retVal.Types where @class is OdcmEntityClass select @class as OdcmEntityClass))
+            {
+                @class.Properties.AddRange(Any.Sequence(i => Any.OdcmProperty(p =>
+                {
+                    p.Class = @class;
+                    p.Type = classes.RandomElement();
+                })));
+            }
             foreach (var @class in classes)
             {
                 @class.Properties.AddRange(Any.Sequence(i => Any.OdcmProperty(p =>
@@ -84,9 +93,9 @@ namespace Microsoft.Its.Recipes
             return retVal;
         }
 
-        public static OdcmClass OdcmClass(Action<OdcmClass> config = null)
+        public static OdcmComplexClass OdcmComplexClass(Action<OdcmClass> config = null)
         {
-            var retVal = new OdcmClass(Any.CSharpIdentifier(), Any.OdcmNamespace());
+            var retVal = new OdcmComplexClass(Any.CSharpIdentifier(), Any.OdcmNamespace());
 
             if (config != null) config(retVal);
 
@@ -121,10 +130,9 @@ namespace Microsoft.Its.Recipes
             return retVal;
         }
 
-
-        public static OdcmClass ComplexOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmClass> config = null)
+        public static OdcmComplexClass ComplexOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmClass> config = null)
         {
-            var retVal = new OdcmClass(Any.CSharpIdentifier(), odcmNamespace);
+            var retVal = new OdcmComplexClass(Any.CSharpIdentifier(), odcmNamespace);
 
             retVal.Properties.AddRange(Any.Sequence(i => Any.PrimitiveOdcmProperty(p => p.Class = retVal)));
 
@@ -166,10 +174,26 @@ namespace Microsoft.Its.Recipes
             return retVal;
         }
 
+        public static OdcmMediaClass MediaOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmEntityClass> config = null)
+        {
+            var retVal = new OdcmMediaClass(Any.CSharpIdentifier(), odcmNamespace);
+
+            EntityOrMediaOdcmClass(odcmNamespace, config, retVal);
+
+            return retVal;
+        }
+
         public static OdcmEntityClass EntityOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmEntityClass> config = null)
         {
             var retVal = new OdcmEntityClass(Any.CSharpIdentifier(), odcmNamespace);
 
+            EntityOrMediaOdcmClass(odcmNamespace, config, retVal);
+
+            return retVal;
+        }
+
+        private static void EntityOrMediaOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmEntityClass> config, OdcmEntityClass retVal)
+        {
             retVal.Properties.AddRange(Any.Sequence(i => Any.PrimitiveOdcmProperty(p => p.Class = retVal)));
 
             retVal.Key.AddRange(retVal.Properties.RandomSubset(2));
@@ -183,17 +207,15 @@ namespace Microsoft.Its.Recipes
 
             retVal.Properties.AddRange(Any.Sequence(i => Any.OdcmEntityProperty(retVal, p => { p.Class = retVal; })));
 
-            retVal.Properties.AddRange(Any.Sequence(i => Any.OdcmEntityProperty(retVal, p => 
-            { 
+            retVal.Properties.AddRange(Any.Sequence(i => Any.OdcmEntityProperty(retVal, p =>
+            {
                 p.Class = retVal;
                 p.IsCollection = true;
             })));
-            
+
             if (config != null) config(retVal);
 
             retVal.Methods.AddRange(Any.Sequence(s => Any.OdcmMethod()));
-
-            return retVal;
         }
 
         public static OdcmServiceClass ServiceOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmServiceClass> config = null)
@@ -284,7 +306,6 @@ namespace Microsoft.Its.Recipes
 
             return retVal;
         }
-
 
         public static OdcmModel OdcmModel(Action<OdcmModel> config = null)
         {

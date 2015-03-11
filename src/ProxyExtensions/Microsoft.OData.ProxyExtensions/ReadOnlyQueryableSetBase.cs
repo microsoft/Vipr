@@ -1,6 +1,13 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Microsoft.OData.Client;
 
 namespace Microsoft.OData.ProxyExtensions
@@ -13,7 +20,7 @@ namespace Microsoft.OData.ProxyExtensions
         // Will return null if not an interface
         protected static Type CreateConcreteType(Type tsourceType)
         {
-            var tsourceTypeInfo = System.Reflection.IntrospectionExtensions.GetTypeInfo(tsourceType);
+            var tsourceTypeInfo = tsourceType.GetTypeInfo();
             if (tsourceTypeInfo.IsGenericType)
             {
                 var arguments = tsourceTypeInfo.GenericTypeArguments;
@@ -43,22 +50,19 @@ namespace Microsoft.OData.ProxyExtensions
                 return tsourceTypeInfo.GetGenericTypeDefinition().MakeGenericType(arguments);
             }
 
-            const string Fetcher = "Fetcher";
-            if (System.Linq.Enumerable.Any<System.Reflection.CustomAttributeData>(
-                tsourceTypeInfo.CustomAttributes,
-                i => i.AttributeType == typeof(LowerCasePropertyAttribute)))
+            const string fetcher = "Fetcher";
+            if (tsourceTypeInfo.CustomAttributes.Any(i => i.AttributeType == typeof(LowerCasePropertyAttribute)))
             {
                 string typeName = tsourceTypeInfo.Namespace + "." + tsourceTypeInfo.Name.Substring(1);
-                if (typeName.EndsWith(Fetcher))
+                if (typeName.EndsWith(fetcher))
                 {
-                    typeName = typeName.Substring(typeName.Length - Fetcher.Length);
+                    typeName = typeName.Substring(typeName.Length - fetcher.Length);
                 }
+
                 return tsourceTypeInfo.Assembly.GetType(typeName);
             }
-            else
-            {
-                return null;
-            }
+            
+            return null;
         }
 
         public DataServiceContextWrapper Context
@@ -110,11 +114,11 @@ namespace Microsoft.OData.ProxyExtensions
 
         #endregion
 
-        protected global::System.Threading.Tasks.Task<IPagedCollection<TSource>> ExecuteAsyncInternal()
+        protected Task<IPagedCollection<TSource>> ExecuteAsyncInternal()
         {
             if (_concreteType.Value != null)
             {
-                var contextTypeInfo = System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(DataServiceContextWrapper));
+                var contextTypeInfo = typeof(DataServiceContextWrapper).GetTypeInfo();
 
                 var executeAsyncMethodInfo =
                     (from i in contextTypeInfo.GetDeclaredMethods("ExecuteAsync")
@@ -122,20 +126,17 @@ namespace Microsoft.OData.ProxyExtensions
                         where parameters.Length == 1 && parameters[0].ParameterType.GetGenericTypeDefinition() == typeof(DataServiceQuery<>)
                         select i).First();
 
-                return (global::System.Threading.Tasks.Task<IPagedCollection<TSource>>)
-                    executeAsyncMethodInfo.MakeGenericMethod(_concreteType.Value, typeof(TSource)).Invoke(Context, new[] { Query });
+                return (Task<IPagedCollection<TSource>>)executeAsyncMethodInfo.MakeGenericMethod(_concreteType.Value, typeof(TSource)).Invoke(Context, new object[] { Query });
             }
-            else
-            {
-                return Context.ExecuteAsync<TSource, TSource>((DataServiceQuery<TSource>)Query);
-            }
+            
+            return Context.ExecuteAsync<TSource, TSource>((DataServiceQuery<TSource>)Query);
         }
 
-        protected global::System.Threading.Tasks.Task<TSource> ExecuteSingleAsyncInternal()
+        protected Task<TSource> ExecuteSingleAsyncInternal()
         {
             if (_concreteType.Value != null)
             {
-                var contextTypeInfo = System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(DataServiceContextWrapper));
+                var contextTypeInfo = typeof(DataServiceContextWrapper).GetTypeInfo();
 
                 var executeAsyncMethodInfo =
                     (from i in contextTypeInfo.GetDeclaredMethods("ExecuteSingleAsync")
@@ -143,35 +144,32 @@ namespace Microsoft.OData.ProxyExtensions
                         where parameters.Length == 1 && parameters[0].ParameterType.GetGenericTypeDefinition() == typeof(DataServiceQuery<>)
                         select i).First();
 
-                return (global::System.Threading.Tasks.Task<TSource>)
-                    executeAsyncMethodInfo.MakeGenericMethod(_concreteType.Value, typeof(TSource)).Invoke(Context, new[] { Query });
+                return (Task<TSource>)executeAsyncMethodInfo.MakeGenericMethod(_concreteType.Value, typeof(TSource)).Invoke(Context, new object[] { Query });
             }
-            else
-            {
-                return Context.ExecuteSingleAsync<TSource, TSource>((DataServiceQuery<TSource>)Query);
-            }
+            
+            return Context.ExecuteSingleAsync<TSource, TSource>((DataServiceQuery<TSource>)Query);
         }
 
         #region LINQ
 
 
-        private class PascalCaseExpressionVisitor : System.Linq.Expressions.ExpressionVisitor
+        private class PascalCaseExpressionVisitor : ExpressionVisitor
         {
-            private Dictionary<System.Linq.Expressions.ParameterExpression, System.Linq.Expressions.ParameterExpression>
-                _parameterDictionary = new Dictionary<System.Linq.Expressions.ParameterExpression, System.Linq.Expressions.ParameterExpression>();
+            private readonly Dictionary<ParameterExpression, ParameterExpression>
+                _parameterDictionary = new Dictionary<ParameterExpression, ParameterExpression>();
 
-            protected override System.Linq.Expressions.Expression VisitExtension(System.Linq.Expressions.Expression node)
+            protected override Expression VisitExtension(Expression node)
             {
                 return node;
             }
 
-            protected override System.Linq.Expressions.Expression VisitLambda<T>(System.Linq.Expressions.Expression<T> node)
+            protected override Expression VisitLambda<T>(Expression<T> node)
             {
                 var originalDelegateType = typeof(T);
 
                 if (originalDelegateType.GetGenericTypeDefinition() == typeof(Func<,>))
                 {
-                    var newParameterArray = System.Reflection.IntrospectionExtensions.GetTypeInfo(originalDelegateType).GenericTypeArguments;
+                    var newParameterArray = originalDelegateType.GetTypeInfo().GenericTypeArguments;
                     bool hasInterfaces = false;
 
                     var ct = CreateConcreteType(newParameterArray[0]);
@@ -205,7 +203,7 @@ namespace Microsoft.OData.ProxyExtensions
                         {
                             if (!_parameterDictionary.ContainsKey(invocationParameters[i]))
                             {
-                                _parameterDictionary[invocationParameters[i]] = System.Linq.Expressions.Expression.Parameter(
+                                _parameterDictionary[invocationParameters[i]] = Expression.Parameter(
                                     concreteType, invocationParameters[i].Name);
                             }
 
@@ -215,7 +213,7 @@ namespace Microsoft.OData.ProxyExtensions
 
                     var body = Visit(node.Body);
 
-                    var newLambda = System.Linq.Expressions.Expression.Lambda(
+                    var newLambda = Expression.Lambda(
                         newdDelegateType,
                         body,
                         node.TailCall,
@@ -224,10 +222,10 @@ namespace Microsoft.OData.ProxyExtensions
                     return newLambda;
                 }
 
-                return base.VisitLambda<T>(node);
+                return base.VisitLambda(node);
             }
 
-            protected override System.Linq.Expressions.Expression VisitParameter(System.Linq.Expressions.ParameterExpression node)
+            protected override Expression VisitParameter(ParameterExpression node)
             {
                 var concreteType = CreateConcreteType(node.Type);
 
@@ -238,7 +236,7 @@ namespace Microsoft.OData.ProxyExtensions
 
                 if (!_parameterDictionary.ContainsKey(node))
                 {
-                    _parameterDictionary[node] = System.Linq.Expressions.Expression.Parameter(
+                    _parameterDictionary[node] = Expression.Parameter(
                         concreteType,
                         node.Name);
                 }
@@ -246,28 +244,24 @@ namespace Microsoft.OData.ProxyExtensions
                 return base.VisitParameter(_parameterDictionary[node]);
             }
 
-            protected override System.Linq.Expressions.Expression VisitMember(System.Linq.Expressions.MemberExpression node)
+            protected override Expression VisitMember(MemberExpression node)
             {
-                if (node.Member is System.Reflection.PropertyInfo)
+                if (node.Member is PropertyInfo)
                 {
                     var interfaceType = CreateConcreteType(node.Type) != null;
 
-                    var toLower = System.Linq.Enumerable.Any(
-                        node.Member.CustomAttributes, i => i.AttributeType == typeof(LowerCasePropertyAttribute));
+                    var toLower = node.Member.CustomAttributes.Any(i => i.AttributeType == typeof(LowerCasePropertyAttribute));
 
                     if (interfaceType || toLower)
                     {
                         var newExpression = Visit(node.Expression);
 
-                        return base.VisitMember(
-                            System.Linq.Expressions.Expression.Property(
-                                newExpression,
-                                System.Reflection.RuntimeReflectionExtensions.GetRuntimeProperty(
-                                    newExpression.Type,
-                                    toLower ? char.ToLower(node.Member.Name[0]) + node.Member.Name.Substring(1) : node.Member.Name
-                                    )
-                                )
-                            );
+                        return base.VisitMember(Expression.Property(
+                            newExpression,
+                            newExpression.Type.GetRuntimeProperty(toLower
+                                ? char.ToLower(node.Member.Name[0]) + node.Member.Name.Substring(1)
+                                : node.Member.Name)
+                            ));
                     }
                 }
                     /*
@@ -277,13 +271,17 @@ namespace Microsoft.OData.ProxyExtensions
             
                     var filesQuery = await client.Users.Where(i => i.UserPrincipalName != me.UserPrincipalName).ExecuteAsync();
                 */
-                else if (node.Member is System.Reflection.FieldInfo) // for local variables
+                else
                 {
-                    var fieldTypeInfo = System.Reflection.IntrospectionExtensions.GetTypeInfo(((System.Reflection.FieldInfo)node.Member).FieldType);
-                    if (System.Linq.Enumerable.Any<System.Reflection.CustomAttributeData>(fieldTypeInfo.CustomAttributes, i => i.AttributeType == typeof(LowerCasePropertyAttribute)))
+                    var fieldInfo = node.Member as FieldInfo;
+                    if (fieldInfo != null) // for local variables
                     {
-                        var expression = System.Linq.Expressions.Expression.TypeAs(node, CreateConcreteType(fieldTypeInfo.AsType()));
-                        return expression;
+                        var fieldTypeInfo = fieldInfo.FieldType.GetTypeInfo();
+                        if (fieldTypeInfo.CustomAttributes.Any(i => i.AttributeType == typeof(LowerCasePropertyAttribute)))
+                        {
+                            var expression = Expression.TypeAs(node, CreateConcreteType(fieldTypeInfo.AsType()));
+                            return expression;
+                        }
                     }
                 }
 
@@ -291,9 +289,9 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
-        private System.Linq.Expressions.ExpressionVisitor _pascalCaseExpressionVisitor = new PascalCaseExpressionVisitor();
+        private readonly ExpressionVisitor _pascalCaseExpressionVisitor = new PascalCaseExpressionVisitor();
 
-        public IReadOnlyQueryableSet<TResult> Select<TResult>(System.Linq.Expressions.Expression<System.Func<TSource, TResult>> selector)
+        public IReadOnlyQueryableSet<TResult> Select<TResult>(Expression<Func<TSource, TResult>> selector)
         {
             var newSelector = _pascalCaseExpressionVisitor.Visit(selector);
 
@@ -304,30 +302,30 @@ namespace Microsoft.OData.ProxyExtensions
                 Context);
         }
 
-        public IReadOnlyQueryableSet<TSource> Where(System.Linq.Expressions.Expression<System.Func<TSource, bool>> predicate)
+        public IReadOnlyQueryableSet<TSource> Where(Expression<Func<TSource, bool>> predicate)
         {
             // Fix for DevDiv 941323:
-            if (predicate.Body.NodeType == System.Linq.Expressions.ExpressionType.Coalesce)
+            if (predicate.Body.NodeType == ExpressionType.Coalesce)
             {
-                var binary = (System.Linq.Expressions.BinaryExpression)predicate.Body;
+                var binary = (BinaryExpression)predicate.Body;
 
-                var constantRight = binary.Right as System.Linq.Expressions.ConstantExpression;
+                var constantRight = binary.Right as ConstantExpression;
 
                 // If we are coalescing bool to false, it is a no-op
                 if (constantRight != null &&
                     constantRight.Value is bool &&
                     !(bool)constantRight.Value &&
                     binary.Left.Type == typeof(bool?) &&
-                    binary.Left is System.Linq.Expressions.BinaryExpression)
+                    binary.Left is BinaryExpression)
                 {
-                    var oldLeft = (System.Linq.Expressions.BinaryExpression)binary.Left;
+                    var oldLeft = (BinaryExpression)binary.Left;
 
-                    var newLeft = System.Linq.Expressions.Expression.MakeBinary(
+                    var newLeft = Expression.MakeBinary(
                         oldLeft.NodeType,
                         oldLeft.Left,
                         oldLeft.Right);
 
-                    predicate = (System.Linq.Expressions.Expression<System.Func<TSource, bool>>)System.Linq.Expressions.Expression.Lambda(
+                    predicate = (Expression<Func<TSource, bool>>)Expression.Lambda(
                         predicate.Type,
                         newLeft,
                         predicate.TailCall,
@@ -347,7 +345,7 @@ namespace Microsoft.OData.ProxyExtensions
         public IReadOnlyQueryableSet<TResult> OfType<TResult>()
         {
             DataServiceQuery query = ApplyLinq(new[] { typeof(TResult) }, new object[] { Query }) ??
-                                     (DataServiceQuery)System.Linq.Queryable.OfType<TResult>((System.Linq.IQueryable<TSource>)Query);
+                                     (DataServiceQuery)((IQueryable<TSource>)Query).OfType<TResult>();
 
             return new ReadOnlyQueryableSet<TResult>(
                 query,
@@ -357,7 +355,7 @@ namespace Microsoft.OData.ProxyExtensions
         public IReadOnlyQueryableSet<TSource> Skip(int count)
         {
             DataServiceQuery query = ApplyLinq(new[] { typeof(TSource) }, new object[] { Query, count }) ??
-                                     (DataServiceQuery)System.Linq.Queryable.Skip<TSource>((System.Linq.IQueryable<TSource>)Query, count);
+                                     (DataServiceQuery)((IQueryable<TSource>)Query).Skip(count);
 
             return new ReadOnlyQueryableSet<TSource>(
                 query,
@@ -367,14 +365,14 @@ namespace Microsoft.OData.ProxyExtensions
         public IReadOnlyQueryableSet<TSource> Take(int count)
         {
             DataServiceQuery query = ApplyLinq(new[] { typeof(TSource) }, new object[] { Query, count }) ??
-                                     (DataServiceQuery)System.Linq.Queryable.Take<TSource>((System.Linq.IQueryable<TSource>)Query, count);
+                                     (DataServiceQuery)((IQueryable<TSource>)Query).Take(count);
 
             return new ReadOnlyQueryableSet<TSource>(
                 query,
                 Context);
         }
 
-        public IReadOnlyQueryableSet<TSource> OrderBy<TKey>(System.Linq.Expressions.Expression<System.Func<TSource, TKey>> keySelector)
+        public IReadOnlyQueryableSet<TSource> OrderBy<TKey>(Expression<Func<TSource, TKey>> keySelector)
         {
             var newSelector = _pascalCaseExpressionVisitor.Visit(keySelector);
 
@@ -385,7 +383,7 @@ namespace Microsoft.OData.ProxyExtensions
                 Context);
         }
 
-        public IReadOnlyQueryableSet<TSource> OrderByDescending<TKey>(System.Linq.Expressions.Expression<System.Func<TSource, TKey>> keySelector)
+        public IReadOnlyQueryableSet<TSource> OrderByDescending<TKey>(Expression<Func<TSource, TKey>> keySelector)
         {
             var newSelector = _pascalCaseExpressionVisitor.Visit(keySelector);
 
@@ -396,7 +394,7 @@ namespace Microsoft.OData.ProxyExtensions
                 Context);
         }
 
-        public IReadOnlyQueryableSet<TSource> Expand<TTarget>(System.Linq.Expressions.Expression<Func<TSource, TTarget>> navigationPropertyAccessor)
+        public IReadOnlyQueryableSet<TSource> Expand<TTarget>(Expression<Func<TSource, TTarget>> navigationPropertyAccessor)
         {
             var newSelector = _pascalCaseExpressionVisitor.Visit(navigationPropertyAccessor);
 
@@ -410,12 +408,24 @@ namespace Microsoft.OData.ProxyExtensions
                 Context);
         }
 
-        private DataServiceQuery ApplyLinq(Type[] typeParams, object[] callParams, [System.Runtime.CompilerServices.CallerMemberName] string methodName = null)
+        public IReadOnlyQueryableSet<TSource> Expand(string expansion)
         {
-            return CallOnConcreteType(typeof(System.Linq.Queryable), null, typeParams, callParams, methodName);
+            var concreteType = _concreteType.Value ?? typeof(TSource);
+            var concreteDsq = typeof(DataServiceQuery<>).MakeGenericType(concreteType);
+
+            DataServiceQuery query = CallOnConcreteType(concreteDsq, Query, new object[] { expansion });
+
+            return new ReadOnlyQueryableSet<TSource>(
+                query,
+                Context);
         }
 
-        private DataServiceQuery CallOnConcreteType(Type targetType, object instance, Type[] typeParams, object[] callParams, [System.Runtime.CompilerServices.CallerMemberName] string methodName = null)
+        private DataServiceQuery ApplyLinq(Type[] typeParams, object[] callParams, [CallerMemberName] string methodName = null)
+        {
+            return CallOnConcreteType(typeof (Queryable), null, typeParams, callParams, methodName);
+        }
+
+        private DataServiceQuery CallOnConcreteType(Type targetType, object instance, Type[] typeParams, object[] callParams, [CallerMemberName] string methodName = null)
         {
             for (int i = 0; i < typeParams.Length; i++)
             {
@@ -434,7 +444,7 @@ namespace Microsoft.OData.ProxyExtensions
                 }
             }
 
-            var typeInfo = System.Reflection.IntrospectionExtensions.GetTypeInfo(targetType);
+            var typeInfo = targetType.GetTypeInfo();
             var methodInfo =
                 (from i in typeInfo.GetDeclaredMethods(methodName)
                     let parameters = i.GetParameters()
@@ -446,33 +456,31 @@ namespace Microsoft.OData.ProxyExtensions
             return (DataServiceQuery)methodInfo.Invoke(instance, callParams);
         }
 
-        private bool AllParametersAreAssignable(System.Reflection.ParameterInfo[] parameterInfo, object[] callParams)
+        private DataServiceQuery CallOnConcreteType(Type targetType, object instance, object[] callParams, [CallerMemberName] string methodName = null)
         {
-            for (int i = 0; i < parameterInfo.Length; i++)
-            {
-                if (callParams[i] != null &&
-                    !System.Reflection.IntrospectionExtensions.GetTypeInfo(parameterInfo[i].ParameterType).IsAssignableFrom(
-                        System.Reflection.IntrospectionExtensions.GetTypeInfo(callParams[i].GetType())))
-                {
-                    return false;
-                }
-            }
+            var typeInfo = targetType.GetTypeInfo();
+            var methodInfo =
+                (from i in typeInfo.GetDeclaredMethods(methodName)
+                 where AllParametersAreAssignable(i.GetParameters(), callParams)
+                 select i).First();
 
-            return true;
+            return (DataServiceQuery)methodInfo.Invoke(instance, callParams);
         }
 
-        private DataServiceQuery CallLinqMethod(
-            System.Linq.Expressions.Expression predicate,
-            bool singleGenericParameter = false,
-            [System.Runtime.CompilerServices.CallerMemberName] string methodName = null)
+        private bool AllParametersAreAssignable(IEnumerable<ParameterInfo> parameterInfo, object[] callParams)
         {
-            System.Type[] typeParams = singleGenericParameter ?
-                new Type[] { predicate.Type.GenericTypeArguments[0] } :
+            return !parameterInfo.Where((t, i) => callParams[i] != null && !t.ParameterType.GetTypeInfo().IsAssignableFrom(callParams[i].GetType().GetTypeInfo())).Any();
+        }
+
+        private DataServiceQuery CallLinqMethod(Expression predicate, bool singleGenericParameter = false, [CallerMemberName] string methodName = null)
+        {
+            var typeParams = singleGenericParameter ?
+                new[] { predicate.Type.GenericTypeArguments[0] } :
                 predicate.Type.GenericTypeArguments;
 
             var callParams = new object[] { Query, predicate };
 
-            var typeInfo = System.Reflection.IntrospectionExtensions.GetTypeInfo(typeof(System.Linq.Queryable));
+            var typeInfo = typeof(Queryable).GetTypeInfo();
             var methodInfo =
                 (from i in typeInfo.GetDeclaredMethods(methodName)
                     let parameters = i.GetParameters()

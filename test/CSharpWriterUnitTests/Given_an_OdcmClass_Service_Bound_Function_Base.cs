@@ -19,7 +19,6 @@ namespace CSharpWriterUnitTests
         protected OdcmMethod Method;
         protected Func<Type, Type> ReturnTypeGenerator;
         protected bool IsCollection;
-        private OdcmClass _expectedReturnClass;
         private Type _expectedReturnType;
         private string _expectedMethodName;
         private IEnumerable<Type> _expectedMethodParameters;

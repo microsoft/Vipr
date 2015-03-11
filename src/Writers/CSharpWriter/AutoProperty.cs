@@ -5,9 +5,9 @@ namespace CSharpWriter
 {
     public class AutoProperty : Property
     {
-        public AutoProperty(string name, Type type, bool isPublic = true, bool privateGet = false, bool privateSet = false) : base(name)
+        public AutoProperty(string name, Type type, Visibility visibility = Visibility.Public, bool privateGet = false, bool privateSet = false) : base(name)
         {
-            IsPublic = isPublic;
+            Visibility = visibility;
             Name = name;
             PrivateGet = privateGet;
             PrivateSet = privateSet;

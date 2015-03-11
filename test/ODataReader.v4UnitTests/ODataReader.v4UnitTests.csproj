@@ -90,6 +90,7 @@
       <Link>%28Its.Recipes%29\TestInputGenerator.cs</Link>
     </Compile>
     <Compile Include="Any.cs" />
+	<Compile Include="EdmxTestCase.cs" />
     <Compile Include="Given_an_ODataVocabularyReader.cs" />
     <Compile Include="Given_a_valid_edmx_with_annotations.cs" />
     <Compile Include="Given_a_valid_edmx_with_Description_Annotations.cs" />

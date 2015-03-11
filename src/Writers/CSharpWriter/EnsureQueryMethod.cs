@@ -12,7 +12,7 @@ namespace CSharpWriter
 
         public EnsureQueryMethod(OdcmClass odcmClass)
         {
-            IsPublic = false;
+            Visibility = Visibility.Private;
             Name = "EnsureQuery";
             FetchedType = new Type(NamesService.GetConcreteTypeName(odcmClass));
             FetchedTypeInterface = new Type(NamesService.GetConcreteInterfaceName(odcmClass));

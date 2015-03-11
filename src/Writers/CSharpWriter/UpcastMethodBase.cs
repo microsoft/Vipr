@@ -14,8 +14,7 @@ namespace CSharpWriter
         {
             BaseType = baseType;
             DerivedType = derivedType;
-
-            IsPublic = true;
+            Visibility = Visibility.Public;
         }
     }
 }
