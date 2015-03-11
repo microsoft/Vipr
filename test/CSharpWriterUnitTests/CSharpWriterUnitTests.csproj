@@ -24,6 +24,8 @@
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>cd9d3550</NuGetPackageImportStamp>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -119,6 +121,9 @@
     <Compile Include="..\Shared\%28Its.Recipes%29\TestInputGenerator.cs">
       <Link>%28Its.Recipes%29\TestInputGenerator.cs</Link>
     </Compile>
+    <Compile Include="..\Shared\TestConstants\OData.V4.cs">
+      <Link>TestConstants\OData.V4.cs</Link>
+    </Compile>
     <Compile Include="AssemblyAssertionExtensions.cs" />
     <Compile Include="AssemblyExtensions.cs" />
     <Compile Include="CodeGenTestBase.cs" />
@@ -130,6 +135,13 @@
     <Compile Include="EntityTestBase.cs" />
     <Compile Include="EnumType.cs" />
     <Compile Include="Given_an_Indenter.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Base.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Bound_Function_Collection.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function_Collection.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Collection.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Bound_Function_Instance.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function_Instance.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Instance.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_CountAsync_Method.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_ExecuteAsync_Method.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Fetcher_Collection_Property.cs" />
@@ -146,13 +158,13 @@
     <Compile Include="Given_an_OdcmClass_Service_Navigation_Property_Instance.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_VoidMethod.cs" />
     <Compile Include="Given_an_OdcmClass_Service_Bound_VoidMethod.cs" />
-    <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function.cs" />
-    <Compile Include="Given_an_OdcmClass_Service_Bound_Function.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function_Base.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Bound_Function_Base.cs" />
     <Compile Include="Given_an_OdcmClass_Service_Property_forced_to_pascal_case.cs" />
     <Compile Include="Given_an_OdcmClass_Complex_Property_forced_to_pascal_case.cs" />
     <Compile Include="Given_an_OdcmParameter.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Property_forced_to_pascal_case.cs" />
-    <Compile Include="Given_a_Configuration_Provider.cs" />
+    <Compile Include="Given_a_ConfigurationProvider.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Abstract.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Derived.cs" />
     <Compile Include="Given_a_nullable_Primitive_OdcmProperty.cs" />
@@ -170,7 +182,6 @@
     <Compile Include="Given_an_OdcmClass_Entity_Fetcher.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Concrete_Class.cs" />
     <Compile Include="Given_an_OdcmClass_Complex.cs" />
-    <Compile Include="Given_an_OdcmClass_Entity_Bound_Function.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_VoidMethod.cs" />
     <Compile Include="Given_an_OdcmEnum.cs" />
     <Compile Include="Given_an_OdcmNamespace.cs" />
@@ -274,7 +285,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.core.2.0.0-rc1-build2826\build\portable-net45+aspnetcore50+win+wpa81+wp80+monotouch+monoandroid+Xamarin.iOS\xunit.core.props'))" />
     <Error Condition="!Exists('..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\xunit.runner.visualstudio.2.0.0-rc1-build1030\build\net20\xunit.runner.visualstudio.props'))" />
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

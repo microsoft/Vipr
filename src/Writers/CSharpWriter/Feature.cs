@@ -52,12 +52,21 @@ namespace CSharpWriter
             };
         }
 
-        public static Feature ForOdcmClassService(OdcmClass odcmClass, OdcmModel model)
+        public static Feature ForOdcmClassService(OdcmServiceClass odcmClass, OdcmModel model)
         {
             return new Feature
             {
                 Classes = global::CSharpWriter.Classes.ForOdcmClassService(odcmClass, model),
                 Interfaces = global::CSharpWriter.Interfaces.ForOdcmClassService(odcmClass),
+            };
+        }
+
+        public static Feature ForUpcastMethods(OdcmEntityClass odcmClass)
+        {
+            return new Feature
+            {
+                Classes = global::CSharpWriter.Classes.ForUpcastMethods(odcmClass),
+                Interfaces = global::CSharpWriter.Interfaces.ForUpcastMethods(odcmClass)
             };
         }
     }

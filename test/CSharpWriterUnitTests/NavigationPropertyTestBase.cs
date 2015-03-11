@@ -11,33 +11,45 @@ namespace CSharpWriterUnitTests
     /// </summary>    
     public class NavigationPropertyTestBase : EntityTestBase
     {
-        protected OdcmProperty _navigationProperty;
+        protected OdcmProperty NavigationProperty;
 
-        protected OdcmClass _navTargetClass;
-        protected Type _navTargetConcreteType;
-        protected Type _navTargetConcreteInterface;
-        protected Type _navTargetFetcherType;
-        protected Type _navTargetFetcherInterface;
-        protected Type _navTargetCollectionType;
-        protected Type _navTargetCollectionInterface;
+        protected OdcmEntityClass NavTargetClass;
+        protected EntityArtifacts NavTargetEntity;
+        protected Type NavTargetConcreteType;
+        protected Type NavTargetConcreteInterface;
+        protected Type NavTargetFetcherType;
+        protected Type NavTargetFetcherInterface;
+        protected Type NavTargetCollectionType;
+        protected Type NavTargetCollectionInterface;
 
         public void Init(Action<OdcmModel> config)
         {
             base.Init(config);
 
-            _navTargetConcreteType = Proxy.GetClass(_navTargetClass.Namespace, _navTargetClass.Name);
+            NavTargetConcreteType = Proxy.GetClass(NavTargetClass.Namespace, NavTargetClass.Name);
 
-            _navTargetConcreteInterface = Proxy.GetInterface(_navTargetClass.Namespace, "I" + _navTargetClass.Name);
+            NavTargetConcreteInterface = Proxy.GetInterface(NavTargetClass.Namespace, "I" + NavTargetClass.Name);
 
-            _navTargetFetcherType = Proxy.GetClass(_navTargetClass.Namespace, _navTargetClass.Name + "Fetcher");
+            NavTargetFetcherType = Proxy.GetClass(NavTargetClass.Namespace, NavTargetClass.Name + "Fetcher");
 
-            _navTargetFetcherInterface = Proxy.GetInterface(_navTargetClass.Namespace,
-                "I" + _navTargetClass.Name + "Fetcher");
+            NavTargetFetcherInterface = Proxy.GetInterface(NavTargetClass.Namespace,
+                "I" + NavTargetClass.Name + "Fetcher");
 
-            _navTargetCollectionType = Proxy.GetClass(_navTargetClass.Namespace, _navTargetClass.Name + "Collection");
+            NavTargetCollectionType = Proxy.GetClass(NavTargetClass.Namespace, NavTargetClass.Name + "Collection");
 
-            _navTargetCollectionInterface = Proxy.GetInterface(_navTargetClass.Namespace,
-                "I" + _navTargetClass.Name + "Collection");
+            NavTargetCollectionInterface = Proxy.GetInterface(NavTargetClass.Namespace,
+                "I" + NavTargetClass.Name + "Collection");
+
+            NavTargetEntity = new EntityArtifacts()
+            {
+                Class = NavTargetClass,
+                ConcreteType = NavTargetConcreteType,
+                ConcreteInterface = NavTargetConcreteInterface,
+                FetcherType = NavTargetFetcherType,
+                FetcherInterface = NavTargetFetcherInterface,
+                CollectionType = NavTargetCollectionType,
+                CollectionInterface = NavTargetCollectionInterface
+            };
         }
     }
 }

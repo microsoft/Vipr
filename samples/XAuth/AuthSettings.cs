@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace XAuth
 {
@@ -8,6 +9,8 @@ namespace XAuth
         public string ClientId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+
+        public AuthSettings() { }
 
         public AuthSettings(Uri authority, string clientId, string username, string password)
         {
@@ -23,10 +26,15 @@ namespace XAuth
             {
                 return new AuthSettings(
                     new Uri("https://login.windows.net/common/oauth2/token"),
-                    "",
-                    "",
-                    "");
+                    "YourClientId",
+                    "YourUserName",
+                    "YourPassword");
             }
+        }
+
+        public static string GetJsonTemplate()
+        {
+            return JsonConvert.SerializeObject(Prd);
         }
     }
 }

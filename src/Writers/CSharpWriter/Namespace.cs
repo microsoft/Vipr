@@ -20,7 +20,7 @@ namespace CSharpWriter
             Name = NamesService.GetNamespaceName(@namespace);
             Features = @namespace.Enums.SelectMany(global::CSharpWriter.Features.ForOdcmEnum)
                 .Concat(@namespace.Classes.SelectMany(global::CSharpWriter.Features.ForOdcmClass))
-                .Concat(@namespace.Classes.SelectMany(c => global::CSharpWriter.Features.ForEntityContainer(c, model)));
+                .Concat(@namespace.Classes.OfType<OdcmServiceClass>().SelectMany(c => global::CSharpWriter.Features.ForEntityContainer(c, model)));
         }
     }
 }

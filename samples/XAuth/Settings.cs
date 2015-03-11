@@ -20,10 +20,5 @@
         {
             get { return new Settings(AuthSettings.Prd, EnvironmentSettings.ExchangePrd); }
         }
-
-        public static Settings ActiveDirectoryPrd
-        {
-            get { return new Settings(AuthSettings.Prd, EnvironmentSettings.ActiveDirectoryPrd); }
-        }
     }
 }

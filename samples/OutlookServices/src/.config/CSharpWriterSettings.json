@@ -1,0 +1,14 @@
+{
+	"OmitUpcastMethods": true,
+	"OdcmNamespaceToProxyNamespace" :
+	{
+		"Microsoft.OutlookServices":"Microsoft.Office365.OutlookServices"
+	},
+	"OdcmClassNameToProxyClassName" :
+	{
+		"Microsoft.OutlookServices" :
+		{
+			"EntityContainer" : "OutlookServicesClient"
+		}
+	}
+}

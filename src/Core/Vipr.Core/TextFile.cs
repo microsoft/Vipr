@@ -9,6 +9,7 @@
         }
 
         public string RelativePath { get; private set; }
+
         public  string Contents { get; private set; }
     }
 }

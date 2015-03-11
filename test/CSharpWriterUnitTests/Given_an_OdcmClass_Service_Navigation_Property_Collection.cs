@@ -10,31 +10,31 @@ using Xunit;
 
 namespace CSharpWriterUnitTests
 {
-    public class Given_an_OdcmClass_Service_Navigation_Property_Collection : NavigationPropertyTestBase
+    public class Given_an_OdcmClass_ServiceNavigation_Property_Collection : NavigationPropertyTestBase
     {
         
-        public Given_an_OdcmClass_Service_Navigation_Property_Collection()
+        public Given_an_OdcmClass_ServiceNavigation_Property_Collection()
         {
             base.Init(m =>
             {
-                _navigationProperty = Any.OdcmProperty(p => p.Type = Class);
+                NavigationProperty = Any.OdcmProperty(p => p.Type = Class);
 
                 var @namespace = m.Namespaces[0];
 
-                _navTargetClass = Any.EntityOdcmClass(@namespace);
+                NavTargetClass = Any.EntityOdcmClass(@namespace);
 
-                Model.AddType(_navTargetClass);
+                Model.AddType(NavTargetClass);
 
                 var @class = @namespace.Classes.First();
 
-                _navigationProperty = Any.OdcmProperty(p =>
+                NavigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = OdcmContainer;
-                    p.Type = _navTargetClass;
+                    p.Type = NavTargetClass;
                     p.IsCollection = true;
                 });
 
-                OdcmContainer.Properties.Add(_navigationProperty);
+                OdcmContainer.Properties.Add(NavigationProperty);
             });
         }
 
@@ -44,8 +44,8 @@ namespace CSharpWriterUnitTests
             EntityContainerType.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 null,
-                _navTargetCollectionInterface,
-                _navigationProperty.Name,
+                NavTargetCollectionInterface,
+                NavigationProperty.Name,
                 "Because Entity types should be accessible through their related Entity types.");
         }
 
@@ -55,8 +55,8 @@ namespace CSharpWriterUnitTests
             EntityContainerInterface.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 null,
-                _navTargetCollectionInterface,
-                _navigationProperty.Name);
+                NavTargetCollectionInterface,
+                NavigationProperty.Name);
         }
 
         [Fact]
@@ -65,14 +65,14 @@ namespace CSharpWriterUnitTests
             EntityContainerType.Should().HaveMethod(
                 CSharpAccessModifiers.Public,
                 typeof(void),
-                "AddTo" + _navigationProperty.Name,
-                new[] { _navTargetConcreteType });
+                "AddTo" + NavigationProperty.Name,
+                new[] { NavTargetConcreteType });
         }
 
         [Fact]
         public void The_EntityContainer_interface_exposes_an_AddTo_method()
         {
-            EntityContainerInterface.Should().NotHaveMethod("AddTo" + _navigationProperty.Name);
+            EntityContainerInterface.Should().NotHaveMethod("AddTo" + NavigationProperty.Name);
         }
     }
 }

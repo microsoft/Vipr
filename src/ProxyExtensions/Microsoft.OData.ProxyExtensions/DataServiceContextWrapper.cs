@@ -178,7 +178,7 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
-        public async System.Threading.Tasks.Task<System.IO.Stream> GetStreamAsync(Uri requestUriTmp, IDictionary<string, string> headers)
+        public async System.Threading.Tasks.Task<System.IO.Stream> GetStreamAsync(Uri requestUriTmp, IDictionary<string, string> headers = null)
         {
             using (var client = new System.Net.Http.HttpClient())
             {

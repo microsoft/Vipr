@@ -344,7 +344,7 @@ namespace CSharpWriter
             using (_builder.IndentBraced)
             {
                 _("string resolvedType;");
-                _("resolvedType = Context.DefaultResolveNameInternal(clientType,  \"{0}\", \"{1}\");", method.ClientNamespace, method.ServerNamespace);
+                _("resolvedType = Context.DefaultResolveNameInternal(clientType,  \"{0}\", \"{1}\");", method.ServerNamespace, method.ClientNamespace);
                 _("if (!string.IsNullOrEmpty(resolvedType))");
                 using (_builder.IndentBraced)
                 {
@@ -453,7 +453,7 @@ namespace CSharpWriter
             }
         }
 
-        private void Write(EntityFunctionMethod method)
+        private void Write(EntityInstanceFunctionMethod method)
         {
             WriteSignature(method);
             using (_builder.IndentBraced)
@@ -461,6 +461,22 @@ namespace CSharpWriter
                 WriteEntityMethodBodyStart(method);
                 _("return ({0}) Enumerable.Single<{1}>(await this.Context.ExecuteAsync<{1}>(requestUri, \"{2}\", true, new OperationParameter[]",
                     method.ReturnType.GenericParameters.First(), method.InstanceName, method.HttpMethod);
+                using (_builder.IndentBraced)
+                {
+                    WriteMethodOperationParameters(method);
+                }
+                _("));");
+            }
+        }
+
+        private void Write(EntityCollectionFunctionMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                WriteEntityMethodBodyStart(method);
+                _("return (await this.Context.ExecuteAsync<{0}>(requestUri, \"{1}\", false, new OperationParameter[]",
+                    method.InstanceName, method.HttpMethod);
                 using (_builder.IndentBraced)
                 {
                     WriteMethodOperationParameters(method);
@@ -496,12 +512,18 @@ namespace CSharpWriter
 
         private void WriteEntityMethodBodyStart(Method method)
         {
-            _("if (this.Context == null)");
-            _("    throw new InvalidOperationException(\"Not Initialized\");");
+            WriteInitializationEnforcer();
+
             _("Uri myUri = this.GetUrl();");
             _("if (myUri == (Uri) null)");
             _(" throw new Exception(\"cannot find entity\");");
             _("Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + \"/{0}\");", method.ModelName);
+        }
+
+        private void WriteInitializationEnforcer()
+        {
+            _("if (this.Context == null)");
+            _("    throw new InvalidOperationException(\"Not Initialized\");");
         }
 
         private void WriteSignature(MethodSignature method, bool isForInterface = false)
@@ -622,8 +644,8 @@ namespace CSharpWriter
                         NamesService.GetExtensionTypeName("PagedCollection"),
                         NamesService.GetConcreteInterfaceName(property.OdcmType),
                         NamesService.GetConcreteTypeName(property.OdcmType),
-                        NamesService.GetExtensionTypeName("EntityCollectionImpl"),
-                        property.FieldName);
+                        "DataServiceCollection",
+                        property.Name);
                 }
             }
         }
@@ -652,14 +674,16 @@ namespace CSharpWriter
 
                 using (_builder.IndentBraced)
                 {
-                    _("{0}.Clear();", property.FieldName);
+                    WriteInitializationEnforcer();
+
+                    _("{0}.Clear();", property.Name);
                     _("if (value != null)");
                     using (_builder.IndentBraced)
                     {
                         _("foreach (var i in value)");
                         using (_builder.IndentBraced)
                         {
-                            _("{0}.Add(i);", property.FieldName);
+                            _("{0}.Add(i);", property.Name);
                         }
                     }
                 }
@@ -782,10 +806,10 @@ namespace CSharpWriter
 
                 using (_builder.IndentBraced)
                 {
-                    _("if (this.{0} != value)", property.FieldName);
+                    _("if (this.{0} != value)", property.Name);
                     using (_builder.IndentBraced)
                     {
-                        _("this.{0} = ({1})value;", property.FieldName, property.FieldType);
+                        _("this.{0} = ({1})value;", property.Name, property.FieldType);
                     }
                 }
             }
@@ -917,7 +941,7 @@ namespace CSharpWriter
                 _("set");
                 using (_builder.IndentBraced)
                 {
-                    _("{0}.Clear();", property.FieldName);
+                    _("{0}.Clear();", property.Name);
                     _("if (value != null)");
 
                     using (_builder.IndentBraced)
@@ -926,7 +950,7 @@ namespace CSharpWriter
 
                         using (_builder.IndentBraced)
                         {
-                            _("{0}.Add(i);", property.FieldName);
+                            _("{0}.Add(i);", property.Name);
                         }
                     }
                 }

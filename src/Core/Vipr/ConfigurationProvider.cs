@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Its.Configuration;
 using Vipr.Core;
 
@@ -5,11 +7,10 @@ namespace Vipr
 {
     internal class ConfigurationProvider : IConfigurationProvider
     {
-        private static IConfigurationProvider _instance;
-
-        private static IConfigurationProvider Instance
+        private ConfigurationProvider()
         {
-            get { return _instance ?? (_instance = new ConfigurationProvider()); }
+            if (!String.IsNullOrWhiteSpace(Environment.CurrentDirectory))
+                Settings.SettingsDirectory = Path.Combine(Environment.CurrentDirectory, ".config");
         }
 
         public T GetConfiguration<T>()
@@ -23,7 +24,7 @@ namespace Vipr
 
             if (configurable != null)
             {
-                configurable.SetConfigurationProvider(Instance);
+                configurable.SetConfigurationProvider(new ConfigurationProvider());
             }
         }
     }

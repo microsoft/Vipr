@@ -21,7 +21,7 @@ namespace Vipr.Core.CodeModel
 
         public List<OdcmMethod> Methods { get; private set; }
 
-        public OdcmClass(string name, string @namespace)
+        public OdcmClass(string name, OdcmNamespace @namespace)
             : base(name, @namespace)
         {
             Kind = OdcmClassKind.Complex;

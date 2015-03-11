@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Its.Recipes;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 using Moq;
@@ -52,6 +53,9 @@ namespace CSharpWriterUnitTests
 
         public Assembly GetProxy(OdcmModel model, IConfigurationProvider _configurationProvider = null, IEnumerable<string> internalsVisibleTo = null)
         {
+            if (model.ServiceMetadata["$metadata"] == TestConstants.ODataV4.EmptyEdmx)
+                model.ServiceMetadata["$metadata"] = model.ToEdmx(true);
+
             var writer = new CSharpWriter.CSharpWriter();
 
             writer.SetConfigurationProvider(_configurationProvider);
@@ -79,12 +83,18 @@ namespace CSharpWriterUnitTests
                 typeof(Microsoft.OData.Client.BaseEntityType).Assembly.Location,
                 typeof(Microsoft.OData.Edm.EdmConcurrencyMode).Assembly.Location,
                 typeof(Microsoft.OData.ProxyExtensions.LowerCasePropertyAttribute).Assembly.Location,
+                "System.dll",
                 "System.Core.dll",
-                "System.Xml.dll",
-                "System.Runtime.dll",
+                "System.Diagnostics.Debug.dll",
+                "System.IO.dll",
+                "System.Linq.dll",
                 "System.Linq.Expressions.dll",
+                "System.ObjectModel.dll",
+                "System.Reflection.dll",
+                "System.Runtime.dll",
                 "System.Threading.Tasks.dll",
-                "System.IO.dll"
+                "System.Xml.ReaderWriter.dll",
+                "System.Xml.dll"
             };
 
             return CompileText(referencedAssemblies, proxySources.Select(f => f.Contents).ToArray());
@@ -104,10 +114,11 @@ namespace CSharpWriterUnitTests
         public Assembly CompileText(IEnumerable<string> referencedAssemblies, params string[] cSharpSources)
         {
             var compilerParams = GetCompilerParameters();
+            
+            var profileDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
+                "Reference Assemblies\\Microsoft\\Framework\\.NETPortable\\v4.5\\Profile\\Profile259\\");
 
-            compilerParams.ReferencedAssemblies.AddRange(new[] { "System.dll" });
-
-            if (referencedAssemblies != null) compilerParams.ReferencedAssemblies.AddRange(referencedAssemblies.ToArray());
+            if (referencedAssemblies != null) compilerParams.ReferencedAssemblies.AddRange(referencedAssemblies.Select(r => Path.IsPathRooted(r) ? r : profileDir + r).ToArray());
 
             var provider = new CSharpCodeProvider();
 
@@ -140,7 +151,7 @@ namespace CSharpWriterUnitTests
                     CompilerOptions = "/optimize",
                     GenerateExecutable = false,
                     GenerateInMemory = true,
-                    TreatWarningsAsErrors = false,
+                    TreatWarningsAsErrors = true,
                 };
             }
         }

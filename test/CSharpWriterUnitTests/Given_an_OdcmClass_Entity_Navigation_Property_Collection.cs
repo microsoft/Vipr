@@ -2,6 +2,8 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Reflection;
+using CSharpWriterUnitTests;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Microsoft.MockService;
@@ -21,18 +23,18 @@ namespace CSharpWriterUnitTests
             base.Init(m =>
             {
                 var @namespace = m.Namespaces[0];
-                _navTargetClass = Any.EntityOdcmClass(@namespace);
-                @namespace.Types.Add(_navTargetClass);
+                NavTargetClass = Any.EntityOdcmClass(@namespace);
+                @namespace.Types.Add(NavTargetClass);
 
                 var @class = @namespace.Classes.First();
-                _navigationProperty = Any.OdcmProperty(p =>
+                NavigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = @class;
-                    p.Type = _navTargetClass;
+                    p.Type = NavTargetClass;
                     p.IsCollection = true;
                 });
 
-                m.Namespaces[0].Classes.First().Properties.Add(_navigationProperty);
+                m.Namespaces[0].Classes.First().Properties.Add(NavigationProperty);
             });
         }
 
@@ -42,8 +44,8 @@ namespace CSharpWriterUnitTests
             ConcreteType.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 CSharpAccessModifiers.Public,
-                typeof(IList<>).MakeGenericType(_navTargetConcreteType),
-                _navigationProperty.Name);
+                typeof(IList<>).MakeGenericType(NavTargetConcreteType),
+                NavigationProperty.Name);
         }
 
         [Fact]
@@ -52,8 +54,8 @@ namespace CSharpWriterUnitTests
             FetcherInterface.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 null,
-                _navTargetCollectionInterface,
-                _navigationProperty.Name);
+                NavTargetCollectionInterface,
+                NavigationProperty.Name);
         }
 
         [Fact]
@@ -62,8 +64,8 @@ namespace CSharpWriterUnitTests
             FetcherType.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 null,
-                _navTargetCollectionInterface,
-                _navigationProperty.Name);
+                NavTargetCollectionInterface,
+                NavigationProperty.Name);
         }
 
         [Fact]
@@ -73,8 +75,8 @@ namespace CSharpWriterUnitTests
                 FetcherInterface,
                 CSharpAccessModifiers.Public,
                 null,
-                _navTargetCollectionInterface,
-                _navigationProperty.Name);
+                NavTargetCollectionInterface,
+                NavigationProperty.Name);
         }
 
         [Fact]
@@ -83,8 +85,8 @@ namespace CSharpWriterUnitTests
             ConcreteInterface.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 null,
-                typeof(IPagedCollection<>).MakeGenericType(_navTargetConcreteInterface),
-                _navigationProperty.Name);
+                typeof(IPagedCollection<>).MakeGenericType(NavTargetConcreteInterface),
+                NavigationProperty.Name);
         }
 
         [Fact]
@@ -94,20 +96,20 @@ namespace CSharpWriterUnitTests
                 ConcreteInterface,
                 CSharpAccessModifiers.Public,
                 null,
-                typeof(IPagedCollection<>).MakeGenericType(_navTargetConcreteInterface),
-                _navigationProperty.Name);
+                typeof(IPagedCollection<>).MakeGenericType(NavTargetConcreteInterface),
+                NavigationProperty.Name);
         }
 
         [Fact]
         public void The_Collection_class_does_not_expose_it()
         {
-            CollectionType.Should().NotHaveProperty(_navigationProperty.Name);
+            CollectionType.Should().NotHaveProperty(NavigationProperty.Name);
         }
 
         [Fact]
         public void The_Collection_interface_does_not_expose_it()
         {
-            CollectionInterface.Should().NotHaveProperty(_navigationProperty.Name);
+            CollectionInterface.Should().NotHaveProperty(NavigationProperty.Name);
         }
 
         [Fact(Skip = "Issue #24 https://github.com/Microsoft/vipr/issues/24")]
@@ -125,7 +127,7 @@ namespace CSharpWriterUnitTests
                 instance.SetPropertyValues(Class.GetSampleKeyArguments());
 
                 var propertyValue = instance.GetPropertyValue<IPagedCollection>(ConcreteInterface,
-                    _navigationProperty.Name);
+                    NavigationProperty.Name);
 
                 propertyValue.GetNextPageAsync().Wait();
             }
@@ -138,7 +140,7 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                 .SetupPostEntity(TargetEntity, entityKeyValues)
-                .SetupGetEntityProperty(TargetEntity, entityKeyValues, _navigationProperty)
+                .SetupGetEntityProperty(TargetEntity, entityKeyValues, NavigationProperty)
                 .Start())
             {
                 var instance = _mockedService
@@ -148,7 +150,7 @@ namespace CSharpWriterUnitTests
                 instance.SetPropertyValues(Class.GetSampleKeyArguments());
 
                 var propertyFetcher = instance.GetPropertyValue<ReadOnlyQueryableSetBase>(FetcherInterface,
-                    _navigationProperty.Name);
+                    NavigationProperty.Name);
 
                 propertyFetcher.ExecuteAsync().Wait();
             }
@@ -158,7 +160,7 @@ namespace CSharpWriterUnitTests
         public void When_retrieved_through_Fetcher_then_request_is_sent_to_server_with_original_name()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + _navigationProperty.Name;
+            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
 
             using (_mockedService = new MockService()
                     .SetupGetEntity(propertyPath, Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments()))
@@ -168,7 +170,7 @@ namespace CSharpWriterUnitTests
                     .GetDefaultContext(Model)
                     .CreateFetcher(FetcherType, Class.GetDefaultEntityPath(entityKeyValues));
 
-                var propertyFetcher = fetcher.GetPropertyValue<ReadOnlyQueryableSetBase>(_navigationProperty.Name);
+                var propertyFetcher = fetcher.GetPropertyValue<ReadOnlyQueryableSetBase>(NavigationProperty.Name);
 
                 propertyFetcher.ExecuteAsync().Wait();
             }
@@ -181,7 +183,7 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                 .SetupPostEntity(TargetEntity, entityKeyValues)
-                .SetupPostEntityPropertyChanges(TargetEntity, entityKeyValues, _navigationProperty)
+                .SetupPostEntityPropertyChanges(TargetEntity, entityKeyValues, NavigationProperty)
                 .Start())
             {
                 var context = _mockedService
@@ -190,16 +192,59 @@ namespace CSharpWriterUnitTests
                 var instance = context
                     .CreateConcrete(ConcreteType);
 
-                var relatedInstance = Activator.CreateInstance(_navTargetConcreteType);
+                var relatedInstance = Activator.CreateInstance(NavTargetConcreteType);
 
-                var collection = Activator.CreateInstance(typeof(List<>).MakeGenericType(_navTargetConcreteType));
+                var collection = Activator.CreateInstance(typeof(List<>).MakeGenericType(NavTargetConcreteType));
 
                 collection.InvokeMethod("Add", new[] { relatedInstance });
 
-                instance.SetPropertyValue(_navigationProperty.Name, collection);
+                instance.SetPropertyValue(NavigationProperty.Name, collection);
 
                 context.SaveChangesAsync().Wait();
             }
         }
+    }
+}
+
+public class Given_an_OdcmClass_Entity_Uninitialized : NavigationPropertyTestBase
+{
+    private MockService _mockedService;
+
+    public Given_an_OdcmClass_Entity_Uninitialized()
+    {
+        base.Init(m =>
+        {
+            var @namespace = m.Namespaces[0];
+            NavTargetClass = Any.EntityOdcmClass(@namespace);
+            @namespace.Types.Add(NavTargetClass);
+
+            var @class = @namespace.Classes.First();
+            NavigationProperty = Any.OdcmProperty(p =>
+            {
+                p.Class = @class;
+                p.Type = NavTargetClass;
+                p.IsCollection = true;
+            });
+
+            m.Namespaces[0].Classes.First().Properties.Add(NavigationProperty);
+        });
+    }
+
+    [Fact]
+    public void When_not_bound_to_Context_and_updated_through_Concrete_accessor_then_throws_InvalidOperationException()
+    {
+        var instance = Activator.CreateInstance(ConcreteType);
+
+        var relatedInstance = Activator.CreateInstance(NavTargetConcreteType);
+
+        var collection = Activator.CreateInstance(typeof(List<>).MakeGenericType(NavTargetConcreteType));
+
+        collection.InvokeMethod("Add", new[] { relatedInstance });
+
+        Action act = () => instance.SetPropertyValue(NavigationProperty.Name, collection);
+
+        act.ShouldThrow<TargetInvocationException>()
+            .WithInnerException<InvalidOperationException>()
+            .WithInnerMessage("Not Initialized");
     }
 }

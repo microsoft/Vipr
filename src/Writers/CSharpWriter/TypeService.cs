@@ -17,7 +17,7 @@ namespace CSharpWriter
                 type is OdcmEnum ||
                 (
                     type is OdcmPrimitiveType &&
-                    type.Namespace.Equals("Edm", StringComparison.OrdinalIgnoreCase) &&
+                    type.Namespace.Name.Equals("Edm", StringComparison.OrdinalIgnoreCase) &&
                     (
                         type.Name.Equals("Boolean", StringComparison.OrdinalIgnoreCase) ||
                         type.Name.Equals("Byte", StringComparison.OrdinalIgnoreCase) ||

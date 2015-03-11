@@ -8,34 +8,34 @@ namespace ExchangeManagedOMTests
     [TestClass]
     public class ContactTests
     {
-        private OutlookServicesClient client;
-        private Contact tempContact;
+        private OutlookServicesClient _client;
+        private Contact _tempContact;
 
         [TestInitialize]
         public void Init()
         {
             var settings = Settings.ExchangePrd;
             var xauth =
-                new XAuth.Auth(settings.Auth);
+                new Auth(settings.Auth);
 
-            client = new OutlookServicesClient(settings.Environment.EndpointUri, () => xauth.GetAccessToken(settings.Environment.ResourceId));
+            _client = new OutlookServicesClient(settings.Environment.EndpointUri, () => xauth.GetAccessToken(settings.Environment.ResourceId));
 
-            tempContact = new Contact
+            _tempContact = new Contact
             {
                 DisplayName = "Test User" + new Random().NextDouble(),
                 GivenName = "GivenName",
                 Surname = "Surname"
             };
 
-            client.Me.Contacts.AddContactAsync(tempContact).Wait();
+            _client.Me.Contacts.AddContactAsync(_tempContact).Wait();
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            if (tempContact != null)
+            if (_tempContact != null)
             {
-                tempContact.DeleteAsync().Wait();
+                _tempContact.DeleteAsync().Wait();
             }
         }
 

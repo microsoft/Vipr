@@ -50,9 +50,9 @@ namespace CSharpWriterUnitTests
                 .Distinct()
                 .Should().Contain(new[]
                 {
-                    "mscorlib",
-                    "Microsoft.OData.Client",
-                    "System",
+                    "System.Runtime", "Microsoft.OData.ProxyExtensions", "System.Threading.Tasks",
+                    "System.Linq.Expressions", "Microsoft.OData.Client", "Microsoft.OData.Edm",
+                    "System.Xml.ReaderWriter", "System.Diagnostics.Debug", "System.Reflection", "System.IO",
                 });
         }
     }

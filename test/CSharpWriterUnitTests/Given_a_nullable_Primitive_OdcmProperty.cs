@@ -31,7 +31,11 @@ namespace CSharpWriterUnitTests
 
             _class = Any.EntityOdcmClass(_namespace);
 
-            _property = Any.PrimitiveOdcmProperty(p => p.IsNullable = true);
+            _property = Any.PrimitiveOdcmProperty(p =>
+            {
+                p.IsNullable = true;
+                p.Class = _class;
+            });
 
             _class.Properties.Add(_property);
 
@@ -149,7 +153,7 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void When_the_property_is_Enum_it_is_NOT_exposed_as_Nullable()
         {
-            var @enum = Any.OdcmEnum(e => e.Namespace = _namespace.Name);
+            var @enum = Any.OdcmEnum(e => e.Namespace = _namespace);
             _model.AddType(@enum);
             _property.Type = @enum;
             _proxy = GetProxy(_model);
@@ -187,7 +191,7 @@ namespace CSharpWriterUnitTests
 
         private void CreateProxyWithPropertyType(string type)
         {
-            _property.Type = new OdcmPrimitiveType(type, "Edm");
+            _property.Type = new OdcmPrimitiveType(type, OdcmNamespace.Edm);
 
             _proxy = GetProxy(_model);
 

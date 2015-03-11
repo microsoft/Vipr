@@ -8,7 +8,7 @@ namespace Vipr.Core.CodeModel
 {
     public class OdcmMediaClass : OdcmEntityClass
     {
-        public OdcmMediaClass(string name, string @namespace)
+        public OdcmMediaClass(string name, OdcmNamespace @namespace)
             : base(name, @namespace)
         {
             Kind = OdcmClassKind.MediaEntity;

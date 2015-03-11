@@ -1,10 +1,10 @@
-using System.Collections.Generic;
+using System;
 using System.IO;
 using Vipr.Core;
 
 namespace Vipr
 {
-    internal class FileWriter
+    internal static class FileWriter
     {
         public static void Write(TextFileCollection textFilesToWrite, string outputDirectoryPath = null)
         {
@@ -17,6 +17,10 @@ namespace Vipr
 
                 if (!string.IsNullOrWhiteSpace(outputDirectoryPath))
                     filePath = Path.Combine(outputDirectoryPath, filePath);
+
+                if (!String.IsNullOrWhiteSpace(Environment.CurrentDirectory) &&
+                    !Path.IsPathRooted(filePath))
+                    filePath = Path.Combine(Environment.CurrentDirectory, filePath);
 
                 File.WriteAllText(filePath, file.Contents);
             }

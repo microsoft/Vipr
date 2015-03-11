@@ -39,9 +39,19 @@ namespace Microsoft.Its.Recipes
             };
         }
 
+        public static TestSettings2 TestSettings2()
+        {
+            return new TestSettings2
+            {
+                BoolValue = Any.Bool(),
+                StringDictionary = Any.StringDictionary(),
+                StringValue = Any.String()
+            };
+        }
+
         private static IDictionary<string, string> StringDictionary()
         {
-            return Any.Sequence(x => Any.String()).ToDictionary(x => x, x => Any.String());
+            return Any.Sequence(x => Any.String(10)).ToDictionary(x => x, x => Any.String());
         }
     }
 }

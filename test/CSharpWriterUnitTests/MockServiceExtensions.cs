@@ -89,10 +89,13 @@ namespace CSharpWriterUnitTests
             return mockService.SetupGetEntitySetCount(targetEntity.Class.GetDefaultEntitySetPath(), count);
         }
 
-        public static JObject GetOdataJsonInstance(this MockService mockService, EntityArtifacts targetEntity)
+        public static JObject GetOdataJsonInstance(this MockService mockService, EntityArtifacts targetEntity,
+            IEnumerable<Tuple<string, object>> propertyValues = null)
         {
+            propertyValues = propertyValues ?? targetEntity.Class.GetSampleKeyArguments();
+
             return
-                JObject.FromObject(targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()))
+                JObject.FromObject(targetEntity.ConcreteType.Initialize(propertyValues))
                     .AddOdataContext(mockService.GetBaseAddress(), targetEntity.Class.GetDefaultEntitySetName());
         }
 
@@ -108,7 +111,7 @@ namespace CSharpWriterUnitTests
 
             mockService
                 .SetupMethod(httpMethod,
-                    instancePath + "/" + method.Name,
+                    instancePath + "/" + method.FullName,
                     uriArguments.ToTestReadableStringCollection(),
                     ArgumentOfTupleExtensions.ToJObject(bodyArguments),
                     response);

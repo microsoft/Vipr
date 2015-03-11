@@ -58,7 +58,7 @@ namespace CSharpWriter
             };
         }
 
-        public static Field ForNavigationCollectionProperty(OdcmProperty property)
+        public static Field ForFetcherNavigationCollectionProperty(OdcmProperty property)
         {
             return new Field
             {
@@ -67,7 +67,7 @@ namespace CSharpWriter
             };
         }
 
-        public static Field ForNavigationConcreteProperty(OdcmProperty property)
+        public static Field ForConcreteNavigationCollectionProperty(OdcmProperty property)
         {
             return new Field
             {

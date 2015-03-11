@@ -41,7 +41,8 @@ namespace CSharpWriter
         {
             return GetNavigationFields(odcmClass)
                 .Concat(GetFetcherFields(odcmClass))
-                .Concat(GetStructuralFields(odcmClass));
+                .Concat(GetStructuralFields(odcmClass))
+                .Concat(GetCollectionFields(odcmClass));
         }
 
         public static IEnumerable<Field> ForFetcher(OdcmClass odcmClass)
@@ -49,16 +50,20 @@ namespace CSharpWriter
             return GetFetcherFields(odcmClass);
         }
 
+        private static IEnumerable<Field> GetCollectionFields(OdcmClass odcmClass)
+        {
+            return odcmClass.NavigationProperties(true).Select(Field.ForConcreteNavigationCollectionProperty);
+        }
+
         private static IEnumerable<Field> GetFetcherFields(OdcmClass odcmClass)
         {
-            return odcmClass.NavigationProperties().Select(Field.ForNavigationFetcherProperty)
-                .Concat(odcmClass.NavigationProperties().Select(Field.ForNavigationCollectionProperty))
-                .Concat(odcmClass.NavigationProperties().Select(Field.ForNavigationConcreteProperty));
+            return odcmClass.NavigationProperties(false).Select(Field.ForNavigationFetcherProperty)
+                .Concat(odcmClass.NavigationProperties(true).Select(Field.ForFetcherNavigationCollectionProperty));
         }
 
         private static IEnumerable<Field> GetNavigationFields(OdcmClass odcmClass)
         {
-            return odcmClass.NavigationProperties().Select(Field.ForNavigationProperty);
+            return odcmClass.NavigationProperties(false).Select(Field.ForNavigationProperty);
         }
 
         private static IEnumerable<Field> GetStructuralFields(OdcmClass odcmClass)

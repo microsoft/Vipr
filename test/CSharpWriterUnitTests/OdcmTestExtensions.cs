@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Its.Recipes;
 using Vipr.Core.CodeModel;
 
@@ -60,6 +61,16 @@ namespace CSharpWriterUnitTests
             return "/" + odcmClass.GetDefaultEntitySetName();
         }
 
+        public static string GetDefaultSingletonName(this OdcmEntityClass odcmClass)
+        {
+            return odcmClass.Name;
+        }
+
+        public static string GetDefaultSingletonPath(this OdcmEntityClass odcmClass)
+        {
+            return "/" + odcmClass.GetDefaultSingletonName();
+        }
+
         public static string GetDefaultEntityPath(this OdcmEntityClass odcmClass, IEnumerable<Tuple<string, object>> keyValues = null)
         {
             keyValues = keyValues ?? odcmClass.GetSampleKeyArguments().ToArray();
@@ -80,6 +91,22 @@ namespace CSharpWriterUnitTests
         public static string GetDefaultEntityMethodPath(this OdcmEntityClass odcmClass, IEnumerable<Tuple<string, object>> keyValues, string propertyName)
         {
             return string.Format("{0}/{1}", odcmClass.GetDefaultEntityPath(keyValues), propertyName);
+        }
+
+        public static EntityArtifacts GetArtifactsFrom(this OdcmEntityClass Class, Assembly Proxy)
+        {
+            var retVal = new EntityArtifacts
+            {
+                Class = Class,
+                ConcreteType = Proxy.GetClass(Class.Namespace, Class.Name),
+                ConcreteInterface = Proxy.GetInterface(Class.Namespace, "I" + Class.Name),
+                FetcherType = Proxy.GetClass(Class.Namespace, Class.Name + "Fetcher"),
+                FetcherInterface = Proxy.GetInterface(Class.Namespace, "I" + Class.Name + "Fetcher"),
+                CollectionType = Proxy.GetClass(Class.Namespace, Class.Name + "Collection"),
+                CollectionInterface = Proxy.GetInterface(Class.Namespace, "I" + Class.Name + "Collection")
+            };
+
+            return retVal;
         }
     }
 }

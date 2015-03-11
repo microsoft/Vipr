@@ -12,29 +12,29 @@ using Xunit;
 
 namespace CSharpWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Navigation_Property_Instance : NavigationPropertyTestBase
+    public class Given_an_OdcmClass_EntityNavigation_Property_Instance : NavigationPropertyTestBase
     {
         private MockService _mockedService;
 
-        public Given_an_OdcmClass_Entity_Navigation_Property_Instance()
+        public Given_an_OdcmClass_EntityNavigation_Property_Instance()
         {
-            _navigationProperty = Any.OdcmProperty(p => p.Type = Class);
+            NavigationProperty = Any.OdcmProperty(p => p.Type = Class);
 
             base.Init(m =>
             {
                 var @namespace = m.Namespaces[0];
-                _navTargetClass = Any.EntityOdcmClass(@namespace);
-                @namespace.Types.Add(_navTargetClass);
+                NavTargetClass = Any.EntityOdcmClass(@namespace);
+                @namespace.Types.Add(NavTargetClass);
 
                 var @class = @namespace.Classes.First();
-                _navigationProperty = Any.OdcmProperty(p =>
+                NavigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = @class;
-                    p.Type = _navTargetClass;
+                    p.Type = NavTargetClass;
                     p.IsCollection = false;
                 });
 
-                m.Namespaces[0].Classes.First().Properties.Add(_navigationProperty);
+                m.Namespaces[0].Classes.First().Properties.Add(NavigationProperty);
             });
         }
 
@@ -44,8 +44,8 @@ namespace CSharpWriterUnitTests
             ConcreteType.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 CSharpAccessModifiers.Public,
-                _navTargetConcreteType,
-                _navigationProperty.Name,
+                NavTargetConcreteType,
+                NavigationProperty.Name,
                 "Because Entity types should be accessible through their related Entity types.");
         }
 
@@ -56,8 +56,8 @@ namespace CSharpWriterUnitTests
                 ConcreteInterface,
                 CSharpAccessModifiers.Public,
                 CSharpAccessModifiers.Public,
-                _navTargetConcreteInterface,
-                _navigationProperty.Name);
+                NavTargetConcreteInterface,
+                NavigationProperty.Name);
         }
 
         [Fact]
@@ -67,8 +67,8 @@ namespace CSharpWriterUnitTests
                 FetcherInterface,
                 CSharpAccessModifiers.Public,
                 null,
-                _navTargetFetcherInterface,
-                _navigationProperty.Name);
+                NavTargetFetcherInterface,
+                NavigationProperty.Name);
         }
 
         [Fact]
@@ -77,8 +77,8 @@ namespace CSharpWriterUnitTests
             ConcreteInterface.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 CSharpAccessModifiers.Public,
-                _navTargetConcreteInterface,
-                _navigationProperty.Name);
+                NavTargetConcreteInterface,
+                NavigationProperty.Name);
         }
 
         [Fact]
@@ -87,8 +87,8 @@ namespace CSharpWriterUnitTests
             FetcherInterface.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 null,
-                _navTargetFetcherInterface,
-                _navigationProperty.Name);
+                NavTargetFetcherInterface,
+                NavigationProperty.Name);
         }
 
         [Fact]
@@ -97,46 +97,46 @@ namespace CSharpWriterUnitTests
             FetcherType.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 null,
-                _navTargetFetcherInterface,
-                _navigationProperty.Name);
+                NavTargetFetcherInterface,
+                NavigationProperty.Name);
         }
 
         [Fact]
-        public void The_Collection_interface_does_not_expose_it()
+        public void The_Collection_interface_doesNot_expose_it()
         {
-            CollectionInterface.Should().NotHaveProperty(_navigationProperty.Name);
+            CollectionInterface.Should().NotHaveProperty(NavigationProperty.Name);
         }
 
         [Fact]
-        public void The_Collection_class_does_not_expose_it()
+        public void The_Collection_class_doesNot_expose_it()
         {
-            CollectionType.Should().NotHaveProperty(_navigationProperty.Name);
+            CollectionType.Should().NotHaveProperty(NavigationProperty.Name);
         }
         
         [Fact]
-        public void When_retrieved_through_Fetcher_then_request_is_sent_to_server_with_original_name()
+        public void When_retrieved_through_Fetcher_then_request_is_sent_to_server_with_originalName()
         {
             var keyValues = Class.GetSampleKeyArguments().ToArray();
 
             using (_mockedService = new MockService()
-                    .SetupGetEntityProperty(TargetEntity, keyValues, _navigationProperty)
+                    .SetupGetEntityProperty(TargetEntity, keyValues, NavigationProperty)
                     .Start())
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)
                     .CreateFetcher(FetcherType, TargetEntity.Class.GetDefaultEntityPath(keyValues));
 
-                var propertyFetcher = fetcher.GetPropertyValue<RestShallowObjectFetcher>(_navigationProperty.Name);
+                var propertyFetcher = fetcher.GetPropertyValue<RestShallowObjectFetcher>(NavigationProperty.Name);
 
                 propertyFetcher.ExecuteAsync().Wait();
             }
         }
 
         [Fact(Skip = "Issue #24 https://github.com/Microsoft/vipr/issues/24")]
-        public void When_retrieved_through_Concrete_ConcreteInterface_Property_then_request_is_sent_with_original_name()
+        public void When_retrieved_through_Concrete_ConcreteInterface_Property_then_request_is_sent_with_originalName()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var expectedPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + _navigationProperty.Name;
+            var expectedPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
             var keyValues = Class.GetSampleKeyArguments().ToArray();
 
             using (_mockedService = new MockService()
@@ -151,20 +151,20 @@ namespace CSharpWriterUnitTests
                 instance.SetPropertyValues(Class.GetSampleKeyArguments());
 
                 var propertyValue = instance.GetPropertyValue<RestShallowObjectFetcher>(ConcreteInterface,
-                    _navigationProperty.Name);
+                    NavigationProperty.Name);
 
                 propertyValue.ExecuteAsync().Wait();
             }
         }
 
         [Fact]
-        public void When_retrieved_through_Concrete_then_request_is_sent_to_server_with_original_name()
+        public void When_retrieved_through_Concrete_then_request_is_sent_to_server_with_originalName()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
          
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .SetupGetEntityProperty(TargetEntity, entityKeyValues, _navigationProperty)
+                    .SetupGetEntityProperty(TargetEntity, entityKeyValues, NavigationProperty)
                     .Start())
             {
                 var instance = _mockedService
@@ -174,14 +174,14 @@ namespace CSharpWriterUnitTests
                 instance.SetPropertyValues(Class.GetSampleKeyArguments());
 
                 var propertyFetcher = instance.GetPropertyValue<RestShallowObjectFetcher>(FetcherInterface,
-                    _navigationProperty.Name);
+                    NavigationProperty.Name);
 
                 propertyFetcher.ExecuteAsync().Wait();
             }
         }
 
         [Fact]
-        public void When_updated_through_Concrete_accessor_then_request_is_sent_to_server_with_original_name()
+        public void When_updated_through_Concrete_accessor_then_request_is_sent_to_server_with_originalName()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var expectedPath = Class.GetDefaultEntityPath(entityKeyValues);
@@ -197,9 +197,9 @@ namespace CSharpWriterUnitTests
                 var instance = context
                     .CreateConcrete(ConcreteType);
 
-                var relatedInstance = Activator.CreateInstance(_navTargetConcreteType);
+                var relatedInstance = Activator.CreateInstance(NavTargetConcreteType);
 
-                instance.SetPropertyValue(_navigationProperty.Name, relatedInstance);
+                instance.SetPropertyValue(NavigationProperty.Name, relatedInstance);
 
                 instance.UpdateAsync().Wait();
             }

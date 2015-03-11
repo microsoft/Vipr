@@ -9,7 +9,7 @@ namespace Vipr.Core.CodeModel
 {
     public class OdcmServiceClass : OdcmClass
     {
-        public OdcmServiceClass(string name, string @namespace)
+        public OdcmServiceClass(string name, OdcmNamespace @namespace)
             : base(name, @namespace)
         {
             Kind = OdcmClassKind.Service;

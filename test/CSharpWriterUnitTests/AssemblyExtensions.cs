@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Vipr.Core.CodeModel;
 
 namespace CSharpWriterUnitTests
 {
@@ -20,6 +21,11 @@ namespace CSharpWriterUnitTests
             return asm.GetTypes().Where(t => t.IsEnum).Select(t => new EnumType(t));
         }
 
+        public static EnumType GetEnum(this Assembly asm, OdcmNamespace odcmNamespace, string name)
+        {
+            return asm.GetEnum(odcmNamespace.Name, name);
+        }
+
         public static EnumType GetEnum(this Assembly asm, string @namespace, string name)
         {
             return asm.GetEnums().FirstOrDefault(e => e.Name == name && e.Namespace == @namespace);
@@ -28,6 +34,15 @@ namespace CSharpWriterUnitTests
         public static IEnumerable<Type> GetClasses(this Assembly asm)
         {
             return asm.GetTypes().Where(t => t.IsClass);
+        }
+        public static Type GetClass(this Assembly asm, OdcmNamespace @namespace, string name)
+        {
+            return asm.GetClass(@namespace.Name, name);
+        }
+
+        public static Type GetInterface(this Assembly asm, OdcmNamespace @namespace, string name)
+        {
+            return asm.GetInterface(@namespace.Name, name);
         }
 
         public static Type GetClass(this Assembly asm, string @namespace, string name)

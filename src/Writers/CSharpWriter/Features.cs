@@ -42,7 +42,7 @@ namespace CSharpWriter
             throw new NotImplementedException(string.Format("OdcmClassKind {0} is not recognized", odcmClass.Kind));
         }
 
-        public static IEnumerable<Feature> ForEntityContainer(OdcmClass odcmClass, OdcmModel model)
+        public static IEnumerable<Feature> ForEntityContainer(OdcmServiceClass odcmClass, OdcmModel model)
         {
             switch (odcmClass.Kind)
             {
@@ -58,7 +58,7 @@ namespace CSharpWriter
             throw new NotImplementedException(string.Format("OdcmClassKind {0} is not recognized", odcmClass.Kind));
         }
 
-        private static IEnumerable<Feature> ForOdcmClassService(OdcmClass odcmClass, OdcmModel model)
+        private static IEnumerable<Feature> ForOdcmClassService(OdcmServiceClass odcmClass, OdcmModel model)
         {
             return new[]
             {
@@ -68,11 +68,16 @@ namespace CSharpWriter
 
         private static IEnumerable<Feature> ForOdcmClassEntity(OdcmEntityClass odcmClass)
         {
-            return new[]
+            var retVal = new List<Feature>
             {
                 Feature.ForOdcmClassEntity(odcmClass),
                 Feature.ForCountableCollection(odcmClass),
             };
+
+            if (!ConfigurationService.Settings.OmitUpcastMethods && odcmClass.Base == null)
+                retVal.Add(Feature.ForUpcastMethods(odcmClass));
+
+            return retVal;
         }
 
         private static IEnumerable<Feature> ForOdcmClassComplex(OdcmClass odcmClass)

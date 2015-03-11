@@ -1,40 +1,35 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using CSharpWriter;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
-using System.Linq;
-using Vipr.Core.CodeModel;
 using Xunit;
 
 namespace CSharpWriterUnitTests
 {
-    public class Given_an_OdcmClass_Service_Navigation_Property_Instance : NavigationPropertyTestBase
+    public class Given_an_OdcmClass_ServiceNavigation_Property_Instance : NavigationPropertyTestBase
     {
         
-        public Given_an_OdcmClass_Service_Navigation_Property_Instance()
+        public Given_an_OdcmClass_ServiceNavigation_Property_Instance()
         {
             base.Init(m =>
             {
-                _navigationProperty = Any.OdcmProperty(p => p.Type = Class);
+                NavigationProperty = Any.OdcmProperty(p => p.Type = Class);
 
                 var @namespace = m.Namespaces[0];
 
-                _navTargetClass = Any.EntityOdcmClass(@namespace);
+                NavTargetClass = Any.EntityOdcmClass(@namespace);
 
-                @namespace.Types.Add(_navTargetClass);
+                @namespace.Types.Add(NavTargetClass);
 
-                var @class = @namespace.Classes.First();
-
-                _navigationProperty = Any.OdcmProperty(p =>
+                NavigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = OdcmContainer;
-                    p.Type = _navTargetClass;
+                    p.Type = NavTargetClass;
                     p.IsCollection = false;
                 });
 
-                OdcmContainer.Properties.Add(_navigationProperty);
+                OdcmContainer.Properties.Add(NavigationProperty);
             });
         }
 
@@ -44,8 +39,8 @@ namespace CSharpWriterUnitTests
             EntityContainerType.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 CSharpAccessModifiers.Private,
-                _navTargetFetcherInterface,
-                _navigationProperty.Name,
+                NavTargetFetcherInterface,
+                NavigationProperty.Name,
                 "Because Entity types should be accessible through their related Entity types.");
         }
 
@@ -55,8 +50,8 @@ namespace CSharpWriterUnitTests
             EntityContainerInterface.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 null,
-                _navTargetFetcherInterface,
-                _navigationProperty.Name);
+                NavTargetFetcherInterface,
+                NavigationProperty.Name);
         }
     }
 }

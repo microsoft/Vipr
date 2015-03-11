@@ -1,2 +1,0 @@
-﻿<#@ output extension=".cs" #>
-<#@ Include   file="..\T4Templates\ODatav4.tt" #>

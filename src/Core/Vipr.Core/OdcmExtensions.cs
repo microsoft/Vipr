@@ -16,9 +16,9 @@ namespace Vipr.Core
                 .Where(p => isNavigation == (p.Type is OdcmEntityClass || p.Type is OdcmMediaClass));
         }
 
-        public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass)
+        public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass, bool? isCollection = null)
         {
-            return odcmClass.Properties.WhereIsNavigation();
+            return odcmClass.Properties.WhereIsNavigation().Where(p => isCollection == null || p.IsCollection == isCollection);
         }
 
         public static IEnumerable<OdcmProperty> StructuralProperties(this OdcmClass odcmClass)

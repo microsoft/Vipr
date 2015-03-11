@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
 
@@ -73,9 +74,21 @@ namespace CSharpWriterUnitTests
             return @object.InvokeMethod<T>("get_Item", args: args);
         }
 
-        public static void ValidatePropertyValues(this object instance, IEnumerable<Tuple<string, object>> keyValues)
+        public static void ValidateCollectionPropertyValues(this object collection, IList<IEnumerable<Tuple<string, object>>> entitiesProperties)
         {
-            foreach (var keyValue in keyValues)
+            var responses = ((IEnumerable<object>)collection).ToList();
+
+            responses.Count.Should().Be(entitiesProperties.Count());
+
+            for (int x = 0; x < responses.Count; x++)
+            {
+                ValidatePropertyValues(responses[x], entitiesProperties[x]);
+            }
+        }
+
+        public static void ValidatePropertyValues(this object instance, IEnumerable<Tuple<string, object>> propertyValues)
+        {
+            foreach (var keyValue in propertyValues)
             {
                 instance.GetPropertyValue(keyValue.Item1)
                     .Should().Be(keyValue.Item2);

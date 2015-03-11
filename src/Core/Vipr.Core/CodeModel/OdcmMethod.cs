@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Vipr.Core.CodeModel
 {
-    public class OdcmMethod : OdcmAnnotatedObject
+    public class OdcmMethod : OdcmType
     {
         public OdcmClass Class { get; set; }
 
@@ -24,8 +24,8 @@ namespace Vipr.Core.CodeModel
 
         public OdcmType ReturnType { get; set; }
 
-        public OdcmMethod(string name)
-            : base(name)
+        public OdcmMethod(string name, OdcmNamespace @namespace)
+            : base(name, @namespace)
         {
             Parameters = new List<OdcmParameter>();
         }
@@ -34,5 +34,7 @@ namespace Vipr.Core.CodeModel
         {
             return MakeCanonicalName(Name, ReturnType, Parameters.ToArray());
         }
+
+        public string FullName { get { return Namespace.Name + "." + Name; } }
     }
 }

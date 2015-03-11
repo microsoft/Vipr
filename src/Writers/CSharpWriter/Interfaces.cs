@@ -25,5 +25,10 @@ namespace CSharpWriter
         {
             return new[] {Interface.ForEntityContainer(odcmClass)};
         }
+
+        internal static IEnumerable<Interface> ForUpcastMethods(OdcmEntityClass odcmClass)
+        {
+            return new[] {Interface.ForFetcherUpcastMethods(odcmClass)};
+        }
     }
 }

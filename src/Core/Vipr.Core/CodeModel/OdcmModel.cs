@@ -36,9 +36,19 @@ namespace Vipr.Core.CodeModel
             ServiceType = serviceType;
         }
 
+        public void AddNamespace(string @namespace)
+        {
+            OdcmNamespace ns;
+
+            if (!TryResolveNamespace(@namespace, out ns))
+            {
+                Namespaces.Add(new OdcmNamespace(@namespace));
+            }
+        }
+
         public void AddType(OdcmType type)
         {
-            string @namespace = type.Namespace;
+            string @namespace = type.Namespace.Name;
             OdcmNamespace odcmNamespace = null;
             foreach (OdcmNamespace candidate in Namespaces)
             {
@@ -73,6 +83,22 @@ namespace Vipr.Core.CodeModel
             }
 
             type = null;
+
+            return false;
+        }
+
+        public bool TryResolveNamespace(string @namespace, out OdcmNamespace odcmNamespace)
+        {
+            foreach (OdcmNamespace candidate in Namespaces)
+            {
+                if (candidate.CanonicalName().Equals(@namespace, StringComparison.InvariantCulture))
+                {
+                    odcmNamespace = candidate;
+                    return true;
+                }
+            }
+
+            odcmNamespace = null;
 
             return false;
         }
