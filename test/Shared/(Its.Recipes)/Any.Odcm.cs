@@ -176,7 +176,7 @@ namespace Microsoft.Its.Recipes
 
         public static OdcmMediaClass MediaOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmEntityClass> config = null)
         {
-            var retVal = new OdcmMediaClass(Any.CSharpIdentifier(), odcmNamespace.Name);
+            var retVal = new OdcmMediaClass(Any.CSharpIdentifier(), odcmNamespace);
 
             EntityOrMediaOdcmClass(odcmNamespace, config, retVal);
 

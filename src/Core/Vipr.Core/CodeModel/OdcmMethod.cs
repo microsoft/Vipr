@@ -33,7 +33,5 @@ namespace Vipr.Core.CodeModel
         {
             return MakeCanonicalName(Name, ReturnType, Parameters.ToArray());
         }
-
-        public string FullName { get { return Namespace.Name + "." + Name; } }
     }
 }

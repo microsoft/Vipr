@@ -1,11 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
+using CSharpWriter;
 using CSharpWriter.Settings;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
@@ -14,9 +10,13 @@ using Microsoft.MockService.Extensions.ODataV4;
 using Microsoft.OData.ProxyExtensions;
 using Microsoft.Owin;
 using Moq;
-using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 using Xunit;

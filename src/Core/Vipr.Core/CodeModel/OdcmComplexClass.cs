@@ -5,7 +5,7 @@ namespace Vipr.Core.CodeModel
 {
     public class OdcmComplexClass : OdcmClass
     {
-        public OdcmComplexClass(string name, string @namespace) :
+        public OdcmComplexClass(string name, OdcmNamespace @namespace) :
             base(name, @namespace, OdcmClassKind.Complex)
         {
         }

@@ -22,10 +22,9 @@ namespace CSharpWriter
             //    .Concat(@namespace.Classes.SelectMany(global::CSharpWriter.Features.ForOdcmClass))
             //    .Concat(@namespace.Classes.SelectMany(c => global::CSharpWriter.Features.ForEntityContainer(c, model)));
             Features = @namespace.Enums.SelectMany(global::CSharpWriter.Features.ForOdcmEnum)
-                .Concat(@namespace.ClassesOf<OdcmComplexClass>().SelectMany(global::CSharpWriter.Features.ForOdcmClass))
+                .Concat(@namespace.Classes.OfType<OdcmComplexClass>().SelectMany(global::CSharpWriter.Features.ForOdcmClass))
+                .Concat(@namespace.Classes.OfType<OdcmEntityClass>().SelectMany(global::CSharpWriter.Features.ForOdcmClass))
                 .Concat(@namespace.Classes.OfType<OdcmServiceClass>().SelectMany(c => global::CSharpWriter.Features.ForEntityContainer(c, model)));
-                .Concat(@namespace.ClassesOf<OdcmEntityClass>().SelectMany(global::CSharpWriter.Features.ForOdcmClass))
-                .Concat(@namespace.ClassesOf<OdcmServiceClass>().SelectMany(c => global::CSharpWriter.Features.ForEntityContainer(c, model)));
         }
     }
 }

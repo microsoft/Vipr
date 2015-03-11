@@ -208,8 +208,6 @@ namespace CSharpWriterUnitTests
 
 public class Given_an_OdcmClass_Entity_Uninitialized : NavigationPropertyTestBase
 {
-    private MockService _mockedService;
-
     public Given_an_OdcmClass_Entity_Uninitialized()
     {
         base.Init(m =>
