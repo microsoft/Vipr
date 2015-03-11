@@ -82,7 +82,7 @@ namespace CSharpWriterUnitTests
         }
 
         [Fact]
-        public void When_the_entity_is_not_null_and_the_property_path_is_not_a_single_segmentthen_AddAsync_POSTs_to_the_Entitys_canoncial_Uri_property_and_updates_the_added_instance()
+        public void When_the_entity_is_not_null_and_the_property_path_is_not_a_single_segment_then_AddAsync_POSTs_to_the_Entitys_canoncial_Uri_property_and_updates_the_added_instance()
         {
             var parentKeyValues = Class.GetSampleKeyArguments().ToArray();
             var navPropertyName = Class.NavigationProperties().First(p => p.Type == Class && p.IsCollection).Name;
