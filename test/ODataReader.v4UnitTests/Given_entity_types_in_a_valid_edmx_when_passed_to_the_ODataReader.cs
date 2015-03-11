@@ -287,7 +287,7 @@ namespace ODataReader.v4UnitTests
         }
 
         [Fact]
-        public void When_BaseType_blah()
+        public void When_a_Property_references_a_ComplexType_it_returns_an_OdcmEntityClass_with_a_property_having_the_corresponding_OdcmComplexType()
         {
             string complexTypePropertyName = string.Empty;
 
@@ -322,11 +322,11 @@ namespace ODataReader.v4UnitTests
                 .BeOfType<OdcmEntityClass>("because entity types should result in an OdcmEntityClass");
             var complexProperty = (from property in odcmEntityType.As<OdcmEntityClass>().Properties
                                    where property.Name.Equals(complexTypePropertyName)
-                                   select property);
-            complexProperty.Count()
+                                   select property).FirstOrDefault();
+            complexProperty
                 .Should()
-                .Be(1, "because a property referencing a complex type should result in a property in the OdcmEntityClass");
-            complexProperty.First().Type
+                .NotBeNull("because a property referencing a complex type should result in a property in the OdcmEntityClass");
+            complexProperty.Type
                 .Should()
                 .Be(odcmComplexType, "because a property referencing a complex type should result in a property with a type matching the OdcmComplexClass of the property");
         }
