@@ -217,7 +217,7 @@ namespace CSharpWriter
 
         private static Identifier ResolveIdentifier(string @namespace, string name)
         {
-            var resolvedNamespace = ResolveNamespace(@namespace);
+            var resolvedNamespace = "global::" + ResolveNamespace(@namespace);
 
             var resolvedName = ResolveName(@namespace, name);
 
