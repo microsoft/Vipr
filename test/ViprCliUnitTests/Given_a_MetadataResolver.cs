@@ -23,8 +23,7 @@ namespace ViprCliUnitTests
             using (var mockService = new MockService()
                 .Setup(r => r.Request.Path.ToString() == "/" + metadataPath &&
                             r.Request.Method == "GET",
-                    r => r.Response.Write(metadata))
-                .Start())
+                    r => r.Response.Write(metadata)))
             {
                 var metadataUri = mockService.GetBaseAddress() + metadataPath;
 

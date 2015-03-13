@@ -117,8 +117,7 @@ namespace CSharpWriterUnitTests
         {
             using (_mockedService = new MockService()
                 .SetupPostEntity(TargetEntity)
-                .SetupGetEntity(TargetEntity)
-                .Start())
+                .SetupGetEntity(TargetEntity))
             {
                 var instance = _mockedService
                     .GetDefaultContext(Model)
@@ -140,8 +139,7 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                 .SetupPostEntity(TargetEntity, entityKeyValues)
-                .SetupGetEntityProperty(TargetEntity, entityKeyValues, NavigationProperty)
-                .Start())
+                .SetupGetEntityProperty(TargetEntity, entityKeyValues, NavigationProperty))
             {
                 var instance = _mockedService
                     .GetDefaultContext(Model)
@@ -163,8 +161,7 @@ namespace CSharpWriterUnitTests
             var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
 
             using (_mockedService = new MockService()
-                    .SetupGetEntity(propertyPath, Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments()))
-                    .Start())
+                    .SetupGetEntity(propertyPath, Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments())))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)
@@ -183,8 +180,7 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                 .SetupPostEntity(TargetEntity, entityKeyValues)
-                .SetupPostEntityPropertyChanges(TargetEntity, entityKeyValues, NavigationProperty)
-                .Start())
+                .SetupPostEntityPropertyChanges(TargetEntity, entityKeyValues, NavigationProperty))
             {
                 var context = _mockedService
                     .GetDefaultContext(Model);

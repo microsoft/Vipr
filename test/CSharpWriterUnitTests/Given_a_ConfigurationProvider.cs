@@ -77,8 +77,7 @@ namespace CSharpWriterUnitTests
 
             var entityArtifacts = GetEntityArtifactsFromNewNamespace(@class, newNamespace, proxy, oldNamespace);
 
-            using (var mockService = new MockService()
-                    .Start())
+            using (var mockService = new MockService())
             {
                 mockService
                     .Setup(c => c.Request.Method == "POST" &&
@@ -143,8 +142,7 @@ namespace CSharpWriterUnitTests
 
             var singletonPath = baseClass.GetDefaultSingletonPath();
 
-            using (var mockService = new MockService(true)
-                    .Start())
+            using (var mockService = new MockService(true))
             {
                 mockService
                     .Setup(c => c.Request.Method == "GET" &&

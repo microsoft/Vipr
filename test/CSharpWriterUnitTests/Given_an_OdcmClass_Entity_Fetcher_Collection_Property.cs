@@ -32,8 +32,7 @@ namespace CSharpWriterUnitTests
             var propertyPath = "/" + entityPath + "/" + collectionProperty.Name;
 
             using (_mockedService = new MockService()
-                    .SetupGetWithEmptyResponse(propertyPath)
-                    .Start())
+                    .SetupGetWithEmptyResponse(propertyPath))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)

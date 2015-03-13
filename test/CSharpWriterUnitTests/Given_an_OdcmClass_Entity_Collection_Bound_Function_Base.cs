@@ -100,8 +100,7 @@ namespace CSharpWriterUnitTests
 
             var collectionPath = Any.UriPath(1);
             
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 var collection = mockService
                     .GetDefaultContext(Model)
@@ -127,8 +126,7 @@ namespace CSharpWriterUnitTests
 
             var collectionPath = Any.UriPath(1);
 
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 var collection = mockService
                     .GetDefaultContext(Model)

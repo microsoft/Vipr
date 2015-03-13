@@ -15,7 +15,7 @@ namespace Microsoft.MockService
     public class MockService : IDisposable
     {
         private readonly int _portNumber;
-        private IDisposable _host;
+        private readonly IDisposable _host;
         private readonly List<Tuple<Expression<Func<IOwinContext, bool>>, Func<IOwinContext, Task>>> _handlers;
         private readonly IList<Expression<Func<IOwinContext, bool>>> _unusedHandlers;
         private readonly bool _ignoreUnusedHandlers;
@@ -28,6 +28,8 @@ namespace Microsoft.MockService
             _ignoreUnusedHandlers = ignoreUnusedHandlers;
 
             MockServiceRepository.Register(_portNumber, this);
+
+            _host = WebApp.Start<MockStartup>(GetBaseAddress());
         }
 
         public MockService Setup(Expression<Func<IOwinContext, bool>> condition, Func<IOwinContext, Task> response)
@@ -89,13 +91,6 @@ namespace Microsoft.MockService
         public string GetBaseAddress()
         {
             return String.Format("http://localhost:{0}/", _portNumber);
-        }
-
-        public MockService Start()
-        {
-            _host = WebApp.Start<MockStartup>(GetBaseAddress());
-
-            return this;
         }
 
         public void Dispose()

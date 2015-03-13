@@ -46,8 +46,7 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                 .SetupPostEntity(TargetEntity, entityKeyValues)
-                .SetupGetEntity(TargetEntity)
-                .Start())
+                .SetupGetEntity(TargetEntity))
             {
                 var instance = _mockedService
                     .GetDefaultContext(Model)
@@ -69,8 +68,7 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                 .SetupPostEntity(TargetEntity, entityKeyValues)
-                .SetupGetEntity(Class.GetDefaultEntityPropertyPath(_camelCasedName, entityKeyValues), Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments()))
-                .Start())
+                .SetupGetEntity(Class.GetDefaultEntityPropertyPath(_camelCasedName, entityKeyValues), Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments())))
             {
                 var instance = _mockedService
                     .GetDefaultContext(Model)
@@ -93,8 +91,7 @@ namespace CSharpWriterUnitTests
             var keyValues = Class.GetSampleKeyArguments().ToArray();
 
             using (_mockedService = new MockService()
-                .SetupGetEntity(expectedPath, Class.Name + "s", ConcreteType.Initialize(keyValues))
-                .Start())
+                .SetupGetEntity(expectedPath, Class.Name + "s", ConcreteType.Initialize(keyValues)))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)
@@ -117,8 +114,7 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                 .SetupPostEntity(entitySetPath, Class.Name + "s", ConcreteType.Initialize(entityKeyValues))
-                .SetupPostEntityChanges(expectedPath)
-                .Start())
+                .SetupPostEntityChanges(expectedPath))
             {
                 var context = _mockedService
                     .GetDefaultContext(Model);

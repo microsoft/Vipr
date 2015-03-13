@@ -37,8 +37,7 @@ namespace CSharpWriterUnitTests
             var instancePath = Class.GetDefaultEntityPath(entityKeyValues);
 
             using (var mockService = new MockService()
-                .SetupPostEntity(TargetEntity, entityKeyValues)
-                .Start())
+                .SetupPostEntity(TargetEntity, entityKeyValues))
             {
                 mockService.SetupMethod("GET",
                     instancePath + "/" + Method.FullName,

@@ -76,8 +76,7 @@ namespace CSharpWriterUnitTests
                 model.EntityContainer.Methods.Add(Method);
             });
 
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 var service = mockService
                     .CreateContainer(EntityContainerType);
@@ -100,8 +99,7 @@ namespace CSharpWriterUnitTests
                 model.EntityContainer.Methods.Add(Method);
             });
 
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 var service = mockService
                     .CreateContainer(EntityContainerType);

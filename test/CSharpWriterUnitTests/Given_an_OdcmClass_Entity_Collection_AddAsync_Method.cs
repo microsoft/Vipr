@@ -28,8 +28,7 @@ namespace CSharpWriterUnitTests
             var keyValues = Class.GetSampleKeyArguments().ToArray();
 
             using (_serviceMock = new MockService()
-                    .SetupPostEntity(TargetEntity, keyValues)
-                    .Start())
+                    .SetupPostEntity(TargetEntity, keyValues))
             {
                 var collection = _serviceMock
                     .GetDefaultContext(Model)
@@ -55,8 +54,7 @@ namespace CSharpWriterUnitTests
 
             using (_serviceMock = new MockService()
                     .SetupPostEntity(TargetEntity, parentKeyValues)
-                    .SetupPostEntity(navPropertyPath, Class.GetDefaultEntitySetName(), ConcreteType.Initialize(childKeyValues))
-                    .Start())
+                    .SetupPostEntity(navPropertyPath, Class.GetDefaultEntitySetName(), ConcreteType.Initialize(childKeyValues)))
             {
                 var parentEntity = Activator.CreateInstance(ConcreteType);
                 var childEntity = Activator.CreateInstance(ConcreteType);
@@ -91,8 +89,7 @@ namespace CSharpWriterUnitTests
 
             using (_serviceMock = new MockService()
                     .SetupPostEntity(TargetEntity, parentKeyValues)
-                    .SetupPostEntity(navPropertyPath, TargetEntity.Class.GetDefaultEntitySetName(), ConcreteType.Initialize(childKeyValues))
-                    .Start())
+                    .SetupPostEntity(navPropertyPath, TargetEntity.Class.GetDefaultEntitySetName(), ConcreteType.Initialize(childKeyValues)))
             {
                 var parentEntity = Activator.CreateInstance(ConcreteType);
                 var childEntity = Activator.CreateInstance(ConcreteType);
@@ -123,8 +120,7 @@ namespace CSharpWriterUnitTests
             var keyValues = Class.GetSampleKeyArguments().ToArray();
 
             using (_serviceMock = new MockService()
-                    .SetupPostEntity(TargetEntity, keyValues)
-                    .Start())
+                    .SetupPostEntity(TargetEntity, keyValues))
             {
                 var collection = _serviceMock
                     .GetDefaultContext(Model)

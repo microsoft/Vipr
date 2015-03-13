@@ -35,8 +35,7 @@ namespace CSharpWriterUnitTests
             var responseKeyValues = Class.GetSampleKeyArguments().ToArray();
             var collectionPath = Class.GetDefaultEntityPath(entityKeyValues);
 
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 mockService.SetupMethod("GET",
                     collectionPath + "/" + Method.FullName,

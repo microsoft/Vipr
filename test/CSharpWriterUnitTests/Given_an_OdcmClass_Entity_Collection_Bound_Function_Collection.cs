@@ -51,8 +51,7 @@ namespace CSharpWriterUnitTests
 
             var responseKeyValues = Class.GetSampleKeyArguments().ToArray();
 
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 var instanceAndPath = instanceGenerator(mockService, TargetEntity);
 

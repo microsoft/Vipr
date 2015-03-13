@@ -24,8 +24,7 @@ namespace CSharpWriterUnitTests
             var expectedCount = Any.Long();
 
             using (_serviceMock = new MockService()
-                    .SetupGetEntitySetCount(TargetEntity, expectedCount)
-                    .Start())
+                    .SetupGetEntitySetCount(TargetEntity, expectedCount))
             {
                 var context = _serviceMock
                     .GetDefaultContext(Model);
