@@ -32,7 +32,7 @@ namespace Microsoft.MockService
             _host = WebApp.Start<MockStartup>(GetBaseAddress());
         }
 
-        public MockService Setup(Expression<Func<IOwinContext, bool>> condition, Func<IOwinContext, Task> response)
+        internal MockService Setup(Expression<Func<IOwinContext, bool>> condition, Func<IOwinContext, Task> response)
         {
             _handlers.Add(new Tuple<Expression<Func<IOwinContext, bool>>, Func<IOwinContext, Task>>(condition, response));
             _unusedHandlers.Add(condition);
@@ -42,26 +42,9 @@ namespace Microsoft.MockService
             return this;
         }
 
-        public MockService Setup(Expression<Func<IOwinContext, bool>> condition, Action<IOwinContext> response)
+        public ResponseBuilder OnRequest(Expression<Func<IOwinContext, bool>> condition)
         {
-            Setup(condition, context =>
-            {
-                response(context);
-                return Task.FromResult<object>(null);
-            });
-
-            return this;
-        }
-
-        public MockService Setup(Expression<Func<IOwinContext, bool>> condition, Action<string, IOwinContext> response)
-        {
-            Setup(condition, context =>
-            {
-                response(this.GetBaseAddress(), context);
-                return Task.FromResult<object>(null);
-            });
-
-            return this;
+            return new ResponseBuilder(this, condition);
         }
 
         public Task Invoke(IOwinContext context)

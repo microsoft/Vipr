@@ -12,14 +12,13 @@ namespace Microsoft.MockService.Extensions.ODataV4
             string entitySetName, object response = null)
         {
             mockService
-                .Setup(c => c.Request.Method == "POST" &&
-                            c.Request.Path.Value == entityPath,
-                    (b, c) =>
-                    {
-                        c.Response.StatusCode = 201;
-                        c.Response.WithDefaultODataHeaders();
-                        c.Response.WithODataEntityResponseBody(mockService.GetBaseAddress(), entitySetName, response);
-                    });
+                .OnRequest(c => c.Request.Method == "POST" && c.Request.Path.Value == entityPath)
+                .RespondWith((c, b) =>
+                 {
+                     c.Response.StatusCode = 201;
+                     c.Response.WithDefaultODataHeaders();
+                     c.Response.WithODataEntityResponseBody(mockService.GetBaseAddress(), entitySetName, response);
+                 });
 
             return mockService;
         }
@@ -30,19 +29,20 @@ namespace Microsoft.MockService.Extensions.ODataV4
             uriArguments = uriArguments ?? new TestReadableStringCollection(new Dictionary<string, string[]>());
 
             mockService
-                .Setup(c => c.Request.Method == httpMethod &&
-                            c.Request.Path.Value.StartsWith(methodPath) &&
-                            c.Request.InvokesMethodWithParameters(methodPath, uriArguments) &&
-                            ((c.Request.Body.Length == 0 && expectedBody == null) || (JToken.DeepEquals(expectedBody, c.Request.Body.ToJObject()))),
-                    (b, c) =>
+                .OnRequest(c => 
+                    c.Request.Method == httpMethod &&
+                    c.Request.Path.Value.StartsWith(methodPath) &&
+                    c.Request.InvokesMethodWithParameters(methodPath, uriArguments) &&
+                    ((c.Request.Body.Length == 0 && expectedBody == null) || (JToken.DeepEquals(expectedBody, c.Request.Body.ToJObject()))))
+                .RespondWith((c, b) =>
+                {
+                    c.Response.StatusCode = 200;
+                    if (response != null)
                     {
-                        c.Response.StatusCode = 200;
-                        if (response != null)
-                        {
-                            c.Response.WithDefaultODataHeaders();
-                            c.Response.WithODataEntityResponseBody(mockService.GetBaseAddress(), entitySetName, response);
-                        }
-                    });
+                        c.Response.WithDefaultODataHeaders();
+                        c.Response.WithODataEntityResponseBody(mockService.GetBaseAddress(), entitySetName, response);
+                    }
+                });
 
             return mockService;
         }
@@ -53,19 +53,21 @@ namespace Microsoft.MockService.Extensions.ODataV4
             uriArguments = uriArguments ?? new TestReadableStringCollection(new Dictionary<string, string[]>());
 
             mockService
-                .Setup(c => c.Request.Method == httpMethod &&
-                            c.Request.Path.Value.StartsWith(methodPath) &&
-                            c.Request.InvokesMethodWithParameters(methodPath, uriArguments) &&
-                            ((c.Request.Body.Length == 0 && expectedBody == null) || (JToken.DeepEquals(expectedBody, c.Request.Body.ToJObject()))),
-                    (b, c) =>
-                    {
-                        c.Response.StatusCode = 200;
-                        if (response != null)
-                        {
-                            c.Response.WithDefaultODataHeaders();
-                            c.Response.Write(response.ToString());
-                        }
-                    });
+                .OnRequest(c =>
+                    c.Request.Method == httpMethod &&
+                    c.Request.Path.Value.StartsWith(methodPath) &&
+                    c.Request.InvokesMethodWithParameters(methodPath, uriArguments) &&
+                    ((c.Request.Body.Length == 0 && expectedBody == null) ||
+                     (JToken.DeepEquals(expectedBody, c.Request.Body.ToJObject()))))
+                .RespondWith((c, b) =>
+                {
+                    c.Response.StatusCode = 200;
+
+                    if (response == null) return;
+
+                    c.Response.WithDefaultODataHeaders();
+                    c.Response.Write(response.ToString());
+                });
 
             return mockService;
         }
@@ -73,13 +75,12 @@ namespace Microsoft.MockService.Extensions.ODataV4
         public static MockService SetupPostEntityChanges(this MockService mockService, string entitySetPath)
         {
             mockService
-                .Setup(c => c.Request.Method == "POST" &&
-                            c.Request.Path.Value == entitySetPath,
-                    (b, c) =>
-                    {
-                        c.Response.StatusCode = 200;
-                        c.Response.WithDefaultODataHeaders();
-                    });
+                .OnRequest(c => c.Request.Method == "POST" && c.Request.Path.Value == entitySetPath)
+                .RespondWith((c, b) =>
+                {
+                    c.Response.StatusCode = 200;
+                    c.Response.WithDefaultODataHeaders();
+                });
 
             return mockService;
         }
@@ -87,13 +88,12 @@ namespace Microsoft.MockService.Extensions.ODataV4
         public static MockService SetupPatchEntityChanges(this MockService mockService, string entitySetPath)
         {
             mockService
-                .Setup(c => c.Request.Method == "PATCH" &&
-                            c.Request.Path.Value == entitySetPath,
-                    (b, c) =>
-                    {
-                        c.Response.StatusCode = 200;
-                        c.Response.WithDefaultODataHeaders();
-                    });
+                .OnRequest(c => c.Request.Method == "PATCH" && c.Request.Path.Value == entitySetPath)
+                .RespondWith((c, b) =>
+                {
+                    c.Response.StatusCode = 200;
+                    c.Response.WithDefaultODataHeaders();
+                });
 
             return mockService;
         }
@@ -106,10 +106,11 @@ namespace Microsoft.MockService.Extensions.ODataV4
             jObject.AddOdataContext(mockService.GetBaseAddress(), entitySetName);
 
             mockService
-                .Setup(c => c.Request.Method == "GET" &&
-                            c.Request.Path.Value == entitySetPath &&
-                            (expandTargets == null || c.Request.Query["$expand"] == string.Join(",", expandTargets)),
-                    (b, c) =>
+                .OnRequest(c => 
+                    c.Request.Method == "GET" &&
+                    c.Request.Path.Value == entitySetPath &&
+                    (expandTargets == null || c.Request.Query["$expand"] == string.Join(",", expandTargets)))
+                .RespondWith((c, b) =>
                     {
                         c.Response.StatusCode = 200;
                         c.Response.WithDefaultODataHeaders();
@@ -123,15 +124,14 @@ namespace Microsoft.MockService.Extensions.ODataV4
             long count)
         {
             mockService
-                .Setup(c => c.Request.Method == "GET" &&
-                            c.Request.Path.Value == entitySetPath + "/$count",
-                    (b, c) =>
-                    {
-                        c.Response.StatusCode = 200;
-                        c.Response.WithDefaultODataHeaders();
-                        c.Response.ContentType = "text/plain";
-                        c.Response.Write(count.ToString());
-                    });
+                .OnRequest(c => c.Request.Method == "GET" && c.Request.Path.Value == entitySetPath + "/$count")
+                .RespondWith((c, b) =>
+                {
+                    c.Response.StatusCode = 200;
+                    c.Response.WithDefaultODataHeaders();
+                    c.Response.ContentType = "text/plain";
+                    c.Response.Write(count.ToString());
+                });
 
             return mockService;
         }
@@ -139,12 +139,11 @@ namespace Microsoft.MockService.Extensions.ODataV4
         public static MockService SetupGetWithEmptyResponse(this MockService mockService, string entityPropertyPath)
         {
             mockService
-                .Setup(c => c.Request.Method == "GET" &&
-                            c.Request.Path.Value == entityPropertyPath,
-                    (b, c) =>
-                    {
-                        c.Response.StatusCode = 200;
-                    });
+                .OnRequest(c => c.Request.Method == "GET" && c.Request.Path.Value == entityPropertyPath)
+                .RespondWith((c, b) =>
+                {
+                    c.Response.StatusCode = 200;
+                });
 
             return mockService;
         }
@@ -163,15 +162,14 @@ namespace Microsoft.MockService.Extensions.ODataV4
             }
 
             mockService
-                .Setup(c => c.Request.Method == "GET" &&
-                            c.Request.Path.Value == entityPropertyPath,
-                    (b, c) =>
-                    {
-                        c.Response.StatusCode = 200;
-                        c.Response.WithDefaultODataHeaders();
-                        if(propertyValue != null)
-                            c.Response.Write(jObject.ToString());
-                    });
+                .OnRequest(c => c.Request.Method == "GET" && c.Request.Path.Value == entityPropertyPath)
+                .RespondWith((c, b) =>
+                {
+                    c.Response.StatusCode = 200;
+                    c.Response.WithDefaultODataHeaders();
+                    if (propertyValue != null)
+                        c.Response.Write(jObject.ToString());
+                });
 
             return mockService;
         }
