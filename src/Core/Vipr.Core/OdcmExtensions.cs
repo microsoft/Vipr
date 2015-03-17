@@ -26,6 +26,21 @@ namespace Vipr.Core
             return odcmClass.Properties.WhereIsNavigation(false);
         }
 
+        public static bool TryFindProperty(this OdcmClass odcmClass, string propertyPath, out OdcmProperty odcmProperty)
+        {
+            while (odcmClass != null)
+            {
+                odcmProperty = odcmClass.Properties.SingleOrDefault(p => p.Name == propertyPath);
+                if (odcmProperty != null)
+                {
+                    return true;
+                }
+                odcmClass = odcmClass.Base;
+            }
+            odcmProperty = null;
+            return false;
+        }
+
         public static IEnumerable<OdcmClass> NestedDerivedTypes(this OdcmClass odcmClass)
         {
             var graph = new Queue<OdcmClass>();

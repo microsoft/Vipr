@@ -11,6 +11,8 @@ namespace Vipr.Core.CodeModel
 
         public OdcmType Type { get; set; }
 
+        public OdcmProjection Projection { get; set; }
+
         public bool ContainsTarget { get; set; }
 
         public bool IsLink { get; set; }

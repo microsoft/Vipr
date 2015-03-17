@@ -117,6 +117,11 @@ namespace ODataReader.v4
                 odcmObject.Annotations = ODataVocabularyReader.GetOdcmAnnotations(_edmModel, annotatableEdmEntity).ToList();
                 odcmObject.Description = _edmModel.GetDescriptionAnnotation(annotatableEdmEntity);
                 odcmObject.LongDescription = _edmModel.GetLongDescriptionAnnotation(annotatableEdmEntity);
+
+                if(annotatableEdmEntity is IEdmEntitySet && odcmObject is OdcmProperty)
+                {
+                    ODataCapabilitiesReader.GetCapabilitiesForEntitySet((OdcmProperty)odcmObject, _edmModel, (IEdmEntitySet)annotatableEdmEntity);
+                }
             }
 
             private void WriteNamespaces()
@@ -311,7 +316,7 @@ namespace ODataReader.v4
                     foreach (IEdmStructuralProperty keyProperty in entityType.Key())
                     {
                         OdcmProperty property;
-                        if (!TryFindProperty(odcmClass, keyProperty, out property))
+                        if (!odcmClass.TryFindProperty(keyProperty.Name, out property))
                         {
                             throw new InvalidOperationException();
                         }
@@ -406,6 +411,11 @@ namespace ODataReader.v4
                 {
                     Class = odcmClass,
                     Type = ResolveType(entitySet.EntityType().Name, entitySet.EntityType().Namespace),
+                    Projection = new OdcmProjection()
+                    {
+                        Type = ResolveType(entitySet.EntityType().Name, entitySet.EntityType().Namespace),
+                        Capabilities = null
+                    },
                     IsCollection = true,
                     IsLink = true
                 };
@@ -421,32 +431,17 @@ namespace ODataReader.v4
                 {
                     Class = odcmClass,
                     Type = ResolveType(singleton.EntityType().Name, singleton.EntityType().Namespace),
+                    Projection = new OdcmProjection()
+                    {
+                        Type = ResolveType(singleton.EntityType().Name, singleton.EntityType().Namespace),
+                        Capabilities = null
+                    },
                     IsLink = true
                 };
 
                 AddVocabularyAnnotations(odcmProperty, singleton);
 
                 odcmClass.Properties.Add(odcmProperty);
-            }
-
-            private bool TryFindProperty(OdcmClass odcmClass, IEdmStructuralProperty keyProperty, out OdcmProperty odcmProperty)
-            {
-                if (odcmClass == null)
-                {
-                    odcmProperty = null;
-                    return false;
-                }
-
-                foreach (OdcmProperty property in odcmClass.Properties)
-                {
-                    if (property.Name.Equals(keyProperty.Name, StringComparison.OrdinalIgnoreCase))
-                    {
-                        odcmProperty = property;
-                        return true;
-                    }
-                }
-
-                return TryFindProperty(odcmClass.Base, keyProperty, out odcmProperty);
             }
 
             private void WriteMethod(OdcmClass odcmClass, IEdmOperation operation, IEdmOperationImport operationImport = null)
@@ -510,6 +505,11 @@ namespace ODataReader.v4
                     Class = odcmClass,
                     IsNullable = property.Type.IsNullable,
                     Type = ResolveType(property.Type),
+                    Projection = new OdcmProjection()
+                    {
+                        Type = ResolveType(property.Type),
+                        Capabilities = null
+                    },
                     IsCollection = property.Type.IsCollection(),
                     ContainsTarget =
                         property is IEdmNavigationProperty && ((IEdmNavigationProperty)property).ContainsTarget,
