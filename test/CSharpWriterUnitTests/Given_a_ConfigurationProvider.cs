@@ -484,7 +484,10 @@ namespace CSharpWriterUnitTests
                             {
                                 Class = property.Class,
                                 ReadOnly = property.ReadOnly,
-                                Type = property.Type
+                                Projection = new OdcmProjection()
+                                {
+                                    Type = property.Projection.Type
+                                }
                             };
 
                         cl.Properties.Add(lowerCaseProperty);

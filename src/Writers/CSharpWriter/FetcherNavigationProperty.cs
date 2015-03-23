@@ -12,9 +12,9 @@ namespace CSharpWriter
         protected FetcherNavigationProperty(OdcmProperty odcmProperty) : base(odcmProperty)
         {
             FieldName = NamesService.GetFetcherFieldName(odcmProperty);
-            InstanceType = NamesService.GetFetcherTypeName(odcmProperty.Type);
+            InstanceType = NamesService.GetFetcherTypeName(odcmProperty.Projection.Type);
             PrivateSet = true;
-            Type = new Type(NamesService.GetFetcherInterfaceName(odcmProperty.Type));
+            Type = new Type(NamesService.GetFetcherInterfaceName(odcmProperty.Projection.Type));
         }
 
         public static FetcherNavigationProperty ForConcrete(OdcmProperty odcmProperty)

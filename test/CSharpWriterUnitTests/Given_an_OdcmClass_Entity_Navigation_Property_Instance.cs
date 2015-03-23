@@ -18,7 +18,7 @@ namespace CSharpWriterUnitTests
 
         public Given_an_OdcmClass_EntityNavigation_Property_Instance()
         {
-            NavigationProperty = Any.OdcmProperty(p => p.Type = Class);
+            NavigationProperty = Any.OdcmProperty(p => p.Projection.Type = Class);
 
             base.Init(m =>
             {
@@ -30,7 +30,7 @@ namespace CSharpWriterUnitTests
                 NavigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = @class;
-                    p.Type = NavTargetClass;
+                    p.Projection.Type = NavTargetClass;
                     p.IsCollection = false;
                 });
 

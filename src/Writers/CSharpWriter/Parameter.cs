@@ -34,7 +34,7 @@ namespace CSharpWriter
             return new Parameter
             {
                 Name = arg.Name.ToLowerCamelCase(),
-                Type = new Type(NamesService.GetConcreteTypeName(arg.Type))
+                Type = new Type(NamesService.GetConcreteTypeName(arg.Projection.Type))
             };
         }
 

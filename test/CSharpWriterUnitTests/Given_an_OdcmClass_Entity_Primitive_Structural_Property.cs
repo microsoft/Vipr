@@ -40,7 +40,7 @@ namespace CSharpWriterUnitTests
             ConcreteType.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 CSharpAccessModifiers.Public,
-                EdmToClrTypeMap[_structuralInstanceProperty.Type.Name],
+                EdmToClrTypeMap[_structuralInstanceProperty.Projection.Type.Name],
                 _structuralInstanceProperty.Name);
         }
 
@@ -50,7 +50,7 @@ namespace CSharpWriterUnitTests
             ConcreteType.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 CSharpAccessModifiers.Public,
-                typeof(IList<>).MakeGenericType(EdmToClrTypeMap[_structuralInstanceProperty.Type.Name]),
+                typeof(IList<>).MakeGenericType(EdmToClrTypeMap[_structuralInstanceProperty.Projection.Type.Name]),
                 _structuralCollectionProperty.Name);
         }
 
@@ -60,7 +60,7 @@ namespace CSharpWriterUnitTests
             ConcreteInterface.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 CSharpAccessModifiers.Public,
-                EdmToClrTypeMap[_structuralInstanceProperty.Type.Name],
+                EdmToClrTypeMap[_structuralInstanceProperty.Projection.Type.Name],
                 _structuralInstanceProperty.Name);
         }
 
@@ -70,7 +70,7 @@ namespace CSharpWriterUnitTests
             ConcreteInterface.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 CSharpAccessModifiers.Public,
-                typeof(IList<>).MakeGenericType(EdmToClrTypeMap[_structuralInstanceProperty.Type.Name]),
+                typeof(IList<>).MakeGenericType(EdmToClrTypeMap[_structuralInstanceProperty.Projection.Type.Name]),
                 _structuralCollectionProperty.Name);
         }
 

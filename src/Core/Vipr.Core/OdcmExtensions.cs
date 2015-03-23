@@ -13,7 +13,7 @@ namespace Vipr.Core
         public static IEnumerable<OdcmProperty> WhereIsNavigation(this IEnumerable<OdcmProperty> odcmProperties, bool isNavigation = true)
         {
             return odcmProperties
-                .Where(p => isNavigation == (p.Type is OdcmEntityClass || p.Type is OdcmMediaClass));
+                .Where(p => isNavigation == (p.Projection.Type is OdcmEntityClass || p.Projection.Type is OdcmMediaClass));
         }
 
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass, bool? isCollection = null)
@@ -24,6 +24,21 @@ namespace Vipr.Core
         public static IEnumerable<OdcmProperty> StructuralProperties(this OdcmClass odcmClass)
         {
             return odcmClass.Properties.WhereIsNavigation(false);
+        }
+
+        public static bool TryFindProperty(this OdcmClass odcmClass, string propertyPath, out OdcmProperty odcmProperty)
+        {
+            while (odcmClass != null)
+            {
+                odcmProperty = odcmClass.Properties.SingleOrDefault(p => p.Name == propertyPath);
+                if (odcmProperty != null)
+                {
+                    return true;
+                }
+                odcmClass = odcmClass.Base;
+            }
+            odcmProperty = null;
+            return false;
         }
 
         public static IEnumerable<OdcmClass> NestedDerivedTypes(this OdcmClass odcmClass)

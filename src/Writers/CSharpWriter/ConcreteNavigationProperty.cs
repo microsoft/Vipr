@@ -10,8 +10,8 @@ namespace CSharpWriter
         protected ConcreteNavigationProperty(OdcmProperty odcmProperty) : base(odcmProperty)
         {
             FieldName = NamesService.GetPropertyFieldName(odcmProperty);
-            FieldType = NamesService.GetConcreteTypeName(odcmProperty.Type);
-            Type = new Type(NamesService.GetConcreteInterfaceName(odcmProperty.Type));
+            FieldType = NamesService.GetConcreteTypeName(odcmProperty.Projection.Type);
+            Type = new Type(NamesService.GetConcreteInterfaceName(odcmProperty.Projection.Type));
         }
 
         public Identifier FieldType { get; set; }

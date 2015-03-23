@@ -54,6 +54,7 @@
       <Link>TestConstants\OData.V4.cs</Link>
     </Compile>
     <Compile Include="Any.cs" />
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="FileSystemHelpers.cs" />
     <Compile Include="Given_a_Bootstrapper.cs" />
     <Compile Include="Given_a_ConfigurationProvider.cs" />

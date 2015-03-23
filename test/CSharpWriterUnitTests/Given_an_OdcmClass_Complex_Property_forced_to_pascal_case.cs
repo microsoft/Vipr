@@ -50,15 +50,15 @@ namespace CSharpWriterUnitTests
         {
             _targetType.Should().HaveProperty(
                 CSharpAccessModifiers.Public, 
-                CSharpAccessModifiers.Public, 
-                Proxy.GetClass(_property.Type.Namespace, _property.Type.Name),
+                CSharpAccessModifiers.Public,
+                Proxy.GetClass(_property.Projection.Type.Namespace, _property.Projection.Type.Name),
                 GetPascalCaseName(_property));
         }
 
         [Fact]
         public void The_Concrete_class_has_the_original_property_deprecated()
         {
-            var propertyType = Proxy.GetClass(_property.Type.Namespace, _property.Type.Name);
+            var propertyType = Proxy.GetClass(_property.Projection.Type.Namespace, _property.Projection.Type.Name);
             var expectedObsoleteMessage = String.Format("Use {0} instead.", GetPascalCaseName(_property));
 
             _targetType.Should().HaveProperty(

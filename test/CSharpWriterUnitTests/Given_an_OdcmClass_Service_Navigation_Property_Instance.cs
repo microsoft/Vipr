@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using CSharpWriter;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
+using Vipr.Core.CodeModel;
 using Xunit;
 
 namespace CSharpWriterUnitTests
@@ -14,7 +16,7 @@ namespace CSharpWriterUnitTests
         {
             base.Init(m =>
             {
-                NavigationProperty = Any.OdcmProperty(p => p.Type = Class);
+                NavigationProperty = Any.OdcmProperty(p => p.Projection.Type = Class);
 
                 var @namespace = m.Namespaces[0];
 
@@ -25,7 +27,7 @@ namespace CSharpWriterUnitTests
                 NavigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = OdcmContainer;
-                    p.Type = NavTargetClass;
+                    p.Projection.Type = NavTargetClass;
                     p.IsCollection = false;
                 });
 

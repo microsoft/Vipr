@@ -12,10 +12,10 @@ namespace CSharpWriter
         private ConcreteNavigationCollectionProperty(OdcmProperty odcmProperty) : base(odcmProperty)
         {
             FieldName = NamesService.GetConcreteFieldName(odcmProperty);
-            OdcmType = odcmProperty.Type;
+            OdcmType = odcmProperty.Projection.Type;
             PrivateSet = true;
             Type = new Type(NamesService.GetExtensionTypeName("IPagedCollection"),
-                new Type(NamesService.GetConcreteInterfaceName(odcmProperty.Type)));
+                new Type(NamesService.GetConcreteInterfaceName(odcmProperty.Projection.Type)));
         }
 
         public new static ConcreteNavigationProperty ForConcrete(OdcmProperty odcmProperty)

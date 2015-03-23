@@ -9,7 +9,7 @@ namespace Vipr.Core.CodeModel
 
         public bool ReadOnly { get; set; }
 
-        public OdcmType Type { get; set; }
+        public OdcmProjection Projection { get; set; }
 
         public bool ContainsTarget { get; set; }
 

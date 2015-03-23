@@ -23,10 +23,10 @@ namespace CSharpWriterUnitTests
                 _structuralProperty = Any.ComplexOdcmProperty(m.Namespaces[0]);
                 _structuralProperty.Class = Class;
                 Class.Properties.Add(_structuralProperty);
-                m.AddType(_structuralProperty.Type);
+                m.AddType(_structuralProperty.Projection.Type);
             });
 
-            _structuralPropertyType = Proxy.GetClass(_structuralProperty.Type.Namespace, _structuralProperty.Type.Name);
+            _structuralPropertyType = Proxy.GetClass(_structuralProperty.Projection.Type.Namespace, _structuralProperty.Projection.Type.Name);
         }
 
         [Fact]
