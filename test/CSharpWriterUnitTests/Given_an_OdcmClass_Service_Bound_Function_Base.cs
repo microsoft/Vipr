@@ -82,7 +82,7 @@ namespace CSharpWriterUnitTests
                     .CreateContainer(EntityContainerType);
 
                 mockService.ValidateParameterPassing("POST", service, "", Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
 
@@ -105,7 +105,7 @@ namespace CSharpWriterUnitTests
                     .CreateContainer(EntityContainerType);
 
                 mockService.ValidateParameterPassing("GET", service, "", Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
 

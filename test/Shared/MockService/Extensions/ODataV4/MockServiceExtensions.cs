@@ -1,75 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Owin;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using Microsoft.MockService;
 
 namespace Microsoft.MockService.Extensions.ODataV4
 {
     public static class MockServiceExtensions
     {
-        public static MockService SetupPostEntity(this MockService mockService, string entityPath,
-            string entitySetName, object response = null)
+        public static ResponseBuilder OnPostEntityRequest(this MockService mockService, string entityPath)
         {
-            mockService
-                .OnRequest(c => c.Request.Method == "POST" && c.Request.Path.Value == entityPath)
-                .RespondWith((c, b) =>
-                 {
-                     c.Response.StatusCode = 201;
-                     c.Response.WithDefaultODataHeaders();
-                     c.Response.WithODataEntityResponseBody(mockService.GetBaseAddress(), entitySetName, response);
-                 });
-
-            return mockService;
+            return mockService
+                .OnRequest(c => c.Request.Method == "POST" && c.Request.Path.Value == entityPath);
         }
 
-        public static MockService SetupMethod(this MockService mockService, string httpMethod, string methodPath,
-            TestReadableStringCollection uriArguments, JObject expectedBody, string entitySetName, object response = null)
+        public static ResponseBuilder OnInvokeMethodRequest(this MockService mockService, string httpMethod, string methodPath,
+            TestReadableStringCollection uriArguments, JObject expectedBody)
         {
             uriArguments = uriArguments ?? new TestReadableStringCollection(new Dictionary<string, string[]>());
 
-            mockService
+            return mockService
                 .OnRequest(c => 
                     c.Request.Method == httpMethod &&
                     c.Request.Path.Value.StartsWith(methodPath) &&
                     c.Request.InvokesMethodWithParameters(methodPath, uriArguments) &&
-                    ((c.Request.Body.Length == 0 && expectedBody == null) || (JToken.DeepEquals(expectedBody, c.Request.Body.ToJObject()))))
-                .RespondWith((c, b) =>
-                {
-                    c.Response.StatusCode = 200;
-                    if (response != null)
-                    {
-                        c.Response.WithDefaultODataHeaders();
-                        c.Response.WithODataEntityResponseBody(mockService.GetBaseAddress(), entitySetName, response);
-                    }
-                });
-
-            return mockService;
+                    ((c.Request.Body.Length == 0 && expectedBody == null) || (JToken.DeepEquals(expectedBody, c.Request.Body.ToJObject()))));
         }
 
-        public static MockService SetupMethod(this MockService mockService, string httpMethod, string methodPath,
-            TestReadableStringCollection uriArguments, JObject expectedBody, JObject response = null)
+        public static MockService RespondWithCreateEntity(this ResponseBuilder responseBuilder, string entitySetName, object response = null)
         {
-            uriArguments = uriArguments ?? new TestReadableStringCollection(new Dictionary<string, string[]>());
 
-            mockService
-                .OnRequest(c =>
-                    c.Request.Method == httpMethod &&
-                    c.Request.Path.Value.StartsWith(methodPath) &&
-                    c.Request.InvokesMethodWithParameters(methodPath, uriArguments) &&
-                    ((c.Request.Body.Length == 0 && expectedBody == null) ||
-                     (JToken.DeepEquals(expectedBody, c.Request.Body.ToJObject()))))
-                .RespondWith((c, b) =>
-                {
-                    c.Response.StatusCode = 200;
+            return responseBuilder.RespondWith((c, b) =>
+            {
+                c.Response.StatusCode = 201;
+                c.Response.WithDefaultODataHeaders();
+                c.Response.WithODataEntityResponseBody(b, entitySetName, response);
+            });
+        }
 
-                    if (response == null) return;
+        public static MockService RespondWithGetEntity(this ResponseBuilder responseBuilder, string entitySetName, object response = null)
+        {
 
-                    c.Response.WithDefaultODataHeaders();
-                    c.Response.Write(response.ToString());
-                });
-
-            return mockService;
+            return responseBuilder.RespondWith((c, b) =>
+            {
+                c.Response.StatusCode = 200;
+                c.Response.WithDefaultODataHeaders();
+                c.Response.WithODataEntityResponseBody(b, entitySetName, response);
+            });
         }
         
         public static MockService SetupPostEntityChanges(this MockService mockService, string entitySetPath)

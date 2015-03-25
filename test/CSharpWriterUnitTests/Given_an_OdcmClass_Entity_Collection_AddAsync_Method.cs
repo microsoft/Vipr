@@ -54,7 +54,8 @@ namespace CSharpWriterUnitTests
 
             using (_serviceMock = new MockService()
                     .SetupPostEntity(TargetEntity, parentKeyValues)
-                    .SetupPostEntity(navPropertyPath, Class.GetDefaultEntitySetName(), ConcreteType.Initialize(childKeyValues)))
+                    .OnPostEntityRequest(navPropertyPath)
+                    .RespondWithCreateEntity(Class.GetDefaultEntitySetName(), ConcreteType.Initialize(childKeyValues)))
             {
                 var parentEntity = Activator.CreateInstance(ConcreteType);
                 var childEntity = Activator.CreateInstance(ConcreteType);
@@ -89,7 +90,8 @@ namespace CSharpWriterUnitTests
 
             using (_serviceMock = new MockService()
                     .SetupPostEntity(TargetEntity, parentKeyValues)
-                    .SetupPostEntity(navPropertyPath, TargetEntity.Class.GetDefaultEntitySetName(), ConcreteType.Initialize(childKeyValues)))
+                    .OnPostEntityRequest(navPropertyPath)
+                    .RespondWithCreateEntity(TargetEntity.Class.GetDefaultEntitySetName(), ConcreteType.Initialize(childKeyValues)))
             {
                 var parentEntity = Activator.CreateInstance(ConcreteType);
                 var childEntity = Activator.CreateInstance(ConcreteType);

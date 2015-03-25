@@ -144,7 +144,7 @@ namespace CSharpWriterUnitTests
                     .CreateConcrete(ConcreteType);
 
                 mockService.ValidateParameterPassing("POST", concrete, instancePath, Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
 
@@ -170,7 +170,7 @@ namespace CSharpWriterUnitTests
                     .CreateFetcher(FetcherType, fetcherPath);
 
                 mockService.ValidateParameterPassing("POST", fetcher, fetcherPath, Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
 
@@ -197,7 +197,7 @@ namespace CSharpWriterUnitTests
                     .CreateConcrete(ConcreteType);
 
                 mockService.ValidateParameterPassing("GET", concrete, instancePath, Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
 
@@ -223,7 +223,7 @@ namespace CSharpWriterUnitTests
                     .CreateFetcher(FetcherType, fetcherPath);
 
                 mockService.ValidateParameterPassing("GET", fetcher, fetcherPath, Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
     }

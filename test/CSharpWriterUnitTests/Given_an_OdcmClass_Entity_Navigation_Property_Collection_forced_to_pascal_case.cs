@@ -113,7 +113,8 @@ namespace CSharpWriterUnitTests
             var expectedPath = entityPath + "/" + _camelCasedName;
 
             using (_mockedService = new MockService()
-                .SetupPostEntity(entitySetPath, Class.Name + "s", ConcreteType.Initialize(entityKeyValues))
+                .OnPostEntityRequest(entitySetPath)
+                .RespondWithCreateEntity(Class.Name + "s", ConcreteType.Initialize(entityKeyValues))
                 .SetupPostEntityChanges(expectedPath))
             {
                 var context = _mockedService

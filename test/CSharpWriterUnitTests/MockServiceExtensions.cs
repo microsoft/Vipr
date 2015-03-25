@@ -58,10 +58,9 @@ namespace CSharpWriterUnitTests
         {
             propertyValues = propertyValues ?? targetEntity.Class.GetSampleKeyArguments();
 
-            return mockService.SetupPostEntity(
-                targetEntity.Class.GetDefaultEntitySetPath(), 
-                targetEntity.Class.GetDefaultEntitySetName(),
-                targetEntity.ConcreteType.Initialize(propertyValues));
+            return mockService
+                .OnPostEntityRequest(targetEntity.Class.GetDefaultEntitySetPath())
+                .RespondWithCreateEntity(targetEntity.Class.GetDefaultEntitySetName(), targetEntity.ConcreteType.Initialize(propertyValues));
         }
 
         public static MockService SetupGetEntity(this MockService mockService, EntityArtifacts targetEntity, 
@@ -99,7 +98,7 @@ namespace CSharpWriterUnitTests
                     .AddOdataContext(mockService.GetBaseAddress(), targetEntity.Class.GetDefaultEntitySetName());
         }
 
-        public static void ValidateParameterPassing(this MockService mockService, string httpMethod, object instance, string instancePath, OdcmMethod method, JObject response)
+        public static void ValidateParameterPassing(this MockService mockService, string httpMethod, object instance, string instancePath, OdcmMethod method, EntityArtifacts entityArtifacts)
         {
             var expectedMethodName = method.Name + "Async";
 
@@ -109,12 +108,17 @@ namespace CSharpWriterUnitTests
             var bodyArguments = method.BodyParameters()
                 .Select(p => methodArguments.First(a => a.Item1 == p.Name));
 
-            mockService
-                .SetupMethod(httpMethod,
+            var responseBuilder = mockService
+                .OnInvokeMethodRequest(httpMethod,
                     instancePath + "/" + method.FullName,
                     uriArguments.ToTestReadableStringCollection(),
-                    ArgumentOfTupleExtensions.ToJObject(bodyArguments),
-                    response);
+                    ArgumentOfTupleExtensions.ToJObject(bodyArguments));
+
+            if (entityArtifacts == null)
+                responseBuilder.RespondWith(r => r.Response.StatusCode = 200);
+            else
+                responseBuilder.RespondWithGetEntity(entityArtifacts.Class.GetDefaultEntitySetName(),
+                    entityArtifacts.ConcreteType.Initialize(entityArtifacts.Class.GetSampleKeyArguments()));
 
             instance.InvokeMethod<Task>(expectedMethodName, methodArguments.Select(t => t.Item2).ToArray())
                 .Wait();
