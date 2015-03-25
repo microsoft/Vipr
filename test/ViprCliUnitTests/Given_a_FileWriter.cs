@@ -86,7 +86,7 @@ namespace ViprCliUnitTests
 
             var workingDirectory = Path.Combine(Environment.CurrentDirectory, Any.Word());
 
-            var outputDirectoryPath = Any.Word();
+            var outputDirectory = Any.Word();
 
             try
             {
@@ -95,18 +95,20 @@ namespace ViprCliUnitTests
 
                 Environment.CurrentDirectory = Path.Combine(workingDirectory);
 
-                FileWriter.Write(files, outputDirectoryPath);
+                FileWriter.Write(files, outputDirectory);
 
-                FileSystemHelpers.ValidateTextFiles(files, outputDirectoryPath);
+                FileSystemHelpers.ValidateTextFiles(files, outputDirectory);
             }
             finally
             {
 
-                FileSystemHelpers.DeleteFiles(files, outputDirectoryPath);
+                FileSystemHelpers.DeleteFiles(files, outputDirectory);
 
-                Directory.Delete(outputDirectoryPath);
+                Directory.Delete(outputDirectory);
 
                 Environment.CurrentDirectory = currentDirectory;
+
+                Directory.Delete(workingDirectory);
             }
         }
     }
