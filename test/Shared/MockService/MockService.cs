@@ -19,6 +19,7 @@ namespace Microsoft.MockService
         private readonly List<Tuple<Expression<Func<IOwinContext, bool>>, Func<IOwinContext, Task>>> _handlers;
         private readonly IList<Expression<Func<IOwinContext, bool>>> _unusedHandlers;
         private readonly bool _ignoreUnusedHandlers;
+        private readonly bool _printDebugMessages = Debugger.IsAttached;
 
         public MockService(bool ignoreUnusedHandlers = false)
         {
@@ -37,7 +38,7 @@ namespace Microsoft.MockService
             _handlers.Add(new Tuple<Expression<Func<IOwinContext, bool>>, Func<IOwinContext, Task>>(condition, response));
             _unusedHandlers.Add(condition);
 
-            Debug.WriteLine(new ConstantMemberEvaluationVisitor().Visit(condition));
+            if (_printDebugMessages) Debug.WriteLine(new ConstantMemberEvaluationVisitor().Visit(condition));
 
             return this;
         }
