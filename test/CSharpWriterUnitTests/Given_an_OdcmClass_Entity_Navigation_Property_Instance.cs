@@ -185,7 +185,8 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .SetupPatchEntityChanges(expectedPath))
+                    .OnPatchEntityRequest(expectedPath)
+                        .RespondWithODataOk())
             {
                 var context = _mockedService
                     .GetDefaultContext(Model);

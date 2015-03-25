@@ -158,10 +158,10 @@ namespace CSharpWriterUnitTests
         public void When_retrieved_through_Fetcher_then_request_is_sent_to_server_with_original_name()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
 
             using (_mockedService = new MockService()
-                    .SetupGetEntity(propertyPath, Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments())))
+                    .OnGetEntityPropertyRequest(Class.GetDefaultEntityPath(entityKeyValues), NavigationProperty.Name)
+                    .RespondWithGetEntity(Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments())))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)

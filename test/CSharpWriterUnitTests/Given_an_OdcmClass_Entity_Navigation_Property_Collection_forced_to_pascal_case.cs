@@ -68,7 +68,8 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                 .SetupPostEntity(TargetEntity, entityKeyValues)
-                .SetupGetEntity(Class.GetDefaultEntityPropertyPath(_camelCasedName, entityKeyValues), Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments())))
+                    .OnGetEntityPropertyRequest(Class.GetDefaultEntityPath(entityKeyValues), _camelCasedName)
+                    .RespondWithGetEntity(Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments())))
             {
                 var instance = _mockedService
                     .GetDefaultContext(Model)
@@ -86,12 +87,11 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void When_retrieved_through_Fetcher_then_request_is_sent_to_server_with_original_name()
         {
-            var entityPath = Any.UriPath(1);
-            var expectedPath = "/" + entityPath + "/" + _camelCasedName;
-            var keyValues = Class.GetSampleKeyArguments().ToArray();
+            var entityPath = "/" + Any.UriPath(1);
 
             using (_mockedService = new MockService()
-                .SetupGetEntity(expectedPath, Class.Name + "s", ConcreteType.Initialize(keyValues)))
+                    .OnGetEntityPropertyRequest(entityPath, _camelCasedName)
+                    .RespondWithGetEntity(Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments())))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)
@@ -114,8 +114,9 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                 .OnPostEntityRequest(entitySetPath)
-                .RespondWithCreateEntity(Class.Name + "s", ConcreteType.Initialize(entityKeyValues))
-                .SetupPostEntityChanges(expectedPath))
+                    .RespondWithCreateEntity(Class.Name + "s", ConcreteType.Initialize(entityKeyValues))
+                .OnPostEntityRequest(expectedPath)
+                    .RespondWithODataOk())
             {
                 var context = _mockedService
                     .GetDefaultContext(Model);

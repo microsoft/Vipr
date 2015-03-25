@@ -43,15 +43,17 @@ namespace CSharpWriterUnitTests
 
         public static MockService SetupPostEntityPropertyChanges(this MockService mockService, EntityArtifacts targetEntity, IEnumerable<Tuple<string, object>> keyValues, OdcmProperty property)
         {
-            return mockService.SetupPostEntityChanges(targetEntity.Class.GetDefaultEntityPropertyPath(property, keyValues));
+            return mockService
+                .OnPostEntityRequest(targetEntity.Class.GetDefaultEntityPropertyPath(property, keyValues))
+                .RespondWithODataOk();
         }
 
         public static MockService SetupGetEntityProperty(this MockService mockService, EntityArtifacts targetEntity, IEnumerable<Tuple<string, object>> keyValues, OdcmProperty property)
         {
-            return mockService.SetupGetEntity(
-                targetEntity.Class.GetDefaultEntityPropertyPath(property, keyValues),
-                targetEntity.Class.GetDefaultEntitySetName(),
-                targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()));
+            return mockService
+                .OnGetEntityPropertyRequest(targetEntity.Class.GetDefaultEntityPath(keyValues), property.Name)
+                .RespondWithGetEntity(targetEntity.Class.GetDefaultEntitySetName(),
+                    targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()));
         }
 
         public static MockService SetupPostEntity(this MockService mockService, EntityArtifacts targetEntity, IEnumerable<Tuple<string, object>> propertyValues = null)
@@ -70,32 +72,26 @@ namespace CSharpWriterUnitTests
 
             keyValues = keyValues.ToList();
 
-            return mockService.SetupGetEntity(targetEntity.Class.GetDefaultEntityPath(keyValues),
-                targetEntity.Class.GetDefaultEntitySetName(), targetEntity.ConcreteType.Initialize(keyValues),
-                expandTargets);
+            var responseBuilder = expandTargets == null
+                ? mockService.OnGetEntityRequest(targetEntity.Class.GetDefaultEntityPath(keyValues))
+                : mockService.OnGetEntityWithExpandRequest(targetEntity.Class.GetDefaultEntityPath(keyValues),
+                    expandTargets);
+
+            return responseBuilder
+                .RespondWithGetEntity(targetEntity.Class.GetDefaultEntitySetName(),
+                    targetEntity.ConcreteType.Initialize(keyValues));
         }
 
         public static MockService SetupGetEntitySet(this MockService mockService, EntityArtifacts targetEntity,
             IEnumerable<string> expandTargets = null)
         {
-            return mockService.SetupGetEntity(targetEntity.Class.GetDefaultEntitySetPath(), targetEntity.Class.GetDefaultEntitySetName(),
-                targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()), expandTargets);
-        }
-        
-        public static MockService SetupGetEntitySetCount(this MockService mockService, EntityArtifacts targetEntity,
-            long count)
-        {
-            return mockService.SetupGetEntitySetCount(targetEntity.Class.GetDefaultEntitySetPath(), count);
-        }
+            var responseBuilder = expandTargets == null
+                ? mockService.OnGetEntityRequest(targetEntity.Class.GetDefaultEntitySetPath())
+                : mockService.OnGetEntityWithExpandRequest(targetEntity.Class.GetDefaultEntitySetPath(), expandTargets);
 
-        public static JObject GetOdataJsonInstance(this MockService mockService, EntityArtifacts targetEntity,
-            IEnumerable<Tuple<string, object>> propertyValues = null)
-        {
-            propertyValues = propertyValues ?? targetEntity.Class.GetSampleKeyArguments();
-
-            return
-                JObject.FromObject(targetEntity.ConcreteType.Initialize(propertyValues))
-                    .AddOdataContext(mockService.GetBaseAddress(), targetEntity.Class.GetDefaultEntitySetName());
+            return responseBuilder
+                .RespondWithGetEntity(targetEntity.Class.GetDefaultEntitySetName(),
+                    targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()));
         }
 
         public static void ValidateParameterPassing(this MockService mockService, string httpMethod, object instance, string instancePath, OdcmMethod method, EntityArtifacts entityArtifacts)
