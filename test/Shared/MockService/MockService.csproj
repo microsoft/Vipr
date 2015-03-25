@@ -121,6 +121,7 @@
     <Compile Include="Extensions\ODataV4\MockServiceExtensions.cs" />
     <Compile Include="Extensions\ODataV4\OwinRequestExtensions.cs" />
     <Compile Include="Extensions\ODataV4\OwinResponseExtensions.cs" />
+    <Compile Include="Extensions\ODataV4\ResponseBuilderExtensions.cs" />
     <Compile Include="Extensions\ODataV4\TestReadableStringCollection.cs" />
     <Compile Include="Extensions\ODataV4\Stream.cs" />
     <Compile Include="Global.asax.cs">

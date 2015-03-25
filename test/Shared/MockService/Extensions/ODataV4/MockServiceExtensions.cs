@@ -46,6 +46,13 @@ namespace Microsoft.MockService.Extensions.ODataV4
                 .OnRequest(c => c.Request.Method == "GET" && c.Request.Path.Value == entityPath + "/" + propertyName);
         }
 
+        public static ResponseBuilder OnPostEntityPropertyRequest(this MockService mockService, string entityPath,
+            string propertyName)
+        {
+            return mockService
+                .OnRequest(c => c.Request.Method == "POST" && c.Request.Path.Value == entityPath + "/" + propertyName);
+        }
+
         public static ResponseBuilder OnInvokeMethodRequest(this MockService mockService, string httpMethod,
             string methodPath,
             TestReadableStringCollection uriArguments, JObject expectedBody)
