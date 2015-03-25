@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
-using ODataReader.v4.Capabilities;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
 namespace ODataReader.v4
@@ -122,12 +121,12 @@ namespace ODataReader.v4
 
                 if(annotatableEdmEntity is IEdmEntitySet && odcmObject is OdcmProperty)
                 {
-                    ODataCapabilitiesReader.SetCapabilitiesForEntitySet((OdcmProperty)odcmObject, (IEdmEntitySet)annotatableEdmEntity, _edmModel);
+                    OdcmCapability.SetCapabilitiesForEntitySet((OdcmProperty)odcmObject);
                 }
 
                 if (annotatableEdmEntity is IEdmEntityContainer && odcmObject is OdcmServiceClass)
                 {
-                    ODataCapabilitiesReader.SetCapabilitiesForEntityContainer((OdcmServiceClass)odcmObject, (IEdmEntityContainer)annotatableEdmEntity);
+                    OdcmCapability.SetCapabilitiesForEntityContainer((OdcmServiceClass)odcmObject);
                 }
             }
 
@@ -419,7 +418,7 @@ namespace ODataReader.v4
                 {
                     Class = odcmClass,
                     // get the 'Projection' with default capabilities
-                    Projection = odcmType.GetProjection(ODataCapabilitiesReader.DefaultOdcmCapabilities),
+                    Projection = odcmType.GetProjection(OdcmCapability.DefaultOdcmCapabilities),
                     IsCollection = true,
                     IsLink = true
                 };
@@ -436,7 +435,7 @@ namespace ODataReader.v4
                 {
                     Class = odcmClass,
                     // get the 'Projection' with default capabilities
-                    Projection = odcmType.GetProjection(ODataCapabilitiesReader.DefaultOdcmCapabilities),
+                    Projection = odcmType.GetProjection(OdcmCapability.DefaultOdcmCapabilities),
                     IsLink = true
                 };
 
@@ -507,7 +506,7 @@ namespace ODataReader.v4
                     Class = odcmClass,
                     IsNullable = property.Type.IsNullable,
                     // get the 'Projection' with default capabilities
-                    Projection = odcmType.GetProjection(ODataCapabilitiesReader.DefaultOdcmCapabilities),
+                    Projection = odcmType.GetProjection(OdcmCapability.DefaultOdcmCapabilities),
                     IsCollection = property.Type.IsCollection(),
                     ContainsTarget =
                         property is IEdmNavigationProperty && ((IEdmNavigationProperty)property).ContainsTarget,

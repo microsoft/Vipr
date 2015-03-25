@@ -33,6 +33,16 @@ namespace Vipr.Core.CodeModel
         public string Name { get; set; }
 
         /// <summary>
+        /// Fully qualified name of the VocabularyAnnotation
+        /// </summary>
+        /// <example>Org.OData.Core.V1.Description</example>
+        /// <example>Org.OData.Capabilities.V1.InsertRestrictions</example>
+        public string FullName
+        {
+            get { return string.Format("{0}.{1}", Namespace, Name); }
+        }
+
+        /// <summary>
         /// An instance of an object which represents the value of the VocabularyAnnotation.
         /// May be a C# primitive type, enumeration, complex type, or a collection. 
         /// If there is a mapping between the EDM model and a C# object, such as an instance of "InsertRestrictions", the result of that mapping will be stored as the value. 

@@ -3,7 +3,7 @@
 
 namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
 {
-    public class OdcmExpandCapability : OdcmCapability
+    public class OdcmExpandCapability : OdcmBooleanCapability
     {
         public override string TermName
         {
@@ -13,11 +13,14 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
         /// <summary>
         /// $expand is supported
         /// </summary>
-        public bool Expandable { get; set; }
+        public bool Expandable
+        {
+            get { return BooleanValue; }
+        }
 
         public OdcmExpandCapability()
         {
-            Expandable = true;
+            BooleanValue = true;
         }
 
         public override bool Equals(OdcmCapability otherCapability)

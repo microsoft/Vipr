@@ -3,7 +3,7 @@
 
 namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
 {
-    public class OdcmUpdateCapability : OdcmCapability
+    public class OdcmUpdateCapability : OdcmBooleanCapability
     {
         public override string TermName
         {
@@ -13,11 +13,14 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
         /// <summary>
         /// Entities can be updated
         /// </summary>
-        public bool Updatable { get; set; }
+        public bool Updatable
+        {
+            get { return BooleanValue; }
+        }
 
         public OdcmUpdateCapability()
         {
-            Updatable = true;
+            BooleanValue = true;
         }
 
         public override bool Equals(OdcmCapability otherCapability)

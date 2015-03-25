@@ -3,7 +3,7 @@
 
 namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
 {
-    public class OdcmInsertCapability : OdcmCapability
+    public class OdcmInsertCapability : OdcmBooleanCapability
     {
         public override string TermName
         {
@@ -13,11 +13,14 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
         /// <summary>
         /// Entities can be inserted
         /// </summary>
-        public bool Insertable { get; set; }
+        public bool Insertable
+        {
+            get { return BooleanValue; }
+        }
 
         public OdcmInsertCapability()
         {
-            Insertable = true;
+            BooleanValue = true;
         }
 
         public override bool Equals(OdcmCapability otherCapability)

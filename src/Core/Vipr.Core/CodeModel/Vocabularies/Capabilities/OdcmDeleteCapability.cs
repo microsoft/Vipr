@@ -3,7 +3,7 @@
 
 namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
 {
-    public class OdcmDeleteCapability : OdcmCapability
+    public class OdcmDeleteCapability : OdcmBooleanCapability
     {
         public override string TermName 
         {
@@ -13,11 +13,14 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
         /// <summary>
         /// Entities can be deleted
         /// </summary>
-        public bool Deletable { get; set; }
+        public bool Deletable
+        {
+            get { return BooleanValue; }
+        }
 
         public OdcmDeleteCapability()
         {
-            Deletable = true;
+            BooleanValue = true;
         }
 
         public override bool Equals(OdcmCapability otherCapability)
