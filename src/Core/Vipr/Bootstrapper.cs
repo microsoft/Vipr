@@ -15,7 +15,7 @@ namespace Vipr
     {
         const string Usage = @"Vipr CLI Tool
 Usage:
-    vipr.exe <inputFile> [--reader=<readerName>] [--writer=<writerName>] [--outputPath=<outputPath>] [--modelExport=<modelExportPath>] 
+    vipr.exe <inputFile> [--reader=<readerName>] [--writer=<writerName>] [--outputPath=<outputPath>] [--modelExport=<modelExportPath>]
 
 Options:
     --reader=<readerName>               Use the model reader defined in assembly readerName. Default is ODataReader.v4.
@@ -30,15 +30,17 @@ Options:
         private string _readerName = "Vipr.Reader.OData.v4";
         private string _writerName = "Vipr.Writer.CSharp";
         private string _metadataPath = "http://services.odata.org/V4/TripPinServiceRW/$metadata";
-        private string _outputPath = "";
+        private string _outputPath = @".\output";
 
         public void Start(string[] args)
         {
+            Console.WriteLine();
+
             GetCommandLineConfiguration(args);
 
             var edmxContents = MetadataResolver.GetMetadata(_metadataPath);
 
-            Console.WriteLine("Generating Client Library to {0}", _outputPath);
+            Console.WriteLine("Generating Client Library to {0}", Path.GetFullPath(_outputPath));
 
             MetadataToClientSource(edmxContents, _outputPath);
 
