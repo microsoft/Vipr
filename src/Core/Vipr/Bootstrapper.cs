@@ -11,9 +11,9 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr
 {
-    internal class Bootstrapper
-    {
-        const string Usage = @"Vipr CLI Tool
+	internal class Bootstrapper
+	{
+		const string Usage = @"Vipr CLI Tool
 Usage:
     vipr.exe <inputFile> [--reader=<readerName>] [--writer=<writerName>] [--outputPath=<outputPath>] [--modelExport=<modelExportPath>] 
 
@@ -24,103 +24,103 @@ Options:
     --modelExport=<modelExportPath>     Export the OcdmModel generated from the given Edmx model as a json file.
 ";
 
-        private IOdcmReader _odcmReader;
-        private IOdcmWriter _odcmWriter;
-        private string _ocdmModelExportPath = String.Empty;
-        private string _readerName = "ODataReader.v4";
-        private string _writerName = "CSharpWriter";
-        private string _metadataPath = "http://services.odata.org/V4/TripPinServiceRW/$metadata";
-        private string _outputPath = "";
+		private IOdcmReader _odcmReader;
+		private IOdcmWriter _odcmWriter;
+		private string _ocdmModelExportPath = String.Empty;
+		private string _readerName = "ODataReader.v4";
+		private string _writerName = "CSharpWriter";
+		private string _metadataPath = "http://services.odata.org/V4/TripPinServiceRW/$metadata";
+		private string _outputPath = "";
 
-        public void Start(string[] args)
-        {
-            GetCommandLineConfiguration(args);
+		public void Start(string[] args)
+		{
+			GetCommandLineConfiguration(args);
 
-            var edmxContents = MetadataResolver.GetMetadata(_metadataPath);
+			var edmxContents = MetadataResolver.GetMetadata(_metadataPath);
 
-            Console.WriteLine("Generating Client Library to {0}", _outputPath);
+			Console.WriteLine("Generating Client Library to {0}", _outputPath);
 
-            MetadataToClientSource(edmxContents, _outputPath);
+			MetadataToClientSource(edmxContents, _outputPath);
 
-            Console.WriteLine("Done.");
-        }
+			Console.WriteLine("Done.");
+		}
 
-        private void GetCommandLineConfiguration(string[] args)
-        {
-            var docopt = new Docopt();
+		private void GetCommandLineConfiguration(string[] args)
+		{
+			var docopt = new Docopt();
 
-            IDictionary<string, ValueObject> res = docopt.Apply(Usage, args, help: true, exit: true);
+			IDictionary<string, ValueObject> res = docopt.Apply(Usage, args, help: true, exit: true);
 
-            _ocdmModelExportPath = res["--modelExport"] == null ? _ocdmModelExportPath : res["--modelExport"].ToString();
+			_ocdmModelExportPath = res["--modelExport"] == null ? _ocdmModelExportPath : res["--modelExport"].ToString();
 
-            _readerName = res["--reader"] == null ? _readerName : res["--reader"].ToString();
+			_readerName = res["--reader"] == null ? _readerName : res["--reader"].ToString();
 
-            _writerName = res["--writer"] == null ? _writerName : res["--writer"].ToString();
+			_writerName = res["--writer"] == null ? _writerName : res["--writer"].ToString();
 
-            _outputPath = res["--outputPath"] == null ? _outputPath : res["--outputPath"].ToString();
+			_outputPath = res["--outputPath"] == null ? _outputPath : res["--outputPath"].ToString();
 
-            _metadataPath = res["<inputFile>"] == null ? _metadataPath : res["<inputFile>"].ToString();
-        }
+			_metadataPath = res["<inputFile>"] == null ? _metadataPath : res["<inputFile>"].ToString();
+		}
 
-        public IOdcmReader OdcmReader
-        {
-            get
-            {
-                if (_odcmReader != null) return _odcmReader;
+		public IOdcmReader OdcmReader
+		{
+			get
+			{
+				if (_odcmReader != null) return _odcmReader;
 
-                _odcmReader = GetOdcmReader();
+				_odcmReader = GetOdcmReader();
 
-                ConfigurationProvider.SetConfigurationOn(_odcmReader);
+				ConfigurationProvider.SetConfigurationOn(_odcmReader);
 
-                return _odcmReader;
-            }
-        }
+				return _odcmReader;
+			}
+		}
 
-        public IOdcmWriter OdcmWriter
-        {
-            get
-            {
-                if (_odcmWriter != null) return _odcmWriter;
+		public IOdcmWriter OdcmWriter
+		{
+			get
+			{
+				if (_odcmWriter != null) return _odcmWriter;
 
-                _odcmWriter = GetOdcmWriter();
+				_odcmWriter = GetOdcmWriter();
 
-                ConfigurationProvider.SetConfigurationOn(_odcmWriter);
+				ConfigurationProvider.SetConfigurationOn(_odcmWriter);
 
-                return _odcmWriter;
-            }
-        }
+				return _odcmWriter;
+			}
+		}
 
-        protected virtual IOdcmReader GetOdcmReader()
-        {
-            return TypeResolver.GetInstance<IOdcmReader>(_readerName);
-        }
+		protected virtual IOdcmReader GetOdcmReader()
+		{
+			return TypeResolver.GetInstance<IOdcmReader>(_readerName);
+		}
 
-        protected virtual IOdcmWriter GetOdcmWriter()
-        {
-            return TypeResolver.GetInstance<IOdcmWriter>(_writerName);
-        }
+		protected virtual IOdcmWriter GetOdcmWriter()
+		{
+			return TypeResolver.GetInstance<IOdcmWriter>(_writerName);
+		}
 
-        private void MetadataToClientSource(string edmxString, string outputDirectoryPath)
-        {
-            FileWriter.Write(MetadataToClientSource(edmxString), outputDirectoryPath);
-        }
+		private void MetadataToClientSource(string edmxString, string outputDirectoryPath)
+		{
+			FileWriter.Write(MetadataToClientSource(edmxString), outputDirectoryPath);
+		}
 
-        private TextFileCollection MetadataToClientSource(string edmxString)
-        {
-            var model = OdcmReader.GenerateOdcmModel(new TextFileCollection {new TextFile("$metadata", edmxString)});
+		private IEnumerable<TextFile> MetadataToClientSource(string edmxString)
+		{
+			var model = OdcmReader.GenerateOdcmModel(new List<TextFile> { new TextFile("$metadata", edmxString) });
 
-            ExportOcdmModel(model);
+			ExportOcdmModel(model);
 
-            return OdcmWriter.GenerateProxy(model);
-        }
+			return OdcmWriter.GenerateProxy(model);
+		}
 
-        private void ExportOcdmModel(OdcmModel model)
-        {
-            if (string.IsNullOrEmpty(_ocdmModelExportPath)) return;
+		private void ExportOcdmModel(OdcmModel model)
+		{
+			if (string.IsNullOrEmpty(_ocdmModelExportPath)) return;
 
-            var jss = new JsonSerializerSettings {PreserveReferencesHandling = PreserveReferencesHandling.Objects};
+			var jss = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects };
 
-            File.WriteAllText(_ocdmModelExportPath, JsonConvert.SerializeObject(model, jss));
-        }
-    }
+			File.WriteAllText(_ocdmModelExportPath, JsonConvert.SerializeObject(model, jss));
+		}
+	}
 }

@@ -76,9 +76,9 @@ namespace CSharpWriterUnitTests
             return CompileText(ReferencedAssemblies, proxySources.Select(f => f.Contents).ToArray());
         }
 
-        private static void WriteProxySource(TextFileCollection proxySources)
+        private static void WriteProxySource(IEnumerable<TextFile> proxySources)
         {
-            if(Debugger.IsAttached)
+            if (Debugger.IsAttached)
                 foreach (var sourceFile in proxySources)
                 {
                     Debug.WriteLine("-------- {0} ------", sourceFile.RelativePath);
@@ -87,7 +87,7 @@ namespace CSharpWriterUnitTests
                 }
         }
 
-        protected TextFileCollection GetProxySources(OdcmModel model, IConfigurationProvider configurationProvider = null, IEnumerable<string> internalsVisibleTo = null)
+        protected IEnumerable<TextFile> GetProxySources(OdcmModel model, IConfigurationProvider configurationProvider = null, IEnumerable<string> internalsVisibleTo = null)
         {
             if (model.ServiceMetadata["$metadata"] == TestConstants.ODataV4.EmptyEdmx)
                 model.ServiceMetadata["$metadata"] = model.ToEdmx(true);
@@ -107,9 +107,7 @@ namespace CSharpWriterUnitTests
                         .Aggregate((a, i) => a + i);
 
                 var originalProxySources = proxySources;
-
-                proxySources = new TextFileCollection();
-                proxySources.AddRange(originalProxySources.Select(file => new TextFile(file.RelativePath, internalsHeader + file.Contents)));
+                return originalProxySources.Select(file => new TextFile(file.RelativePath, internalsHeader + file.Contents));
             }
 
             WriteProxySource(proxySources);
@@ -126,13 +124,9 @@ namespace CSharpWriterUnitTests
             if (referencedAssemblies != null) compilerParams.ReferencedAssemblies.AddRange(referencedAssemblies.Select(r => Path.IsPathRooted(r) ? r : profileDir + r).ToArray());
 
             var provider = new CSharpCodeProvider();
-
             var compile = provider.CompileAssemblyFromSource(compilerParams, cSharpSources);
-
             if (!compile.Errors.HasErrors) return compile.CompiledAssembly;
-
             var text = compile.Errors.Cast<CompilerError>().Aggregate("Compile error: ", (c, ce) => c + ("\r\n" + ce.ToString()));
-
             throw new Exception(text);
         }
 
@@ -149,16 +143,13 @@ namespace CSharpWriterUnitTests
                     TreatWarningsAsErrors = false,
                 };
             }
-            else
+            return new CompilerParameters
             {
-                return new CompilerParameters
-                {
-                    CompilerOptions = "/optimize",
-                    GenerateExecutable = false,
-                    GenerateInMemory = true,
-                    TreatWarningsAsErrors = true,
-                };
-            }
+                CompilerOptions = "/optimize",
+                GenerateExecutable = false,
+                GenerateInMemory = true,
+                TreatWarningsAsErrors = true,
+            };
         }
 
         protected static T GetValue<T>(Assembly asm, string methodName, string typeName, string @namespace) where T : class

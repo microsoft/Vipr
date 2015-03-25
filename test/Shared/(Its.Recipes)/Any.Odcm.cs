@@ -322,12 +322,9 @@ namespace Microsoft.Its.Recipes
             return retVal;
         }
 
-        public static TextFileCollection ServiceMetadata()
+        public static IEnumerable<TextFile> ServiceMetadata()
         {
-            return new TextFileCollection
-            {
-                new TextFile("$metadata", TestConstants.ODataV4.EmptyEdmx),
-            };
+            yield return new TextFile("$metadata", TestConstants.ODataV4.EmptyEdmx);
         }
 
         public static Func<Task<String>> TokenGetterFunction(string token = "")

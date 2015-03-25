@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.Its.Recipes;
 using Vipr;
 using Vipr.Core;
@@ -12,13 +15,13 @@ namespace ViprCliUnitTests
         [Fact]
         public void When_no_files_are_specified_it_returns()
         {
-            FileWriter.Write(new TextFileCollection());
+            FileWriter.Write(Enumerable.Empty<TextFile>());
         }
 
         [Fact]
         public void When_outputDirectoryPath_is_not_specified_then_it_writes_the_files_to_the_working_directory()
         {
-            var files = Any.TextFileCollection();
+            var files = Any.IEnumerable<TextFile>();
 
             try
             {
@@ -35,7 +38,7 @@ namespace ViprCliUnitTests
         [Fact]
         public void When_outputDirectoryPath_is_specified_and_exitst_then_it_writes_the_files_to_the_outputDirectoryPath()
         {
-            var files = Any.TextFileCollection();
+            var files = Any.IEnumerable<TextFile>();
 
             var outputDirectoryPath = Any.Word();
 
@@ -58,7 +61,7 @@ namespace ViprCliUnitTests
         [Fact]
         public void When_outputDirectoryPath_is_specified_and_does_not_exitst_then_it_creates_the_directory_and_writes_the_files()
         {
-            var files = Any.TextFileCollection();
+            var files = Any.IEnumerable<TextFile>();
 
             var outputDirectoryPath = Any.Word();
 
@@ -80,7 +83,7 @@ namespace ViprCliUnitTests
         [Fact]
         public void When_the_executing_assembly_is_executed_from_a_different_directory_files_are_written_to_that_directory()
         {
-            var files = Any.TextFileCollection();
+            var files = Any.IEnumerable<TextFile>();
 
             var currentDirectory = Environment.CurrentDirectory;
 

@@ -94,7 +94,7 @@ namespace ODataReader.v4UnitTests
                 {
                     entityType.Add(property);
                 }
- 
+
                 if (config != null)
                 {
                     config(this, entityType);
@@ -126,7 +126,7 @@ namespace ODataReader.v4UnitTests
 
                 if (config != null)
                 {
-                    config(this,complexType);
+                    config(this, complexType);
                 }
             }));
 
@@ -217,12 +217,9 @@ namespace ODataReader.v4UnitTests
             get { return _testObjectMap[key]; }
         }
 
-        public TextFileCollection ServiceMetadata()
+        public IEnumerable<TextFile> ServiceMetadata()
         {
-            return new TextFileCollection
-            {
-                new TextFile("$metadata", _testObjectMap[Keys.Edmx].Element.ToString())
-            };
+            yield return new TextFile("$metadata", _testObjectMap[Keys.Edmx].Element.ToString());
         }
     }
 }
