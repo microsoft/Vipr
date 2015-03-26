@@ -31,7 +31,7 @@ namespace CSharpWriterUnitTests
             {
                 var @namespace = m.Namespaces[0];
                 var derivedClass = @namespace.Classes.First();
-                _baseClass = Any.EntityOdcmClass(@namespace);
+                _baseClass = Any.OdcmEntityClass(@namespace);
                 @namespace.Types.Add(_baseClass);
                 derivedClass.Base = _baseClass;
                 if (!_baseClass.Derived.Contains(derivedClass))

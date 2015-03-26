@@ -23,7 +23,7 @@ namespace CSharpWriterUnitTests
             base.Init(m =>
             {
                 var @namespace = m.Namespaces[0];
-                NavTargetClass = Any.EntityOdcmClass(@namespace);
+                NavTargetClass = Any.OdcmEntityClass(@namespace);
                 @namespace.Types.Add(NavTargetClass);
 
                 var @class = @namespace.Classes.First();
@@ -209,7 +209,7 @@ public class Given_an_OdcmClass_Entity_Uninitialized : NavigationPropertyTestBas
         base.Init(m =>
         {
             var @namespace = m.Namespaces[0];
-            NavTargetClass = Any.EntityOdcmClass(@namespace);
+            NavTargetClass = Any.OdcmEntityClass(@namespace);
             @namespace.Types.Add(NavTargetClass);
 
             var @class = @namespace.Classes.First();

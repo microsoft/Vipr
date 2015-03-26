@@ -18,7 +18,7 @@ namespace CSharpWriterUnitTests
 
                 var @namespace = m.Namespaces[0];
 
-                NavTargetClass = Any.EntityOdcmClass(@namespace);
+                NavTargetClass = Any.OdcmEntityClass(@namespace);
 
                 @namespace.Types.Add(NavTargetClass);
 
