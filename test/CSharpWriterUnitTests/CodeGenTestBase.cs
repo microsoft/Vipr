@@ -96,7 +96,7 @@ namespace CSharpWriterUnitTests
 
             writer.SetConfigurationProvider(configurationProvider);
 
-            var proxySources = writer.GenerateProxy(model);
+            var proxySources = writer.GenerateProxy(model).ToList();
 
             if (internalsVisibleTo != null && internalsVisibleTo.Any())
             {
