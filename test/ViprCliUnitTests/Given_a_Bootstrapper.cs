@@ -3,8 +3,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Microsoft.MockService;
@@ -57,7 +59,7 @@ namespace ViprCliUnitTests
             }
             finally
             {
-                if (File.Exists(exportPath))
+                if(File.Exists(exportPath))
                     File.Delete(exportPath);
             }
         }
@@ -97,11 +99,11 @@ namespace ViprCliUnitTests
 
                 bootstrapper.Start(commandLine.Split(' '));
 
-                bootstrapper.OdcmReader.GetType().Should().Be(typeof(TestReaderWriter.TestReaderWriter));
+                bootstrapper.OdcmReader.GetType().Should().Be(typeof (TestReaderWriter.TestReaderWriter));
 
-                bootstrapper.OdcmWriter.GetType().Should().Be(typeof(CSharpWriter.CSharpWriter));
+                bootstrapper.OdcmWriter.GetType().Should().Be(typeof (CSharpWriter.CSharpWriter));
 
-                if (File.Exists("CSharpProxy.cs")) File.Delete("CSharpProxy.cs");
+                if(File.Exists("CSharpProxy.cs")) File.Delete("CSharpProxy.cs");
             });
         }
 
@@ -119,9 +121,9 @@ namespace ViprCliUnitTests
 
                 bootstrapper.Start(commandLine.Split(' '));
 
-                bootstrapper.OdcmReader.GetType().Should().Be(typeof(ODataReader.v4.OdcmReader));
+                bootstrapper.OdcmReader.GetType().Should().Be(typeof (ODataReader.v4.OdcmReader));
 
-                bootstrapper.OdcmWriter.GetType().Should().Be(typeof(TestReaderWriter.TestReaderWriter));
+                bootstrapper.OdcmWriter.GetType().Should().Be(typeof (TestReaderWriter.TestReaderWriter));
             });
         }
 
@@ -140,9 +142,9 @@ namespace ViprCliUnitTests
 
                 if (File.Exists("CSharpProxy.cs")) File.Delete("CSharpProxy.cs");
 
-                bootstrapper.OdcmReader.GetType().Should().Be(typeof(ODataReader.v4.OdcmReader));
+                bootstrapper.OdcmReader.GetType().Should().Be(typeof (ODataReader.v4.OdcmReader));
 
-                bootstrapper.OdcmWriter.GetType().Should().Be(typeof(CSharpWriter.CSharpWriter));
+                bootstrapper.OdcmWriter.GetType().Should().Be(typeof (CSharpWriter.CSharpWriter));
             });
         }
 
@@ -184,10 +186,10 @@ namespace ViprCliUnitTests
 
                 File.Exists(filePath).Should().BeTrue("Because the proxy was created in the working directory.");
 
-                if (File.Exists(filePath)) File.Delete(filePath);
+                if (Directory.Exists(outputPath)) Directory.Delete(outputPath, true);
             });
         }
-
+        
         private void ValidateFromDiskGeneration(string optionalCommandLine = "")
         {
             var metadata = Any.String(1);
@@ -213,10 +215,10 @@ namespace ViprCliUnitTests
                 ValidateProxyGeneration(metadata, commandLine);
             });
         }
-
+        
         private void ValidateProxyGeneration(string metadata, string commandLine)
         {
-            var outputFiles = Any.IEnumerable<TextFile>();
+            var outputFiles = Any.IEnumerable<TextFile>().ToList();
 
             try
             {
@@ -277,10 +279,8 @@ namespace ViprCliUnitTests
             var metadataPath = Any.UriPath(1);
 
             using (var mockService = new MockService()
-                .Setup(r => r.Request.Path.ToString() == "/" + metadataPath &&
-                            r.Request.Method == "GET",
-                    r => r.Response.Write(metadata))
-                .Start())
+                .OnRequest(c => c.Request.Path.ToString() == "/" + metadataPath && c.Request.Method == "GET")
+                .RespondWith(c => c.Response.Write(metadata)))
             {
                 action(mockService.GetBaseAddress() + metadataPath);
             }
@@ -291,7 +291,7 @@ namespace ViprCliUnitTests
 
             var fileName = Any.Word();
             var metadataPath = Path.Combine(_workingDirectory, fileName);
-            var fileGroup = new List<TextFile> { new TextFile(fileName, metadata) };
+            var fileGroup = new List<TextFile> {new TextFile(fileName, metadata)};
 
             try
             {

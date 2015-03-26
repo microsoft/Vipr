@@ -103,8 +103,7 @@ namespace CSharpWriterUnitTests
             var instancePath = Class.GetDefaultEntityPath(entityKeyValues);
 
             using (var mockService = new MockService(true)
-                    .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .Start())
+                    .SetupPostEntity(TargetEntity, entityKeyValues))
             {
                 var concrete = mockService
                     .GetDefaultContext(Model)
@@ -129,8 +128,7 @@ namespace CSharpWriterUnitTests
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var fetcherPath = Class.GetDefaultEntityPath(entityKeyValues);
 
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 var fetcher = mockService
                     .GetDefaultContext(Model)
@@ -157,8 +155,7 @@ namespace CSharpWriterUnitTests
             var instancePath = Class.GetDefaultEntityPath(entityKeyValues);
 
             using (var mockService = new MockService()
-                    .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .Start())
+                    .SetupPostEntity(TargetEntity, entityKeyValues))
             {
                 var concrete = mockService
                     .GetDefaultContext(Model)
@@ -183,8 +180,7 @@ namespace CSharpWriterUnitTests
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var fetcherPath = Class.GetDefaultEntityPath(entityKeyValues);
 
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 var fetcher = mockService
                     .GetDefaultContext(Model)

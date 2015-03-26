@@ -137,15 +137,14 @@ namespace CSharpWriterUnitTests
             var instancePath = Class.GetDefaultEntityPath(entityKeyValues);
 
             using (var mockService = new MockService(true)
-                .SetupPostEntity(TargetEntity, entityKeyValues)
-                .Start())
+                .SetupPostEntity(TargetEntity, entityKeyValues))
             {
                 var concrete = mockService
                     .GetDefaultContext(Model)
                     .CreateConcrete(ConcreteType);
 
                 mockService.ValidateParameterPassing("POST", concrete, instancePath, Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
 
@@ -164,15 +163,14 @@ namespace CSharpWriterUnitTests
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var fetcherPath = Class.GetDefaultEntityPath(entityKeyValues);
 
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 var fetcher = mockService
                     .GetDefaultContext(Model)
                     .CreateFetcher(FetcherType, fetcherPath);
 
                 mockService.ValidateParameterPassing("POST", fetcher, fetcherPath, Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
 
@@ -192,15 +190,14 @@ namespace CSharpWriterUnitTests
             var instancePath = Class.GetDefaultEntityPath(entityKeyValues);
 
             using (var mockService = new MockService()
-                .SetupPostEntity(TargetEntity, entityKeyValues)
-                .Start())
+                .SetupPostEntity(TargetEntity, entityKeyValues))
             {
                 var concrete = mockService
                     .GetDefaultContext(Model)
                     .CreateConcrete(ConcreteType);
 
                 mockService.ValidateParameterPassing("GET", concrete, instancePath, Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
 
@@ -219,15 +216,14 @@ namespace CSharpWriterUnitTests
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var fetcherPath = Class.GetDefaultEntityPath(entityKeyValues);
 
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 var fetcher = mockService
                     .GetDefaultContext(Model)
                     .CreateFetcher(FetcherType, fetcherPath);
 
                 mockService.ValidateParameterPassing("GET", fetcher, fetcherPath, Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
     }

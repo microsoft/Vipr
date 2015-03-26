@@ -40,8 +40,7 @@ namespace CSharpWriterUnitTests
             var keyValues = Class.GetSampleKeyArguments().ToArray();
 
             using (_mockedService = new MockService()
-                    .SetupGetEntity(TargetEntity, keyValues)
-                    .Start())
+                    .SetupGetEntity(TargetEntity, keyValues))
             {
                 var collection = _mockedService
                     .GetDefaultContext(Model)
@@ -60,8 +59,7 @@ namespace CSharpWriterUnitTests
             var keyValues = Class.GetSampleKeyArguments().ToArray();
 
             using (_mockedService = new MockService()
-                    .SetupGetEntity(TargetEntity, keyValues)
-                    .Start())
+                    .SetupGetEntity(TargetEntity, keyValues))
             {
                 var collection = _mockedService
                     .GetDefaultContext(Model)

@@ -33,18 +33,19 @@ namespace CSharpWriterUnitTests
             });
 
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var responseKeyValues = Class.GetSampleKeyArguments().ToArray();
             var instancePath = Class.GetDefaultEntityPath(entityKeyValues);
+            var responseKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var response = ConcreteType.Initialize(responseKeyValues);
 
             using (var mockService = new MockService()
-                .SetupPostEntity(TargetEntity, entityKeyValues)
-                .Start())
+                .SetupPostEntity(TargetEntity, entityKeyValues))
             {
-                mockService.SetupMethod("GET",
-                    instancePath + "/" + Method.FullName,
-                    null,
-                    null,
-                    mockService.GetOdataJsonInstance(TargetEntity, responseKeyValues));
+                mockService
+                    .OnInvokeMethodRequest("GET",
+                        instancePath + "/" + Method.FullName,
+                        null,
+                        null)
+                    .RespondWithGetEntity(TargetEntity.Class.GetDefaultEntitySetName(), response);
 
                 var concrete = mockService
                     .GetDefaultContext(Model)

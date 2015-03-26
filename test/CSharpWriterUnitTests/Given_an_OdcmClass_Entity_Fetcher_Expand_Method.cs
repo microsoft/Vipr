@@ -28,8 +28,7 @@ namespace CSharpWriterUnitTests
             var lambda = Expression.Lambda(navigationProperty, new[] { param });
 
             using (_mockedService = new MockService()
-                    .SetupGetEntitySet(TargetEntity, new []{navigationPropertyName})
-                    .Start())
+                    .SetupGetEntitySet(TargetEntity, new []{navigationPropertyName}))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)
@@ -52,8 +51,7 @@ namespace CSharpWriterUnitTests
             var lambda2 = GetExpandLambda(navigationPropertyName2);
 
             using (_mockedService = new MockService()
-                    .SetupGetEntitySet(TargetEntity, new[] { navigationPropertyName1, navigationPropertyName2 })
-                    .Start())
+                    .SetupGetEntitySet(TargetEntity, new[] { navigationPropertyName1, navigationPropertyName2 }))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)

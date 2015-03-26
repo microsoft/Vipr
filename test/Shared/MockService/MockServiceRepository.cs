@@ -11,7 +11,7 @@ namespace Microsoft.MockService.SelfHost
         private static readonly IDictionary<int, MockService> s_Scenarios =
             new Dictionary<int, MockService>();
         
-        internal static MockService GetScenario(int portNumber)
+        internal static MockService GetServiceMockForPort(int portNumber)
         {
             return s_Scenarios.ContainsKey(portNumber) ? s_Scenarios[portNumber] : null;
         }
