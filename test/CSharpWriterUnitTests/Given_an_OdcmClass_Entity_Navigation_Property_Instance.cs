@@ -119,8 +119,7 @@ namespace CSharpWriterUnitTests
             var keyValues = Class.GetSampleKeyArguments().ToArray();
 
             using (_mockedService = new MockService()
-                    .SetupGetEntityProperty(TargetEntity, keyValues, NavigationProperty)
-                    .Start())
+                    .SetupGetEntityProperty(TargetEntity, keyValues, NavigationProperty))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)
@@ -141,8 +140,7 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                 .SetupPostEntity(TargetEntity, entityKeyValues)
-                .SetupGetEntity(TargetEntity)
-                .Start())
+                .SetupGetEntity(TargetEntity))
             {
                 var instance = _mockedService
                     .GetDefaultContext(Model)
@@ -164,8 +162,7 @@ namespace CSharpWriterUnitTests
          
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .SetupGetEntityProperty(TargetEntity, entityKeyValues, NavigationProperty)
-                    .Start())
+                    .SetupGetEntityProperty(TargetEntity, entityKeyValues, NavigationProperty))
             {
                 var instance = _mockedService
                     .GetDefaultContext(Model)
@@ -188,8 +185,8 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .SetupPatchEntityChanges(expectedPath)
-                    .Start())
+                    .OnPatchEntityRequest(expectedPath)
+                        .RespondWithODataOk())
             {
                 var context = _mockedService
                     .GetDefaultContext(Model);

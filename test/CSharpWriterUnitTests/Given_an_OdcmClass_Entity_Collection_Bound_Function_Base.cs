@@ -100,15 +100,14 @@ namespace CSharpWriterUnitTests
 
             var collectionPath = Any.UriPath(1);
             
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 var collection = mockService
                     .GetDefaultContext(Model)
                     .CreateCollection(CollectionType, ConcreteType, collectionPath);
                 
                 mockService.ValidateParameterPassing("POST", collection, "/" + collectionPath, Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
 
@@ -127,15 +126,14 @@ namespace CSharpWriterUnitTests
 
             var collectionPath = Any.UriPath(1);
 
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 var collection = mockService
                     .GetDefaultContext(Model)
                     .CreateCollection(CollectionType, ConcreteType, collectionPath);
 
                 mockService.ValidateParameterPassing("GET", collection, "/" + collectionPath, Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
     }

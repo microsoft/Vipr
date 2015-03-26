@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Microsoft.MockService;
+using Microsoft.MockService.Extensions.ODataV4;
 using Xunit;
 
 namespace CSharpWriterUnitTests
@@ -24,8 +25,8 @@ namespace CSharpWriterUnitTests
             var expectedCount = Any.Long();
 
             using (_serviceMock = new MockService()
-                    .SetupGetEntitySetCount(TargetEntity, expectedCount)
-                    .Start())
+                        .OnGetEntityCountRequest(TargetEntity.Class.GetDefaultEntitySetPath())
+                        .RespondWithODataText(expectedCount.ToString()))
             {
                 var context = _serviceMock
                     .GetDefaultContext(Model);
