@@ -12,8 +12,8 @@ namespace CSharpWriter
         protected ConcreteNavigationAccessorProperty(OdcmProperty odcmProperty) : base(odcmProperty)
         {
             FieldName = NamesService.GetPropertyFieldName(odcmProperty);
-            InstanceType = NamesService.GetFetcherTypeName(odcmProperty.Projection.Type);
-            Type = new Type(NamesService.GetConcreteTypeName(odcmProperty.Projection.Type));
+            InstanceType = NamesService.GetFetcherTypeName(odcmProperty.Type);
+            Type = new Type(NamesService.GetConcreteTypeName(odcmProperty.Type));
         }
 
         public static ConcreteNavigationAccessorProperty ForConcrete(OdcmProperty odcmProperty)

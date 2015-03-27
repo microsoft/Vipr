@@ -107,7 +107,7 @@ namespace CSharpWriterUnitTests
         private Type[] GetKeyPropertyTypes()
         {
             return Class.Key
-                .Select(p => p.Projection.Type)
+                .Select(p => p.Type)
                 .Select(t => Proxy.GetClass(t.Namespace, t.Name))
                 .ToArray();
         }

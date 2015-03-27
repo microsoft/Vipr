@@ -15,23 +15,12 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
         /// </summary>
         public bool Expandable
         {
-            get { return BooleanValue; }
+            get { return Value; }
         }
 
         public OdcmExpandCapability()
         {
-            BooleanValue = true;
+            Value = true;
         }
-
-        public override bool Equals(OdcmCapability otherCapability)
-        {
-            var other = otherCapability as OdcmExpandCapability;
-            if (other == null)
-            {
-                return false;
-            }
-
-            return Expandable == other.Expandable;
-         }
     }
 }

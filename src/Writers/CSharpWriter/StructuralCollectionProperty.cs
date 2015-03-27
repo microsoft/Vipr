@@ -11,7 +11,7 @@ namespace CSharpWriter
 
         private StructuralCollectionProperty(OdcmProperty odcmProperty) : base(odcmProperty)
         {
-            InstanceType = new Type(NamesService.GetPublicTypeName(odcmProperty.Projection.Type));
+            InstanceType = new Type(NamesService.GetPublicTypeName(odcmProperty.Type));
             Type = new Type(new Identifier("System.Collections.Generic", "IList"), InstanceType);
         }
 

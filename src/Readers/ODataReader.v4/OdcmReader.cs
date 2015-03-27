@@ -126,7 +126,7 @@ namespace ODataReader.v4
 
                 if (annotatableEdmEntity is IEdmEntityContainer && odcmObject is OdcmServiceClass)
                 {
-                    OdcmCapability.SetCapabilitiesForEntityContainer((OdcmServiceClass)odcmObject);
+                    OdcmCapability.SetCapabilitiesForOdcmServiceClass((OdcmServiceClass)odcmObject);
                 }
             }
 
@@ -434,7 +434,6 @@ namespace ODataReader.v4
                 var odcmProperty = new OdcmProperty(singleton.Name)
                 {
                     Class = odcmClass,
-                    // get the 'Projection' with default capabilities
                     Projection = odcmType.GetProjection(OdcmCapability.DefaultOdcmCapabilities),
                     IsLink = true
                 };
@@ -505,7 +504,6 @@ namespace ODataReader.v4
                 {
                     Class = odcmClass,
                     IsNullable = property.Type.IsNullable,
-                    // get the 'Projection' with default capabilities
                     Projection = odcmType.GetProjection(OdcmCapability.DefaultOdcmCapabilities),
                     IsCollection = property.Type.IsCollection(),
                     ContainsTarget =

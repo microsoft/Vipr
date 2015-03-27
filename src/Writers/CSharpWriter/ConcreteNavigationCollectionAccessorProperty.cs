@@ -11,11 +11,11 @@ namespace CSharpWriter
 
         private ConcreteNavigationCollectionAccessorProperty(OdcmProperty odcmProperty) : base(odcmProperty)
         {
-            CollectionType = new Type(NamesService.GetCollectionTypeName((OdcmClass)odcmProperty.Projection.Type));
+            CollectionType = new Type(NamesService.GetCollectionTypeName((OdcmClass)odcmProperty.Type));
             FieldName = NamesService.GetConcreteFieldName(odcmProperty);
-            InstanceType = NamesService.GetConcreteTypeName(odcmProperty.Projection.Type);
+            InstanceType = NamesService.GetConcreteTypeName(odcmProperty.Type);
             Type = new Type(new Identifier("global::System.Collections.Generic", "IList"),
-                new Type(NamesService.GetConcreteTypeName(odcmProperty.Projection.Type)));
+                new Type(NamesService.GetConcreteTypeName(odcmProperty.Type)));
         }
 
         public new static ConcreteNavigationCollectionAccessorProperty ForConcrete(OdcmProperty odcmProperty)

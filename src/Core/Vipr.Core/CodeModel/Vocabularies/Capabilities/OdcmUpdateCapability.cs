@@ -15,23 +15,12 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
         /// </summary>
         public bool Updatable
         {
-            get { return BooleanValue; }
+            get { return Value; }
         }
 
         public OdcmUpdateCapability()
         {
-            BooleanValue = true;
+            Value = true;
         }
-
-        public override bool Equals(OdcmCapability otherCapability)
-        {
-            var other = otherCapability as OdcmUpdateCapability;
-            if (other == null)
-            {
-                return false;
-            }
-
-            return Updatable == other.Updatable;
-         }
     }
 }

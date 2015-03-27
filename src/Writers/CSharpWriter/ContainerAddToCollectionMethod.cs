@@ -17,7 +17,7 @@ namespace CSharpWriter
 
             Parameters = new[]
             {
-                new Parameter(new Type(NamesService.GetConcreteInterfaceName(odcmProperty.Projection.Type)), odcmProperty.Name.ToLowerCamelCase()),
+                new Parameter(new Type(NamesService.GetConcreteInterfaceName(odcmProperty.Type)), odcmProperty.Name.ToLowerCamelCase()),
             };
 
             ReturnType = Type.Void;

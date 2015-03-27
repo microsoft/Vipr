@@ -486,7 +486,7 @@ namespace CSharpWriterUnitTests
                                 ReadOnly = property.ReadOnly,
                                 Projection = new OdcmProjection()
                                 {
-                                    Type = property.Projection.Type
+                                    Type = property.Type
                                 }
                             };
 

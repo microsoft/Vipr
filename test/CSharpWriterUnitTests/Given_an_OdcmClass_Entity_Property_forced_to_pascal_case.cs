@@ -36,7 +36,7 @@ namespace CSharpWriterUnitTests
                 _property = originalProperty.Rename(camelCasedName);
             });
 
-            _propertyType = Proxy.GetClass(_property.Projection.Type.Namespace, _property.Projection.Type.Name);
+            _propertyType = Proxy.GetClass(_property.Type.Namespace, _property.Type.Name);
             if (_property.IsCollection)
                 _propertyType = typeof (IList<>).MakeGenericType(_propertyType);
         }

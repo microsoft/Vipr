@@ -224,7 +224,7 @@ namespace CSharpWriterUnitTests
             var @class = Any.EntityOdcmClass(_namespace, c => c.Properties.Add(property));
             property.Class = @class;
             _model.AddType(@class);
-            _model.AddType(property.Projection.Type);           
+            _model.AddType(property.Type);           
 
             var xmlContent = GetProxyXmlDocumentContent(_model);
             string propertyName = string.Format("P:{0}.{1}.{2}", @class.Namespace.Name, @class.Name, property.Name);
@@ -253,7 +253,7 @@ namespace CSharpWriterUnitTests
             var @class = Any.EntityOdcmClass(_namespace, c => c.Properties.Add(property));
             property.Class = @class;
             _model.AddType(@class);
-            _model.AddType(property.Projection.Type);
+            _model.AddType(property.Type);
             string propertyName = string.Format("P:{0}.I{1}.{2}", @class.Namespace.Name, @class.Name, property.Name);
 
             var xmlContent = GetProxyXmlDocumentContent(_model);
@@ -270,7 +270,7 @@ namespace CSharpWriterUnitTests
             var @class = Any.EntityOdcmClass(_namespace, c => c.Properties.Add(property));
             property.Class = @class;
             _model.AddType(@class);
-            _model.AddType(property.Projection.Type);
+            _model.AddType(property.Type);
             string propertyName = string.Format("P:{0}.{1}Fetcher.{2}", @class.Namespace.Name, @class.Name, property.Name);
 
             var xmlContent = GetProxyXmlDocumentContent(_model);
@@ -287,7 +287,7 @@ namespace CSharpWriterUnitTests
             var @class = Any.EntityOdcmClass(_namespace, c => c.Properties.Add(property));
             property.Class = @class;
             _model.AddType(@class);
-            _model.AddType(property.Projection.Type);
+            _model.AddType(property.Type);
             string propertyName = string.Format("P:{0}.I{1}Fetcher.{2}", @class.Namespace.Name, @class.Name, property.Name);
 
             var xmlContent = GetProxyXmlDocumentContent(_model);
@@ -308,7 +308,7 @@ namespace CSharpWriterUnitTests
             var @class = Any.ServiceOdcmClass(_namespace, c => c.Properties.Add(property));
             property.Class = @class;
             _model.AddType(@class);
-            _model.AddType(property.Projection.Type);
+            _model.AddType(property.Type);
             string className = string.Format("P:{0}.{1}.{2}", @class.Namespace.Name, @class.Name, property.Name);
 
             var xmlContent = GetProxyXmlDocumentContent(_model);
@@ -329,7 +329,7 @@ namespace CSharpWriterUnitTests
             var @class = Any.ServiceOdcmClass(_namespace, c => c.Properties.Add(property));
             property.Class = @class;
             _model.AddType(@class);
-            _model.AddType(property.Projection.Type);
+            _model.AddType(property.Type);
             string className = string.Format("P:{0}.I{1}.{2}", @class.Namespace.Name, @class.Name, property.Name);
 
             var xmlContent = GetProxyXmlDocumentContent(_model);

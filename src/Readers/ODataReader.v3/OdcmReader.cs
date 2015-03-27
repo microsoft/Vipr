@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
+using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
 namespace ODataReader.v3
 {
@@ -364,10 +365,7 @@ namespace ODataReader.v3
             {
                 var odcmProperty = new OdcmProperty(entitySet.Name)
                 {
-                    Projection = new OdcmProjection()
-                    {
-                        Type = ResolveType(entitySet.ElementType.Name, entitySet.ElementType.Namespace),
-                    },
+                    Projection = ResolveType(entitySet.ElementType.Name, entitySet.ElementType.Namespace).GetProjection(OdcmCapability.DefaultOdcmCapabilities),
                     IsCollection = true,
                     IsLink = true,
                     Class = odcmClass
@@ -444,10 +442,7 @@ namespace ODataReader.v3
                 var odcmProperty = new OdcmProperty(property.Name)
                 {
                     Class = odcmClass,
-                    Projection = new OdcmProjection()
-                    {
-                        Type = ResolveType(property.Type),
-                    },
+                    Projection = ResolveType(property.Type).GetProjection(OdcmCapability.DefaultOdcmCapabilities),
                     IsCollection = property.Type.IsCollection(),
                     IsNullable = property.Type.IsNullable,
                     ContainsTarget =

@@ -10,6 +10,6 @@ namespace Vipr.Core.CodeModel
     {
         public OdcmType Type { get; set; }
 
-        public List<OdcmCapability> Capabilities { get; set; }
+        public IList<OdcmCapability> Capabilities { get; set; }
     }
 }

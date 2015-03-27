@@ -9,8 +9,8 @@ namespace CSharpWriter
         {
             Type = odcmProperty.IsCollection
                 ? new Type(new Identifier("global::System.Collections.Generic", "IList"),
-                    new Type(NamesService.GetConcreteTypeName(odcmProperty.Projection.Type)))
-                : new Type(NamesService.GetConcreteTypeName(odcmProperty.Projection.Type));
+                    new Type(NamesService.GetConcreteTypeName(odcmProperty.Type)))
+                : new Type(NamesService.GetConcreteTypeName(odcmProperty.Type));
         }
     }
 }

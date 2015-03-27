@@ -39,18 +39,18 @@ namespace Vipr.Core.CodeModel
         }
 
         /// <summary>
-        /// Given a list of capabilities return an OdcmProjection for this OdcmType
+        /// OdcmType maintains a cache of its Projections. 
+        /// This method will return a Projection from the cache with the same capabilities.
+        /// If the cache does not have the required Projection, a new Projection is created and add to the cache.
         /// </summary>
-        /// <param name="capabilities"></param>
-        /// <returns></returns>
-        public OdcmProjection GetProjection(List<OdcmCapability> capabilities)
+        /// <param name="capabilities">A list of capabilities</param>
+        /// <returns>A Projection of this OdcmType with the given capabilities</returns>
+        public OdcmProjection GetProjection(IList<OdcmCapability> capabilities)
         {
             //Find if we already have a 'Projection' for the given capabilities.
             OdcmProjection projection =
-                _projections.Find(
-                    odcmProjection =>
-                        capabilities.Count == odcmProjection.Capabilities.Count &&
-                        odcmProjection.Capabilities.All(capabilities.Contains));
+                _projections.SingleOrDefault(
+                    odcmProjection => odcmProjection.ContainsAllCapabilities(capabilities));
 
             if (projection == null)
             {

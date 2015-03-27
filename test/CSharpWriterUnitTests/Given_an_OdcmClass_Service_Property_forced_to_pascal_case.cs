@@ -41,7 +41,7 @@ namespace CSharpWriterUnitTests
             EntityContainerType.Should().HaveProperty(
                 CSharpAccessModifiers.Public, 
                 isCollection ? (CSharpAccessModifiers?)null : CSharpAccessModifiers.Private,
-                Proxy.GetInterface(_property.Projection.Type.Namespace, "I" + _property.Projection.Type.Name + (isCollection ? "Collection" : "Fetcher")),
+                Proxy.GetInterface(_property.Type.Namespace, "I" + _property.Type.Name + (isCollection ? "Collection" : "Fetcher")),
                 GetPascalCaseName(_property));
         }
 

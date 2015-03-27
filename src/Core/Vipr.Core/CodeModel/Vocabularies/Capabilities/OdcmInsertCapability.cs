@@ -15,23 +15,12 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
         /// </summary>
         public bool Insertable
         {
-            get { return BooleanValue; }
+            get { return Value; }
         }
 
         public OdcmInsertCapability()
         {
-            BooleanValue = true;
+            Value = true;
         }
-
-        public override bool Equals(OdcmCapability otherCapability)
-        {
-            var other = otherCapability as OdcmInsertCapability;
-            if (other == null)
-            {
-                return false;
-            }
-
-            return Insertable == other.Insertable;
-         }
     }
 }

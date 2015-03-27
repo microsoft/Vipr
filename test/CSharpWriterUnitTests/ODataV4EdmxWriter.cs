@@ -122,7 +122,7 @@ namespace CSharpWriterUnitTests
         {
             var tagName = "Property";
             var typeAttributeName = "Type";
-            var edmType = odcmProperty.Projection.Type.FullName;
+            var edmType = odcmProperty.Type.FullName;
 
             if (odcmProperty.Class.Kind == OdcmClassKind.Service)
             {
@@ -138,7 +138,7 @@ namespace CSharpWriterUnitTests
             }
             else if (odcmProperty.Class.Kind == OdcmClassKind.Entity)
             {
-                if (odcmProperty.Projection.Type is OdcmClass && ((OdcmClass)odcmProperty.Projection.Type).Kind == OdcmClassKind.Entity)
+                if (odcmProperty.Type is OdcmClass && ((OdcmClass)odcmProperty.Type).Kind == OdcmClassKind.Entity)
                 {
                     tagName = "NavigationProperty";
 

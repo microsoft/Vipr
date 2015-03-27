@@ -44,9 +44,9 @@ namespace CSharpWriter
 
         public static Type GetPropertyType(OdcmProperty property)
         {
-            return property.IsNullable && IsValueType(property.Projection.Type) && !(property.Projection.Type is OdcmEnum)
-                ? GetNullableType(property.Projection.Type)
-                : new Type(NamesService.GetPublicTypeName(property.Projection.Type));
+            return property.IsNullable && IsValueType(property.Type) && !(property.Type is OdcmEnum)
+                ? GetNullableType(property.Type)
+                : new Type(NamesService.GetPublicTypeName(property.Type));
         }
 
         public static Type GetParameterType(OdcmParameter parameter)

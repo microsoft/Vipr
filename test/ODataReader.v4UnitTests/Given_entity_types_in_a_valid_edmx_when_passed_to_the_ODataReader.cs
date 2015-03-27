@@ -326,7 +326,7 @@ namespace ODataReader.v4UnitTests
             complexProperty
                 .Should()
                 .NotBeNull("because a property referencing a complex type should result in a property in the OdcmEntityClass");
-            complexProperty.Projection.Type
+            complexProperty.Type
                 .Should()
                 .Be(odcmComplexType, "because a property referencing a complex type should result in a property with a type matching the OdcmComplexClass of the property");
         }

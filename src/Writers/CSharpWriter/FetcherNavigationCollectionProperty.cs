@@ -12,10 +12,10 @@ namespace CSharpWriter
         protected FetcherNavigationCollectionProperty(OdcmProperty odcmProperty)
             : base(odcmProperty)
         {
-            CollectionType = new Type(NamesService.GetCollectionTypeName((OdcmClass)odcmProperty.Projection.Type));
+            CollectionType = new Type(NamesService.GetCollectionTypeName((OdcmClass)odcmProperty.Type));
             FieldName = NamesService.GetFetcherCollectionFieldName(odcmProperty);
-            InstanceType = NamesService.GetConcreteTypeName(odcmProperty.Projection.Type);
-            Type = new Type(NamesService.GetCollectionInterfaceName((OdcmClass)odcmProperty.Projection.Type));
+            InstanceType = NamesService.GetConcreteTypeName(odcmProperty.Type);
+            Type = new Type(NamesService.GetCollectionInterfaceName((OdcmClass)odcmProperty.Type));
         }
 
         public new static FetcherNavigationProperty ForConcrete(OdcmProperty odcmProperty)

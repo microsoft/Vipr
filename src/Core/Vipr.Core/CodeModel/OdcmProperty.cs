@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System;
+
 namespace Vipr.Core.CodeModel
 {
     public class OdcmProperty : OdcmObject
@@ -8,6 +10,18 @@ namespace Vipr.Core.CodeModel
         public OdcmClass Class { get; set; }
 
         public bool ReadOnly { get; set; }
+
+        [Obsolete("This property will be retired in the future. Use 'Projection' property instead")]
+        public OdcmType Type
+        {
+            get
+            {
+                if (Projection != null)
+                    return Projection.Type;
+
+                return null;
+            }
+        }
 
         public OdcmProjection Projection { get; set; }
 

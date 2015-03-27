@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Vipr.Core.CodeModel;
+using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
 namespace Vipr.Core
 {
@@ -13,7 +14,7 @@ namespace Vipr.Core
         public static IEnumerable<OdcmProperty> WhereIsNavigation(this IEnumerable<OdcmProperty> odcmProperties, bool isNavigation = true)
         {
             return odcmProperties
-                .Where(p => isNavigation == (p.Projection.Type is OdcmEntityClass || p.Projection.Type is OdcmMediaClass));
+                .Where(p => isNavigation == (p.Type is OdcmEntityClass || p.Type is OdcmMediaClass));
         }
 
         public static IEnumerable<OdcmProperty> NavigationProperties(this OdcmClass odcmClass, bool? isCollection = null)
@@ -39,6 +40,12 @@ namespace Vipr.Core
             }
             odcmProperty = null;
             return false;
+        }
+
+        public static bool ContainsAllCapabilities(this OdcmProjection odcmProjection, IList<OdcmCapability> capabilities)
+        {
+            return capabilities.Count == odcmProjection.Capabilities.Count &&
+                   odcmProjection.Capabilities.All(capabilities.Contains);
         }
 
         public static IEnumerable<OdcmClass> NestedDerivedTypes(this OdcmClass odcmClass)

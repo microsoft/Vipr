@@ -32,7 +32,7 @@ namespace CSharpWriter
             return new Field
             {
                 Name = NamesService.GetPropertyFieldName(property),
-                Type = new Type(NamesService.GetConcreteTypeName(property.Projection.Type))
+                Type = new Type(NamesService.GetConcreteTypeName(property.Type))
             };
         }
 
@@ -42,7 +42,7 @@ namespace CSharpWriter
             {
                 Name = NamesService.GetPropertyFieldName(property),
                 Type = property.IsCollection
-                    ? new Type(NamesService.GetExtensionTypeName("NonEntityTypeCollectionImpl"), new Type(NamesService.GetConcreteTypeName(property.Projection.Type)))
+                    ? new Type(NamesService.GetExtensionTypeName("NonEntityTypeCollectionImpl"), new Type(NamesService.GetConcreteTypeName(property.Type)))
                     : TypeService.GetPropertyType(property)
             };
         }
@@ -53,8 +53,8 @@ namespace CSharpWriter
             {
                 Name = NamesService.GetFetcherFieldName(property),
                 Type = property.IsCollection
-                     ? new Type(NamesService.GetCollectionTypeName((OdcmClass)property.Projection.Type))
-                     : new Type(NamesService.GetFetcherTypeName(property.Projection.Type))
+                     ? new Type(NamesService.GetCollectionTypeName((OdcmClass)property.Type))
+                     : new Type(NamesService.GetFetcherTypeName(property.Type))
             };
         }
 
@@ -63,7 +63,7 @@ namespace CSharpWriter
             return new Field
             {
                 Name = NamesService.GetFetcherCollectionFieldName(property),
-                Type = new Type(NamesService.GetCollectionTypeName((OdcmClass)property.Projection.Type))
+                Type = new Type(NamesService.GetCollectionTypeName((OdcmClass)property.Type))
             };
         }
 
@@ -72,7 +72,7 @@ namespace CSharpWriter
             return new Field
             {
                 Name = NamesService.GetConcreteFieldName(property),
-                Type = new Type(NamesService.GetExtensionTypeName("EntityCollectionImpl"), new Type(NamesService.GetConcreteTypeName((OdcmClass)property.Projection.Type)))
+                Type = new Type(NamesService.GetExtensionTypeName("EntityCollectionImpl"), new Type(NamesService.GetConcreteTypeName((OdcmClass)property.Type)))
             };
         }
     }
