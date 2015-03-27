@@ -26,6 +26,9 @@ namespace ViprCliUnitTests
         private readonly Mock<IOdcmWriter> _writerMock;
         private readonly string _workingDirectory;
 
+        private const string defaultOutputDirectory = @".\output";
+        private const string oneExpectedOutputFile = "CSharpProxy.cs";
+
         public Given_a_Bootstrapper()
         {
             _bootstrapperMock = new Mock<Bootstrapper>(MockBehavior.Strict) { CallBase = true };
@@ -103,7 +106,7 @@ namespace ViprCliUnitTests
 
                 bootstrapper.OdcmWriter.GetType().Should().Be(typeof(Vipr.Writer.CSharp.CSharpWriter));
 
-                if(File.Exists("CSharpProxy.cs")) File.Delete("CSharpProxy.cs");
+                if(Directory.Exists(defaultOutputDirectory)) Directory.Delete(defaultOutputDirectory, true);
             });
         }
 
@@ -140,7 +143,7 @@ namespace ViprCliUnitTests
 
                 bootstrapper.Start(commandLine.Split(' '));
 
-                if (File.Exists("CSharpProxy.cs")) File.Delete("CSharpProxy.cs");
+                if (Directory.Exists(defaultOutputDirectory)) Directory.Delete(defaultOutputDirectory, true);
 
                 bootstrapper.OdcmReader.GetType().Should().Be(typeof (Vipr.Reader.OData.v4.OdcmReader));
 
@@ -161,14 +164,16 @@ namespace ViprCliUnitTests
 
                 bootstrapper.Start(commandLine.Split(' '));
 
-                File.Exists("CSharpProxy.cs").Should().BeTrue("Because the proxy was created in the working directory.");
+                var pathToOneExpectedOutputFile = Path.Combine(defaultOutputDirectory, oneExpectedOutputFile);
 
-                if (File.Exists("CSharpProxy.cs")) File.Delete("CSharpProxy.cs");
+                File.Exists(pathToOneExpectedOutputFile).Should().BeTrue("Because one expected output file was created in default output directory.");
+
+                if (Directory.Exists(defaultOutputDirectory)) Directory.Delete(defaultOutputDirectory, true);
             });
         }
 
         [Fact]
-        public void When_custom_outputPath_is_specified_then_defaults_are_used()
+        public void When_custom_outputPath_is_specified_then_it_is_used()
         {
             var metadata = "<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\"></edmx:Edmx>";
 
@@ -182,9 +187,9 @@ namespace ViprCliUnitTests
 
                 bootstrapper.Start(commandLine.Split(' '));
 
-                var filePath = Path.Combine(outputPath, "CSharpProxy.cs");
+                var filePath = Path.Combine(outputPath, oneExpectedOutputFile);
 
-                File.Exists(filePath).Should().BeTrue("Because the proxy was created in the working directory.");
+                File.Exists(filePath).Should().BeTrue("Because one expected output file was found in the specified output directory.");
 
                 if (Directory.Exists(outputPath)) Directory.Delete(outputPath, true);
             });
