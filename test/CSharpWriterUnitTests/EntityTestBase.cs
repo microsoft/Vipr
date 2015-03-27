@@ -37,7 +37,7 @@ namespace CSharpWriterUnitTests
 
             Model.Namespaces.Add(Namespace);
 
-            Class = Any.EntityOdcmClass(Namespace);
+            Class = Any.OdcmEntityClass(Namespace);
 
             Model.AddType(Class);
 

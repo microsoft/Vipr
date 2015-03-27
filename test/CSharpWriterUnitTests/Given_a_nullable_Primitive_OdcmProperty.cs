@@ -29,7 +29,7 @@ namespace CSharpWriterUnitTests
 
             _model.Namespaces.Add(_namespace);
 
-            _class = Any.EntityOdcmClass(_namespace);
+            _class = Any.OdcmEntityClass(_namespace);
 
             _property = Any.PrimitiveOdcmProperty(p =>
             {
