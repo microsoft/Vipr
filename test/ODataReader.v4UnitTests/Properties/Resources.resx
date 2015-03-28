@@ -127,6 +127,9 @@
   <data name="Annotation_element" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Edmx\Annotation.element.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="Collection_element" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Edmx\Collection.element.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="ComplexType_element" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Edmx\ComplexType.element.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -160,6 +163,9 @@
   <data name="Member_element" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Edmx\Member.element.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="NavigationPropertyPath_element" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Edmx\NavigationPropertyPath.element.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="NavigationProperty_element" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Edmx\NavigationProperty.element.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -172,8 +178,14 @@
   <data name="PropertyRef_element" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Edmx\PropertyRef.element.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="PropertyValue_element" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Edmx\PropertyValue.element.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="Property_element" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Edmx\Property.element.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Record_element" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Edmx\Record.element.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="ReturnType_element" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Edmx\ReturnType.element.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
