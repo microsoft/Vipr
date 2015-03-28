@@ -3,17 +3,15 @@
 
 using System.Resources;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ODataExtensions")]
+[assembly: AssemblyTitle("Microsoft.OData.ProxyExtensions")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ODataExtensions")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("Microsoft.OData.ProxyExtensions")]
 [assembly: AssemblyCopyright("Copyright \u00A9  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
