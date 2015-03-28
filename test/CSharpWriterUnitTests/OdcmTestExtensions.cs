@@ -34,7 +34,10 @@ namespace CSharpWriterUnitTests
                 {
                     Class = originalProperty.Class,
                     ReadOnly = originalProperty.ReadOnly,
-                    Type = originalProperty.Type,
+                    Projection = new OdcmProjection()
+                    {
+                        Type = originalProperty.Type
+                    },
                     ContainsTarget = originalProperty.ContainsTarget,
                     IsCollection = originalProperty.IsCollection,
                     IsLink = originalProperty.IsLink,

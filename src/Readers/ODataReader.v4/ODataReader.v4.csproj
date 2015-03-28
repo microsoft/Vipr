@@ -67,7 +67,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>    
+    </Compile>
     <Compile Include="OdcmReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

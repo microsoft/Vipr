@@ -155,7 +155,7 @@ namespace CSharpWriterUnitTests
         {
             var @enum = Any.OdcmEnum(e => e.Namespace = _namespace);
             _model.AddType(@enum);
-            _property.Type = @enum;
+            _property.Projection.Type = @enum;
             _proxy = GetProxy(_model);
             _classType = _proxy.GetClass(_class.Namespace, _class.Name);
             var _enumType = _proxy.GetEnum(@enum.Namespace, @enum.Name);
@@ -191,7 +191,7 @@ namespace CSharpWriterUnitTests
 
         private void CreateProxyWithPropertyType(string type)
         {
-            _property.Type = new OdcmPrimitiveType(type, OdcmNamespace.Edm);
+            _property.Projection.Type = new OdcmPrimitiveType(type, OdcmNamespace.Edm);
 
             _proxy = GetProxy(_model);
 

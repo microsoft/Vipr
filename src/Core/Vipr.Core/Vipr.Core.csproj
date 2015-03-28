@@ -47,8 +47,16 @@
     <Compile Include="CodeModel\OdcmComplexClass.cs" />
     <Compile Include="CodeModel\OdcmEntityClass.cs" />
     <Compile Include="CodeModel\OdcmMediaClass.cs" />
+    <Compile Include="CodeModel\OdcmProjection.cs" />
     <Compile Include="CodeModel\OdcmServiceClass.cs" />
     <Compile Include="CodeModel\OdcmVocabularyAnnotation.cs" />
+    <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmBooleanCapability.cs" />
+    <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmCapability.cs" />
+    <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmDeleteCapability.cs" />
+    <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmExpandCapability.cs" />
+    <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmInsertCapability.cs" />
+    <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmUpdateCapability.cs" />
+    <Compile Include="CodeModel\Vocabularies\Capabilities\PropertyCapabilitiesCache.cs" />
     <Compile Include="TextFileCollection.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\DeleteRestrictionsType.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\ExpandRestrictionsType.cs" />
