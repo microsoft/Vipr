@@ -1,6 +1,6 @@
 ﻿namespace Vipr.Core
 {
-    public class TextFile : OutputFile
+    public class TextFile : RelativeFile
     {
         public TextFile(string relativePath, string contents)
         {
