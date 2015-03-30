@@ -121,14 +121,17 @@
     <Compile Include="Extensions\ODataV4\MockServiceExtensions.cs" />
     <Compile Include="Extensions\ODataV4\OwinRequestExtensions.cs" />
     <Compile Include="Extensions\ODataV4\OwinResponseExtensions.cs" />
+    <Compile Include="Extensions\ODataV4\ResponseBuilderExtensions.cs" />
     <Compile Include="Extensions\ODataV4\TestReadableStringCollection.cs" />
     <Compile Include="Extensions\ODataV4\Stream.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Middleware\BufferedBodyMiddleware.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Middleware\LoggingMiddleware.cs" />
     <Compile Include="MockService.cs" />
+    <Compile Include="ResponseBuilder.cs" />
     <Compile Include="SelfHost\MockStartup.cs" />
     <Compile Include="PortRepository.cs" />
     <Compile Include="MockServiceRepository.cs" />

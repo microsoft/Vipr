@@ -76,14 +76,13 @@ namespace CSharpWriterUnitTests
                 model.EntityContainer.Methods.Add(Method);
             });
 
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 var service = mockService
                     .CreateContainer(EntityContainerType);
 
                 mockService.ValidateParameterPassing("POST", service, "", Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
 
@@ -100,14 +99,13 @@ namespace CSharpWriterUnitTests
                 model.EntityContainer.Methods.Add(Method);
             });
 
-            using (var mockService = new MockService()
-                .Start())
+            using (var mockService = new MockService())
             {
                 var service = mockService
                     .CreateContainer(EntityContainerType);
 
                 mockService.ValidateParameterPassing("GET", service, "", Method,
-                    mockService.GetOdataJsonInstance(TargetEntity));
+                    TargetEntity);
             }
         }
 

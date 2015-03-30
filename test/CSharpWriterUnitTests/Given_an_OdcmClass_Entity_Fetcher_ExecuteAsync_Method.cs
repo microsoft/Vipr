@@ -24,8 +24,7 @@ namespace CSharpWriterUnitTests
             var keyValues = Class.GetSampleKeyArguments().ToArray();
 
             using (_mockedService = new MockService()
-                    .SetupGetEntity(TargetEntity, keyValues)
-                    .Start())
+                    .SetupGetEntity(TargetEntity, keyValues))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.MockService.Middleware;
 using Microsoft.Owin;
@@ -16,9 +17,11 @@ namespace Microsoft.MockService.SelfHost
                 Int32.Parse(
                     (string)((IList<IDictionary<string, object>>)appBuilder.Properties["host.Addresses"])[0]["port"]);
 
-            _service = MockServiceRepository.GetScenario(portNumber) as MockService;
+            _service = MockServiceRepository.GetServiceMockForPort(portNumber);
 
-            appBuilder.Use(typeof (LoggingMiddleware));
+            if (Debugger.IsAttached) appBuilder.Use(typeof (LoggingMiddleware));
+
+            appBuilder.Use(typeof (BufferedBodyMiddleware));
 
             appBuilder.Run(Invoke);
         }

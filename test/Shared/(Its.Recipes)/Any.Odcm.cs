@@ -49,7 +49,7 @@ namespace Microsoft.Its.Recipes
 
             retVal.Types.AddRange(Any.Sequence(s => Any.ComplexOdcmClass(retVal)));
 
-            var classes = Any.Sequence(s => Any.EntityOdcmClass(retVal))
+            var classes = Any.Sequence(s => Any.OdcmEntityClass(retVal))
                 .Concat(Any.Sequence(s => Any.MediaOdcmClass(retVal), count: 2)).ToArray();
 
             foreach (var @class in (from @class in retVal.Types where @class is OdcmEntityClass select @class as OdcmEntityClass))
@@ -161,7 +161,7 @@ namespace Microsoft.Its.Recipes
 
         public static OdcmProperty EntityOdcmProperty(OdcmNamespace odcmNamespace, Action<OdcmProperty> config = null)
         {
-            return OdcmEntityProperty(Any.EntityOdcmClass(odcmNamespace), config);
+            return OdcmEntityProperty(Any.OdcmEntityClass(odcmNamespace), config);
         }
 
         private static OdcmProperty OdcmEntityProperty(OdcmClass @class, Action<OdcmProperty> config)
@@ -194,9 +194,14 @@ namespace Microsoft.Its.Recipes
             return retVal;
         }
 
-        public static OdcmEntityClass EntityOdcmClass(OdcmNamespace odcmNamespace, Action<OdcmEntityClass> config = null)
+        public static OdcmEntityClass OdcmEntityClass(OdcmNamespace odcmNamespace, Action<OdcmEntityClass> config = null)
         {
-            var retVal = new OdcmEntityClass(Any.CSharpIdentifier(), odcmNamespace);
+            return Any.OdcmEntityClass(odcmNamespace, Any.CSharpIdentifier(), config);
+        }
+
+        public static OdcmEntityClass OdcmEntityClass(OdcmNamespace odcmNamespace, string name, Action<OdcmEntityClass> config = null)
+        {
+            var retVal = new OdcmEntityClass(name, odcmNamespace);
 
             EntityOrMediaOdcmClass(odcmNamespace, config, retVal);
 

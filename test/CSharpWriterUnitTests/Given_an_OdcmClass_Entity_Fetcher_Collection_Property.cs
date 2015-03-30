@@ -29,11 +29,11 @@ namespace CSharpWriterUnitTests
 
             var entityPath = Any.UriPath(1);
 
-            var propertyPath = "/" + entityPath + "/" + collectionProperty.Name;
+            entityPath = "/" + entityPath;
 
             using (_mockedService = new MockService()
-                    .SetupGetWithEmptyResponse(propertyPath)
-                    .Start())
+                    .OnGetEntityPropertyRequest(entityPath, collectionProperty.Name)
+                    .RespondWithGetEntity(Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments())))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)

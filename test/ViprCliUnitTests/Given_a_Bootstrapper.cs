@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FluentAssertions;
@@ -184,7 +183,7 @@ namespace ViprCliUnitTests
 
                 File.Exists(filePath).Should().BeTrue("Because the proxy was created in the working directory.");
 
-                if (File.Exists(filePath)) File.Delete(filePath);
+                if (Directory.Exists(outputPath)) Directory.Delete(outputPath, true);
             });
         }
         
@@ -277,10 +276,8 @@ namespace ViprCliUnitTests
             var metadataPath = Any.UriPath(1);
 
             using (var mockService = new MockService()
-                .Setup(r => r.Request.Path.ToString() == "/" + metadataPath &&
-                            r.Request.Method == "GET",
-                    r => r.Response.Write(metadata))
-                .Start())
+                .OnRequest(c => c.Request.Path.ToString() == "/" + metadataPath && c.Request.Method == "GET")
+                .RespondWith(c => c.Response.Write(metadata)))
             {
                 action(mockService.GetBaseAddress() + metadataPath);
             }

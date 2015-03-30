@@ -77,18 +77,18 @@ namespace CSharpWriterUnitTests
 
             var entityArtifacts = GetEntityArtifactsFromNewNamespace(@class, newNamespace, proxy, oldNamespace);
 
-            using (var mockService = new MockService()
-                    .Start())
+            using (var mockService = new MockService())
             {
                 mockService
-                    .Setup(c => c.Request.Method == "POST" &&
+                    .OnRequest(c => c.Request.Method == "POST" &&
                                 c.Request.Path.Value == @class.GetDefaultEntitySetPath() &&
-                                IsNamespaceReplaced(c.Request, oldNamespace.Name, newNamespace.Name),
-                        (b, c) =>
+                                IsNamespaceReplaced(c.Request, oldNamespace.Name, newNamespace.Name))
+                    .RespondWith(
+                        (c, b) =>
                         {
                             c.Response.StatusCode = 201;
                             c.Response.WithDefaultODataHeaders();
-                            c.Response.WithODataEntityResponseBody(mockService.GetBaseAddress(),
+                            c.Response.WithODataEntityResponseBody(b,
                                 @class.GetDefaultEntitySetName(), null);
                         });
 
@@ -143,13 +143,12 @@ namespace CSharpWriterUnitTests
 
             var singletonPath = baseClass.GetDefaultSingletonPath();
 
-            using (var mockService = new MockService(true)
-                    .Start())
+            using (var mockService = new MockService(true))
             {
                 mockService
-                    .Setup(c => c.Request.Method == "GET" &&
-                                c.Request.Path.Value == singletonPath,
-                        (b, c) =>
+                    .OnRequest(c => c.Request.Method == "GET" && c.Request.Path.Value == singletonPath)
+                    .RespondWith(
+                        (c, b) =>
                         {
                             c.Response.StatusCode = 200;
                             c.Response.WithDefaultODataHeaders();
