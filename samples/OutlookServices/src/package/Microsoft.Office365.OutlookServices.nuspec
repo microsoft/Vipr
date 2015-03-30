@@ -1,14 +1,14 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Microsoft.Office365.OutlookServices</id>
-    <version>0.0.0.0</version>
+    <version>$version$</version>
     <!-- Passed in via command line -->
     <title>Microsoft Office 365 Mail, Calendar and Contacts Library for .NET</title>
     <authors>Microsoft</authors>
     <owners>Microsoft</owners>
-    <licenseUrl></licenseUrl>
-    <!-- Passed in via the build -->
+    <iconUrl>http://go.microsoft.com/fwlink/?LinkID=288859</iconUrl>
+    <licenseUrl>http://go.microsoft.com/fwlink/?LinkId=329770</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <projectUrl>http://go.microsoft.com/fwlink/?LinkId=398199</projectUrl>
     <description>
@@ -20,12 +20,5 @@
     <releaseNotes>http://aka.ms/ClientLibraries</releaseNotes>
     <copyright>Copyright © Microsoft Corporation</copyright>
     <tags>Microsoft Office Office365 Service REST</tags>
-    <dependencies>
-      <dependency id="Microsoft.OData.Client" version="6.8.1"/>
-    </dependencies>
   </metadata>
-  <files>
-    <file src="Microsoft.Office365.OutlookServices\Microsoft.Office365.OutlookServices.Portable.dll" 
-          target="lib\portable-net40+sl5+wp8+win8+MonoAndroid10+MonoTouch10+WindowsPhoneApp81" />
-  </files>
 </package>

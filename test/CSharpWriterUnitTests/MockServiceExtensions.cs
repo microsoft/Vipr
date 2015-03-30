@@ -43,25 +43,26 @@ namespace CSharpWriterUnitTests
 
         public static MockService SetupPostEntityPropertyChanges(this MockService mockService, EntityArtifacts targetEntity, IEnumerable<Tuple<string, object>> keyValues, OdcmProperty property)
         {
-            return mockService.SetupPostEntityChanges(targetEntity.Class.GetDefaultEntityPropertyPath(property, keyValues));
+            return mockService
+                .OnPostEntityRequest(targetEntity.Class.GetDefaultEntityPropertyPath(property, keyValues))
+                .RespondWithODataOk();
         }
 
         public static MockService SetupGetEntityProperty(this MockService mockService, EntityArtifacts targetEntity, IEnumerable<Tuple<string, object>> keyValues, OdcmProperty property)
         {
-            return mockService.SetupGetEntity(
-                targetEntity.Class.GetDefaultEntityPropertyPath(property, keyValues),
-                targetEntity.Class.GetDefaultEntitySetName(),
-                targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()));
+            return mockService
+                .OnGetEntityPropertyRequest(targetEntity.Class.GetDefaultEntityPath(keyValues), property.Name)
+                .RespondWithGetEntity(targetEntity.Class.GetDefaultEntitySetName(),
+                    targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()));
         }
 
         public static MockService SetupPostEntity(this MockService mockService, EntityArtifacts targetEntity, IEnumerable<Tuple<string, object>> propertyValues = null)
         {
             propertyValues = propertyValues ?? targetEntity.Class.GetSampleKeyArguments();
 
-            return mockService.SetupPostEntity(
-                targetEntity.Class.GetDefaultEntitySetPath(), 
-                targetEntity.Class.GetDefaultEntitySetName(),
-                targetEntity.ConcreteType.Initialize(propertyValues));
+            return mockService
+                .OnPostEntityRequest(targetEntity.Class.GetDefaultEntitySetPath())
+                .RespondWithCreateEntity(targetEntity.Class.GetDefaultEntitySetName(), targetEntity.ConcreteType.Initialize(propertyValues));
         }
 
         public static MockService SetupGetEntity(this MockService mockService, EntityArtifacts targetEntity, 
@@ -71,35 +72,29 @@ namespace CSharpWriterUnitTests
 
             keyValues = keyValues.ToList();
 
-            return mockService.SetupGetEntity(targetEntity.Class.GetDefaultEntityPath(keyValues),
-                targetEntity.Class.GetDefaultEntitySetName(), targetEntity.ConcreteType.Initialize(keyValues),
-                expandTargets);
+            var responseBuilder = expandTargets == null
+                ? mockService.OnGetEntityRequest(targetEntity.Class.GetDefaultEntityPath(keyValues))
+                : mockService.OnGetEntityWithExpandRequest(targetEntity.Class.GetDefaultEntityPath(keyValues),
+                    expandTargets);
+
+            return responseBuilder
+                .RespondWithGetEntity(targetEntity.Class.GetDefaultEntitySetName(),
+                    targetEntity.ConcreteType.Initialize(keyValues));
         }
 
         public static MockService SetupGetEntitySet(this MockService mockService, EntityArtifacts targetEntity,
             IEnumerable<string> expandTargets = null)
         {
-            return mockService.SetupGetEntity(targetEntity.Class.GetDefaultEntitySetPath(), targetEntity.Class.GetDefaultEntitySetName(),
-                targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()), expandTargets);
-        }
-        
-        public static MockService SetupGetEntitySetCount(this MockService mockService, EntityArtifacts targetEntity,
-            long count)
-        {
-            return mockService.SetupGetEntitySetCount(targetEntity.Class.GetDefaultEntitySetPath(), count);
-        }
+            var responseBuilder = expandTargets == null
+                ? mockService.OnGetEntityRequest(targetEntity.Class.GetDefaultEntitySetPath())
+                : mockService.OnGetEntityWithExpandRequest(targetEntity.Class.GetDefaultEntitySetPath(), expandTargets);
 
-        public static JObject GetOdataJsonInstance(this MockService mockService, EntityArtifacts targetEntity,
-            IEnumerable<Tuple<string, object>> propertyValues = null)
-        {
-            propertyValues = propertyValues ?? targetEntity.Class.GetSampleKeyArguments();
-
-            return
-                JObject.FromObject(targetEntity.ConcreteType.Initialize(propertyValues))
-                    .AddOdataContext(mockService.GetBaseAddress(), targetEntity.Class.GetDefaultEntitySetName());
+            return responseBuilder
+                .RespondWithGetEntity(targetEntity.Class.GetDefaultEntitySetName(),
+                    targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()));
         }
 
-        public static void ValidateParameterPassing(this MockService mockService, string httpMethod, object instance, string instancePath, OdcmMethod method, JObject response)
+        public static void ValidateParameterPassing(this MockService mockService, string httpMethod, object instance, string instancePath, OdcmMethod method, EntityArtifacts entityArtifacts)
         {
             var expectedMethodName = method.Name + "Async";
 
@@ -109,12 +104,17 @@ namespace CSharpWriterUnitTests
             var bodyArguments = method.BodyParameters()
                 .Select(p => methodArguments.First(a => a.Item1 == p.Name));
 
-            mockService
-                .SetupMethod(httpMethod,
+            var responseBuilder = mockService
+                .OnInvokeMethodRequest(httpMethod,
                     instancePath + "/" + method.FullName,
                     uriArguments.ToTestReadableStringCollection(),
-                    ArgumentOfTupleExtensions.ToJObject(bodyArguments),
-                    response);
+                    ArgumentOfTupleExtensions.ToJObject(bodyArguments));
+
+            if (entityArtifacts == null)
+                responseBuilder.RespondWith(r => r.Response.StatusCode = 200);
+            else
+                responseBuilder.RespondWithGetEntity(entityArtifacts.Class.GetDefaultEntitySetName(),
+                    entityArtifacts.ConcreteType.Initialize(entityArtifacts.Class.GetSampleKeyArguments()));
 
             instance.InvokeMethod<Task>(expectedMethodName, methodArguments.Select(t => t.Item2).ToArray())
                 .Wait();

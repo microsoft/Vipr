@@ -40,7 +40,7 @@ namespace CSharpWriterUnitTests
 
             model.AddType(Any.ServiceOdcmClass(odmcNamespace));
 
-            var Class = Any.EntityOdcmClass(odmcNamespace);
+            var Class = Any.OdcmEntityClass(odmcNamespace);
             model.AddType(Class);
 
             var proxy = GetProxy(model);

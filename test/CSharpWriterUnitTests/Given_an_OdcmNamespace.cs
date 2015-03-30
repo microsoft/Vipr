@@ -54,5 +54,33 @@ namespace CSharpWriterUnitTests
             proxy.GetNamespaces()
                 .Should().BeEquivalentTo(new object[] { });
         }
+
+        [Fact]
+        public void When_the_model_has_a_namespace_and_class_with_the_same_name_then_compilation_succeeds()
+        {
+            var name = Any.CSharpIdentifier();
+
+            var @namespace = new OdcmNamespace(name);
+
+            _model.Namespaces.Add(@namespace);
+
+            var @class = Any.OdcmEntityClass(@namespace, name);
+
+            @class.Properties.Add(new OdcmProperty(Any.CSharpIdentifier())
+            {
+                Class = @class,
+                Projection = new OdcmProjection()
+                {
+                    Type = @class
+                }
+            });
+
+            _model.AddType(@class);
+
+            var proxy = GetProxy(_model);
+
+            proxy.GetClass(name, name)
+                .Should().NotBeNull();
+        }
     }
 }

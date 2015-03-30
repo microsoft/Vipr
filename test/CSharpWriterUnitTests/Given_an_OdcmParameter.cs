@@ -30,7 +30,7 @@ namespace CSharpWriterUnitTests
             _namespace = Any.EmptyOdcmNamespace();
             _model.Namespaces.Add(_namespace);
 
-            _class = Any.EntityOdcmClass(_namespace);
+            _class = Any.OdcmEntityClass(_namespace);
             _model.AddType(_class);
 
             _method = Any.OdcmMethod(m => m.Parameters.Clear());

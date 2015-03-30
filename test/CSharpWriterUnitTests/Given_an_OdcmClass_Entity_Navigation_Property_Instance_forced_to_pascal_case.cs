@@ -46,8 +46,7 @@ namespace CSharpWriterUnitTests
             var keyValues = Class.GetSampleKeyArguments().ToArray();
 
             using (_mockedService = new MockService()
-                    .SetupGetEntityProperty(TargetEntity, keyValues, _camelCasedProperty)
-                    .Start())
+                    .SetupGetEntityProperty(TargetEntity, keyValues, _camelCasedProperty))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)
@@ -71,8 +70,7 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                 .SetupPostEntity(TargetEntity, entityKeyValues)
-                .SetupGetEntity(TargetEntity, keyValues)
-                .Start())
+                .SetupGetEntity(TargetEntity, keyValues))
             {
                 var instance = _mockedService
                     .GetDefaultContext(Model)
@@ -94,8 +92,7 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .SetupGetEntityProperty(TargetEntity, entityKeyValues, _camelCasedProperty)
-                    .Start())
+                    .SetupGetEntityProperty(TargetEntity, entityKeyValues, _camelCasedProperty))
             {
                 var instance = _mockedService
                     .GetDefaultContext(Model)
@@ -121,8 +118,8 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .SetupPatchEntityChanges(expectedPath)
-                    .Start())
+                    .OnPatchEntityRequest(expectedPath)
+                        .RespondWithODataOk())
             {
                 var context = _mockedService
                     .GetDefaultContext(Model);
@@ -148,8 +145,7 @@ namespace CSharpWriterUnitTests
             var lambda = Expression.Lambda(navigationProperty, new[] { param });
 
             using (_mockedService = new MockService()
-                    .SetupGetEntity(TargetEntity, keyValues, new[]{_camelCasedName})
-                    .Start())
+                    .SetupGetEntity(TargetEntity, keyValues, new[]{_camelCasedName}))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)

@@ -76,7 +76,7 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void When_EntityType_OdcmClass_has_Description_then_concrete_class_has_the_right_summary_tag()
         {
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Description = Any.Paragraph(Any.Int(10, 20)));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Description = Any.Paragraph(Any.Int(10, 20)));
             _model.AddType(@class);
             string className = string.Format("T:{0}.{1}", @class.Namespace.Name, @class.Name);
 
@@ -90,7 +90,7 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void When_EntityType_OdcmClass_has_Description_then_concrete_interface_has_the_right_summary_tag()
         {
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Description = Any.Paragraph(Any.Int(10, 20)));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Description = Any.Paragraph(Any.Int(10, 20)));
             _model.AddType(@class);
             string interfaceName = string.Format("T:{0}.I{1}", @class.Namespace.Name, @class.Name);
 
@@ -104,7 +104,7 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void When_EntityType_OdcmClass_has_Description_then_fetcher_class_does_not_have_summary_tag()
         {
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Description = Any.Paragraph(Any.Int(10, 20)));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Description = Any.Paragraph(Any.Int(10, 20)));
             _model.AddType(@class);
             string fetcherName = string.Format("T:{0}.{1}Fetcher", @class.Namespace.Name, @class.Name);
 
@@ -118,7 +118,7 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void When_EntityType_OdcmClass_has_Description_then_fetcher_interface_does_not_have_summary_tag()
         {
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Description = Any.Paragraph(Any.Int(10, 20)));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Description = Any.Paragraph(Any.Int(10, 20)));
             _model.AddType(@class);
             string fetcherInterfaceName = string.Format("T:{0}.I{1}Fetcher", @class.Namespace.Name, @class.Name);
 
@@ -132,7 +132,7 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void When_EntityType_OdcmClass_has_Description_then_collection_class_does_not_have_summary_tag()
         {
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Description = Any.Paragraph(Any.Int(10, 20)));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Description = Any.Paragraph(Any.Int(10, 20)));
             _model.AddType(@class);
             string collectionName = string.Format("T:{0}.{1}Collection", @class.Namespace.Name, @class.Name);
 
@@ -146,7 +146,7 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void When_EntityType_OdcmClass_has_Description_then_collection_interface_does_not_have_summary_tag()
         {
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Description = Any.Paragraph(Any.Int(10, 20)));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Description = Any.Paragraph(Any.Int(10, 20)));
             _model.AddType(@class);
             string collectionInterface = string.Format("T:{0}.I{1}Collection", @class.Namespace.Name, @class.Name);
 
@@ -189,7 +189,7 @@ namespace CSharpWriterUnitTests
         public void When_Structural_OdcmProperty_has_Description_then_concrete_class_property_has_the_right_summary_tag()
         {
             var property = Any.PrimitiveOdcmProperty(p => p.Description = Any.Paragraph(Any.Int(10, 20)));
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Properties.Add(property));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Properties.Add(property));
             property.Class = @class;
             _model.AddType(@class);
             string propertyName = string.Format("P:{0}.{1}.{2}", @class.Namespace.Name, @class.Name, property.Name);
@@ -205,7 +205,7 @@ namespace CSharpWriterUnitTests
         public void When_Structural_OdcmProperty_has_Description_then_concrete_interface_property_has_the_right_summary_tag()
         {
             var property = Any.PrimitiveOdcmProperty(p => p.Description = Any.Paragraph(Any.Int(10, 20)));
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Properties.Add(property));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Properties.Add(property));
             property.Class = @class;
             _model.AddType(@class);
             string propertyName = string.Format("P:{0}.I{1}.{2}", @class.Namespace.Name, @class.Name, property.Name);
@@ -221,7 +221,7 @@ namespace CSharpWriterUnitTests
         public void When_Navigation_OdcmProperty_has_Description_then_concrete_class_properties_have_the_right_summary_tags()
         {
             var property = Any.EntityOdcmProperty(_namespace, p => p.Description = Any.Paragraph(Any.Int(10, 20)));
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Properties.Add(property));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Properties.Add(property));
             property.Class = @class;
             _model.AddType(@class);
             _model.AddType(property.Type);           
@@ -233,13 +233,13 @@ namespace CSharpWriterUnitTests
                 .Should()
                 .BeEquivalentTo(property.Description, "OdcmProperty.Description should be captured as C# document comment for concrete class property");
 
-            string explicitInterfaceProperty = string.Format("P:{0}.{1}.{2}#I{3}#{4}", @class.Namespace.Name, @class.Name, @class.Namespace.Name, @class.Name, property.Name);
+            string explicitInterfaceProperty = string.Format("P:{0}.{1}.global::{2}#I{3}#{4}", @class.Namespace.Name, @class.Name, @class.Namespace.Name, @class.Name, property.Name);
             summary = GetSummary(xmlContent, explicitInterfaceProperty);
             summary
                 .Should()
                 .BeEquivalentTo(property.Description, "OdcmProperty.Description should be captured as C# document comment for explicit concrete interface property");
 
-            string explicitFetcherInterfaceProperty = string.Format("P:{0}.{1}.{2}#I{3}Fetcher#{4}", @class.Namespace.Name, @class.Name, @class.Namespace.Name, @class.Name, property.Name);
+            string explicitFetcherInterfaceProperty = string.Format("P:{0}.{1}.global::{2}#I{3}Fetcher#{4}", @class.Namespace.Name, @class.Name, @class.Namespace.Name, @class.Name, property.Name);
             summary = GetSummary(xmlContent, explicitFetcherInterfaceProperty);
             summary
                 .Should()
@@ -250,7 +250,7 @@ namespace CSharpWriterUnitTests
         public void When_Navigation_OdcmProperty_has_Description_then_concrete_interface_property_has_the_right_summary_tag()
         {
             var property = Any.EntityOdcmProperty(_namespace, p => p.Description = Any.Paragraph(Any.Int(10, 20)));
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Properties.Add(property));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Properties.Add(property));
             property.Class = @class;
             _model.AddType(@class);
             _model.AddType(property.Type);
@@ -267,7 +267,7 @@ namespace CSharpWriterUnitTests
         public void When_Navigation_OdcmProperty_has_Description_then_fetcher_class_property_has_the_right_summary_tag()
         {
             var property = Any.EntityOdcmProperty(_namespace, p => p.Description = Any.Paragraph(Any.Int(10, 20)));
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Properties.Add(property));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Properties.Add(property));
             property.Class = @class;
             _model.AddType(@class);
             _model.AddType(property.Type);
@@ -284,7 +284,7 @@ namespace CSharpWriterUnitTests
         public void When_Navigation_OdcmProperty_has_Description_then_fetcher_interface_property_has_the_right_summary_tag()
         {
             var property = Any.EntityOdcmProperty(_namespace, p => p.Description = Any.Paragraph(Any.Int(10, 20)));
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Properties.Add(property));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Properties.Add(property));
             property.Class = @class;
             _model.AddType(@class);
             _model.AddType(property.Type);
@@ -347,7 +347,7 @@ namespace CSharpWriterUnitTests
                 m.Description = Any.Paragraph(Any.Int(10, 20));
                 m.Parameters.Clear();
             });
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Methods.Add(method));            
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Methods.Add(method));            
             _model.AddType(@class);            
 
             var xmlContent = GetProxyXmlDocumentContent(_model);
@@ -366,7 +366,7 @@ namespace CSharpWriterUnitTests
                 m.Description = Any.Paragraph(Any.Int(10, 20));
                 m.Parameters.Clear();
             });
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Methods.Add(method));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Methods.Add(method));
             _model.AddType(@class);
 
             var xmlContent = GetProxyXmlDocumentContent(_model);
@@ -385,7 +385,7 @@ namespace CSharpWriterUnitTests
                 m.Description = Any.Paragraph(Any.Int(10, 20));
                 m.Parameters.Clear();
             });
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Methods.Add(method));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Methods.Add(method));
             _model.AddType(@class);
 
             var xmlContent = GetProxyXmlDocumentContent(_model);
@@ -404,7 +404,7 @@ namespace CSharpWriterUnitTests
                 m.Description = Any.Paragraph(Any.Int(10, 20));
                 m.Parameters.Clear();
             });
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Methods.Add(method));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Methods.Add(method));
             _model.AddType(@class);
 
             var xmlContent = GetProxyXmlDocumentContent(_model);
@@ -469,7 +469,7 @@ namespace CSharpWriterUnitTests
                 m.Parameters.Add(parameter);
             });
 
-            var @class = Any.EntityOdcmClass(_namespace, c => c.Methods.Add(method));
+            var @class = Any.OdcmEntityClass(_namespace, c => c.Methods.Add(method));
             _model.AddType(@class);
 
             var xmlContent = GetProxyXmlDocumentContent(_model);

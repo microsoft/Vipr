@@ -21,10 +21,8 @@ namespace ViprCliUnitTests
             var metadata = Any.String(1);
 
             using (var mockService = new MockService()
-                .Setup(r => r.Request.Path.ToString() == "/" + metadataPath &&
-                            r.Request.Method == "GET",
-                    r => r.Response.Write(metadata))
-                .Start())
+                .OnRequest(c => c.Request.Path.ToString() == "/" + metadataPath && c.Request.Method == "GET")
+                .RespondWith((c, b) => c.Response.Write(metadata)))
             {
                 var metadataUri = mockService.GetBaseAddress() + metadataPath;
 
