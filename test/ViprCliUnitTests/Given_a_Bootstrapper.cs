@@ -193,6 +193,51 @@ namespace ViprCliUnitTests
                 if (Directory.Exists(outputPath)) Directory.Delete(outputPath, true);
             });
         }
+
+        [Fact]
+        public void When_two_level_outputPath_is_specified_then_it_is_used() {
+            var metadata = ODataV4.EmptyEdmx;
+
+            WithWebMetadata(metadata, metadataUri => {
+                var outputPath = Path.Combine(Any.Word(), Any.Word());
+
+                var commandLine = String.Format("{0} --outputPath={1}", metadataUri, outputPath);
+
+                var bootstrapper = new Bootstrapper();
+
+                bootstrapper.Start(commandLine.Split(' '));
+
+                var filePath = Path.Combine(outputPath, FileSystem.CSHARP_WRITER_OUTPUT);
+
+                File.Exists(filePath).Should().BeTrue("Because one expected output file was found in the specified output directory.");
+
+                if (Directory.Exists(outputPath)) Directory.Delete(outputPath, true);
+            });
+        }
+
+        [Fact]
+        public void When_empty_string_outputPath_is_specified_then_current_working_dir_is_used() {
+            var metadata = ODataV4.EmptyEdmx;
+
+            WithWebMetadata(metadata, metadataUri => {
+                var outputPath = String.Empty;
+
+                var commandLine = String.Format("{0} --outputPath={1}", metadataUri, outputPath);
+
+                var bootstrapper = new Bootstrapper();
+
+                bootstrapper.Start(commandLine.Split(' '));
+
+                var filePath = Path.Combine(outputPath, FileSystem.CSHARP_WRITER_OUTPUT);
+
+                File.Exists(filePath).Should().BeTrue("Because one expected output file was found in the specified output directory.");
+                //Path.GetFullPath(outputPath).Should().BeEquivalentTo(Path.GetFullPath(_workingDirectory),
+                //        "Because empty string means current working directory.");
+
+                // if (Directory.Exists(outputPath)) Directory.Delete(outputPath, true);
+                if (File.Exists(filePath)) File.Delete(filePath);
+            });
+        }
         
         private void ValidateFromDiskGeneration(string optionalCommandLine = "")
         {

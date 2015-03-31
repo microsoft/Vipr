@@ -52,7 +52,7 @@ namespace ViprCliUnitTests
         }
 
         [Fact]
-        public void When_outputDirectoryPath_is_specified_and_does_not_exitst_then_it_creates_the_directory_and_writes_the_files()
+        public void When_outputDirectoryPath_is_specified_and_does_not_exist_then_it_creates_the_directory_and_writes_the_files()
         {
             var files = Any.IEnumerable<TextFile>().ToList();
             var outputDirectoryPath = Any.Word();

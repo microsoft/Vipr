@@ -59,7 +59,13 @@ Options:
 
             _writerName = res["--writer"] == null ? _writerName : res["--writer"].ToString();
 
-            _outputPath = res["--outputPath"] == null ? _outputPath : res["--outputPath"].ToString();
+            if (res["--outputPath"] == null) {
+                // do nothing, rely on default
+            } else if (res["--outputPath"].ToString() == String.Empty) {
+                _outputPath = @".\";  // current working directory
+            } else {
+                _outputPath = res["--outputPath"].ToString();
+            }
 
             _metadataPath = res["<inputFile>"] == null ? _metadataPath : res["<inputFile>"].ToString();
         }
