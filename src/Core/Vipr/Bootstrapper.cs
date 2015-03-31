@@ -59,11 +59,14 @@ Options:
 
             _writerName = res["--writer"] == null ? _writerName : res["--writer"].ToString();
 
-            if (res["--outputPath"] == null) {
+            if (res["--outputPath"] == null)
+            {
                 // do nothing, rely on default
-            } else if (res["--outputPath"].ToString() == String.Empty) {
+            } else if (res["--outputPath"].ToString() == String.Empty)
+            {
                 _outputPath = @".\";  // current working directory
-            } else {
+            } else
+            {
                 _outputPath = res["--outputPath"].ToString();
             }
 

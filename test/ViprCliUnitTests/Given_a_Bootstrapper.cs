@@ -195,10 +195,12 @@ namespace ViprCliUnitTests
         }
 
         [Fact]
-        public void When_two_level_outputPath_is_specified_then_it_is_used() {
+        public void When_two_level_outputPath_is_specified_then_it_is_used()
+        {
             var metadata = ODataV4.EmptyEdmx;
 
-            WithWebMetadata(metadata, metadataUri => {
+            WithWebMetadata(metadata, metadataUri =>
+            {
                 var outputPath = Path.Combine(Any.Word(), Any.Word());
 
                 var commandLine = String.Format("{0} --outputPath={1}", metadataUri, outputPath);
@@ -216,10 +218,12 @@ namespace ViprCliUnitTests
         }
 
         [Fact]
-        public void When_empty_string_outputPath_is_specified_then_current_working_dir_is_used() {
+        public void When_empty_string_outputPath_is_specified_then_current_working_dir_is_used()
+        {
             var metadata = ODataV4.EmptyEdmx;
 
-            WithWebMetadata(metadata, metadataUri => {
+            WithWebMetadata(metadata, metadataUri =>
+            {
                 var outputPath = String.Empty;
 
                 var commandLine = String.Format("{0} --outputPath={1}", metadataUri, outputPath);
