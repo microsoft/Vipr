@@ -13,3 +13,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: InternalsVisibleToAttribute("ODataReader.v4UnitTests")]
+[assembly: AssemblyVersionAttribute("1.0.*")]
+[assembly: AssemblyFileVersionAttribute("1.0.*")]

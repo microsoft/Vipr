@@ -17,3 +17,6 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 [assembly: InternalsVisibleTo("ViprCliUnitTests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+[assembly: AssemblyCompanyAttribute("Microsoft")]
+[assembly: AssemblyVersionAttribute("1.0.*")]
+[assembly: AssemblyFileVersionAttribute("1.0.*")]

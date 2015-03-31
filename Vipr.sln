@@ -35,11 +35,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readers", "Readers", "{6292
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Writers", "Writers", "{016282B3-A368-4D11-A200-8E1E2FFB129C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpWriter", "src\Writers\CSharpWriter\CSharpWriter.csproj", "{EA55EFCF-3127-4E85-9A37-A645C06FFCC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Writer.CSharp", "src\Writers\CSharpWriter\Vipr.Writer.CSharp.csproj", "{EA55EFCF-3127-4E85-9A37-A645C06FFCC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataReader.v3", "src\Readers\ODataReader.v3\ODataReader.v3.csproj", "{3439BDE9-5387-46EE-8A00-E789259F8853}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Reader.OData.v3", "src\Readers\ODataReader.v3\Vipr.Reader.OData.v3.csproj", "{3439BDE9-5387-46EE-8A00-E789259F8853}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataReader.v4", "src\Readers\ODataReader.v4\ODataReader.v4.csproj", "{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Reader.OData.v4", "src\Readers\ODataReader.v4\Vipr.Reader.OData.v4.csproj", "{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EDMX", "EDMX", "{7E0558B9-4B29-4835-9FCB-6ABBAB048236}"
 	ProjectSection(SolutionItems) = preProject

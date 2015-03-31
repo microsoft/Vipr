@@ -220,13 +220,13 @@
       <Project>{d640a736-f1b0-4036-82a4-63cd03e945bc}</Project>
       <Name>Microsoft.OData.ProxyExtensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Readers\ODataReader.v4\ODataReader.v4.csproj">
+    <ProjectReference Include="..\..\src\Readers\ODataReader.v4\Vipr.Reader.OData.v4.csproj">
       <Project>{6d8d8008-0a34-490f-8b38-21d9c8bf25c0}</Project>
-      <Name>ODataReader.v4</Name>
+      <Name>Vipr.Reader.OData.v4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Writers\CSharpWriter\CSharpWriter.csproj">
+    <ProjectReference Include="..\..\src\Writers\CSharpWriter\Vipr.Writer.CSharp.csproj">
       <Project>{ea55efcf-3127-4e85-9a37-a645c06ffcc1}</Project>
-      <Name>CSharpWriter</Name>
+      <Name>Vipr.Writer.CSharp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Shared\MockService\MockService.csproj">
       <Project>{a6c40f9c-833d-4fbd-b9f2-7800a3621875}</Project>
