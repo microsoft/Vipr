@@ -16,6 +16,7 @@ using Vipr;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 using Xunit;
+using TestConstants;
 
 namespace ViprCliUnitTests
 {
@@ -26,8 +27,6 @@ namespace ViprCliUnitTests
         private readonly Mock<IOdcmWriter> _writerMock;
         private readonly string _workingDirectory;
 
-        private const string defaultOutputDirectory = @".\output";
-        private const string oneExpectedOutputFile = "CSharpProxy.cs";
 
         public Given_a_Bootstrapper()
         {
@@ -92,7 +91,7 @@ namespace ViprCliUnitTests
         [Fact]
         public void When_a_custom_reader_is_specified_then_it_is_used()
         {
-            var metadata = "<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\"></edmx:Edmx>";
+            var metadata = ODataV4.EmptyEdmx;
 
             WithWebMetadata(metadata, metadataUri =>
             {
@@ -106,7 +105,7 @@ namespace ViprCliUnitTests
 
                 bootstrapper.OdcmWriter.GetType().Should().Be(typeof(Vipr.Writer.CSharp.CSharpWriter));
 
-                if(Directory.Exists(defaultOutputDirectory)) Directory.Delete(defaultOutputDirectory, true);
+                if(Directory.Exists(FileSystem.DEFAULT_OUTPUT_DIRECTORY)) Directory.Delete(FileSystem.DEFAULT_OUTPUT_DIRECTORY, true);
             });
         }
 
@@ -114,7 +113,7 @@ namespace ViprCliUnitTests
         [Fact]
         public void When_a_custom_writer_is_specified_then_it_is_used()
         {
-            var metadata = "<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\"></edmx:Edmx>";
+            var metadata = ODataV4.EmptyEdmx;
 
             WithWebMetadata(metadata, metadataUri =>
             {
@@ -133,7 +132,7 @@ namespace ViprCliUnitTests
         [Fact]
         public void When_custom_reader_and_writer_are_not_specified_then_defaults_are_used()
         {
-            var metadata = "<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\"></edmx:Edmx>";
+            var metadata = ODataV4.EmptyEdmx;
 
             WithWebMetadata(metadata, metadataUri =>
             {
@@ -143,7 +142,7 @@ namespace ViprCliUnitTests
 
                 bootstrapper.Start(commandLine.Split(' '));
 
-                if (Directory.Exists(defaultOutputDirectory)) Directory.Delete(defaultOutputDirectory, true);
+                if (Directory.Exists(FileSystem.DEFAULT_OUTPUT_DIRECTORY)) Directory.Delete(FileSystem.DEFAULT_OUTPUT_DIRECTORY, true);
 
                 bootstrapper.OdcmReader.GetType().Should().Be(typeof (Vipr.Reader.OData.v4.OdcmReader));
 
@@ -154,7 +153,7 @@ namespace ViprCliUnitTests
         [Fact]
         public void When_custom_outputPath_is_not_specified_then_defaults_are_used()
         {
-            var metadata = "<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\"></edmx:Edmx>";
+            var metadata = ODataV4.EmptyEdmx;
 
             WithWebMetadata(metadata, metadataUri =>
             {
@@ -164,18 +163,18 @@ namespace ViprCliUnitTests
 
                 bootstrapper.Start(commandLine.Split(' '));
 
-                var pathToOneExpectedOutputFile = Path.Combine(defaultOutputDirectory, oneExpectedOutputFile);
+                var pathToOneExpectedOutputFile = Path.Combine(FileSystem.DEFAULT_OUTPUT_DIRECTORY, FileSystem.CSHARP_WRITER_OUTPUT);
 
                 File.Exists(pathToOneExpectedOutputFile).Should().BeTrue("Because one expected output file was created in default output directory.");
 
-                if (Directory.Exists(defaultOutputDirectory)) Directory.Delete(defaultOutputDirectory, true);
+                if (Directory.Exists(FileSystem.DEFAULT_OUTPUT_DIRECTORY)) Directory.Delete(FileSystem.DEFAULT_OUTPUT_DIRECTORY, true);
             });
         }
 
         [Fact]
         public void When_custom_outputPath_is_specified_then_it_is_used()
         {
-            var metadata = "<?xml version=\"1.0\" encoding=\"utf-8\"?><edmx:Edmx Version=\"4.0\" xmlns:edmx=\"http://docs.oasis-open.org/odata/ns/edmx\"></edmx:Edmx>";
+            var metadata = ODataV4.EmptyEdmx;
 
             WithWebMetadata(metadata, metadataUri =>
             {
@@ -187,7 +186,7 @@ namespace ViprCliUnitTests
 
                 bootstrapper.Start(commandLine.Split(' '));
 
-                var filePath = Path.Combine(outputPath, oneExpectedOutputFile);
+                var filePath = Path.Combine(outputPath, FileSystem.CSHARP_WRITER_OUTPUT);
 
                 File.Exists(filePath).Should().BeTrue("Because one expected output file was found in the specified output directory.");
 

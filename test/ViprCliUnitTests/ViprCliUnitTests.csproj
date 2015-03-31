@@ -62,6 +62,7 @@
     <Compile Include="Given_a_MetadataResolver.cs" />
     <Compile Include="Given_a_TypeResolver.cs" />
     <Compile Include="TestConfigurable.cs" />
+    <Compile Include="TestConstants\FileSystem.cs" />
     <Compile Include="TestSettings.cs" />
     <Compile Include="TestSettings2.cs" />
   </ItemGroup>
