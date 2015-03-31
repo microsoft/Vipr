@@ -21,14 +21,10 @@ namespace CSharpWriter
             InitializeDependencies(serviceType);
         }
 
-        internal TextFileCollection Generate(CSharpProject project)
+        internal IEnumerable<TextFile> Generate(CSharpProject project)
         {
             Write(project);
-
-            return new TextFileCollection
-            {
-                new TextFile("CSharpProxy.cs", _builder.ToString())
-            };
+            yield return new TextFile("CSharpProxy.cs", _builder.ToString());
         }
 
         private void InitializeDependencies(ServiceType serviceType)
@@ -886,7 +882,7 @@ namespace CSharpWriter
         private void WriteDeclaration(Property property, bool isForInterface = false)
         {
             WriteDescription(property.Description);
-            var accessModifier = GetAccessModifier(property.Visibility);                        
+            var accessModifier = GetAccessModifier(property.Visibility);
 
             var template = isForInterface ? "{1} {3};" : "{0}{1} {2}{3}";
 
@@ -945,9 +941,9 @@ namespace CSharpWriter
             {
                 if (methodSignature.Visibility == Visibility.Public)
                 {
-                WriteSignature(methodSignature, true);
+                    WriteSignature(methodSignature, true);
+                }
             }
-        }
         }
 
         private static string GetInheritenceString(IEnumerable<Type> interfaces, Type baseClass = null)
@@ -1058,7 +1054,7 @@ namespace CSharpWriter
 
         private void WriteDescription(string description)
         {
-            if(!string.IsNullOrEmpty(description))
+            if (!string.IsNullOrEmpty(description))
             {
                 _builder.Write("/// <summary>");
                 _builder.Write("/// " + description);

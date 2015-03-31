@@ -51,7 +51,7 @@ namespace CSharpWriterUnitTests
         {
             var edmx = XElement.Parse(edmxString);
             var reader = new T();
-            var model = reader.GenerateOdcmModel(new TextFileCollection {new TextFile("$metadata", edmxString)});
+            var model = reader.GenerateOdcmModel(new List<TextFile> { new TextFile("$metadata", edmxString) });
             return GetProxy(model);
         }
     }

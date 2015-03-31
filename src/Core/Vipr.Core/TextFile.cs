@@ -1,6 +1,6 @@
 ﻿namespace Vipr.Core
 {
-    public class TextFile
+    public class TextFile : RelativeFile
     {
         public TextFile(string relativePath, string contents)
         {
@@ -8,8 +8,10 @@
             RelativePath = relativePath;
         }
 
-        public string RelativePath { get; private set; }
+        public TextFile()
+        {
+        }
 
-        public  string Contents { get; private set; }
+        public string Contents { get; private set; }
     }
 }

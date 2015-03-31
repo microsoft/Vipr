@@ -549,7 +549,7 @@ namespace ODataReader.v4UnitTests
 
         private OdcmModel GetOdcmModel(XElement edmxElement)
         {
-            var serviceMetadata = new TextFileCollection
+            var serviceMetadata = new List<TextFile>
             {
                 new TextFile("$metadata", edmxElement.ToString())
             };

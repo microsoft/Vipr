@@ -37,8 +37,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Its.Configuration">
+      <HintPath>..\..\..\packages\Its.Configuration.0.10.1\lib\net40\Its.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeModel\OdcmCallingConvention.cs" />
@@ -49,7 +54,7 @@
     <Compile Include="CodeModel\OdcmMediaClass.cs" />
     <Compile Include="CodeModel\OdcmServiceClass.cs" />
     <Compile Include="CodeModel\OdcmVocabularyAnnotation.cs" />
-    <Compile Include="TextFileCollection.cs" />
+    <Compile Include="RelativeFile.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\DeleteRestrictionsType.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\ExpandRestrictionsType.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\InsertRestrictionsType.cs" />

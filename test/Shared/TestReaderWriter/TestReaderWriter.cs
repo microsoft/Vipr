@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 
 namespace TestReaderWriter
 {
-    public class TestReaderWriter:IOdcmReader, IOdcmWriter
+    public class TestReaderWriter : IOdcmReader, IOdcmWriter
     {
-        public OdcmModel GenerateOdcmModel(TextFileCollection serviceMetadata)
+        public OdcmModel GenerateOdcmModel(IEnumerable<TextFile> serviceMetadata)
         {
-            return new OdcmModel(new TextFileCollection {new TextFile("$metadata", "")});
+            return new OdcmModel(new List<TextFile> { new TextFile("$metadata", "") });
         }
 
-        public TextFileCollection GenerateProxy(OdcmModel model)
+        public IEnumerable<TextFile> GenerateProxy(OdcmModel model)
         {
-            return new TextFileCollection();
+            return Enumerable.Empty<TextFile>();
         }
     }
 }

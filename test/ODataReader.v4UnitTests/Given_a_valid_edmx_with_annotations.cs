@@ -74,12 +74,9 @@ namespace ODataReader.v4UnitTests
             annotationValue.NonDeletableNavigationProperties.Should().HaveCount(2).And.Contain("sectionGroups").And.Contain("sections");
         }
 
-        private TextFileCollection GetOneNoteEdmModel()
+        private IEnumerable<TextFile> GetOneNoteEdmModel()
         {
-            return new TextFileCollection
-            {
-                new TextFile("$metadata", ODataReader.v4UnitTests.Properties.Resources.OneNoteExampleEdmx)
-            };            
+           yield return new TextFile("$metadata", ODataReader.v4UnitTests.Properties.Resources.OneNoteExampleEdmx);
         }
     }
 }

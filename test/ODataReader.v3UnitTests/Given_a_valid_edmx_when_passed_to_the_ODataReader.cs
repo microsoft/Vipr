@@ -29,7 +29,7 @@ namespace ODataReader.v3UnitTests
                         Any.Schema(schema => schema.Add(
                             Any.EntityContainer()))))));
 
-            var serviceMetadata = new TextFileCollection
+            var serviceMetadata = new List<TextFile>
             {
                 new TextFile("$metadata", edmxElement.ToString())
             };

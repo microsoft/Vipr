@@ -2,8 +2,11 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Microsoft.MockService;
@@ -215,7 +218,7 @@ namespace ViprCliUnitTests
         
         private void ValidateProxyGeneration(string metadata, string commandLine)
         {
-            var outputFiles = Any.TextFileCollection();
+            var outputFiles = Any.IEnumerable<TextFile>().ToList();
 
             try
             {
@@ -233,7 +236,7 @@ namespace ViprCliUnitTests
             }
         }
 
-        private void ConfigureMocks(string metadata, OdcmModel model, TextFileCollection outputTextFiles)
+        private void ConfigureMocks(string metadata, OdcmModel model, IEnumerable<TextFile> outputTextFiles)
         {
             ConfigureReaderMock(metadata, model);
 
@@ -253,7 +256,7 @@ namespace ViprCliUnitTests
                 .Returns(_writerMock.Object);
         }
 
-        private void ConfigureWriterMock(OdcmModel model, TextFileCollection outputTextFiles)
+        private void ConfigureWriterMock(OdcmModel model, IEnumerable<TextFile> outputTextFiles)
         {
             _writerMock
                 .Setup(w => w.GenerateProxy(It.Is<OdcmModel>(m => m == model)))
@@ -266,7 +269,7 @@ namespace ViprCliUnitTests
                 .Setup(
                     r =>
                         r.GenerateOdcmModel(
-                            It.Is<TextFileCollection>(
+                            It.Is<IEnumerable<TextFile>>(
                                 g => g.Any(f => f.RelativePath.Equals("$metadata") && f.Contents.Equals(metadata)))))
                 .Returns(model);
         }
@@ -288,7 +291,7 @@ namespace ViprCliUnitTests
 
             var fileName = Any.Word();
             var metadataPath = Path.Combine(_workingDirectory, fileName);
-            var fileGroup = new TextFileCollection {new TextFile(fileName, metadata)};
+            var fileGroup = new List<TextFile> {new TextFile(fileName, metadata)};
 
             try
             {
