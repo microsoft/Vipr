@@ -55,7 +55,7 @@ namespace ODataReader.v3
             new[] {"Edm", "GeometryCollection"}
         };
 
-        public OdcmModel GenerateOdcmModel(IEnumerable<TextFile> serviceMetadata)
+        public OdcmModel GenerateOdcmModel(TextFileCollection serviceMetadata)
         {
             var daemon = new ReaderDaemon();
             return daemon.GenerateOdcmModel(serviceMetadata);

@@ -131,11 +131,11 @@
       <Project>{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}</Project>
       <Name>Vipr</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Readers\ODataReader.v4\Vipr.Reader.OData.v4.csproj">
+    <ProjectReference Include="..\..\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj">
       <Project>{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}</Project>
       <Name>Vipr.Reader.OData.v4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Writers\CSharpWriter\Vipr.Writer.CSharp.csproj">
+    <ProjectReference Include="..\..\src\Writers\Vipr.Writer.CSharp\Vipr.Writer.CSharp.csproj">
       <Project>{EA55EFCF-3127-4E85-9A37-A645C06FFCC1}</Project>
       <Name>Vipr.Writer.CSharp</Name>
     </ProjectReference>
