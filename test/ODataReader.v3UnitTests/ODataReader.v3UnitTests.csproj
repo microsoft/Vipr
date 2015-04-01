@@ -90,7 +90,7 @@
       <Project>{04c24936-006a-4fd8-a872-ee55588c1cbe}</Project>
       <Name>Vipr.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Readers\ODataReader.v3\Vipr.Reader.OData.v3.csproj">
+    <ProjectReference Include="..\..\src\Readers\Vipr.Reader.OData.v3\Vipr.Reader.OData.v3.csproj">
       <Project>{3439bde9-5387-46ee-8a00-e789259f8853}</Project>
       <Name>Vipr.Reader.OData.v3</Name>
     </ProjectReference>
