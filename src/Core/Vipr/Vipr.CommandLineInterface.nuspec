@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Vipr.CommandLineInterface</id>
+    <version>$version$</version>
+    <title>Command Line Interface for Vipr Client Library Generator</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <iconUrl>http://go.microsoft.com/fwlink/?LinkID=288859</iconUrl>
+    <licenseUrl>http://go.microsoft.com/fwlink/?LinkId=329770</licenseUrl>
+    <projectUrl>https://github.com/Microsoft/Vipr/</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>
+      Command Line Interface for Vipr Client Library Generator
+
+      Learn more about how to use this library @ https://github.com/Microsoft/Vipr/.
+    </description>
+    <releaseNotes>https://github.com/Microsoft/Vipr/</releaseNotes>
+    <copyright>Copyright © Microsoft Corporation</copyright>
+    <tags>Microsoft OData .NET Service REST</tags>
+  </metadata>
+</package>
