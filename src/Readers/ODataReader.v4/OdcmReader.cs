@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
+using ODataReader.v4.Capabilities;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
 namespace ODataReader.v4
@@ -121,12 +122,12 @@ namespace ODataReader.v4
 
                 if(annotatableEdmEntity is IEdmEntitySet && odcmObject is OdcmProperty)
                 {
-                    OdcmCapability.SetCapabilitiesForEntitySet((OdcmProperty)odcmObject);
+                    ODataCapabilitiesReader.SetCapabilitiesForEntitySet((OdcmProperty)odcmObject, (IEdmEntitySet)annotatableEdmEntity, _edmModel);
                 }
 
                 if (annotatableEdmEntity is IEdmEntityContainer && odcmObject is OdcmServiceClass)
                 {
-                    OdcmCapability.SetCapabilitiesForOdcmServiceClass((OdcmServiceClass)odcmObject);
+                    ODataCapabilitiesReader.SetCapabilitiesForEntityContainer((OdcmServiceClass)odcmObject, (IEdmEntityContainer)annotatableEdmEntity, _edmModel);
                 }
             }
 

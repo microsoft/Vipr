@@ -14,9 +14,6 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
 
         public abstract bool Equals(OdcmCapability otherCapability);
 
-        public abstract void ParseCapabilityAnnotationForEntitySet(OdcmProperty odcmEntitySet,
-            OdcmVocabularyAnnotation annotation, PropertyCapabilitiesCache propertyCache);
-
         private static List<OdcmCapability> _defaultOdcmCapabilities;
 
         /// <summary>
@@ -40,30 +37,6 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
 
                 return _defaultOdcmCapabilities;
             }
-        }
-
-        public static void SetCapabilitiesForOdcmServiceClass(OdcmServiceClass odcmServiceClass)
-        {
-            //TODO: Add Capability Annotation support for EntityContainers
-        }
-
-        public static void SetCapabilitiesForEntitySet(OdcmProperty odcmEntitySet)
-        {
-            if (odcmEntitySet == null) throw new ArgumentNullException("odcmEntitySet");
-
-            var annotations = odcmEntitySet.Annotations;
-            PropertyCapabilitiesCache propertyCache = new PropertyCapabilitiesCache();
-
-            foreach (var annotation in annotations)
-            {
-                var capability = DefaultOdcmCapabilities.SingleOrDefault(c => c.TermName == annotation.FullName);
-                if (capability != null)
-                {
-                    capability.ParseCapabilityAnnotationForEntitySet(odcmEntitySet, annotation, propertyCache);
-                }
-            }
-
-            propertyCache.EnsureProjectionsForProperties();
         }
     }
 }

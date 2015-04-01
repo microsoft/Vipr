@@ -56,7 +56,6 @@
     <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmExpandCapability.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmInsertCapability.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmUpdateCapability.cs" />
-    <Compile Include="CodeModel\Vocabularies\Capabilities\PropertyCapabilitiesCache.cs" />
     <Compile Include="TextFileCollection.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\DeleteRestrictionsType.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\ExpandRestrictionsType.cs" />

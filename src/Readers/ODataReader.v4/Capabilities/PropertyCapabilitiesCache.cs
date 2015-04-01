@@ -2,13 +2,15 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System.Collections.Generic;
+using Vipr.Core.CodeModel;
+using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
-namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
+namespace ODataReader.v4.Capabilities
 {
-    public abstract partial class OdcmCapability
+    public partial class ODataCapabilitiesReader
     {
         /// <summary>
-        /// Maintains a cache of OdcmProperties along with the OdcmCapabilities.
+        /// Maintains a cache of OdcmProperties along with the OdcmCapabilities. 
         /// Once fully populated it can be used to create 'Projections' for the cached OdcmProperties
         /// </summary>
         public class PropertyCapabilitiesCache
