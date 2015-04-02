@@ -18,15 +18,11 @@ namespace Microsoft.Its.Recipes
             return keys.ToDictionary(k => k, k => Any.String());
         }
 
-        public static TextFileCollection TextFileCollection(int minElements = 5, params string[] requiredFiles)
+        public static IEnumerable<TextFile> IEnumerable<T>(int minElements = 5, params string[] requiredFiles) where T : new()
         {
             var relativePaths = requiredFiles.Concat(Any.Sequence(i => Any.AlphanumericString(1), Math.Max(0, minElements - requiredFiles.Count())));
+            return relativePaths.Select(r => new TextFile(r, Any.String()));
 
-            var retVal = new TextFileCollection();
-
-            retVal.AddRange(relativePaths.Select(r => new TextFile(r, Any.String())));
-
-            return retVal;
         }
 
         public static TestSettings TestSettings()

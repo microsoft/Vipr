@@ -13,11 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <ExternallyShipping>false</ExternallyShipping>
+    <BuildPackage>true</BuildPackage>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,8 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Its.Configuration">
+      <HintPath>..\..\..\packages\Its.Configuration.0.10.1\lib\net40\Its.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeModel\OdcmCallingConvention.cs" />
@@ -55,8 +56,8 @@
     <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmDeleteCapability.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmExpandCapability.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmInsertCapability.cs" />
-    <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmUpdateCapability.cs" />
-    <Compile Include="TextFileCollection.cs" />
+    <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmUpdateCapability.cs" />    
+    <Compile Include="RelativeFile.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\DeleteRestrictionsType.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\ExpandRestrictionsType.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\InsertRestrictionsType.cs" />
@@ -80,7 +81,17 @@
     <Compile Include="TextFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Vipr.Core.nuspec" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

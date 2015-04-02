@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Vipr.Core;
 
@@ -6,7 +7,7 @@ namespace Vipr
 {
     internal static class FileWriter
     {
-        public static void Write(TextFileCollection textFilesToWrite, string outputDirectoryPath = null)
+        public static void Write(IEnumerable<TextFile> textFilesToWrite, string outputDirectoryPath = null)
         {
             if (!string.IsNullOrWhiteSpace(outputDirectoryPath) && !Directory.Exists(outputDirectoryPath))
                 Directory.CreateDirectory(outputDirectoryPath);

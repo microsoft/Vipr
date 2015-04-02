@@ -13,7 +13,7 @@ namespace Vipr.Core.CodeModel
 
         public List<OdcmNamespace> Namespaces { get; private set; }
 
-        public IDictionary<string, string> ServiceMetadata { get; private set; } 
+        public IDictionary<string, string> ServiceMetadata { get; private set; }
 
         public OdcmClass EntityContainer
         {
@@ -29,7 +29,7 @@ namespace Vipr.Core.CodeModel
 
         public ServiceType ServiceType { get; private set; }
 
-        public OdcmModel(TextFileCollection serviceMetadata, ServiceType serviceType = ServiceType.ODataV4)
+        public OdcmModel(IEnumerable<TextFile> serviceMetadata, ServiceType serviceType = ServiceType.ODataV4)
         {
             Namespaces = new List<OdcmNamespace>();
             ServiceMetadata = serviceMetadata.ToDictionary(f => f.RelativePath, f => f.Contents);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using FluentAssertions;
 using Vipr.Core;
@@ -7,7 +8,7 @@ namespace ViprCliUnitTests
 {
     public static class FileSystemHelpers
     {
-        public static void WriteFiles(TextFileCollection textFileCollection, string workingDirectory = null)
+        public static void WriteFiles(IEnumerable<TextFile> textFileCollection, string workingDirectory = null)
         {
             foreach (var textFile in textFileCollection)
             {
@@ -19,7 +20,7 @@ namespace ViprCliUnitTests
             }
         }
 
-        public static void ValidateTextFiles(TextFileCollection textFiles, string workingDirectory = null)
+        public static void ValidateTextFiles(IEnumerable<TextFile> textFiles, string workingDirectory = null)
         {
             foreach (var file in textFiles)
             {
@@ -32,7 +33,7 @@ namespace ViprCliUnitTests
             }
         }
 
-        public static void DeleteFiles(TextFileCollection textFiles, string workingDirectory = null)
+        public static void DeleteFiles(IEnumerable<TextFile> textFiles, string workingDirectory = null)
         {
             foreach (var file in textFiles)
             {

@@ -105,9 +105,9 @@ Options:
             FileWriter.Write(MetadataToClientSource(edmxString), outputDirectoryPath);
         }
 
-        private TextFileCollection MetadataToClientSource(string edmxString)
+        private IEnumerable<TextFile> MetadataToClientSource(string edmxString)
         {
-            var model = OdcmReader.GenerateOdcmModel(new TextFileCollection {new TextFile("$metadata", edmxString)});
+            var model = OdcmReader.GenerateOdcmModel(new List<TextFile> { new TextFile("$metadata", edmxString) });
 
             ExportOcdmModel(model);
 
@@ -118,7 +118,7 @@ Options:
         {
             if (string.IsNullOrEmpty(_ocdmModelExportPath)) return;
 
-            var jss = new JsonSerializerSettings {PreserveReferencesHandling = PreserveReferencesHandling.Objects};
+            var jss = new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects };
 
             File.WriteAllText(_ocdmModelExportPath, JsonConvert.SerializeObject(model, jss));
         }
