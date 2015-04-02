@@ -1,10 +1,8 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using CSharpWriter;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
-using Vipr.Core.CodeModel;
 using Xunit;
 
 namespace CSharpWriterUnitTests

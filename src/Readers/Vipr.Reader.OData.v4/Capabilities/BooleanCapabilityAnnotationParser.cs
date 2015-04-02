@@ -13,7 +13,7 @@ using Microsoft.OData.Edm.Expressions;
 using Vipr.Core;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
-namespace ODataReader.v4.Capabilities
+namespace Vipr.Reader.OData.v4.Capabilities
 {
     public class BooleanCapabilityAnnotationParser : CapabilityAnnotationParser
     {
