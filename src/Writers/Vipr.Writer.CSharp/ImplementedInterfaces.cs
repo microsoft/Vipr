@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public class ImplementedInterfaces
     {

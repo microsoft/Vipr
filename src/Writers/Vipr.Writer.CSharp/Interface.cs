@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     internal class Interface : AttributableStructure
     {
@@ -34,13 +34,13 @@ namespace CSharpWriter
         {
             return new Interface
             {
-                Attributes = global::CSharpWriter.Attributes.ForConcreteInterface,
+                Attributes = global::Vipr.Writer.CSharp.Attributes.ForConcreteInterface,
                 Identifier = NamesService.GetConcreteInterfaceName(odcmClass),
                 Description = odcmClass.Description,
-                Methods = global::CSharpWriter.Methods.ForConcreteInterface(odcmClass),
+                Methods = global::Vipr.Writer.CSharp.Methods.ForConcreteInterface(odcmClass),
                 Namespace = NamesService.GetNamespaceName(odcmClass.Namespace),
-                Properties = global::CSharpWriter.Properties.ForConcreteInterface(odcmClass),
-                Interfaces = global::CSharpWriter.ImplementedInterfaces.ForConcreteInterface(odcmClass)
+                Properties = global::Vipr.Writer.CSharp.Properties.ForConcreteInterface(odcmClass),
+                Interfaces = global::Vipr.Writer.CSharp.ImplementedInterfaces.ForConcreteInterface(odcmClass)
             };
         }
 
@@ -48,12 +48,12 @@ namespace CSharpWriter
         {
             return new Interface
             {
-                Attributes = global::CSharpWriter.Attributes.ForFetcherInterface,
+                Attributes = global::Vipr.Writer.CSharp.Attributes.ForFetcherInterface,
                 Identifier = NamesService.GetFetcherInterfaceName(odcmClass),
-                Interfaces = global::CSharpWriter.ImplementedInterfaces.ForFetcherInterface(odcmClass),
-                Methods = global::CSharpWriter.Methods.ForFetcherInterface(odcmClass),
+                Interfaces = global::Vipr.Writer.CSharp.ImplementedInterfaces.ForFetcherInterface(odcmClass),
+                Methods = global::Vipr.Writer.CSharp.Methods.ForFetcherInterface(odcmClass),
                 Namespace = NamesService.GetNamespaceName(odcmClass.Namespace),
-                Properties = global::CSharpWriter.Properties.ForFetcherInterface(odcmClass)
+                Properties = global::Vipr.Writer.CSharp.Properties.ForFetcherInterface(odcmClass)
             };
         }
 
@@ -61,10 +61,10 @@ namespace CSharpWriter
         {
             return new Interface
             {
-                Attributes = global::CSharpWriter.Attributes.ForCollectionInterface,
+                Attributes = global::Vipr.Writer.CSharp.Attributes.ForCollectionInterface,
                 Identifier = NamesService.GetCollectionInterfaceName(odcmClass),
                 Namespace = NamesService.GetNamespaceName(odcmClass.Namespace),
-                Methods = global::CSharpWriter.Methods.ForCollectionInterface(odcmClass),
+                Methods = global::Vipr.Writer.CSharp.Methods.ForCollectionInterface(odcmClass),
                 Indexers = IndexerSignature.ForCollectionInterface(odcmClass),
                 Interfaces = new[] { new Type(NamesService.GetExtensionTypeName("IReadOnlyQueryableSetBase"), new Type(NamesService.GetConcreteInterfaceName(odcmClass))) }
             };
@@ -77,8 +77,8 @@ namespace CSharpWriter
                 Identifier = NamesService.GetEntityContainerInterfaceName(odcmContainer),
                 Description = odcmContainer.Description,
                 Interfaces = null,
-                Methods = global::CSharpWriter.Methods.ForEntityContainerInterface(odcmContainer),
-                Properties = global::CSharpWriter.Properties.ForEntityContainerInterface(odcmContainer),
+                Methods = global::Vipr.Writer.CSharp.Methods.ForEntityContainerInterface(odcmContainer),
+                Properties = global::Vipr.Writer.CSharp.Properties.ForEntityContainerInterface(odcmContainer),
                 Namespace = NamesService.GetNamespaceName(odcmContainer.Namespace),
             };
         }
@@ -88,7 +88,7 @@ namespace CSharpWriter
             return new Interface
             {
                 Identifier = NamesService.GetCollectionInterfaceName(odcmClass),
-                Methods = global::CSharpWriter.Methods.ForCountableCollectionInterface(odcmClass)
+                Methods = global::Vipr.Writer.CSharp.Methods.ForCountableCollectionInterface(odcmClass)
             };
         }
 
@@ -97,7 +97,7 @@ namespace CSharpWriter
             return new Interface
             {
                 Identifier = NamesService.GetFetcherInterfaceName(odcmClass),
-                Methods = global::CSharpWriter.Methods.ForFetcherInterfaceUpcasts(odcmClass),
+                Methods = global::Vipr.Writer.CSharp.Methods.ForFetcherInterfaceUpcasts(odcmClass),
             };
         }
     }

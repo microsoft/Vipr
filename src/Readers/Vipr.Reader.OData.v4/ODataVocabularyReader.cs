@@ -17,7 +17,7 @@ using Microsoft.OData.Edm.Values;
 using Microsoft.OData.Edm.Validation;
 using Vipr.Core.CodeModel;
 
-namespace ODataReader.v4
+namespace Vipr.Reader.OData.v4
 {
     /// <summary>
     ///     Reads an IEdmModel and instances of IEdmType to return annotation objects in the style of Vipr's Odata Code Model
@@ -42,7 +42,7 @@ namespace ODataReader.v4
             // TODO: As above, Extend / modify this to more clearly support custom annotation registration. 
             // Tracked by https://github.com/Microsoft/vipr/issues/59
             IEnumerable<EdmError> errors;
-            if (!CsdlReader.TryParse(new[] { XmlReader.Create(new StringReader(ODataReader.v4.Properties.Resources.CapabilitiesVocabularies)) }, out _capabilitiesModel, out errors))
+            if (!CsdlReader.TryParse(new[] { XmlReader.Create(new StringReader(Vipr.Reader.OData.v4.Properties.Resources.CapabilitiesVocabularies)) }, out _capabilitiesModel, out errors))
             {
                 throw new InvalidOperationException("Could not load capabilities vocabulary from resources");
             }

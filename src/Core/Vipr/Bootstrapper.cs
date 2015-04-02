@@ -27,8 +27,8 @@ Options:
         private IOdcmReader _odcmReader;
         private IOdcmWriter _odcmWriter;
         private string _ocdmModelExportPath = String.Empty;
-        private string _readerName = "ODataReader.v4";
-        private string _writerName = "CSharpWriter";
+        private string _readerName = "Vipr.Reader.OData.v4";
+        private string _writerName = "Vipr.Writer.CSharp";
         private string _metadataPath = "http://services.odata.org/V4/TripPinServiceRW/$metadata";
         private string _outputPath = "";
 

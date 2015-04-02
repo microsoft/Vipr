@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public abstract class MethodSignature : ParameterizedFunction
     {

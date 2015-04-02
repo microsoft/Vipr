@@ -4,7 +4,7 @@
 using System.ComponentModel;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public abstract class Method : MethodSignature
     {

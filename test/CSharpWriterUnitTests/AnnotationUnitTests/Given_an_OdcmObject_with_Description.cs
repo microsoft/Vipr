@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using CSharpWriter;
-using CSharpWriter.Settings;
+using Vipr.Writer.CSharp;
+using Vipr.Writer.CSharp.Settings;
 using FluentAssertions;
 using Microsoft.CSharp;
 using Microsoft.Its.Recipes;

@@ -4,7 +4,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public class ModelField : Field
     {

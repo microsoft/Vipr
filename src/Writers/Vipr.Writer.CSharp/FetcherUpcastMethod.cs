@@ -3,14 +3,14 @@
 
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public class FetcherUpcastMethod : UpcastMethodBase
     {
         public FetcherUpcastMethod(OdcmType baseType, OdcmType derivedType) : base(baseType, derivedType)
         {
             Name = "To" + derivedType.Name;
-            Parameters = global::CSharpWriter.Parameters.Empty;
+            Parameters = global::Vipr.Writer.CSharp.Parameters.Empty;
             ReturnType = new Type(NamesService.GetFetcherInterfaceName(derivedType));
         }
     }

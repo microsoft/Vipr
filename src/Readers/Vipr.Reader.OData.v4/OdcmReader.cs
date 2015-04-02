@@ -14,7 +14,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace ODataReader.v4
+namespace Vipr.Reader.OData.v4
 {
     public class OdcmReader : IOdcmReader
     {

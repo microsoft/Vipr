@@ -4,7 +4,7 @@
 using System.Dynamic;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public class FetcherExpandMethod : Method
     {

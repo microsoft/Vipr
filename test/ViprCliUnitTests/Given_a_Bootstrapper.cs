@@ -101,7 +101,7 @@ namespace ViprCliUnitTests
 
                 bootstrapper.OdcmReader.GetType().Should().Be(typeof (TestReaderWriter.TestReaderWriter));
 
-                bootstrapper.OdcmWriter.GetType().Should().Be(typeof (CSharpWriter.CSharpWriter));
+                bootstrapper.OdcmWriter.GetType().Should().Be(typeof(Vipr.Writer.CSharp.CSharpWriter));
 
                 if(File.Exists("CSharpProxy.cs")) File.Delete("CSharpProxy.cs");
             });
@@ -121,7 +121,7 @@ namespace ViprCliUnitTests
 
                 bootstrapper.Start(commandLine.Split(' '));
 
-                bootstrapper.OdcmReader.GetType().Should().Be(typeof (ODataReader.v4.OdcmReader));
+                bootstrapper.OdcmReader.GetType().Should().Be(typeof (Vipr.Reader.OData.v4.OdcmReader));
 
                 bootstrapper.OdcmWriter.GetType().Should().Be(typeof (TestReaderWriter.TestReaderWriter));
             });
@@ -142,9 +142,9 @@ namespace ViprCliUnitTests
 
                 if (File.Exists("CSharpProxy.cs")) File.Delete("CSharpProxy.cs");
 
-                bootstrapper.OdcmReader.GetType().Should().Be(typeof (ODataReader.v4.OdcmReader));
+                bootstrapper.OdcmReader.GetType().Should().Be(typeof (Vipr.Reader.OData.v4.OdcmReader));
 
-                bootstrapper.OdcmWriter.GetType().Should().Be(typeof (CSharpWriter.CSharpWriter));
+                bootstrapper.OdcmWriter.GetType().Should().Be(typeof (Vipr.Writer.CSharp.CSharpWriter));
             });
         }
 
