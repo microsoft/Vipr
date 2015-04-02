@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using FluentAssertions;
-using ODataReader.v4;
+using Vipr.Reader.OData.v4;
 using System.Linq;
 using Vipr.Core.CodeModel;
 using Xunit;
@@ -11,7 +11,7 @@ namespace ODataReader.v4UnitTests
 {
     public class Given_complex_types_in_a_valid_edmx_when_passed_to_the_ODataReader
     {
-        private ODataReader.v4.OdcmReader _odcmReader;
+        private Vipr.Reader.OData.v4.OdcmReader _odcmReader;
 
         public Given_complex_types_in_a_valid_edmx_when_passed_to_the_ODataReader()
         {

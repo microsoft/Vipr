@@ -3,7 +3,7 @@
 
 using FluentAssertions;
 using Microsoft.Its.Recipes;
-using ODataReader.v4;
+using Vipr.Reader.OData.v4;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Vipr.Core;
@@ -15,7 +15,7 @@ namespace ODataReader.v4UnitTests
 {
     public class Given_a_valid_edmx_with_Description_Annotations
     {
-        private ODataReader.v4.OdcmReader _odcmReader;
+        private Vipr.Reader.OData.v4.OdcmReader _odcmReader;
 
         public Given_a_valid_edmx_with_Description_Annotations()
         {

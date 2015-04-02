@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using CSharpWriter.Settings;
 using Vipr.Core;
+using Vipr.Writer.CSharp.Settings;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public static class ConfigurationService
     {

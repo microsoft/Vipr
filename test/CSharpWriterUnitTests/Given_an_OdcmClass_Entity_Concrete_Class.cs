@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using CSharpWriter;
+using Vipr.Writer.CSharp;
 using FluentAssertions;
 using Microsoft.OData.Client;
 using Microsoft.OData.ProxyExtensions;

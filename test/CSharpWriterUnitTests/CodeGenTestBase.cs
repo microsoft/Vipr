@@ -92,7 +92,7 @@ namespace CSharpWriterUnitTests
             if (model.ServiceMetadata["$metadata"] == TestConstants.ODataV4.EmptyEdmx)
                 model.ServiceMetadata["$metadata"] = model.ToEdmx(true);
 
-            var writer = new CSharpWriter.CSharpWriter();
+            var writer = new Vipr.Writer.CSharp.CSharpWriter();
 
             writer.SetConfigurationProvider(configurationProvider);
 

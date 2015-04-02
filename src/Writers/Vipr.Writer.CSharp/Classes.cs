@@ -2,7 +2,7 @@
 using System.Linq;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     internal static class Classes
     {

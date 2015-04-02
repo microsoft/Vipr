@@ -3,7 +3,7 @@
 
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public class EnumMember
     {

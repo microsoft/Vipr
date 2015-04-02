@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public static class WriterExtensions
     {
