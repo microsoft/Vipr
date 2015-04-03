@@ -3,14 +3,14 @@
 
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public class CollectionGetByIdMethod : Method
     {
         public CollectionGetByIdMethod(OdcmClass odcmClass)
         {
             Name = "GetById";
-            Parameters = global::CSharpWriter.Parameters.GetKeyParameters(odcmClass);
+            Parameters = global::Vipr.Writer.CSharp.Parameters.GetKeyParameters(odcmClass);
             ReturnType = new Type(NamesService.GetFetcherInterfaceName(odcmClass));
         }
     }

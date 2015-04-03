@@ -18,7 +18,7 @@ using Microsoft.OData.Edm.Values;
 
 using Xunit;
 
-using ODataReader.v4;
+using Vipr.Reader.OData.v4;
 
 using Vipr.Core.CodeModel;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;

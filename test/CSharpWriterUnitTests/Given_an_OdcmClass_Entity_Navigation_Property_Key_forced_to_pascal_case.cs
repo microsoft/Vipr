@@ -1,5 +1,5 @@
 using System.Linq;
-using CSharpWriter.Settings;
+using Vipr.Writer.CSharp.Settings;
 using Microsoft.Its.Recipes;
 using Microsoft.MockService;
 using Microsoft.OData.ProxyExtensions;

@@ -4,7 +4,7 @@
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public class Field
     {

@@ -4,7 +4,7 @@
 using Vipr.Core.CodeModel;
 
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     class AddAsyncMediaMethod : Method
     {

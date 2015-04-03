@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     internal class Namespace
     {
@@ -18,13 +18,13 @@ namespace CSharpWriter
         public Namespace(OdcmNamespace @namespace, OdcmModel model)
         {
             Name = NamesService.GetNamespaceName(@namespace);
-            //Features = @namespace.Enums.SelectMany(global::CSharpWriter.Features.ForOdcmEnum)
-            //    .Concat(@namespace.Classes.SelectMany(global::CSharpWriter.Features.ForOdcmClass))
-            //    .Concat(@namespace.Classes.SelectMany(c => global::CSharpWriter.Features.ForEntityContainer(c, model)));
-            Features = @namespace.Enums.SelectMany(global::CSharpWriter.Features.ForOdcmEnum)
-                .Concat(@namespace.Classes.OfType<OdcmComplexClass>().SelectMany(global::CSharpWriter.Features.ForOdcmClass))
-                .Concat(@namespace.Classes.OfType<OdcmEntityClass>().SelectMany(global::CSharpWriter.Features.ForOdcmClass))
-                .Concat(@namespace.Classes.OfType<OdcmServiceClass>().SelectMany(c => global::CSharpWriter.Features.ForEntityContainer(c, model)));
+            //Features = @namespace.Enums.SelectMany(global::Vipr.Writer.CSharp.Features.ForOdcmEnum)
+            //    .Concat(@namespace.Classes.SelectMany(global::Vipr.Writer.CSharp.Features.ForOdcmClass))
+            //    .Concat(@namespace.Classes.SelectMany(c => global::Vipr.Writer.CSharp.Features.ForEntityContainer(c, model)));
+            Features = @namespace.Enums.SelectMany(global::Vipr.Writer.CSharp.Features.ForOdcmEnum)
+                .Concat(@namespace.Classes.OfType<OdcmComplexClass>().SelectMany(global::Vipr.Writer.CSharp.Features.ForOdcmClass))
+                .Concat(@namespace.Classes.OfType<OdcmEntityClass>().SelectMany(global::Vipr.Writer.CSharp.Features.ForOdcmClass))
+                .Concat(@namespace.Classes.OfType<OdcmServiceClass>().SelectMany(c => global::Vipr.Writer.CSharp.Features.ForEntityContainer(c, model)));
         }
     }
 }

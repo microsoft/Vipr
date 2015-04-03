@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     internal class SourceCodeBuilder
     {

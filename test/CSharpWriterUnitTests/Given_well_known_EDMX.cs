@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using CSharpWriterUnitTests.Properties;
 using FluentAssertions;
-using ODataReader.v4;
+using Vipr.Reader.OData.v4;
 using System;
 using System.Reflection;
 using System.Xml.Linq;

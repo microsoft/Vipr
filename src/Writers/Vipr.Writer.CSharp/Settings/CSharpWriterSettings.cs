@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CSharpWriter.Settings
+namespace Vipr.Writer.CSharp.Settings
 {
     public class CSharpWriterSettings
     {

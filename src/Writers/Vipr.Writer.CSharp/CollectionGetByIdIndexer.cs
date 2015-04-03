@@ -6,7 +6,7 @@ using System.Linq;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public class CollectionGetByIdIndexer : Indexer
     {
@@ -16,7 +16,7 @@ namespace CSharpWriter
         {
             ParameterToPropertyMap = odcmClass.Key.ToDictionary(Parameter.FromProperty, p => p);
 
-            Parameters = global::CSharpWriter.Parameters.GetKeyParameters(odcmClass);
+            Parameters = global::Vipr.Writer.CSharp.Parameters.GetKeyParameters(odcmClass);
             ReturnType = new Type(NamesService.GetFetcherInterfaceName(odcmClass));
             OdcmClass = odcmClass;
 

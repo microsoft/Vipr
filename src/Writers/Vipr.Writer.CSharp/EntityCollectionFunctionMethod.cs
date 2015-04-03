@@ -1,6 +1,6 @@
 ﻿using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     internal class EntityCollectionFunctionMethod : EntityInstanceFunctionMethod
     {
