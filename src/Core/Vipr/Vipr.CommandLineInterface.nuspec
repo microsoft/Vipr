@@ -19,4 +19,14 @@
     <copyright>Copyright © Microsoft Corporation</copyright>
     <tags>Microsoft OData .NET Service REST</tags>
   </metadata>
+  <files>
+    <file src="bin\$configuration$\DocoptNet.dll" target="Tools\DocoptNet.dll"/>
+    <file src="bin\$configuration$\Its.Configuration.dll" target="Tools\Its.Configuration.dll"/>
+    <file src="bin\$configuration$\Newtonsoft.Json.dll" target="Tools\Newtonsoft.Json.dll"/>
+    <file src="bin\$configuration$\Vipr.Core.dll" target="Tools\Vipr.Core.dll"/>
+    <file src="bin\$configuration$\Vipr.exe" target="Tools\Vipr.exe"/>
+    <file src="bin\$configuration$\Microsoft.OData.Edm.dll" target="Tools\Microsoft.OData.Edm.dll"/>
+    <file src="bin\$configuration$\Vipr.Reader.OData.v4.dll" target="Tools\Vipr.Reader.OData.v4.dll"/>
+    <file src="bin\$configuration$\Vipr.Writer.CSharp.dll" target="Tools\Vipr.Writer.CSharp.dll"/>
+  </files>
 </package>
