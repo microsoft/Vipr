@@ -79,6 +79,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoubleReader", "test\Shared
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Writer.CSharp.Lite", "src\Writers\Vipr.Writer.CSharp.Lite\Vipr.Writer.CSharp.Lite.csproj", "{D3505CAF-50B1-4353-BEBF-B61568E54B37}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.OData.ProxyExtensions.Lite", "src\ProxyExtensions\Microsoft.OData.ProxyExtensions.Lite\Microsoft.OData.ProxyExtensions.Lite.csproj", "{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Android|Any CPU = Android|Any CPU
@@ -604,6 +606,34 @@ Global
 		{D3505CAF-50B1-4353-BEBF-B61568E54B37}.Xamarin|Mixed Platforms.Build.0 = Release|Any CPU
 		{D3505CAF-50B1-4353-BEBF-B61568E54B37}.Xamarin|x64.ActiveCfg = Release|Any CPU
 		{D3505CAF-50B1-4353-BEBF-B61568E54B37}.Xamarin|x86.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Android|Any CPU.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Android|Any CPU.Build.0 = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Android|ARM.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Android|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Android|Mixed Platforms.Build.0 = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Android|x64.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Android|x86.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Release|ARM.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Release|x64.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Release|x86.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Xamarin|Any CPU.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Xamarin|Any CPU.Build.0 = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Xamarin|ARM.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Xamarin|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Xamarin|Mixed Platforms.Build.0 = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Xamarin|x64.ActiveCfg = Release|Any CPU
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B}.Xamarin|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -638,5 +668,6 @@ Global
 		{8B06C628-32B4-4AB0-A463-E4DE44545E3D} = {5E7779C3-0CA4-4938-8C42-96572D97162C}
 		{48AD9942-A216-4EEA-BB4B-DD336449042C} = {5E7779C3-0CA4-4938-8C42-96572D97162C}
 		{D3505CAF-50B1-4353-BEBF-B61568E54B37} = {016282B3-A368-4D11-A200-8E1E2FFB129C}
+		{3B6F6698-B1DE-442E-831C-1F7C7F5D083B} = {B9D1484F-06EF-49BF-81A1-6B780FCAC0AA}
 	EndGlobalSection
 EndGlobal
