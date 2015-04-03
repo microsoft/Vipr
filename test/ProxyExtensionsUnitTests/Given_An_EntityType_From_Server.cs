@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.OData.Client;
 using Microsoft.Spatial;
+using ProxyExtensionsUnitTests.Extensions;
 using Xunit;
 
 namespace ProxyExtensionsUnitTests
@@ -37,7 +38,7 @@ namespace ProxyExtensionsUnitTests
                 prod1.Category = newCategory;
                 // Calling 'OnPropertyChanged' for 'Category'
                 // So 'Category' property must not be updated on the server side.
-                prod1.OnPropertyChanged("Category");
+                prod1.CallOnPropertyChanged("Category");
                 prod1.UpdateAsync().Wait();
 
                 var updatedProducts = context.ExecuteAsync<Product, IProduct>(dQuery).Result;
@@ -65,7 +66,7 @@ namespace ProxyExtensionsUnitTests
                 prod2.Name = newName;
                 // Skip calling 'OnPropertyChanged' for 'Name'
                 // So 'Name' property must not be updated on the server side.
-                //prod2.OnPropertyChanged("Name");
+                //prod2.CallOnPropertyChanged("Name");
                 prod2.UpdateAsync().Wait();
 
                 var updatedProducts = context.ExecuteAsync<Product, IProduct>(dQuery).Result;
@@ -92,7 +93,7 @@ namespace ProxyExtensionsUnitTests
                 newComment.SetContainer(() => new Tuple<EntityBase, string>(prod3, "Comment"));
 
                 prod3.Comment = newComment;
-                prod3.OnPropertyChanged("Comment");
+                prod3.CallOnPropertyChanged("Comment");
                 prod3.UpdateAsync().Wait();
 
                 Product updatedProd3 = context.ExecuteSingleAsync<Product, IProduct>(dQuery).Result as Product;
@@ -119,19 +120,19 @@ namespace ProxyExtensionsUnitTests
                 Product prod1 = products.CurrentPage[1] as Product;
                 string newCategory = Any.AlphanumericString();
                 prod1.Category = newCategory;
-                prod1.OnPropertyChanged("Category");
+                prod1.CallOnPropertyChanged("Category");
                 prod1.UpdateAsync(true).Wait();
 
                 Product prod2 = products.CurrentPage[2] as Product;
                 string newName = Any.CompanyName();
                 prod2.Name = newName;
-                prod2.OnPropertyChanged("Name");
+                prod2.CallOnPropertyChanged("Name");
                 prod2.UpdateAsync(true).Wait();
 
                 Product prod3 = products.CurrentPage[3] as Product;
                 decimal newPrice = Any.Decimal();
                 prod3.Price = newPrice;
-                prod3.OnPropertyChanged("Price");
+                prod3.CallOnPropertyChanged("Price");
                 prod3.UpdateAsync(true).Wait();
 
                 var response = context.SaveChangesAsync().Result;
@@ -189,7 +190,7 @@ namespace ProxyExtensionsUnitTests
                 // lets update the binary primitive property
                 var newBlob = Any.Sequence<byte>(x => Any.Byte()).ToArray();
                 supplier.Blob = newBlob;
-                supplier.OnPropertyChanged("Blob");
+                supplier.CallOnPropertyChanged("Blob");
                 supplier.UpdateAsync().Wait();
 
                 var updatedsuppliers = context.ExecuteAsync<Supplier, ISupplier>(dQuery).Result;
@@ -219,7 +220,7 @@ namespace ProxyExtensionsUnitTests
                 // lets update the geospatial primitive property
                 var newLocation = GeographyPoint.Create(Any.Double(-90, 90), Any.Double(-180, 180));
                 supplier.Location = newLocation;
-                supplier.OnPropertyChanged("Location");
+                supplier.CallOnPropertyChanged("Location");
 
                 // Bug - Location is a property of primitive type - "Microsoft.Spatial.GeographyPoint".
                 // Its underlying type is "Microsoft.Data.Spatial.GeographyPointImplementation".

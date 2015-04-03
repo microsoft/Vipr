@@ -102,6 +102,7 @@
     <Compile Include="..\Shared\%28Its.Recipes%29\TestInputGenerator.cs">
       <Link>%28Its.Recipes%29\TestInputGenerator.cs</Link>
     </Compile>
+    <Compile Include="Extensions\EntityBaseTextExtensions.cs" />
     <Compile Include="Given_A_Method_Bound_To_EntityType.cs" />
     <Compile Include="Given_An_EntityType_Created_On_Client.cs" />
     <Compile Include="Given_An_EntityType_From_Server.cs" />

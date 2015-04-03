@@ -240,8 +240,6 @@ namespace ExchangeManagedOMTests
             Assert.IsNull(message.Id, "Message has an Id before creation");
 
             await client.Me.SendMailAsync(message, true);
-            
-            Assert.IsNotNull(message.Id, "Message does not have after creation");
         }
 
         [TestMethod]
