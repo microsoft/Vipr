@@ -3,6 +3,7 @@
 
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.OData.Client;
 
 namespace Microsoft.OData.ProxyExtensions.Lite
 {
@@ -49,12 +50,26 @@ namespace Microsoft.OData.ProxyExtensions.Lite
 
             _entity.OnPropertyChanged(_propertyName);
 
-            return _entity.SaveChangesAsync(deferSaveChanges);
+            return SaveChangesAsync(deferSaveChanges);
         }
 
         public Task<Client.DataServiceStreamResponse> DownloadAsync()
         {
             return _context.GetReadStreamAsync(_entity, _propertyName, ContentType);
+        }
+
+        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
+        /// <param name="saveChangesOption">Save changes option to control how change requests are sent to the service.</param>
+        public Task SaveChangesAsync(bool deferSaveChanges = false, SaveChangesOptions saveChangesOption = SaveChangesOptions.None)
+        {
+            if (deferSaveChanges)
+            {
+                var retVal = new TaskCompletionSource<object>();
+                retVal.SetResult(null);
+                return retVal.Task;
+            }
+
+            return _context.SaveChangesAsync(saveChangesOption);
         }
     }
 }

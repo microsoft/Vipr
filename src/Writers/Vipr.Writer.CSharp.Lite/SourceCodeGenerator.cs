@@ -441,6 +441,33 @@ namespace Vipr.Writer.CSharp.Lite
             }
         }
 
+        private void Write(FetcherUpdateMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                _("return base.UpdateAsync(item, deferSaveChanges);");
+            }
+        }
+
+        private void Write(FetcherDeleteMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                _("return base.DeleteAsync(item, deferSaveChanges);");
+            }
+        }
+
+        private void Write(FetcherSaveChangesAsyncMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                _("return base.SaveChangesAsync(deferSaveChanges, saveChangesOption);");
+            }
+        }
+
         private void Write(GeneratedEdmModelLoadModelFromStringMethod method)
         {
             WriteSignature(method);

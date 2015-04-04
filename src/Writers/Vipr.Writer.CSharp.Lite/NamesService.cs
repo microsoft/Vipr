@@ -13,7 +13,7 @@ namespace Vipr.Writer.CSharp.Lite
         private const string ProtocolVersion = "global::Microsoft.OData.Client.ODataProtocolVersion";
         private const string CurrentProtocolVersion = "global::Microsoft.OData.Client.ODataProtocolVersion.V4";
 
-        public const String ExtensionNamespace = "Microsoft.OData.ProxyExtensions";
+        public const String ExtensionNamespace = "Microsoft.OData.ProxyExtensions.Lite";
 
         public static Identifier GetPublicTypeName(OdcmType odcmType)
         {

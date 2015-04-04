@@ -85,7 +85,6 @@ namespace Vipr.Writer.CSharp.Lite
                 Fields = global::Vipr.Writer.CSharp.Lite.Fields.ForConcrete(odcmClass),
                 Identifier = NamesService.GetConcreteTypeName(odcmClass),
                 Interfaces = global::Vipr.Writer.CSharp.Lite.ImplementedInterfaces.ForConcrete(odcmClass),
-                Methods = global::Vipr.Writer.CSharp.Lite.Methods.ForConcrete(odcmClass),
                 Properties = global::Vipr.Writer.CSharp.Lite.Properties.ForConcrete(odcmClass)
             };
         }
@@ -150,16 +149,6 @@ namespace Vipr.Writer.CSharp.Lite
                 AccessModifier = "internal ",
                 Identifier = NamesService.GetFetcherTypeName(odcmClass),
                 Methods = global::Vipr.Writer.CSharp.Lite.Methods.ForFetcherUpcasts(odcmClass),
-            };
-        }
-
-        public static Class ForConcreteIFetcherUpcastMethods(OdcmEntityClass odcmClass)
-        {
-            return new Class
-            {
-                AccessModifier = "public ",
-                Identifier = NamesService.GetConcreteTypeName(odcmClass),
-                Methods = global::Vipr.Writer.CSharp.Lite.Methods.ForConcreteUpcasts(odcmClass),
             };
         }
     }

@@ -16,7 +16,6 @@ namespace Vipr.Writer.CSharp.Lite
             var retVal = new List<Type>
             {
                 new Type(NamesService.GetConcreteInterfaceName(odcmClass)),
-                new Type(NamesService.GetFetcherInterfaceName(odcmClass))
             };
 
             return retVal;
@@ -38,11 +37,10 @@ namespace Vipr.Writer.CSharp.Lite
 
             var baseClass = odcmClass.Base;
 
-            var interfaceIdentifier = baseClass == null ?
-                NamesService.GetExtensionTypeName("IEntityBase") :
-                NamesService.GetConcreteInterfaceName(baseClass);
-
-            retVal.Add(new Type(interfaceIdentifier));
+            if (baseClass != null)
+            {
+                retVal.Add(new Type(NamesService.GetConcreteInterfaceName(baseClass)));
+            }
 
             return retVal;
         }

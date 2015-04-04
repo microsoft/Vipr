@@ -10,28 +10,9 @@ namespace Vipr.Writer.CSharp.Lite
 {
     public class Methods
     {
-        public static IEnumerable<Method> ForConcreteInterface(OdcmClass odcmClass)
-        {
-            return Methods.ForEntityType(odcmClass);
-        }
         public static IEnumerable<Method> ForConcreteMediaInterface(OdcmClass odcmClass)
         {
             return Methods.ForEntityType(odcmClass);
-        }
-
-        public static IEnumerable<Method> ForConcrete(OdcmClass odcmClass)
-        {
-            var retVal = Methods.ForConcreteInterface(odcmClass).ToList();
-
-            retVal.Add(new EnsureQueryMethod(odcmClass));
-
-            if (!odcmClass.IsAbstract)
-            {
-                retVal.Add(new ConcreteExecuteAsyncMethod(odcmClass));
-                retVal.Add(FetcherExpandMethod.ForConcrete(odcmClass));
-            }
-
-            return retVal;
         }
 
         public static IEnumerable<Method> ForFetcherInterfaceUpcasts(OdcmClass odcmClass)
@@ -55,6 +36,9 @@ namespace Vipr.Writer.CSharp.Lite
             {
                 retVal.Add(new FetcherExecuteAsyncMethod(odcmClass));
                 retVal.Add(FetcherExpandMethod.ForFetcher(odcmClass));
+                retVal.Add(FetcherUpdateMethod.ForFetcher(odcmClass));
+                retVal.Add(FetcherDeleteMethod.ForFetcher(odcmClass));
+                retVal.Add(FetcherSaveChangesAsyncMethod.ForFetcher(odcmClass));
             }
 
             return retVal;

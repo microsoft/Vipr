@@ -73,6 +73,7 @@
     <Compile Include="ExplicitlyImplementableMember.cs" />
     <Compile Include="Feature.cs" />
     <Compile Include="Features.cs" />
+    <Compile Include="FetcherDeleteMethod.cs" />
     <Compile Include="FetcherExecuteAsyncMethod.cs" />
     <Compile Include="DefaultConstructor.cs" />
     <Compile Include="CollectionConstructor.cs" />
@@ -83,7 +84,9 @@
     <Compile Include="FetcherNavigationCollectionProperty.cs" />
     <Compile Include="FetcherNavigationProperty.cs" />
     <Compile Include="ConcreteUpcastMethod.cs" />
+    <Compile Include="FetcherSaveChangesAsyncMethod.cs" />
     <Compile Include="FetcherUpcastMethod.cs" />
+    <Compile Include="FetcherUpdateMethod.cs" />
     <Compile Include="Fields.cs" />
     <Compile Include="GeneratedEdmModelCreateXmlReaderMethod.cs" />
     <Compile Include="GeneratedEdmModelGetInstanceMethod.cs" />
@@ -145,7 +148,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Vipr.Writer.CSharp.nuspec">
+    <None Include="Vipr.Writer.CSharp.Lite.nuspec">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

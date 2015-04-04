@@ -27,8 +27,7 @@ namespace Vipr.Writer.CSharp.Lite
             return ForConcreteInterface(odcmClass)
                 .Concat(GetObsoletedStructuralProperties(odcmClass))
                 .Concat(GetObsoletedNavigationProperties(odcmClass))
-                .Concat(GetImplicitPropertiesForConcrete(odcmClass))
-                .Concat(GetIFetcherPropertiesForConcrete(odcmClass));
+                .Concat(GetImplicitPropertiesForConcrete(odcmClass));
         }
 
         public static IEnumerable<Property> ForFetcherInterface(OdcmClass odcmClass)
@@ -64,11 +63,6 @@ namespace Vipr.Writer.CSharp.Lite
         private static IEnumerable<Property> GetIConcreteNavigationPropertiesForConcrete(OdcmClass odcmClass)
         {
             return odcmClass.NavigationProperties().Select(Property.AsConcreteNavigationProperty);
-        }
-
-        private static IEnumerable<Property> GetIFetcherPropertiesForConcrete(OdcmClass odcmClass)
-        {
-            return odcmClass.NavigationProperties().Select(Property.AsIFetcherNavigationPropertyForConcrete);
         }
 
         private static IEnumerable<FetcherNavigationProperty> GetIFetcherNavigationPropertiesForFetcher(OdcmClass odcmClass)

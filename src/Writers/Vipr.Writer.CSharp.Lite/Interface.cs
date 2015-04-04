@@ -37,7 +37,6 @@ namespace Vipr.Writer.CSharp.Lite
                 Attributes = global::Vipr.Writer.CSharp.Lite.Attributes.ForConcreteInterface,
                 Identifier = NamesService.GetConcreteInterfaceName(odcmClass),
                 Description = odcmClass.Description,
-                Methods = global::Vipr.Writer.CSharp.Lite.Methods.ForConcreteInterface(odcmClass),
                 Namespace = NamesService.GetNamespaceName(odcmClass.Namespace),
                 Properties = global::Vipr.Writer.CSharp.Lite.Properties.ForConcreteInterface(odcmClass),
                 Interfaces = global::Vipr.Writer.CSharp.Lite.ImplementedInterfaces.ForConcreteInterface(odcmClass)

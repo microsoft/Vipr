@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.OData.ProxyExtensions.Lite
 {
-    public interface IMediaEntityBase : IEntityBase
+    public interface IMediaEntityBase
     {
         /// <param name="stream">The stream content to upload.</param>
         /// <param name="contentType">The content type of the stream content.</param>

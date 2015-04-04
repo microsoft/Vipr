@@ -40,7 +40,6 @@ namespace Vipr.Writer.CSharp.Lite
         public static IEnumerable<Field> ForConcrete(OdcmClass odcmClass)
         {
             return GetNavigationFields(odcmClass)
-                .Concat(GetFetcherFields(odcmClass))
                 .Concat(GetStructuralFields(odcmClass))
                 .Concat(GetCollectionFields(odcmClass));
         }

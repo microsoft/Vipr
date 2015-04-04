@@ -45,7 +45,6 @@
     <Compile Include="EntityCollectionImpl.cs" />
     <Compile Include="IBatchElementResult.cs" />
     <Compile Include="IConcreteTypeAccessor.cs" />
-    <Compile Include="IEntityBase.cs" />
     <Compile Include="IMediaEntityBase.cs" />
     <Compile Include="IPagedCollection.cs" />
     <Compile Include="IReadOnlyQueryableSet.cs" />

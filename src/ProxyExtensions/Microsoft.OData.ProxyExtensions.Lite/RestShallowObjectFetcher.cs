@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Threading.Tasks;
 using Microsoft.OData.Client;
 
 namespace Microsoft.OData.ProxyExtensions.Lite
@@ -22,6 +23,36 @@ namespace Microsoft.OData.ProxyExtensions.Lite
             Context = context;
             _path = path;
             _isInitialized = true;
+        }
+
+        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
+        protected Task UpdateAsync<T>(T item, bool deferSaveChanges = false)
+        {
+            if (Context == null) throw new InvalidOperationException("Not Initialized");
+            Context.UpdateObject(item);
+            return SaveChangesAsync(deferSaveChanges);
+        }
+
+        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
+        protected Task DeleteAsync<T>(T item, bool deferSaveChanges = false)
+        {
+            if (Context == null) throw new InvalidOperationException("Not Initialized");
+            Context.DeleteObject(item);
+            return SaveChangesAsync(deferSaveChanges);
+        }
+
+        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
+        /// <param name="saveChangesOption">Save changes option to control how change requests are sent to the service.</param>
+        protected Task SaveChangesAsync(bool deferSaveChanges = false, SaveChangesOptions saveChangesOption = SaveChangesOptions.None)
+        {
+            if (deferSaveChanges)
+            {
+                var retVal = new TaskCompletionSource<object>();
+                retVal.SetResult(null);
+                return retVal.Task;
+            }
+
+            return Context.SaveChangesAsync(saveChangesOption);
         }
 
         protected string GetPath(string propertyName)

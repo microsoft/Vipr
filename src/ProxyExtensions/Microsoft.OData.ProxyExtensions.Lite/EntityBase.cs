@@ -9,7 +9,7 @@ using Microsoft.OData.Client;
 
 namespace Microsoft.OData.ProxyExtensions.Lite
 {
-    public class EntityBase : BaseEntityType, IEntityBase
+    public class EntityBase : BaseEntityType
     {
         private Lazy<HashSet<string>> _changedProperties = new Lazy<HashSet<string>>(true);
 
@@ -26,10 +26,6 @@ namespace Microsoft.OData.ProxyExtensions.Lite
         public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             _changedProperties.Value.Add(propertyName);
-            if (Context != null)
-            {
-                Context.UpdateObject(this);
-            }
         }
 
         public void ResetChanges()
@@ -75,36 +71,6 @@ namespace Microsoft.OData.ProxyExtensions.Lite
             Context.TryGetUri(this, out uri);
 
             return uri;
-        }
-
-        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
-        public Task UpdateAsync(bool deferSaveChanges = false)
-        {
-            if (Context == null) throw new InvalidOperationException("Not Initialized");
-            Context.UpdateObject(this);
-            return SaveChangesAsync(deferSaveChanges);
-        }
-
-        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
-        public Task DeleteAsync(bool deferSaveChanges = false)
-        {
-            if (Context == null) throw new InvalidOperationException("Not Initialized");
-            Context.DeleteObject(this);
-            return SaveChangesAsync(deferSaveChanges);
-        }
-
-        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
-        /// <param name="saveChangesOption">Save changes option to control how change requests are sent to the service.</param>
-        public Task SaveChangesAsync(bool deferSaveChanges = false, SaveChangesOptions saveChangesOption = SaveChangesOptions.None)
-        {
-            if (deferSaveChanges)
-            {
-                var retVal = new TaskCompletionSource<object>();
-                retVal.SetResult(null);
-                return retVal.Task;
-            }
-
-            return Context.SaveChangesAsync(saveChangesOption);
         }
 
         protected IReadOnlyQueryableSet<TInterface> CreateQuery<TInstance, TInterface>()

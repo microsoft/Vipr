@@ -32,8 +32,7 @@ namespace Vipr.Writer.CSharp.Lite
         {
             return new[]
             {
-                Class.ForFetcherUpcastMethods(odcmClass),
-                Class.ForConcreteIFetcherUpcastMethods(odcmClass),
+                Class.ForFetcherUpcastMethods(odcmClass)
             };
         }
     }
