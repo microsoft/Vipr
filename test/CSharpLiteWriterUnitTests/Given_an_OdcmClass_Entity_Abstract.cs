@@ -22,20 +22,6 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void The_Concrete_class_does_not_implement_an_explicit_ExecuteAsync_method()
-        {
-            ConcreteType.Should()
-                .NotHaveExplicitMethod(FetcherInterface, "ExecuteAsync", "Because abstract Entities cannot be queried");
-        }
-
-        [Fact]
-        public void The_Concrete_class_does_not_implement_an_explicit_Expand_method()
-        {
-            ConcreteType.Should()
-                .NotHaveExplicitMethod(FetcherInterface, "Expand", "Because abstract Entities cannot be queried");
-        }
-
-        [Fact]
         public void The_Fetcher_interface_does_not_expose_an_ExecuteAsync_Method()
         {
             FetcherInterface.Should()

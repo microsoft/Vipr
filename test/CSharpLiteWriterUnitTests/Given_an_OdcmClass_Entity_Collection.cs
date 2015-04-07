@@ -4,7 +4,7 @@
 using System;
 using FluentAssertions;
 using Microsoft.OData.Client;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using System.Linq;
 using Xunit;
 

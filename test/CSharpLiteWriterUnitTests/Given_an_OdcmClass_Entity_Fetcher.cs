@@ -4,7 +4,7 @@
 using System.Security.AccessControl;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;

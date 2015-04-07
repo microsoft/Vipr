@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.MockService;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using Xunit;
 
 namespace CSharpLiteWriterUnitTests

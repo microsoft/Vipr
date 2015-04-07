@@ -124,16 +124,6 @@ namespace CSharpLiteWriterUnitTests
                 "Because the base fetcher type should expose the ToDerived method");
         }
 
-        [Fact]
-        public void The_Base_Concrete_explicitly_implements_a_ToDerived_method()
-        {
-            _baseConcreteType.Should().HaveExplicitMethod(
-                _baseFetcherInterface,
-                _toDerivedMethodName,
-                FetcherInterface, new Type[0],
-                "Because the base concrete type should expose the ToDerived method");
-        }
-
         private IEnumerable<Type> GetKeyTypes()
         {
             return Class.Key

@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 using FluentAssertions;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using System;
 using System.Threading.Tasks;
 using Type = System.Type;

@@ -8,7 +8,7 @@ using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Microsoft.MockService;
 using Microsoft.MockService.Extensions.ODataV4;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -68,16 +68,6 @@ namespace CSharpLiteWriterUnitTests
                 NavigationProperty.Name);
         }
 
-        [Fact]
-        public void The_Concrete_class_explicitly_implements_readonly_FetcherInterface_CollectionInterface_property()
-        {
-            ConcreteType.Should().HaveExplicitProperty(
-                FetcherInterface,
-                CSharpAccessModifiers.Public,
-                null,
-                NavTargetCollectionInterface,
-                NavigationProperty.Name);
-        }
 
         [Fact]
         public void The_Concrete_interface_exposes_a_readonly_IPagedCollectionOfConcreteInterface_property()
@@ -129,28 +119,6 @@ namespace CSharpLiteWriterUnitTests
                     NavigationProperty.Name);
 
                 propertyValue.GetNextPageAsync().Wait();
-            }
-        }
-
-        [Fact]
-        public void When_retrieved_through_Concrete_FetcherInterface_Property_then_request_is_sent_with_original_name()
-        {
-            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-
-            using (_mockedService = new MockService()
-                .SetupPostEntity(TargetEntity, entityKeyValues)
-                .SetupGetEntityProperty(TargetEntity, entityKeyValues, NavigationProperty))
-            {
-                var instance = _mockedService
-                    .GetDefaultContext(Model)
-                    .CreateConcrete(ConcreteType);
-
-                instance.SetPropertyValues(Class.GetSampleKeyArguments());
-
-                var propertyFetcher = instance.GetPropertyValue<ReadOnlyQueryableSetBase>(FetcherInterface,
-                    NavigationProperty.Name);
-
-                propertyFetcher.ExecuteAsync().Wait();
             }
         }
 

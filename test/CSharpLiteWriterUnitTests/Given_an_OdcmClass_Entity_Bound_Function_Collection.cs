@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.MockService;
 using Microsoft.MockService.Extensions.ODataV4;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using Vipr.Core.CodeModel;
 using Xunit;
 
@@ -25,24 +25,6 @@ namespace CSharpLiteWriterUnitTests
             ReturnTypeGenerator = (t) => typeof (Task<>).MakeGenericType(typeof (IEnumerable<>).MakeGenericType(t));
 
             Init();
-        }
-
-        [Fact]
-        public void The_Concrete_parses_the_response()
-        {
-            Func<MockService, EntityArtifacts, Tuple<string, object>> instanceGenerator =
-                (m, e) =>
-                {
-                    var entityKeyValues = e.Class.GetSampleKeyArguments().ToArray();
-                    var instancePath = Class.GetDefaultEntityPath(entityKeyValues);
-                    var instance = m.SetupPostEntity(e, entityKeyValues)
-                        .GetDefaultContext(Model)
-                        .CreateConcrete(ConcreteType);
-
-                    return new Tuple<string, object>(instancePath, instance);
-                };
-
-            ValidateCollectionResponseParsing(instanceGenerator);
         }
 
         [Fact]

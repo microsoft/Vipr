@@ -55,7 +55,7 @@ namespace CSharpLiteWriterUnitTests
         {
                 typeof(Microsoft.OData.Client.BaseEntityType).Assembly.Location,
                 typeof(Microsoft.OData.Edm.EdmConcurrencyMode).Assembly.Location,
-                typeof(Microsoft.OData.ProxyExtensions.LowerCasePropertyAttribute).Assembly.Location,
+                typeof(Microsoft.OData.ProxyExtensions.Lite.LowerCasePropertyAttribute).Assembly.Location,
                 "System.dll",
                 "System.Core.dll",
                 "System.Diagnostics.Debug.dll",

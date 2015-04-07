@@ -29,24 +29,17 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void The_Concrete_interface_exposes_the_method()
+        public void The_Concrete_interface_does_not_expose_the_method()
         {
-            ConcreteInterface.Should().HaveMethod(
-                CSharpAccessModifiers.Public,
-                _expectedReturnType,
-                _expectedMethodName,
-                GetMethodParameterTypes());
+            ConcreteInterface.Should().NotHaveMethod(
+                _expectedMethodName);
         }
 
         [Fact]
-        public void The_Concrete_class_exposes_the_async_method()
+        public void The_Concrete_class_does_not_expose_the_async_method()
         {
-            ConcreteType.Should().HaveMethod(
-                CSharpAccessModifiers.Public,
-                true,
-                _expectedReturnType,
-                _expectedMethodName,
-                GetMethodParameterTypes());
+            ConcreteType.Should().NotHaveMethod(
+                _expectedMethodName);
         }
 
         [Fact]
@@ -88,32 +81,6 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void When_the_verb_is_POST_the_Concrete_passes_parameters_on_the_URI_and_in_the_body()
-        {
-            Init(m =>
-            {
-                _method = Any.OdcmMethodPost();
-                _method.Class = Class;
-                _method.ReturnType = null;
-                _method.IsCollection = false;
-                Class.Methods.Add(_method);
-            });
-
-            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var instancePath = Class.GetDefaultEntityPath(entityKeyValues);
-
-            using (var mockService = new MockService(true)
-                    .SetupPostEntity(TargetEntity, entityKeyValues))
-            {
-                var concrete = mockService
-                    .GetDefaultContext(Model)
-                    .CreateConcrete(ConcreteType);
-
-                mockService.ValidateParameterPassing("POST", concrete, instancePath, _method, null);
-            }
-        }
-
-        [Fact]
         public void When_the_verb_is_POST_the_Fetcher_passes_parameters_on_the_URI_and_in_the_body()
         {
             Init(m =>
@@ -128,7 +95,7 @@ namespace CSharpLiteWriterUnitTests
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var fetcherPath = Class.GetDefaultEntityPath(entityKeyValues);
 
-            using (var mockService = new MockService())
+            using (var mockService = new MockService())
             {
                 var fetcher = mockService
                     .GetDefaultContext(Model)
@@ -136,32 +103,6 @@ namespace CSharpLiteWriterUnitTests
 
                 mockService.ValidateParameterPassing("POST", fetcher, fetcherPath, _method,
                     null);
-            }
-        }
-
-        [Fact]
-        public void When_the_verb_is_GET_the_Concrete_passes_parameters_on_the_URI()
-        {
-            Init(m =>
-            {
-                _method = Any.OdcmMethodGet();
-                _method.Class = Class;
-                _method.ReturnType = null;
-                _method.IsCollection = false;
-                Class.Methods.Add(_method);
-            });
-
-            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var instancePath = Class.GetDefaultEntityPath(entityKeyValues);
-
-            using (var mockService = new MockService()
-                    .SetupPostEntity(TargetEntity, entityKeyValues))
-            {
-                var concrete = mockService
-                    .GetDefaultContext(Model)
-                    .CreateConcrete(ConcreteType);
-
-                mockService.ValidateParameterPassing("GET", concrete, instancePath, _method, null);
             }
         }
 
@@ -180,7 +121,7 @@ namespace CSharpLiteWriterUnitTests
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var fetcherPath = Class.GetDefaultEntityPath(entityKeyValues);
 
-            using (var mockService = new MockService())
+            using (var mockService = new MockService())
             {
                 var fetcher = mockService
                     .GetDefaultContext(Model)

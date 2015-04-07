@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Its.Recipes;
 using Microsoft.MockService;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using Vipr.Core;
 using Xunit;
 

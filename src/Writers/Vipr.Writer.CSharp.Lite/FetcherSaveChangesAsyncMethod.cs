@@ -13,6 +13,7 @@ namespace Vipr.Writer.CSharp.Lite
         private FetcherSaveChangesAsyncMethod(OdcmClass odcmClass)
         {
             Visibility = Visibility.Public;
+            IsOverriding = odcmClass.Base is OdcmClass && !((OdcmClass)odcmClass.Base).IsAbstract;
             Name = "SaveChangesAsync";
             Parameters = new[]
             {

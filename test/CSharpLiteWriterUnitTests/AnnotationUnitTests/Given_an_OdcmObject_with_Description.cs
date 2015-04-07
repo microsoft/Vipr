@@ -238,12 +238,6 @@ namespace CSharpLiteWriterUnitTests
             summary
                 .Should()
                 .BeEquivalentTo(property.Description, "OdcmProperty.Description should be captured as C# document comment for explicit concrete interface property");
-
-            string explicitFetcherInterfaceProperty = string.Format("P:{0}.{1}.global::{2}#I{3}Fetcher#{4}", @class.Namespace.Name, @class.Name, @class.Namespace.Name, @class.Name, property.Name);
-            summary = GetSummary(xmlContent, explicitFetcherInterfaceProperty);
-            summary
-                .Should()
-                .BeEquivalentTo(property.Description, "OdcmProperty.Description should be captured as C# document comment for explicit fetcher interface property");
         }
 
         [Fact]
@@ -339,43 +333,6 @@ namespace CSharpLiteWriterUnitTests
                 .BeEquivalentTo(property.Description, "OdcmProperty.Description should be captured as C# document comment for entity container interface property");
         }
 
-        [Fact]
-        public void When_OdcmMethod_has_Description_then_concrete_class_method_has_the_right_summary_tag()
-        {
-            var method = Any.OdcmMethod(m => 
-            {
-                m.Description = Any.Paragraph(Any.Int(10, 20));
-                m.Parameters.Clear();
-            });
-            var @class = Any.OdcmEntityClass(_namespace, c => c.Methods.Add(method));            
-            _model.AddType(@class);            
-
-            var xmlContent = GetProxyXmlDocumentContent(_model);
-            string methodName = string.Format("M:{0}.{1}.{2}Async", @class.Namespace.Name, @class.Name, method.Name);
-            var summary = GetSummary(xmlContent, methodName);
-            summary
-                .Should()
-                .BeEquivalentTo(method.Description, "OdcmMethod.Description should be captured as C# document comment for concrete class method");
-        }
-
-        [Fact]
-        public void When_OdcmMethod_has_Description_then_concrete_interface_method_has_the_right_summary_tag()
-        {
-            var method = Any.OdcmMethod(m =>
-            {
-                m.Description = Any.Paragraph(Any.Int(10, 20));
-                m.Parameters.Clear();
-            });
-            var @class = Any.OdcmEntityClass(_namespace, c => c.Methods.Add(method));
-            _model.AddType(@class);
-
-            var xmlContent = GetProxyXmlDocumentContent(_model);
-            string methodName = string.Format("M:{0}.I{1}.{2}Async", @class.Namespace.Name, @class.Name, method.Name);
-            var summary = GetSummary(xmlContent, methodName);
-            summary
-                .Should()
-                .BeEquivalentTo(method.Description, "OdcmMethod.Description should be captured as C# document comment for concrete interface method");
-        }
 
         [Fact]
         public void When_OdcmMethod_has_Description_then_fetcher_class_method_has_the_right_summary_tag()

@@ -2,7 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using FluentAssertions;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using Xunit;
 
 namespace CSharpLiteWriterUnitTests
@@ -20,14 +20,6 @@ namespace CSharpLiteWriterUnitTests
         {
             ConcreteInterface.IsPublic
                 .Should().BeTrue("Because it is used when adding new instances to the model.");
-        }
-
-        [Fact]
-        public void It_implements_IEntityBase()
-        {
-            ConcreteInterface.Should()
-                .Implement(typeof(IEntityBase),
-                    "Because it gives access to entity operations like Update and Delete.");
         }
 
         [Fact]

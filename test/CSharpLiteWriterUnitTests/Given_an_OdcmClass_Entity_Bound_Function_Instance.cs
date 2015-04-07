@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.MockService;
 using Microsoft.MockService.Extensions.ODataV4;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using Vipr.Core.CodeModel;
 using Xunit;
 
@@ -24,7 +24,7 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void The_Concrete_parses_the_response()
+        public void The_Fetcher_parses_the_response()
         {
             Init(m =>
             {
@@ -37,8 +37,7 @@ namespace CSharpLiteWriterUnitTests
             var responseKeyValues = Class.GetSampleKeyArguments().ToArray();
             var response = ConcreteType.Initialize(responseKeyValues);
 
-            using (var mockService = new MockService()
-                .SetupPostEntity(TargetEntity, entityKeyValues))
+            using (var mockService = new MockService())
             {
                 mockService
                     .OnInvokeMethodRequest("GET",
@@ -47,11 +46,11 @@ namespace CSharpLiteWriterUnitTests
                         null)
                     .RespondWithGetEntity(TargetEntity.Class.GetDefaultEntitySetName(), response);
 
-                var concrete = mockService
+                var fetcher = mockService
                     .GetDefaultContext(Model)
-                    .CreateConcrete(ConcreteType);
+                    .CreateFetcher(FetcherType, instancePath);
 
-                var result = concrete.InvokeMethod<Task>(Method.Name + "Async").GetPropertyValue<EntityBase>("Result");
+                var result = fetcher.InvokeMethod<Task>(Method.Name + "Async").GetPropertyValue<EntityBase>("Result");
 
                 result.ValidatePropertyValues(responseKeyValues);
             }

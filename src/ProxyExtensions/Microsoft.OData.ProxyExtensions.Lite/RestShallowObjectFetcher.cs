@@ -30,7 +30,7 @@ namespace Microsoft.OData.ProxyExtensions.Lite
         {
             if (Context == null) throw new InvalidOperationException("Not Initialized");
             Context.UpdateObject(item);
-            return SaveChangesAsync(deferSaveChanges);
+            return FetcherSaveChangesAsync(deferSaveChanges);
         }
 
         /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
@@ -38,12 +38,12 @@ namespace Microsoft.OData.ProxyExtensions.Lite
         {
             if (Context == null) throw new InvalidOperationException("Not Initialized");
             Context.DeleteObject(item);
-            return SaveChangesAsync(deferSaveChanges);
+            return FetcherSaveChangesAsync(deferSaveChanges);
         }
 
         /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
         /// <param name="saveChangesOption">Save changes option to control how change requests are sent to the service.</param>
-        protected Task SaveChangesAsync(bool deferSaveChanges = false, SaveChangesOptions saveChangesOption = SaveChangesOptions.None)
+        protected Task FetcherSaveChangesAsync(bool deferSaveChanges = false, SaveChangesOptions saveChangesOption = SaveChangesOptions.None)
         {
             if (deferSaveChanges)
             {

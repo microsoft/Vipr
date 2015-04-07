@@ -6,7 +6,7 @@ using Microsoft.Its.Recipes;
 using Microsoft.MockService;
 using Microsoft.MockService.Extensions.ODataV4;
 using Microsoft.OData.Client;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using Newtonsoft.Json.Linq;
 using Vipr.Core;
 using Vipr.Core.CodeModel;

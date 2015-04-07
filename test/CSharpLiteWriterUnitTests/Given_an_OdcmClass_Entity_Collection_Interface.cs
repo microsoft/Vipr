@@ -3,7 +3,7 @@
 
 using Vipr.Writer.CSharp.Lite;
 using FluentAssertions;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;

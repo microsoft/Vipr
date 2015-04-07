@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using System;
 using System.Linq;
 using System.Reflection;

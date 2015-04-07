@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Xml;
 using Microsoft.OData.Client;
 using Microsoft.OData.Edm.Csdl;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 
 namespace CSharpLiteWriterUnitTests
 {

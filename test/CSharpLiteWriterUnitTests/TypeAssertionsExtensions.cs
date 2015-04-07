@@ -410,10 +410,10 @@ namespace CSharpLiteWriterUnitTests
         }
 
         /// <summary>
-        /// Asserts that the current type does not implement Interface <paramref name="interfaceType"/>.
+        /// Asserts that the current type implements Interface <paramref name="interfaceType"/>.
         /// </summary>
         /// <param name="typeAssertions">The TypeAssertion we are extending.</param>
-        /// <param name="interfaceType">The interface that should not be implemented.</param>
+        /// <param name="interfaceType">The interface that should be implemented.</param>
         /// <param name="because">A formatted phrase as is supported by <see cref="M:System.String.Format(System.String,System.Object[])"/> explaining why the assertion
         ///             is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.</param>
         /// <param name="reasonArgs">Zero or more objects to format using the placeholders in <see cref="!:because"/>.</param>
@@ -422,6 +422,25 @@ namespace CSharpLiteWriterUnitTests
         {
             Execute.Assertion.ForCondition(typeAssertions.Subject != null &&
                                            typeAssertions.Subject.GetInterface(interfaceType.Name) == interfaceType)
+                .BecauseOf(because, reasonArgs)
+                .FailWith("Expected type {1} to implement interface {2}.", typeAssertions.Subject.Name, interfaceType.Name);
+
+            return new AndConstraint<TypeAssertions>(typeAssertions);
+        }
+
+        /// <summary>
+        /// Asserts that the current type does not implement Interface <paramref name="interfaceType"/>.
+        /// </summary>
+        /// <param name="typeAssertions">The TypeAssertion we are extending.</param>
+        /// <param name="interfaceType">The interface that should not be implemented.</param>
+        /// <param name="because">A formatted phrase as is supported by <see cref="M:System.String.Format(System.String,System.Object[])"/> explaining why the assertion
+        ///             is needed. If the phrase does not start with the word <i>because</i>, it is prepended automatically.</param>
+        /// <param name="reasonArgs">Zero or more objects to format using the placeholders in <see cref="!:because"/>.</param>
+        public static AndConstraint<TypeAssertions> NotImplement(this TypeAssertions typeAssertions,
+            Type interfaceType, string because = "", params object[] reasonArgs)
+        {
+            Execute.Assertion.ForCondition(typeAssertions.Subject != null &&
+                                           typeAssertions.Subject.GetInterface(interfaceType.Name) == null)
                 .BecauseOf(because, reasonArgs)
                 .FailWith("Expected type {1} to implement interface {2}.", typeAssertions.Subject.Name, interfaceType.Name);
 

@@ -5,7 +5,7 @@ using Vipr.Writer.CSharp.Lite.Settings;
 using Microsoft.Its.Recipes;
 using Microsoft.MockService;
 using Microsoft.MockService.Extensions.ODataV4;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using Moq;
 using Vipr.Core;
 using Xunit;
@@ -58,29 +58,6 @@ namespace CSharpLiteWriterUnitTests
                     _pascalCasedName);
 
                 propertyValue.GetNextPageAsync().Wait();
-            }
-        }
-
-        [Fact]
-        public void When_retrieved_through_Concrete_FetcherInterface_Property_then_request_is_sent_with_original_name()
-        {
-            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-
-            using (_mockedService = new MockService()
-                .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .OnGetEntityPropertyRequest(Class.GetDefaultEntityPath(entityKeyValues), _camelCasedName)
-                    .RespondWithGetEntity(Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments())))
-            {
-                var instance = _mockedService
-                    .GetDefaultContext(Model)
-                    .CreateConcrete(ConcreteType);
-
-                instance.SetPropertyValues(entityKeyValues);
-
-                var propertyFetcher = instance.GetPropertyValue<ReadOnlyQueryableSetBase>(FetcherInterface,
-                    _pascalCasedName);
-
-                propertyFetcher.ExecuteAsync().Wait();
             }
         }
 

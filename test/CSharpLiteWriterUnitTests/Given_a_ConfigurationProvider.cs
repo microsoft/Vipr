@@ -7,7 +7,7 @@ using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Microsoft.MockService;
 using Microsoft.MockService.Extensions.ODataV4;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using Microsoft.Owin;
 using Moq;
 using Newtonsoft.Json.Linq;

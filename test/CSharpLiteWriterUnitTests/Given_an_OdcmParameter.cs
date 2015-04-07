@@ -49,7 +49,7 @@ namespace CSharpLiteWriterUnitTests
             _param.Type = new OdcmPrimitiveType("Boolean", OdcmNamespace.Edm);
 
             var proxy = GetProxy(_model);
-            var methodInfo = proxy.GetClass(_class.Namespace, _class.Name).GetMethod(_expectedMethodName);
+            var methodInfo = proxy.GetClass(_class.Namespace, _class.Name + "Fetcher").GetMethod(_expectedMethodName);
 
             methodInfo.GetParameters()[0].ParameterType
                 .Should().Be(typeof(Nullable<Boolean>));
@@ -62,7 +62,7 @@ namespace CSharpLiteWriterUnitTests
             _param.Type = new OdcmPrimitiveType("Int64", OdcmNamespace.Edm);
 
             var proxy = GetProxy(_model);
-            var methodInfo = proxy.GetClass(_class.Namespace, _class.Name).GetMethod(_expectedMethodName);
+            var methodInfo = proxy.GetClass(_class.Namespace, _class.Name + "Fetcher").GetMethod(_expectedMethodName);
 
             methodInfo.GetParameters()[0].ParameterType
                 .Should().Be(typeof(Int64));
@@ -76,7 +76,7 @@ namespace CSharpLiteWriterUnitTests
             _param.Type = new OdcmPrimitiveType("Int32", OdcmNamespace.Edm);
 
             var proxy = GetProxy(_model);
-            var methodInfo = proxy.GetClass(_class.Namespace, _class.Name).GetMethod(_expectedMethodName);
+            var methodInfo = proxy.GetClass(_class.Namespace, _class.Name + "Fetcher").GetMethod(_expectedMethodName);
 
             methodInfo.GetParameters()[0].ParameterType
                 .Should().Be(typeof(ICollection<Int32>));

@@ -2,7 +2,7 @@ using System.Linq;
 using Vipr.Writer.CSharp.Lite.Settings;
 using Microsoft.Its.Recipes;
 using Microsoft.MockService;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using Moq;
 using Vipr.Core;
 using Xunit;

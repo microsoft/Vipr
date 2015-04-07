@@ -464,7 +464,7 @@ namespace Vipr.Writer.CSharp.Lite
             WriteSignature(method);
             using (_builder.IndentBraced)
             {
-                _("return base.SaveChangesAsync(deferSaveChanges, saveChangesOption);");
+                _("return base.FetcherSaveChangesAsync(deferSaveChanges, saveChangesOption);");
             }
         }
 

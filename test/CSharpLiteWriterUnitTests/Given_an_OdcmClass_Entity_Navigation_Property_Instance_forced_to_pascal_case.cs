@@ -6,7 +6,7 @@ using Vipr.Writer.CSharp.Lite.Settings;
 using Microsoft.Its.Recipes;
 using Microsoft.MockService;
 using Microsoft.MockService.Extensions.ODataV4;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using Moq;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
@@ -86,28 +86,6 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void When_retrieved_through_Concrete_then_request_is_sent_to_server_with_original_name()
-        {
-            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-
-            using (_mockedService = new MockService()
-                    .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .SetupGetEntityProperty(TargetEntity, entityKeyValues, _camelCasedProperty))
-            {
-                var instance = _mockedService
-                    .GetDefaultContext(Model)
-                    .CreateConcrete(ConcreteType);
-
-                instance.SetPropertyValues(entityKeyValues);
-
-                var propertyFetcher = instance.GetPropertyValue<RestShallowObjectFetcher>(FetcherInterface,
-                    _pascalCasedName);
-
-                propertyFetcher.ExecuteAsync().Wait();
-            }
-        }
-
-        [Fact]
         public void When_updated_through_Concrete_accessor_then_request_is_sent_to_server_with_original_name()
         {
             var entitySetName = Class.Name + "s";
@@ -127,11 +105,14 @@ namespace CSharpLiteWriterUnitTests
                 var instance = context
                     .CreateConcrete(ConcreteType);
 
+                var fetcherInstance = context
+                    .CreateFetcher(FetcherType, expectedPath);
+
                 var relatedInstance = Activator.CreateInstance(ConcreteType);
 
                 instance.SetPropertyValue(_pascalCasedName, relatedInstance);
 
-                instance.UpdateAsync().Wait();
+                fetcherInstance.InvokeMethod<Task>("UpdateAsync", new object[] { instance, Type.Missing }).Wait();
             }
         }
 

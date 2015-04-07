@@ -216,9 +216,9 @@
       <Project>{04c24936-006a-4fd8-a872-ee55588c1cbe}</Project>
       <Name>Vipr.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\ProxyExtensions\Microsoft.OData.ProxyExtensions\Microsoft.OData.ProxyExtensions.csproj">
-      <Project>{d640a736-f1b0-4036-82a4-63cd03e945bc}</Project>
-      <Name>Microsoft.OData.ProxyExtensions</Name>
+    <ProjectReference Include="..\..\src\ProxyExtensions\Microsoft.OData.ProxyExtensions.Lite\Microsoft.OData.ProxyExtensions.Lite.csproj">
+      <Project>{3b6f6698-b1de-442e-831c-1f7c7f5d083b}</Project>
+      <Name>Microsoft.OData.ProxyExtensions.Lite</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj">
       <Project>{6d8d8008-0a34-490f-8b38-21d9c8bf25c0}</Project>

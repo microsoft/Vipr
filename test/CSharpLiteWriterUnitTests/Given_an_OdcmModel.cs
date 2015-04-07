@@ -50,7 +50,7 @@ namespace CSharpLiteWriterUnitTests
                 .Distinct()
                 .Should().Contain(new[]
                 {
-                    "System.Runtime", "Microsoft.OData.ProxyExtensions", "System.Threading.Tasks",
+                    "System.Runtime", "Microsoft.OData.ProxyExtensions.Lite", "System.Threading.Tasks",
                     "System.Linq.Expressions", "Microsoft.OData.Client", "Microsoft.OData.Edm",
                     "System.Xml.ReaderWriter", "System.Diagnostics.Debug", "System.Reflection", "System.IO",
                 });

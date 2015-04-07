@@ -34,24 +34,17 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void The_Concrete_interface_exposes_the_method()
+        public void The_Concrete_interface_does_not_expose_the_method()
         {
-            ConcreteInterface.Should().HaveMethod(
-                CSharpAccessModifiers.Public,
-                _expectedReturnType,
-                _expectedMethodName,
-                GetMethodParameterTypes());
+            ConcreteInterface.Should().NotHaveMethod(
+                _expectedMethodName);
         }
 
         [Fact]
-        public void The_Concrete_class_exposes_the_async_method()
+        public void The_Concrete_class_does_not_expose_the_async_method()
         {
-            ConcreteType.Should().HaveMethod(
-                CSharpAccessModifiers.Public,
-                true,
-                _expectedReturnType,
-                _expectedMethodName,
-                GetMethodParameterTypes());
+            ConcreteType.Should().NotHaveMethod(
+                _expectedMethodName);
         }
 
         [Fact]
@@ -103,8 +96,6 @@ namespace CSharpLiteWriterUnitTests
 
             var methodInfos = new[]
             {
-                ConcreteInterface.GetMethod(_expectedMethodName),
-                ConcreteType.GetMethod(_expectedMethodName),
                 FetcherInterface.GetMethod(_expectedMethodName),
                 FetcherType.GetMethod(_expectedMethodName)
             };
@@ -119,33 +110,6 @@ namespace CSharpLiteWriterUnitTests
         private IEnumerable<Type> GetMethodParameterTypes()
         {
             return Method.Parameters.Select(p => Proxy.GetClass(p.Type.Namespace, p.Type.Name));
-        }
-
-        [Fact]
-        public void When_the_verb_is_POST_the_Concrete_passes_parameters_on_the_URI_and_in_the_body()
-        {
-            base.Init(m =>
-            {
-                Method = Any.OdcmMethodPost();
-                Method.Class = Class;
-                Method.ReturnType = Class;
-                Method.IsCollection = IsCollection;
-                Class.Methods.Add(Method);
-            });
-
-            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var instancePath = Class.GetDefaultEntityPath(entityKeyValues);
-
-            using (var mockService = new MockService(true)
-                .SetupPostEntity(TargetEntity, entityKeyValues))
-            {
-                var concrete = mockService
-                    .GetDefaultContext(Model)
-                    .CreateConcrete(ConcreteType);
-
-                mockService.ValidateParameterPassing("POST", concrete, instancePath, Method,
-                    TargetEntity);
-            }
         }
 
         [Fact]
@@ -170,33 +134,6 @@ namespace CSharpLiteWriterUnitTests
                     .CreateFetcher(FetcherType, fetcherPath);
 
                 mockService.ValidateParameterPassing("POST", fetcher, fetcherPath, Method,
-                    TargetEntity);
-            }
-        }
-
-        [Fact]
-        public void When_the_verb_is_GET_the_Concrete_passes_parameters_on_the_URI()
-        {
-            base.Init(m =>
-            {
-                Method = Any.OdcmMethodGet();
-                Method.Class = Class;
-                Method.ReturnType = Class;
-                Method.IsCollection = IsCollection;
-                Class.Methods.Add(Method);
-            });
-
-            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var instancePath = Class.GetDefaultEntityPath(entityKeyValues);
-
-            using (var mockService = new MockService()
-                .SetupPostEntity(TargetEntity, entityKeyValues))
-            {
-                var concrete = mockService
-                    .GetDefaultContext(Model)
-                    .CreateConcrete(ConcreteType);
-
-                mockService.ValidateParameterPassing("GET", concrete, instancePath, Method,
                     TargetEntity);
             }
         }

@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 
 namespace CSharpLiteWriterUnitTests
 {

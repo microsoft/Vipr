@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Vipr.Writer.CSharp.Lite;
 using FluentAssertions;
 using Microsoft.OData.Client;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using System.Linq;
 using System.Reflection;
 using Vipr.Core;
@@ -48,9 +48,9 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void The_concrete_proxy_class_implements_a_Fetcher_interface()
+        public void The_concrete_proxy_class_does_not_implement_a_Fetcher_interface()
         {
-            ConcreteType.Should().Implement(FetcherInterface);
+            ConcreteType.Should().NotImplement(FetcherInterface);
         }
 
         [Fact]
@@ -65,35 +65,6 @@ namespace CSharpLiteWriterUnitTests
         private IEnumerable<string> EntityKeyNames
         {
             get { return Class.Key.Select(p => p.Name); }
-        }
-
-        [Fact]
-        public void The_Concrete_class_implements_an_explicit_ExecuteAsync_method()
-        {
-            ConcreteType.Should().HaveExplicitMethod(
-                FetcherInterface,
-                "ExecuteAsync",
-                typeof(Task<>).MakeGenericType(ConcreteInterface),
-                new Type[0],
-                "Because it is required for fetching.");
-        }
-
-        [Fact]
-        public void The_Concrete_class_implements_an_explicit_Expand_method()
-        {
-            /// TODO: Make the HaveExplicitMethod method work with methods that contain
-            /// unknown Generic Type Parameters
-            //ConcreteType.Should()
-            //    .HaveExplicitMethod(FetcherInterface, "Expand", FetcherType,
-            //        new Type[]{typeof(Expression<Func<string, string>>)}, "Because it is required for fetching.");
-
-            var explicitImplementations = ConcreteType.GetInterfaceMap(FetcherInterface);
-
-            var executeAsyncMethod = explicitImplementations.TargetMethods.FirstOrDefault(
-                m => m.IsPrivate && m.IsFinal && m.GetParameters().Count() == 1 && m.ReturnType == FetcherInterface &&
-                     m.Name.EndsWith(".Expand"));
-
-            executeAsyncMethod.Should().NotBeNull("Because it is required for fetching.");
         }
     }
 }

@@ -7,8 +7,9 @@ using Microsoft.Its.Recipes;
 using System.Linq;
 using Microsoft.MockService;
 using Microsoft.MockService.Extensions.ODataV4;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace CSharpLiteWriterUnitTests
 {
@@ -57,17 +58,6 @@ namespace CSharpLiteWriterUnitTests
                 CSharpAccessModifiers.Public,
                 CSharpAccessModifiers.Public,
                 NavTargetConcreteInterface,
-                NavigationProperty.Name);
-        }
-
-        [Fact]
-        public void The_Concrete_class_explicitly_implements_readonly_FetcherInterface_FetcherInterface_property()
-        {
-            ConcreteType.Should().HaveExplicitProperty(
-                FetcherInterface,
-                CSharpAccessModifiers.Public,
-                null,
-                NavTargetFetcherInterface,
                 NavigationProperty.Name);
         }
 
@@ -156,29 +146,7 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void When_retrieved_through_Concrete_then_request_is_sent_to_server_with_originalName()
-        {
-            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-         
-            using (_mockedService = new MockService()
-                    .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .SetupGetEntityProperty(TargetEntity, entityKeyValues, NavigationProperty))
-            {
-                var instance = _mockedService
-                    .GetDefaultContext(Model)
-                    .CreateConcrete(ConcreteType);
-
-                instance.SetPropertyValues(Class.GetSampleKeyArguments());
-
-                var propertyFetcher = instance.GetPropertyValue<RestShallowObjectFetcher>(FetcherInterface,
-                    NavigationProperty.Name);
-
-                propertyFetcher.ExecuteAsync().Wait();
-            }
-        }
-
-        [Fact]
-        public void When_updated_through_Concrete_accessor_then_request_is_sent_to_server_with_originalName()
+        public void When_updated_through_Concrete_accessor_and_calling_Fetcher_UpdateAsync_then_request_is_sent_to_server_with_originalName()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var expectedPath = Class.GetDefaultEntityPath(entityKeyValues);
@@ -194,11 +162,13 @@ namespace CSharpLiteWriterUnitTests
                 var instance = context
                     .CreateConcrete(ConcreteType);
 
+                var fetcherInstance = context.CreateFetcher(FetcherType, expectedPath);
+
                 var relatedInstance = Activator.CreateInstance(NavTargetConcreteType);
 
                 instance.SetPropertyValue(NavigationProperty.Name, relatedInstance);
 
-                instance.UpdateAsync().Wait();
+                fetcherInstance.InvokeMethod<Task>("UpdateAsync", new object[] {instance, Type.Missing}).Wait();
             }
         }
     }
