@@ -5,14 +5,14 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.OData.Client;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using System.Collections.Generic;
 using Microsoft.Spatial;
 
 namespace ProxyExtensionsUnitTests
 {
     [LowerCaseProperty]
-    public interface IProduct : IEntityBase
+    public interface IProduct
     {
         int Id { get; set; }
         string Name { get; set; }
@@ -29,7 +29,7 @@ namespace ProxyExtensionsUnitTests
     }
 
     [LowerCaseProperty]
-    public interface ISupplier : IEntityBase
+    public interface ISupplier
     {
         int Id
         {

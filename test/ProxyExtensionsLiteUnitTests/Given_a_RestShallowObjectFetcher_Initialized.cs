@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Microsoft.OData.Client;
-using Microsoft.OData.ProxyExtensions;
+using Microsoft.OData.ProxyExtensions.Lite;
 using Xunit;
 
 namespace ProxyExtensionsUnitTests

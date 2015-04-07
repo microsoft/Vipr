@@ -119,9 +119,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\ProxyExtensions\Microsoft.OData.ProxyExtensions\Microsoft.OData.ProxyExtensions.csproj">
-      <Project>{d640a736-f1b0-4036-82a4-63cd03e945bc}</Project>
-      <Name>Microsoft.OData.ProxyExtensions</Name>
+    <ProjectReference Include="..\..\src\ProxyExtensions\Microsoft.OData.ProxyExtensions.Lite\Microsoft.OData.ProxyExtensions.Lite.csproj">
+      <Project>{3b6f6698-b1de-442e-831c-1f7c7f5d083b}</Project>
+      <Name>Microsoft.OData.ProxyExtensions.Lite</Name>
     </ProjectReference>
     <ProjectReference Include="..\Shared\ODataV4TestService\ODataV4TestService.csproj">
       <Project>{250f70b8-8761-4982-a6d7-1435e6d74770}</Project>
