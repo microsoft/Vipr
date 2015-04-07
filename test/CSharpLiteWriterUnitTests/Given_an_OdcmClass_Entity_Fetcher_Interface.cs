@@ -48,6 +48,39 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
+        public void It_exposes_an_UpdateAsync_Method()
+        {
+            FetcherInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                typeof(Task),
+                "UpdateAsync",
+                new Type[]{ConcreteInterface, typeof(bool)},
+                "Because it allows updating an entity.");
+        }
+
+        [Fact]
+        public void It_exposes_a_DeleteAsync_Method()
+        {
+            FetcherInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                typeof(Task),
+                "DeleteAsync",
+                new Type[] { ConcreteInterface, typeof(bool) },
+                "Because it allows deleting an entity.");
+        }
+
+        [Fact]
+        public void It_exposes_a_SaveChangesAsync_Method()
+        {
+            FetcherInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                typeof(Task),
+                "SaveChangesAsync",
+                new Type[] { typeof(bool), typeof(Microsoft.OData.Client.SaveChangesOptions) },
+                "Because it allows saving changes made to an entity.");
+        }
+
+        [Fact]
         public void It_exposes_an_Expand_Method()
         {
             var expandMethod = FetcherInterface.GetMethod("Expand");

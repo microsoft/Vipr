@@ -54,5 +54,41 @@ namespace CSharpLiteWriterUnitTests
                 new System.Type[0],
                 "Because it allows executing queries.");
         }
+
+        [Fact]
+        public void The_Fetcher_class_implements_an_UpdateAsync_method()
+        {
+            FetcherType.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                false,
+                typeof(Task),
+                "UpdateAsync",
+                new System.Type[] { ConcreteInterface, typeof(bool) },
+                "Because it allows updating entities.");
+        }
+
+        [Fact]
+        public void The_Fetcher_class_implements_a_DeleteAsync_method()
+        {
+            FetcherType.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                false,
+                typeof(Task),
+                "DeleteAsync",
+                new System.Type[] { ConcreteInterface, typeof(bool) },
+                "Because it allows deleting entities.");
+        }
+
+        [Fact]
+        public void The_Fetcher_class_implements_a_SaveChangesAsync_method()
+        {
+            FetcherType.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                false,
+                typeof(Task),
+                "SaveChangesAsync",
+                new System.Type[] { typeof(bool), typeof(Microsoft.OData.Client.SaveChangesOptions) },
+                "Because it allows saving changes made to entities.");
+        }
     }
 }

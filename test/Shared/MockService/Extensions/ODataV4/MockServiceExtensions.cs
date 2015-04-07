@@ -23,6 +23,12 @@ namespace Microsoft.MockService.Extensions.ODataV4
                 .OnRequest(c => c.Request.Method == "GET" && c.Request.Path.Value == entitySetPath);
         }
 
+        public static ResponseBuilder OnDeleteEntityRequest(this MockService mockService, string entityPath)
+        {
+            return mockService
+                .OnRequest(c => c.Request.Method == "DELETE" && c.Request.Path.Value == entityPath);
+        }
+
         public static ResponseBuilder OnGetEntityWithExpandRequest(this MockService mockService, string entitySetPath,
             IEnumerable<string> expandTargets)
         {

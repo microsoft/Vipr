@@ -36,6 +36,27 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
+        public void The_Fetcher_interface_does_not_expose_an_UpdateAsync_Method()
+        {
+            FetcherInterface.Should()
+                .NotHaveMethod("UpdateAsync", "Because abstract Entities cannot be updated");
+        }
+
+        [Fact]
+        public void The_Fetcher_interface_does_not_expose_a_DeleteAsync_Method()
+        {
+            FetcherInterface.Should()
+                .NotHaveMethod("DeleteAsync", "Because abstract Entities cannot be deleted");
+        }
+
+        [Fact]
+        public void The_Fetcher_interface_does_not_expose_a_SaveChangesAsync_Method()
+        {
+            FetcherInterface.Should()
+                .NotHaveMethod("SaveChangesAsync", "Because abstract Entities cannot be changed");
+        }
+
+        [Fact]
         public void The_Fetcher_class_does_not_expose_an_ExecuteAsync_Method()
         {
             FetcherType.Should()
@@ -47,6 +68,27 @@ namespace CSharpLiteWriterUnitTests
         {
             FetcherType.Should()
                 .NotHaveMethod("Expand", "Because abstract Entities cannot be queried");
+        }
+
+        [Fact]
+        public void The_Fetcher_class_does_not_expose_an_UpdateAsync_Method()
+        {
+            FetcherType.Should()
+                .NotHaveMethod("UpdateAsync", "Because abstract Entities cannot be updated");
+        }
+
+        [Fact]
+        public void The_Fetcher_class_does_not_expose_a_DeleteAsync_Method()
+        {
+            FetcherType.Should()
+                .NotHaveMethod("DeleteAsync", "Because abstract Entities cannot be deleted");
+        }
+
+        [Fact]
+        public void The_Fetcher_class_does_not_expose_a_SaveChangesAsync_Method()
+        {
+            FetcherType.Should()
+                .NotHaveMethod("SaveChangesAsync", "Because abstract Entities cannot be changed");
         }
     }
 }
