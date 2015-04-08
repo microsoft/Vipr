@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using FluentAssertions;
-using ODataReader.v4;
+using Vipr.Reader.OData.v4;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;
@@ -464,7 +464,7 @@ namespace ODataReader.v4UnitTests
             _schema.Add(_entityContainerElement);
         }
 
-        private ODataReader.v4.OdcmReader _odcmReader;
+        private Vipr.Reader.OData.v4.OdcmReader _odcmReader;
         private string _schemaNamespace;
         private string _entityContainerName;
         private XElement _edmxElement;

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using CSharpWriter.Settings;
+using Vipr.Writer.CSharp.Settings;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Moq;

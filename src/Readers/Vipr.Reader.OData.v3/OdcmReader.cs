@@ -15,7 +15,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
-namespace ODataReader.v3
+namespace Vipr.Reader.OData.v3
 {
     public class OdcmReader : IOdcmReader
     {

@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     internal class CSharpProject
     {
@@ -12,7 +12,7 @@ namespace CSharpWriter
 
         public CSharpProject(OdcmModel model)
         {
-            Namespaces = global::CSharpWriter.Namespaces.ForModel(model);
+            Namespaces = global::Vipr.Writer.CSharp.Namespaces.ForModel(model);
         }
     }
 }

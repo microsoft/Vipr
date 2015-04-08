@@ -3,7 +3,7 @@
 
 using System;
 using System.ComponentModel;
-using CSharpWriter.Settings;
+using Vipr.Writer.CSharp.Settings;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Moq;

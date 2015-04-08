@@ -4,7 +4,7 @@
 using System;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public static class TypeService
     {

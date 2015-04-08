@@ -11,7 +11,7 @@ using System.Xml;
 using Microsoft.OData.Edm.Validation;
 using Microsoft.OData.Edm.Csdl;
 
-namespace ODataReader.v4.Capabilities
+namespace Vipr.Reader.OData.v4.Capabilities
 {
     public abstract class CapabilityAnnotationParser
     {

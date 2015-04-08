@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     internal class Feature
     {
@@ -15,9 +15,9 @@ namespace CSharpWriter
 
         internal Feature()
         {
-            Enums = global::CSharpWriter.Enums.Empty;
-            Classes = global::CSharpWriter.Classes.Empty;
-            Interfaces = global::CSharpWriter.Interfaces.Empty;
+            Enums = global::Vipr.Writer.CSharp.Enums.Empty;
+            Classes = global::Vipr.Writer.CSharp.Classes.Empty;
+            Interfaces = global::Vipr.Writer.CSharp.Interfaces.Empty;
         }
 
         public static Feature ForCountableCollection(OdcmEntityClass odcmClass)
@@ -39,8 +39,8 @@ namespace CSharpWriter
         {
             return new Feature
             {
-                Classes = global::CSharpWriter.Classes.ForOdcmClassEntity(odcmClass),
-                Interfaces = global::CSharpWriter.Interfaces.ForOdcmClassEntity(odcmClass),
+                Classes = global::Vipr.Writer.CSharp.Classes.ForOdcmClassEntity(odcmClass),
+                Interfaces = global::Vipr.Writer.CSharp.Interfaces.ForOdcmClassEntity(odcmClass),
             };
         }
 
@@ -48,7 +48,7 @@ namespace CSharpWriter
         {
             return new Feature
             {
-                Classes = global::CSharpWriter.Classes.ForOdcmClassComplex(odcmClass),
+                Classes = global::Vipr.Writer.CSharp.Classes.ForOdcmClassComplex(odcmClass),
             };
         }
 
@@ -56,8 +56,8 @@ namespace CSharpWriter
         {
             return new Feature
             {
-                Classes = global::CSharpWriter.Classes.ForOdcmClassService(odcmClass, model),
-                Interfaces = global::CSharpWriter.Interfaces.ForOdcmClassService(odcmClass),
+                Classes = global::Vipr.Writer.CSharp.Classes.ForOdcmClassService(odcmClass, model),
+                Interfaces = global::Vipr.Writer.CSharp.Interfaces.ForOdcmClassService(odcmClass),
             };
         }
 
@@ -65,8 +65,8 @@ namespace CSharpWriter
         {
             return new Feature
             {
-                Classes = global::CSharpWriter.Classes.ForUpcastMethods(odcmClass),
-                Interfaces = global::CSharpWriter.Interfaces.ForUpcastMethods(odcmClass)
+                Classes = global::Vipr.Writer.CSharp.Classes.ForUpcastMethods(odcmClass),
+                Interfaces = global::Vipr.Writer.CSharp.Interfaces.ForUpcastMethods(odcmClass)
             };
         }
     }

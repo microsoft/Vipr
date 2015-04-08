@@ -9,7 +9,7 @@ using System.Linq;
 using System.Reflection;
 using Vipr.Core.CodeModel;
 
-namespace ODataReader.v4.Capabilities
+namespace Vipr.Reader.OData.v4.Capabilities
 {
     public partial class ODataCapabilitiesReader
     {

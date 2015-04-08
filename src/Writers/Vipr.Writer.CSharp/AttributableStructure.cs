@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public abstract class AttributableStructure
     {

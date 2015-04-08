@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public class Type
     {

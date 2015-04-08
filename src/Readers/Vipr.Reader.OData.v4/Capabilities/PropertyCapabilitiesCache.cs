@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Vipr.Core.CodeModel;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
-namespace ODataReader.v4.Capabilities
+namespace Vipr.Reader.OData.v4.Capabilities
 {
     public partial class ODataCapabilitiesReader
     {

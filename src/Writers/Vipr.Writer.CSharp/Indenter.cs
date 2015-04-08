@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public class Indenter
     {

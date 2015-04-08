@@ -5,19 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Vipr.Core.CodeModel;
 
-namespace CSharpWriter
+namespace Vipr.Writer.CSharp
 {
     public class Class : AttributableStructure
     {
         private Class()
         {
-            Constructors = global::CSharpWriter.Constructors.Empty;
-            Fields = global::CSharpWriter.Fields.Empty;
-            Indexers = global::CSharpWriter.Indexers.Empty;
-            Interfaces = global::CSharpWriter.ImplementedInterfaces.Empty;
-            Methods = global::CSharpWriter.Methods.Empty;
-            NestedClasses = global::CSharpWriter.Classes.Empty;
-            Properties = global::CSharpWriter.Properties.Empty;
+            Constructors = global::Vipr.Writer.CSharp.Constructors.Empty;
+            Fields = global::Vipr.Writer.CSharp.Fields.Empty;
+            Indexers = global::Vipr.Writer.CSharp.Indexers.Empty;
+            Interfaces = global::Vipr.Writer.CSharp.ImplementedInterfaces.Empty;
+            Methods = global::Vipr.Writer.CSharp.Methods.Empty;
+            NestedClasses = global::Vipr.Writer.CSharp.Classes.Empty;
+            Properties = global::Vipr.Writer.CSharp.Properties.Empty;
         }
 
         public string AbstractModifier { get; private set; }
@@ -42,12 +42,12 @@ namespace CSharpWriter
                     new Type(odcmClass.Base == null
                         ? NamesService.GetExtensionTypeName("RestShallowObjectFetcher")
                         : NamesService.GetFetcherTypeName(odcmClass.Base)),
-                Constructors = global::CSharpWriter.Constructors.ForFetcher(odcmClass),
-                Fields = global::CSharpWriter.Fields.ForFetcher(odcmClass),
+                Constructors = global::Vipr.Writer.CSharp.Constructors.ForFetcher(odcmClass),
+                Fields = global::Vipr.Writer.CSharp.Fields.ForFetcher(odcmClass),
                 Identifier = NamesService.GetFetcherTypeName(odcmClass),
-                Interfaces = global::CSharpWriter.ImplementedInterfaces.ForFetcher(odcmClass),
-                Methods = global::CSharpWriter.Methods.ForFetcher(odcmClass),
-                Properties = global::CSharpWriter.Properties.ForFetcher(odcmClass),
+                Interfaces = global::Vipr.Writer.CSharp.ImplementedInterfaces.ForFetcher(odcmClass),
+                Methods = global::Vipr.Writer.CSharp.Methods.ForFetcher(odcmClass),
+                Properties = global::Vipr.Writer.CSharp.Properties.ForFetcher(odcmClass),
             };
         }
 
@@ -57,15 +57,15 @@ namespace CSharpWriter
             {
                 AbstractModifier = odcmClass.IsAbstract ? "abstract " : string.Empty,
                 AccessModifier = "public ",
-                Constructors = global::CSharpWriter.Constructors.ForComplex(odcmClass),
+                Constructors = global::Vipr.Writer.CSharp.Constructors.ForComplex(odcmClass),
                 BaseClass =
                     new Type(odcmClass.Base == null
                         ? NamesService.GetExtensionTypeName("ComplexTypeBase")
                         : NamesService.GetPublicTypeName(odcmClass.Base)),
                 Description = odcmClass.Description,
-                Fields = global::CSharpWriter.Fields.ForComplex(odcmClass),
+                Fields = global::Vipr.Writer.CSharp.Fields.ForComplex(odcmClass),
                 Identifier = NamesService.GetConcreteTypeName(odcmClass),
-                Properties = global::CSharpWriter.Properties.ForComplex(odcmClass),
+                Properties = global::Vipr.Writer.CSharp.Properties.ForComplex(odcmClass),
             };
         }
 
@@ -75,18 +75,18 @@ namespace CSharpWriter
             {
                 AbstractModifier = odcmClass.IsAbstract ? "abstract " : string.Empty,
                 AccessModifier = "public ",
-                Attributes = global::CSharpWriter.Attributes.ForConcrete(odcmClass),
+                Attributes = global::Vipr.Writer.CSharp.Attributes.ForConcrete(odcmClass),
                 BaseClass =
                     new Type(odcmClass.Base == null
                         ? NamesService.GetExtensionTypeName("EntityBase")
                         : NamesService.GetConcreteTypeName(odcmClass.Base)),
-                Constructors = global::CSharpWriter.Constructors.ForConcrete(odcmClass),
+                Constructors = global::Vipr.Writer.CSharp.Constructors.ForConcrete(odcmClass),
                 Description = odcmClass.Description,
-                Fields = global::CSharpWriter.Fields.ForConcrete(odcmClass),
+                Fields = global::Vipr.Writer.CSharp.Fields.ForConcrete(odcmClass),
                 Identifier = NamesService.GetConcreteTypeName(odcmClass),
-                Interfaces = global::CSharpWriter.ImplementedInterfaces.ForConcrete(odcmClass),
-                Methods = global::CSharpWriter.Methods.ForConcrete(odcmClass),
-                Properties = global::CSharpWriter.Properties.ForConcrete(odcmClass)
+                Interfaces = global::Vipr.Writer.CSharp.ImplementedInterfaces.ForConcrete(odcmClass),
+                Methods = global::Vipr.Writer.CSharp.Methods.ForConcrete(odcmClass),
+                Properties = global::Vipr.Writer.CSharp.Properties.ForConcrete(odcmClass)
             };
         }
 
@@ -97,11 +97,11 @@ namespace CSharpWriter
                 AccessModifier = "internal ",
                 BaseClass = new Type(NamesService.GetExtensionTypeName("QueryableSet"),
                                      new Type(NamesService.GetConcreteInterfaceName(odcmClass))),
-                Constructors = global::CSharpWriter.Constructors.ForCollection(odcmClass),
-                Interfaces = global::CSharpWriter.ImplementedInterfaces.ForCollection(odcmClass),
+                Constructors = global::Vipr.Writer.CSharp.Constructors.ForCollection(odcmClass),
+                Interfaces = global::Vipr.Writer.CSharp.ImplementedInterfaces.ForCollection(odcmClass),
                 Identifier = NamesService.GetCollectionTypeName(odcmClass),
-                Methods = global::CSharpWriter.Methods.ForCollection(odcmClass),
-                Indexers = global::CSharpWriter.Indexers.ForCollection(odcmClass)
+                Methods = global::Vipr.Writer.CSharp.Methods.ForCollection(odcmClass),
+                Indexers = global::Vipr.Writer.CSharp.Indexers.ForCollection(odcmClass)
             };
         }
 
@@ -111,7 +111,7 @@ namespace CSharpWriter
             {
                 AccessModifier = "internal ",
                 Identifier = NamesService.GetCollectionTypeName(odcmClass),
-                Methods = global::CSharpWriter.Methods.ForCountableCollectionInterface(odcmClass)
+                Methods = global::Vipr.Writer.CSharp.Methods.ForCountableCollectionInterface(odcmClass)
             };
         }
 
@@ -120,14 +120,14 @@ namespace CSharpWriter
             return new Class
             {
                 AccessModifier = "public ",
-                Constructors = global::CSharpWriter.Constructors.ForEntityContainer(odcmContainer),
+                Constructors = global::Vipr.Writer.CSharp.Constructors.ForEntityContainer(odcmContainer),
                 Description = odcmContainer.Description,
-                Fields = global::CSharpWriter.Fields.ForEntityContainer(odcmContainer),
-                Interfaces = global::CSharpWriter.ImplementedInterfaces.ForEntityContainer(odcmContainer),
+                Fields = global::Vipr.Writer.CSharp.Fields.ForEntityContainer(odcmContainer),
+                Interfaces = global::Vipr.Writer.CSharp.ImplementedInterfaces.ForEntityContainer(odcmContainer),
                 Identifier = NamesService.GetEntityContainerTypeName(odcmContainer),
                 NestedClasses = new[] { ForGeneratedEdmModel(odcmModel) },
-                Methods = global::CSharpWriter.Methods.ForEntityContainer(odcmContainer),
-                Properties = global::CSharpWriter.Properties.ForEntityContainer(odcmContainer)
+                Methods = global::Vipr.Writer.CSharp.Methods.ForEntityContainer(odcmContainer),
+                Properties = global::Vipr.Writer.CSharp.Properties.ForEntityContainer(odcmContainer)
             };
         }
 
@@ -137,9 +137,9 @@ namespace CSharpWriter
             {
                 AbstractModifier = "abstract ",
                 AccessModifier = "private ",
-                Fields = global::CSharpWriter.Fields.ForGeneratedEdmModel(odcmModel),
+                Fields = global::Vipr.Writer.CSharp.Fields.ForGeneratedEdmModel(odcmModel),
                 Identifier = new Identifier("", "GeneratedEdmModel"),
-                Methods = global::CSharpWriter.Methods.ForGeneratedEdmModel(),
+                Methods = global::Vipr.Writer.CSharp.Methods.ForGeneratedEdmModel(),
             };
         }
 
@@ -149,7 +149,7 @@ namespace CSharpWriter
             {
                 AccessModifier = "internal ",
                 Identifier = NamesService.GetFetcherTypeName(odcmClass),
-                Methods = global::CSharpWriter.Methods.ForFetcherUpcasts(odcmClass),
+                Methods = global::Vipr.Writer.CSharp.Methods.ForFetcherUpcasts(odcmClass),
             };
         }
 
@@ -159,7 +159,7 @@ namespace CSharpWriter
             {
                 AccessModifier = "public ",
                 Identifier = NamesService.GetConcreteTypeName(odcmClass),
-                Methods = global::CSharpWriter.Methods.ForConcreteUpcasts(odcmClass),
+                Methods = global::Vipr.Writer.CSharp.Methods.ForConcreteUpcasts(odcmClass),
             };
         }
     }

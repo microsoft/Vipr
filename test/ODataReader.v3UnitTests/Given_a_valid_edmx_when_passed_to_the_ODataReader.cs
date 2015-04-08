@@ -3,7 +3,7 @@
 
 using FluentAssertions;
 using Microsoft.Its.Recipes;
-using ODataReader.v3;
+using Vipr.Reader.OData.v3;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Vipr.Core;
@@ -13,7 +13,7 @@ namespace ODataReader.v3UnitTests
 {
     public class Given_a_valid_edmx_when_passed_to_the_ODataReader
     {
-        private ODataReader.v3.OdcmReader _odcmReader;
+        private Vipr.Reader.OData.v3.OdcmReader _odcmReader;
 
         public Given_a_valid_edmx_when_passed_to_the_ODataReader()
         {
