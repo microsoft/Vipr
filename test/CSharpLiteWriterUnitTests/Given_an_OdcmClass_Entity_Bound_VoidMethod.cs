@@ -29,20 +29,6 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void The_Concrete_interface_does_not_expose_the_method()
-        {
-            ConcreteInterface.Should().NotHaveMethod(
-                _expectedMethodName);
-        }
-
-        [Fact]
-        public void The_Concrete_class_does_not_expose_the_async_method()
-        {
-            ConcreteType.Should().NotHaveMethod(
-                _expectedMethodName);
-        }
-
-        [Fact]
         public void The_Fetcher_interface_exposes_the_method()
         {
             FetcherInterface.Should().HaveMethod(
