@@ -13,7 +13,7 @@ namespace Microsoft.OData.ProxyExtensions.Lite
     {
         private Lazy<HashSet<string>> _changedProperties = new Lazy<HashSet<string>>(true);
 
-        public Lazy<HashSet<string>> ChangedProperties
+        protected internal Lazy<HashSet<string>> ChangedProperties
         {
             get { return _changedProperties; }
         }
@@ -23,12 +23,12 @@ namespace Microsoft.OData.ProxyExtensions.Lite
             return new Tuple<EntityBase, string>(this, propertyName);
         }
 
-        public virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected internal virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             _changedProperties.Value.Add(propertyName);
         }
 
-        public void ResetChanges()
+        protected internal void ResetChanges()
         {
             _changedProperties = new Lazy<HashSet<string>>(true);
         }
@@ -45,7 +45,7 @@ namespace Microsoft.OData.ProxyExtensions.Lite
             }
         }
 
-        public void Initialize()
+        protected internal void Initialize()
         {
         }
 

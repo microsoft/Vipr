@@ -62,7 +62,7 @@ namespace ProxyExtensionsUnitTests
 
     //[HasStream]
     [global::Microsoft.OData.Client.Key("Id")]
-    public class Product : EntityBase, IProduct
+    public class Product : TestEntityBase, IProduct
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -90,7 +90,7 @@ namespace ProxyExtensionsUnitTests
     }
 
     [global::Microsoft.OData.Client.Key("Id")]
-    public class Supplier : EntityBase, ISupplier
+    public class Supplier : TestEntityBase, ISupplier
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -113,6 +113,14 @@ namespace ProxyExtensionsUnitTests
         public string GetPath(Expression<Func<Product, bool>> whereExpression)
         {
             return base.GetPath(whereExpression);
+        }
+    }
+
+    public class TestEntityBase : EntityBase
+    {
+        public new void OnPropertyChanged(string propertyName)
+        {
+            base.OnPropertyChanged(propertyName);
         }
     }
 
