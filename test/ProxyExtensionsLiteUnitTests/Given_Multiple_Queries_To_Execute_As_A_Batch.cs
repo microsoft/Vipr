@@ -136,16 +136,22 @@ namespace ProxyExtensionsUnitTests
                 string newCategory = Any.AlphanumericString();
                 prod1.Category = newCategory;
                 prod1.OnPropertyChanged("Category");
+                var productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod1);
+                productFetcher.UpdateAsync(prod1, true).Wait();
 
                 Product prod2 = products.CurrentPage[2] as Product;
                 string newName = Any.CompanyName();
                 prod2.Name = newName;
                 prod2.OnPropertyChanged("Name");
+                productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod2);
+                productFetcher.UpdateAsync(prod2, true).Wait();
 
                 Product prod3 = products.CurrentPage[3] as Product;
                 decimal newPrice = Any.Decimal();
                 prod3.Price = newPrice;
                 prod3.OnPropertyChanged("Price");
+                productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod3);
+                productFetcher.UpdateAsync(prod3, true).Wait();
 
                 var response = context.SaveChangesAsync(SaveChangesOptions.BatchWithSingleChangeset).Result;
                 response.Count().Should().Be(3);

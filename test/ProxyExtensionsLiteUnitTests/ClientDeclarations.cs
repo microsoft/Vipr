@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using Microsoft.OData.Client;
 using Microsoft.OData.ProxyExtensions.Lite;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Spatial;
 
 namespace ProxyExtensionsUnitTests
@@ -117,6 +118,19 @@ namespace ProxyExtensionsUnitTests
 
     public class TestRestShallowObjectFetcher : RestShallowObjectFetcher
     {
+        public static TestRestShallowObjectFetcher CreateFetcher(DataServiceContextWrapper context, EntityBase entity)
+        {
+            var fetcher = new TestRestShallowObjectFetcher();
+            Uri fullUri;
+            context.TryGetUri(entity, out fullUri);
+
+            var baseUri = context.BaseUri.ToString().TrimEnd('/');
+            var resourcePath = fullUri.ToString().Substring(baseUri.Length + 1);
+
+            fetcher.Initialize(context, resourcePath);
+            return fetcher;
+        }
+
         public new IReadOnlyQueryableSet<TIInstance> CreateQuery<TInstance, TIInstance>() 
             where TInstance:EntityBase, TIInstance
         {
@@ -131,6 +145,21 @@ namespace ProxyExtensionsUnitTests
         public new Uri GetUrl()
         {
             return base.GetUrl();
+        }
+
+        public Task UpdateAsync(object item, bool deferSaveChanges = false)
+        {
+            return base.UpdateAsync(item, deferSaveChanges);
+        }
+
+        public Task DeleteAsync(object item, bool deferSaveChanges = false)
+        {
+            return base.DeleteAsync(item, deferSaveChanges);
+        }
+
+        public Task SaveChangesAsync(bool deferSaveChanges = false, SaveChangesOptions saveChangesOption = SaveChangesOptions.None)
+        {
+            return base.FetcherSaveChangesAsync(deferSaveChanges, saveChangesOption);
         }
     }
 }

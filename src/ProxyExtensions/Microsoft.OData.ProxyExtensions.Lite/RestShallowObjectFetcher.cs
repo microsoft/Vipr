@@ -29,7 +29,7 @@ namespace Microsoft.OData.ProxyExtensions.Lite
         protected Task UpdateAsync<T>(T item, bool deferSaveChanges = false)
         {
             if (Context == null) throw new InvalidOperationException("Not Initialized");
-            Context.UpdateObject(item);
+            Context.UpdateObject(item as EntityBase);
             return FetcherSaveChangesAsync(deferSaveChanges);
         }
 

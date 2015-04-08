@@ -36,9 +36,11 @@ namespace ProxyExtensionsUnitTests
                 string newCategory = Any.AlphanumericString();
                 prod1.Category = newCategory;
                 // Calling 'OnPropertyChanged' for 'Category'
-                // So 'Category' property must not be updated on the server side.
+                // So 'Category' property must be updated on the server side.
                 prod1.OnPropertyChanged("Category");
-                prod1.UpdateAsync().Wait();
+
+                var productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod1);
+                productFetcher.UpdateAsync(prod1).Wait();
 
                 var updatedProducts = context.ExecuteAsync<Product, IProduct>(dQuery).Result;
                 updatedProducts.CurrentPage.Count.Should().Be(5);
@@ -66,7 +68,8 @@ namespace ProxyExtensionsUnitTests
                 // Skip calling 'OnPropertyChanged' for 'Name'
                 // So 'Name' property must not be updated on the server side.
                 //prod2.OnPropertyChanged("Name");
-                prod2.UpdateAsync().Wait();
+                var productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod2);
+                productFetcher.UpdateAsync(prod2).Wait();
 
                 var updatedProducts = context.ExecuteAsync<Product, IProduct>(dQuery).Result;
                 updatedProducts.CurrentPage.Count.Should().Be(5);
@@ -93,7 +96,8 @@ namespace ProxyExtensionsUnitTests
 
                 prod3.Comment = newComment;
                 prod3.OnPropertyChanged("Comment");
-                prod3.UpdateAsync().Wait();
+                var productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod3);
+                productFetcher.UpdateAsync(prod3).Wait();
 
                 Product updatedProd3 = context.ExecuteSingleAsync<Product, IProduct>(dQuery).Result as Product;
                 updatedProd3.Comment.Details.Should().Be(newComment.Details);
@@ -120,19 +124,22 @@ namespace ProxyExtensionsUnitTests
                 string newCategory = Any.AlphanumericString();
                 prod1.Category = newCategory;
                 prod1.OnPropertyChanged("Category");
-                prod1.UpdateAsync(true).Wait();
+                var productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod1);
+                productFetcher.UpdateAsync(prod1, true).Wait();
 
                 Product prod2 = products.CurrentPage[2] as Product;
                 string newName = Any.CompanyName();
                 prod2.Name = newName;
                 prod2.OnPropertyChanged("Name");
-                prod2.UpdateAsync(true).Wait();
+                productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod2);
+                productFetcher.UpdateAsync(prod2, true).Wait();
 
                 Product prod3 = products.CurrentPage[3] as Product;
                 decimal newPrice = Any.Decimal();
                 prod3.Price = newPrice;
                 prod3.OnPropertyChanged("Price");
-                prod3.UpdateAsync(true).Wait();
+                productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod3);
+                productFetcher.UpdateAsync(prod3, true).Wait();
 
                 var response = context.SaveChangesAsync().Result;
                 response.Count().Should().Be(3);
@@ -160,7 +167,8 @@ namespace ProxyExtensionsUnitTests
 
                 Product prod1 = products.CurrentPage[1] as Product;
                 prod1.Id.Should().Be(2);
-                prod1.DeleteAsync().Wait();
+                var productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod1);
+                productFetcher.DeleteAsync(prod1).Wait();
 
                 var updatedProducts = context.ExecuteAsync<Product, IProduct>(dQuery).Result;
                 updatedProducts.CurrentPage.Count.Should().Be(4);
@@ -190,7 +198,8 @@ namespace ProxyExtensionsUnitTests
                 var newBlob = Any.Sequence<byte>(x => Any.Byte()).ToArray();
                 supplier.Blob = newBlob;
                 supplier.OnPropertyChanged("Blob");
-                supplier.UpdateAsync().Wait();
+                var supplierFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, supplier);
+                supplierFetcher.UpdateAsync(supplier).Wait();
 
                 var updatedsuppliers = context.ExecuteAsync<Supplier, ISupplier>(dQuery).Result;
                 updatedsuppliers.CurrentPage.Count.Should().Be(5);
@@ -224,7 +233,8 @@ namespace ProxyExtensionsUnitTests
                 // Bug - Location is a property of primitive type - "Microsoft.Spatial.GeographyPoint".
                 // Its underlying type is "Microsoft.Data.Spatial.GeographyPointImplementation".
                 // In the ASP.Net stack when deserializing the 'Location' property InvalidCastException is thrown.
-                supplier.UpdateAsync().Wait();
+                var supplierFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, supplier);
+                supplierFetcher.UpdateAsync(supplier).Wait();
 
                 var updatedsuppliers = context.ExecuteAsync<Supplier, ISupplier>(dQuery).Result;
                 updatedsuppliers.CurrentPage.Count.Should().Be(5);
