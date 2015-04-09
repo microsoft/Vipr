@@ -67,9 +67,9 @@ namespace CSharpWriterUnitTests
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
 
             using (_mockedService = new MockService()
-                .SetupPostEntity(TargetEntity, entityKeyValues)
+                    .SetupPostEntity(TargetEntity, entityKeyValues)
                     .OnGetEntityPropertyRequest(Class.GetDefaultEntityPath(entityKeyValues), _camelCasedName)
-                    .RespondWithGetEntity(Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments())))
+                    .RespondWithGetEntity(Class.GetDefaultEntitySetName(), Class.GetSampleJObject()))
             {
                 var instance = _mockedService
                     .GetDefaultContext(Model)
@@ -91,7 +91,7 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                     .OnGetEntityPropertyRequest(entityPath, _camelCasedName)
-                    .RespondWithGetEntity(Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments())))
+                    .RespondWithGetEntity(Class.GetDefaultEntitySetName(), Class.GetSampleJObject()))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)
@@ -114,7 +114,7 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                 .OnPostEntityRequest(entitySetPath)
-                    .RespondWithCreateEntity(Class.Name + "s", ConcreteType.Initialize(entityKeyValues))
+                    .RespondWithCreateEntity(Class.Name + "s", Class.GetSampleJObject(entityKeyValues))
                 .OnPostEntityRequest(expectedPath)
                     .RespondWithODataOk())
             {
