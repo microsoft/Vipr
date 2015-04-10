@@ -62,10 +62,12 @@ Options:
             if (res["--outputPath"] == null)
             {
                 // do nothing, rely on default
-            } else if (res["--outputPath"].ToString() == String.Empty)
+            } 
+            else if (res["--outputPath"].ToString() == String.Empty)
             {
                 _outputPath = @".\";  // current working directory
-            } else
+            } 
+            else
             {
                 _outputPath = res["--outputPath"].ToString();
             }
