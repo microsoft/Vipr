@@ -140,6 +140,29 @@ namespace ExchangeManagedOMTests
         }
 
         [TestMethod]
+        public void CreateConvertDeleteEvent()
+        {
+            var newEvent = new Event()
+            {
+                Start = new DateTimeOffset(2015, 4, 8, 17, 0, 0, new TimeSpan(0, 4, 0, 0)),
+                End = new DateTimeOffset(2015, 4, 8, 18, 0, 0, new TimeSpan(0, 4, 0, 0))
+            };
+
+            client.Me.Events.AddEventAsync(newEvent).Wait();
+
+            newEvent.Start = new DateTimeOffset(2015, 4, 8, 0, 0, 0, new TimeSpan(0, -4, 0, 0));
+            newEvent.End =   new DateTimeOffset(2015, 4, 8, 0, 0, 0, new TimeSpan(0, -4, 0, 0));
+
+            newEvent.StartTimeZone = "Eastern Standard Time";
+            newEvent.EndTimeZone = "Eastern Standard Time";
+
+            newEvent.IsAllDay = true;
+            newEvent.UpdateAsync().Wait();
+
+            newEvent.DeleteAsync().Wait();
+        }
+
+        [TestMethod]
         public async Task GetCalendarView()
         {
             var events = (await client.Me.Calendar.GetCalendarView(DateTimeOffset.Now, DateTimeOffset.Now).ExecuteAsync());
@@ -240,8 +263,6 @@ namespace ExchangeManagedOMTests
             Assert.IsNull(message.Id, "Message has an Id before creation");
 
             await client.Me.SendMailAsync(message, true);
-            
-            Assert.IsNotNull(message.Id, "Message does not have after creation");
         }
 
         [TestMethod]

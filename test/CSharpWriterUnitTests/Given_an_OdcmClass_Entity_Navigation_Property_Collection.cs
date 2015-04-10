@@ -161,7 +161,7 @@ namespace CSharpWriterUnitTests
 
             using (_mockedService = new MockService()
                     .OnGetEntityPropertyRequest(Class.GetDefaultEntityPath(entityKeyValues), NavigationProperty.Name)
-                    .RespondWithGetEntity(Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments())))
+                    .RespondWithGetEntity(Class.GetDefaultEntitySetName(), Class.GetSampleJObject()))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)

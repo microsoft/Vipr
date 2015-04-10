@@ -1,8 +1,10 @@
+using Newtonsoft.Json.Linq;
+
 namespace Microsoft.MockService.Extensions.ODataV4
 {
     public static class ResponseBuilderExtensions
     {
-        public static MockService RespondWithCreateEntity(this ResponseBuilder responseBuilder, string entitySetName, object response = null)
+        public static MockService RespondWithCreateEntity(this ResponseBuilder responseBuilder, string entitySetName, JObject response = null)
         {
 
             return responseBuilder.RespondWith((c, b) =>
@@ -13,7 +15,7 @@ namespace Microsoft.MockService.Extensions.ODataV4
             });
         }
 
-        public static MockService RespondWithGetEntity(this ResponseBuilder responseBuilder, string entitySetName, object response = null)
+        public static MockService RespondWithGetEntity(this ResponseBuilder responseBuilder, string entitySetName, JObject response = null)
         {
 
             return responseBuilder.RespondWith((c, b) =>

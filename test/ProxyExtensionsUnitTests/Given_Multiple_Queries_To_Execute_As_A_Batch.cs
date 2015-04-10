@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.OData.Client;
 using Microsoft.OData.Core;
+using ProxyExtensionsUnitTests.Extensions;
 using Xunit;
 
 namespace ProxyExtensionsUnitTests
@@ -135,17 +136,17 @@ namespace ProxyExtensionsUnitTests
                 Product prod1 = products.CurrentPage[1] as Product;
                 string newCategory = Any.AlphanumericString();
                 prod1.Category = newCategory;
-                prod1.OnPropertyChanged("Category");
+                prod1.CallOnPropertyChanged("Category");
 
                 Product prod2 = products.CurrentPage[2] as Product;
                 string newName = Any.CompanyName();
                 prod2.Name = newName;
-                prod2.OnPropertyChanged("Name");
+                prod2.CallOnPropertyChanged("Name");
 
                 Product prod3 = products.CurrentPage[3] as Product;
                 decimal newPrice = Any.Decimal();
                 prod3.Price = newPrice;
-                prod3.OnPropertyChanged("Price");
+                prod3.CallOnPropertyChanged("Price");
 
                 var response = context.SaveChangesAsync(SaveChangesOptions.BatchWithSingleChangeset).Result;
                 response.Count().Should().Be(3);

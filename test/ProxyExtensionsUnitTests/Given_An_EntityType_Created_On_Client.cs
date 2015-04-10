@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.OData.Client;
 using Microsoft.Spatial;
+using ProxyExtensionsUnitTests.Extensions;
 using Xunit;
 
 namespace ProxyExtensionsUnitTests
@@ -38,10 +39,10 @@ namespace ProxyExtensionsUnitTests
                 newProduct.Name = Any.CompanyName();
                 newProduct.Price = Any.Decimal();
                 newProduct.Category = Any.AlphanumericString();
-                newProduct.OnPropertyChanged("Id");
-                newProduct.OnPropertyChanged("Name");
-                newProduct.OnPropertyChanged("Price");
-                newProduct.OnPropertyChanged("Category");
+                newProduct.CallOnPropertyChanged("Id");
+                newProduct.CallOnPropertyChanged("Name");
+                newProduct.CallOnPropertyChanged("Price");
+                newProduct.CallOnPropertyChanged("Category");
 
                 context.AddObject("Products", newProduct);
                 context.SaveChangesAsync().Wait();
@@ -75,8 +76,8 @@ namespace ProxyExtensionsUnitTests
                 newProduct.Category = Any.AlphanumericString();
 
                 // calling 'OnPropertyChanged' only for 'Id' and 'Name' properties
-                newProduct.OnPropertyChanged("Id");
-                newProduct.OnPropertyChanged("Name");
+                newProduct.CallOnPropertyChanged("Id");
+                newProduct.CallOnPropertyChanged("Name");
 
                 context.AddObject("Products", newProduct);
                 context.SaveChangesAsync().Wait();
