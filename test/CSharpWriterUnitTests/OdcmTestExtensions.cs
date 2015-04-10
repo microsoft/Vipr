@@ -21,12 +21,12 @@ namespace CSharpWriterUnitTests
             return entityClass.Key.Select(p => new Tuple<string, object>(p.Name, Any.CSharpIdentifier(1)));
         }
 
-        public static JObject GetSampleJObject(this OdcmEntityClass entityClass)
+        public static JObject GetSampleJObject(this OdcmEntityClass entityClass, bool dontSalt = false)
         {
-            return entityClass.GetSampleJObject(entityClass.GetSampleKeyArguments());
+            return entityClass.GetSampleJObject(entityClass.GetSampleKeyArguments(), dontSalt);
         }
 
-        public static JObject GetSampleJObject(this OdcmEntityClass entityClass, IEnumerable<Tuple<string, object>> keyArguments)
+        public static JObject GetSampleJObject(this OdcmEntityClass entityClass, IEnumerable<Tuple<string, object>> keyArguments, bool dontSalt = false)
         {
             var retVal = new JObject();
 
@@ -38,6 +38,11 @@ namespace CSharpWriterUnitTests
             foreach (var collectionProperty in entityClass.Properties.Where(p => p.IsCollection))
             {
                 retVal.Add(collectionProperty.Name, new JArray());
+            }
+
+            if (!dontSalt)
+            {
+                retVal.Add(Any.Word(), new JValue(Any.Int()));
             }
 
             return retVal;
