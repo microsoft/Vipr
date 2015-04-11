@@ -1,1 +1,0 @@
-..\packages\Vipr.1.0.0\Tools\Vipr.exe Exchange.edmx.xml 

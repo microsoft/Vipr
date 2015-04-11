@@ -18,6 +18,7 @@
     <releaseNotes>https://github.com/Microsoft/Vipr/</releaseNotes>
     <copyright>Copyright © Microsoft Corporation</copyright>
     <tags>Microsoft OData .NET Service REST</tags>
+    <developmentDependency>true</developmentDependency>
   </metadata>
   <files>
     <file src="bin\$configuration$\DocoptNet.dll" target="Tools\DocoptNet.dll"/>
@@ -28,5 +29,6 @@
     <file src="bin\$configuration$\Microsoft.OData.Edm.dll" target="Tools\Microsoft.OData.Edm.dll"/>
     <file src="bin\$configuration$\Vipr.Reader.OData.v4.dll" target="Tools\Vipr.Reader.OData.v4.dll"/>
     <file src="bin\$configuration$\Vipr.Writer.CSharp.dll" target="Tools\Vipr.Writer.CSharp.dll"/>
+    <file src="Vipr.CommandLineInterface.targets" target="Build\Vipr.CommandLineInterface.targets"/>
   </files>
 </package>
