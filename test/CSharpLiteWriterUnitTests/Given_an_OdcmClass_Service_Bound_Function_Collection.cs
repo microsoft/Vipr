@@ -53,7 +53,7 @@ namespace CSharpLiteWriterUnitTests
             });
 
             var responseKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var response = ConcreteType.Initialize(responseKeyValues);
+            var response = Class.GetSampleJObject(responseKeyValues);
 
             using (var mockService = new MockService())
             {

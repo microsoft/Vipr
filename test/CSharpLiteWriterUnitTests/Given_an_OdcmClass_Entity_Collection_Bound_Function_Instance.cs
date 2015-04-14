@@ -34,7 +34,7 @@ namespace CSharpLiteWriterUnitTests
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var collectionPath = Class.GetDefaultEntityPath(entityKeyValues);
             var responseKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var response = ConcreteType.Initialize(responseKeyValues);
+            var response = Class.GetSampleJObject(responseKeyValues);
 
             using (var mockService = new MockService())
             {

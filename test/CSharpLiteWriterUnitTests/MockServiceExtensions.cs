@@ -53,7 +53,7 @@ namespace CSharpLiteWriterUnitTests
             return mockService
                 .OnGetEntityPropertyRequest(targetEntity.Class.GetDefaultEntityPath(keyValues), property.Name)
                 .RespondWithGetEntity(targetEntity.Class.GetDefaultEntitySetName(),
-                    targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()));
+                    targetEntity.Class.GetSampleJObject());
         }
 
         public static MockService SetupPostEntity(this MockService mockService, EntityArtifacts targetEntity, IEnumerable<Tuple<string, object>> propertyValues = null)
@@ -62,7 +62,7 @@ namespace CSharpLiteWriterUnitTests
 
             return mockService
                 .OnPostEntityRequest(targetEntity.Class.GetDefaultEntitySetPath())
-                .RespondWithCreateEntity(targetEntity.Class.GetDefaultEntitySetName(), targetEntity.ConcreteType.Initialize(propertyValues));
+                .RespondWithCreateEntity(targetEntity.Class.GetDefaultEntitySetName(), targetEntity.Class.GetSampleJObject(propertyValues));
         }
 
         public static MockService SetupGetEntity(this MockService mockService, EntityArtifacts targetEntity, 
@@ -79,7 +79,7 @@ namespace CSharpLiteWriterUnitTests
 
             return responseBuilder
                 .RespondWithGetEntity(targetEntity.Class.GetDefaultEntitySetName(),
-                    targetEntity.ConcreteType.Initialize(keyValues));
+                    targetEntity.Class.GetSampleJObject(keyValues));
         }
 
         public static MockService SetupGetEntitySet(this MockService mockService, EntityArtifacts targetEntity,
@@ -91,7 +91,7 @@ namespace CSharpLiteWriterUnitTests
 
             return responseBuilder
                 .RespondWithGetEntity(targetEntity.Class.GetDefaultEntitySetName(),
-                    targetEntity.ConcreteType.Initialize(targetEntity.Class.GetSampleKeyArguments()));
+                    targetEntity.Class.GetSampleJObject(targetEntity.Class.GetSampleKeyArguments()));
         }
 
         public static void ValidateParameterPassing(this MockService mockService, string httpMethod, object instance, string instancePath, OdcmMethod method, EntityArtifacts entityArtifacts)
@@ -114,7 +114,7 @@ namespace CSharpLiteWriterUnitTests
                 responseBuilder.RespondWith(r => r.Response.StatusCode = 200);
             else
                 responseBuilder.RespondWithGetEntity(entityArtifacts.Class.GetDefaultEntitySetName(),
-                    entityArtifacts.ConcreteType.Initialize(entityArtifacts.Class.GetSampleKeyArguments()));
+                    entityArtifacts.Class.GetSampleJObject());
 
             instance.InvokeMethod<Task>(expectedMethodName, methodArguments.Select(t => t.Item2).ToArray())
                 .Wait();
