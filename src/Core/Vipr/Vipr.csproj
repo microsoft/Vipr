@@ -60,6 +60,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Vipr.CommandLineInterface.nuspec" />
+    <None Include="Vipr.CommandLineInterface.targets" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj">
