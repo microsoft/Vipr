@@ -33,7 +33,7 @@ namespace CSharpLiteWriterUnitTests
 
             using (_mockedService = new MockService()
                     .OnGetEntityPropertyRequest(entityPath, collectionProperty.Name)
-                    .RespondWithGetEntity(Class.GetDefaultEntitySetName(), ConcreteType.Initialize(Class.GetSampleKeyArguments())))
+                    .RespondWithGetEntity(Class.GetDefaultEntitySetName(), Class.GetSampleJObject(Class.GetSampleKeyArguments())))
             {
                 var fetcher = _mockedService
                     .GetDefaultContext(Model)

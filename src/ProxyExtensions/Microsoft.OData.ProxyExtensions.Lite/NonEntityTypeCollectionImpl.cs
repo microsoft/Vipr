@@ -29,7 +29,7 @@ namespace Microsoft.OData.ProxyExtensions.Lite
 
         protected override void InsertItem(int index, T item)
         {
-            if (GenericArgumentIsComplexType)
+            if (item != null && GenericArgumentIsComplexType)
             {
                 (item as ComplexTypeBase).SetContainer(_entity);
             }
@@ -55,7 +55,7 @@ namespace Microsoft.OData.ProxyExtensions.Lite
 
         protected override void SetItem(int index, T item)
         {
-            if (GenericArgumentIsComplexType)
+            if (item != null && GenericArgumentIsComplexType)
             {
                 (item as ComplexTypeBase).SetContainer(_entity);
             }
@@ -67,9 +67,10 @@ namespace Microsoft.OData.ProxyExtensions.Lite
 
         private void InvokeOnPropertyChanged()
         {
-            if (_entity != null)
+            var tuple = _entity != null ? _entity() : null;
+
+            if (tuple != null)
             {
-                var tuple = _entity();
                 tuple.Item1.OnPropertyChanged(tuple.Item2);
             }
         }

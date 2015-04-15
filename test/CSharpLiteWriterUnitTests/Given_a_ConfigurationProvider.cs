@@ -137,7 +137,7 @@ namespace CSharpLiteWriterUnitTests
 
             var entityArtifacts = GetEntityArtifactsFromNewNamespace(derivedClass, newNamespace, proxy, oldNamespace);
 
-            var responseObject = entityArtifacts.ConcreteType.Initialize(derivedClass.GetSampleKeyArguments().Concat(baseClass.GetSampleKeyArguments()).ToArray());
+            var responseObject = entityArtifacts.Class.GetSampleJObject(derivedClass.GetSampleKeyArguments().Concat(baseClass.GetSampleKeyArguments()).ToArray());
 
             var responseOdataType = String.Format("#{0}.{1}", oldNamespace.Name, derivedClass.Name);
 

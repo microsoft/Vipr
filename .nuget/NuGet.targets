@@ -6,9 +6,13 @@
         <!-- Enable the restore command to run before builds -->
         <RestorePackages Condition="  '$(RestorePackages)' == '' ">false</RestorePackages>
 
-        <!-- Property that enables building a package from a project -->
-        <BuildPackage Condition=" '$(BuildPackage)' == '' ">false</BuildPackage>
+        <!-- Property that enables building a tool package from a project -->
+        <BuildToolPackage Condition=" '$(BuildToolPackage)' == ''">false</BuildToolPackage>
 
+        <!-- Property that enables building a package from a project -->
+        <BuildPackage Condition=" '$(BuildPackage)' == ''">false</BuildPackage>
+        <BuildPackage Condition=" '$(BuildToolPackage)' == 'true'">true</BuildPackage>
+      
         <!-- Determines if package restore consent is required to restore packages -->
         <RequireRestoreConsent Condition=" '$(RequireRestoreConsent)' != 'false' ">true</RequireRestoreConsent>
 
@@ -57,13 +61,14 @@
 
         <RequireConsentSwitch Condition=" $(RequireRestoreConsent) == 'true' ">-RequireConsent</RequireConsentSwitch>
         <NonInteractiveSwitch Condition=" '$(VisualStudioVersion)' != '' AND '$(OS)' == 'Windows_NT' ">-NonInteractive</NonInteractiveSwitch>
-
+        <ToolSwitch Condition="'$(BuildToolPackage)' == 'true'">-Tool</ToolSwitch>
+      
         <PaddedSolutionDir Condition=" '$(OS)' == 'Windows_NT'">"$(SolutionDir) "</PaddedSolutionDir>
         <PaddedSolutionDir Condition=" '$(OS)' != 'Windows_NT' ">"$(SolutionDir)"</PaddedSolutionDir>
 
         <!-- Commands -->
         <RestoreCommand>$(NuGetCommand) install "$(PackagesConfig)" -source "$(PackageSources)"  $(NonInteractiveSwitch) $(RequireConsentSwitch) -solutionDir $(PaddedSolutionDir)</RestoreCommand>
-        <BuildCommand>$(NuGetCommand) pack "$(ProjectPath)" -Properties "Configuration=$(Configuration);Platform=$(Platform);Author=Microsoft" $(NonInteractiveSwitch) -OutputDirectory "$(PackageOutputDir)" -symbols</BuildCommand>
+        <BuildCommand>$(NuGetCommand) pack "$(ProjectPath)" -Properties "Configuration=$(Configuration);Platform=$(Platform);Author=Microsoft" $(NonInteractiveSwitch) $(ToolSwitch) -OutputDirectory "$(PackageOutputDir)" -symbols</BuildCommand>
 
         <!-- We need to ensure packages are restored prior to assembly resolve -->
         <BuildDependsOn Condition="$(RestorePackages) == 'true'">

@@ -50,24 +50,20 @@
       <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.OData.Client">
-      <HintPath>..\..\packages\Microsoft.OData.Client.6.10.0\lib\net40\Microsoft.OData.Client.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.OData.Client.6.11.0\lib\net40\Microsoft.OData.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.OData.Core">
-      <HintPath>..\..\packages\Microsoft.OData.Core.6.10.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Core.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.OData.Core.6.11.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.OData.Edm">
-      <HintPath>..\..\packages\Microsoft.OData.Edm.6.10.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Edm.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.OData.Edm.6.11.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Edm.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Host.HttpListener, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Microsoft.Owin.Host.HttpListener.3.0.1\lib\net45\Microsoft.Owin.Host.HttpListener.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Spatial">
-      <HintPath>..\..\packages\Microsoft.Spatial.6.10.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.Spatial.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Spatial.6.11.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.Spatial.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
@@ -102,6 +98,7 @@
     <Compile Include="..\Shared\%28Its.Recipes%29\TestInputGenerator.cs">
       <Link>%28Its.Recipes%29\TestInputGenerator.cs</Link>
     </Compile>
+    <Compile Include="Extensions\EntityBaseTextExtensions.cs" />
     <Compile Include="Given_A_Method_Bound_To_EntityType.cs" />
     <Compile Include="Given_An_EntityType_Created_On_Client.cs" />
     <Compile Include="Given_An_EntityType_From_Server.cs" />

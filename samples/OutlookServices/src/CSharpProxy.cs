@@ -263,11 +263,11 @@ namespace Microsoft.Office365.OutlookServices
 
     {
 
-        private Microsoft.Office365.OutlookServices.BodyType _ContentType;
+        private global::Microsoft.Office365.OutlookServices.BodyType _ContentType;
 
         private System.String _Content;
 
-        public Microsoft.Office365.OutlookServices.BodyType ContentType
+        public global::Microsoft.Office365.OutlookServices.BodyType ContentType
 
         {
 
@@ -339,9 +339,9 @@ namespace Microsoft.Office365.OutlookServices
 
     {
 
-        private Microsoft.Office365.OutlookServices.EmailAddress _EmailAddress;
+        private global::Microsoft.Office365.OutlookServices.EmailAddress _EmailAddress;
 
-        public Microsoft.Office365.OutlookServices.EmailAddress EmailAddress
+        public global::Microsoft.Office365.OutlookServices.EmailAddress EmailAddress
 
         {
 
@@ -499,15 +499,15 @@ namespace Microsoft.Office365.OutlookServices
 
     }
 
-    public partial class Attendee:Microsoft.Office365.OutlookServices.Recipient
+    public partial class Attendee:global::Microsoft.Office365.OutlookServices.Recipient
 
     {
 
-        private Microsoft.Office365.OutlookServices.ResponseStatus _Status;
+        private global::Microsoft.Office365.OutlookServices.ResponseStatus _Status;
 
-        private Microsoft.Office365.OutlookServices.AttendeeType _Type;
+        private global::Microsoft.Office365.OutlookServices.AttendeeType _Type;
 
-        public Microsoft.Office365.OutlookServices.ResponseStatus Status
+        public global::Microsoft.Office365.OutlookServices.ResponseStatus Status
 
         {
 
@@ -537,7 +537,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.AttendeeType Type
+        public global::Microsoft.Office365.OutlookServices.AttendeeType Type
 
         {
 
@@ -579,11 +579,11 @@ namespace Microsoft.Office365.OutlookServices
 
     {
 
-        private Microsoft.Office365.OutlookServices.ResponseType _Response;
+        private global::Microsoft.Office365.OutlookServices.ResponseType _Response;
 
         private System.Nullable<System.DateTimeOffset> _Time;
 
-        public Microsoft.Office365.OutlookServices.ResponseType Response
+        public global::Microsoft.Office365.OutlookServices.ResponseType Response
 
         {
 
@@ -655,11 +655,11 @@ namespace Microsoft.Office365.OutlookServices
 
     {
 
-        private Microsoft.Office365.OutlookServices.RecurrencePattern _Pattern;
+        private global::Microsoft.Office365.OutlookServices.RecurrencePattern _Pattern;
 
-        private Microsoft.Office365.OutlookServices.RecurrenceRange _Range;
+        private global::Microsoft.Office365.OutlookServices.RecurrenceRange _Range;
 
-        public Microsoft.Office365.OutlookServices.RecurrencePattern Pattern
+        public global::Microsoft.Office365.OutlookServices.RecurrencePattern Pattern
 
         {
 
@@ -689,7 +689,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.RecurrenceRange Range
+        public global::Microsoft.Office365.OutlookServices.RecurrenceRange Range
 
         {
 
@@ -731,7 +731,7 @@ namespace Microsoft.Office365.OutlookServices
 
     {
 
-        private Microsoft.Office365.OutlookServices.RecurrencePatternType _Type;
+        private global::Microsoft.Office365.OutlookServices.RecurrencePatternType _Type;
 
         private System.Int32 _Interval;
 
@@ -739,13 +739,13 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.Int32 _DayOfMonth;
 
-        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.DayOfWeek> _DaysOfWeek;
+        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.DayOfWeek> _DaysOfWeek;
 
-        private Microsoft.Office365.OutlookServices.DayOfWeek _FirstDayOfWeek;
+        private global::Microsoft.Office365.OutlookServices.DayOfWeek _FirstDayOfWeek;
 
-        private Microsoft.Office365.OutlookServices.WeekIndex _Index;
+        private global::Microsoft.Office365.OutlookServices.WeekIndex _Index;
 
-        public Microsoft.Office365.OutlookServices.RecurrencePatternType Type
+        public global::Microsoft.Office365.OutlookServices.RecurrencePatternType Type
 
         {
 
@@ -865,7 +865,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.DayOfWeek> DaysOfWeek
+        public System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.DayOfWeek> DaysOfWeek
 
         {
 
@@ -873,11 +873,11 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (this._DaysOfWeek == default(System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.DayOfWeek>))
+                if (this._DaysOfWeek == default(System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.DayOfWeek>))
 
                 {
 
-                    this._DaysOfWeek = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.DayOfWeek>();
+                    this._DaysOfWeek = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.DayOfWeek>();
 
                     this._DaysOfWeek.SetContainer(() => GetContainingEntity("DaysOfWeek"));
 
@@ -911,7 +911,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.DayOfWeek FirstDayOfWeek
+        public global::Microsoft.Office365.OutlookServices.DayOfWeek FirstDayOfWeek
 
         {
 
@@ -941,7 +941,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.WeekIndex Index
+        public global::Microsoft.Office365.OutlookServices.WeekIndex Index
 
         {
 
@@ -983,7 +983,7 @@ namespace Microsoft.Office365.OutlookServices
 
     {
 
-        private Microsoft.Office365.OutlookServices.RecurrenceRangeType _Type;
+        private global::Microsoft.Office365.OutlookServices.RecurrenceRangeType _Type;
 
         private System.Nullable<System.DateTimeOffset> _StartDate;
 
@@ -991,7 +991,7 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.Int32 _NumberOfOccurrences;
 
-        public Microsoft.Office365.OutlookServices.RecurrenceRangeType Type
+        public global::Microsoft.Office365.OutlookServices.RecurrenceRangeType Type
 
         {
 
@@ -1293,7 +1293,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [global::Microsoft.OData.Client.Key("Id")]
 
-    public abstract partial class Entity:Microsoft.OData.ProxyExtensions.EntityBase, Microsoft.Office365.OutlookServices.IEntity, Microsoft.Office365.OutlookServices.IEntityFetcher
+    public abstract partial class Entity:Microsoft.OData.ProxyExtensions.EntityBase, global::Microsoft.Office365.OutlookServices.IEntity, global::Microsoft.Office365.OutlookServices.IEntityFetcher
 
     {
 
@@ -1335,7 +1335,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IEntity> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IEntity> EnsureQuery()
 
         {
 
@@ -1343,7 +1343,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Entity, Microsoft.Office365.OutlookServices.IEntity>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.Entity, global::Microsoft.Office365.OutlookServices.IEntity>();
 
             }
 
@@ -1353,11 +1353,11 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IEntity> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IEntity> _query;
 
     }
 
-    internal partial class EntityFetcher:Microsoft.OData.ProxyExtensions.RestShallowObjectFetcher, Microsoft.Office365.OutlookServices.IEntityFetcher
+    internal partial class EntityFetcher:Microsoft.OData.ProxyExtensions.RestShallowObjectFetcher, global::Microsoft.Office365.OutlookServices.IEntityFetcher
 
     {
 
@@ -1369,7 +1369,7 @@ namespace Microsoft.Office365.OutlookServices
 
     }
 
-    internal partial class EntityCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IEntity>, Microsoft.Office365.OutlookServices.IEntityCollection
+    internal partial class EntityCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.IEntity>, global::Microsoft.Office365.OutlookServices.IEntityCollection
 
     {
 
@@ -1379,7 +1379,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IEntityFetcher GetById(System.String id)
+        public global::Microsoft.Office365.OutlookServices.IEntityFetcher GetById(System.String id)
 
         {
 
@@ -1387,7 +1387,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEntity>> ExecuteAsync()
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEntity>> ExecuteAsync()
 
         {
 
@@ -1395,15 +1395,15 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task AddEntityAsync(Microsoft.Office365.OutlookServices.IEntity item, System.Boolean dontSave = false)
+        public global::System.Threading.Tasks.Task AddEntityAsync(global::Microsoft.Office365.OutlookServices.IEntity item, System.Boolean deferSaveChanges = false)
 
         {
 
-            if (_entity == null)
+            if (Entity == null)
 
             {
 
-                Context.AddObject(_path, item);
+                Context.AddObject(Path, item);
 
             }
 
@@ -1411,15 +1411,15 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var lastSlash = _path.LastIndexOf('/');
+                var lastSlash = Path.LastIndexOf('/');
 
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
 
-                Context.AddRelatedObject(_entity, shortPath, item);
+                Context.AddRelatedObject(Entity, shortPath, item);
 
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
 
             {
 
@@ -1441,7 +1441,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IEntityFetcher this[System.String id]
+        public global::Microsoft.Office365.OutlookServices.IEntityFetcher this[System.String id]
 
         {
 
@@ -1449,9 +1449,9 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var path = GetPath<Microsoft.Office365.OutlookServices.Entity>((i) => i.Id == id);
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.Entity>((i) => i.Id == id);
 
-                var fetcher = new Microsoft.Office365.OutlookServices.EntityFetcher();
+                var fetcher = new global::Microsoft.Office365.OutlookServices.EntityFetcher();
 
                 fetcher.Initialize(Context, path);
 
@@ -1473,7 +1473,7 @@ namespace Microsoft.Office365.OutlookServices
 
         {
 
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
 
         }
 
@@ -1481,7 +1481,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [global::Microsoft.OData.Client.Key("Id")]
 
-    public abstract partial class Attachment:Microsoft.Office365.OutlookServices.Entity, Microsoft.Office365.OutlookServices.IAttachment, Microsoft.Office365.OutlookServices.IAttachmentFetcher
+    public abstract partial class Attachment:global::Microsoft.Office365.OutlookServices.Entity, global::Microsoft.Office365.OutlookServices.IAttachment, global::Microsoft.Office365.OutlookServices.IAttachmentFetcher
 
     {
 
@@ -1651,7 +1651,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IAttachment> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IAttachment> EnsureQuery()
 
         {
 
@@ -1659,7 +1659,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Attachment, Microsoft.Office365.OutlookServices.IAttachment>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.Attachment, global::Microsoft.Office365.OutlookServices.IAttachment>();
 
             }
 
@@ -1669,11 +1669,11 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IAttachment> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IAttachment> _query;
 
     }
 
-    internal partial class AttachmentFetcher:Microsoft.Office365.OutlookServices.EntityFetcher, Microsoft.Office365.OutlookServices.IAttachmentFetcher
+    internal partial class AttachmentFetcher:global::Microsoft.Office365.OutlookServices.EntityFetcher, global::Microsoft.Office365.OutlookServices.IAttachmentFetcher
 
     {
 
@@ -1685,7 +1685,7 @@ namespace Microsoft.Office365.OutlookServices
 
     }
 
-    internal partial class AttachmentCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IAttachment>, Microsoft.Office365.OutlookServices.IAttachmentCollection
+    internal partial class AttachmentCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.IAttachment>, global::Microsoft.Office365.OutlookServices.IAttachmentCollection
 
     {
 
@@ -1695,7 +1695,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IAttachmentFetcher GetById(System.String id)
+        public global::Microsoft.Office365.OutlookServices.IAttachmentFetcher GetById(System.String id)
 
         {
 
@@ -1703,7 +1703,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IAttachment>> ExecuteAsync()
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IAttachment>> ExecuteAsync()
 
         {
 
@@ -1711,15 +1711,15 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task AddAttachmentAsync(Microsoft.Office365.OutlookServices.IAttachment item, System.Boolean dontSave = false)
+        public global::System.Threading.Tasks.Task AddAttachmentAsync(global::Microsoft.Office365.OutlookServices.IAttachment item, System.Boolean deferSaveChanges = false)
 
         {
 
-            if (_entity == null)
+            if (Entity == null)
 
             {
 
-                Context.AddObject(_path, item);
+                Context.AddObject(Path, item);
 
             }
 
@@ -1727,15 +1727,15 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var lastSlash = _path.LastIndexOf('/');
+                var lastSlash = Path.LastIndexOf('/');
 
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
 
-                Context.AddRelatedObject(_entity, shortPath, item);
+                Context.AddRelatedObject(Entity, shortPath, item);
 
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
 
             {
 
@@ -1757,7 +1757,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IAttachmentFetcher this[System.String id]
+        public global::Microsoft.Office365.OutlookServices.IAttachmentFetcher this[System.String id]
 
         {
 
@@ -1765,9 +1765,9 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var path = GetPath<Microsoft.Office365.OutlookServices.Attachment>((i) => i.Id == id);
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.Attachment>((i) => i.Id == id);
 
-                var fetcher = new Microsoft.Office365.OutlookServices.AttachmentFetcher();
+                var fetcher = new global::Microsoft.Office365.OutlookServices.AttachmentFetcher();
 
                 fetcher.Initialize(Context, path);
 
@@ -1789,7 +1789,7 @@ namespace Microsoft.Office365.OutlookServices
 
         {
 
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
 
         }
 
@@ -1797,7 +1797,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [global::Microsoft.OData.Client.Key("Id")]
 
-    public abstract partial class Item:Microsoft.Office365.OutlookServices.Entity, Microsoft.Office365.OutlookServices.IItem, Microsoft.Office365.OutlookServices.IItemFetcher
+    public abstract partial class Item:global::Microsoft.Office365.OutlookServices.Entity, global::Microsoft.Office365.OutlookServices.IItem, global::Microsoft.Office365.OutlookServices.IItemFetcher
 
     {
 
@@ -1951,7 +1951,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IItem> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IItem> EnsureQuery()
 
         {
 
@@ -1959,7 +1959,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Item, Microsoft.Office365.OutlookServices.IItem>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.Item, global::Microsoft.Office365.OutlookServices.IItem>();
 
             }
 
@@ -1969,11 +1969,11 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IItem> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IItem> _query;
 
     }
 
-    internal partial class ItemFetcher:Microsoft.Office365.OutlookServices.EntityFetcher, Microsoft.Office365.OutlookServices.IItemFetcher
+    internal partial class ItemFetcher:global::Microsoft.Office365.OutlookServices.EntityFetcher, global::Microsoft.Office365.OutlookServices.IItemFetcher
 
     {
 
@@ -1985,7 +1985,7 @@ namespace Microsoft.Office365.OutlookServices
 
     }
 
-    internal partial class ItemCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IItem>, Microsoft.Office365.OutlookServices.IItemCollection
+    internal partial class ItemCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.IItem>, global::Microsoft.Office365.OutlookServices.IItemCollection
 
     {
 
@@ -1995,7 +1995,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IItemFetcher GetById(System.String id)
+        public global::Microsoft.Office365.OutlookServices.IItemFetcher GetById(System.String id)
 
         {
 
@@ -2003,7 +2003,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IItem>> ExecuteAsync()
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IItem>> ExecuteAsync()
 
         {
 
@@ -2011,15 +2011,15 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task AddItemAsync(Microsoft.Office365.OutlookServices.IItem item, System.Boolean dontSave = false)
+        public global::System.Threading.Tasks.Task AddItemAsync(global::Microsoft.Office365.OutlookServices.IItem item, System.Boolean deferSaveChanges = false)
 
         {
 
-            if (_entity == null)
+            if (Entity == null)
 
             {
 
-                Context.AddObject(_path, item);
+                Context.AddObject(Path, item);
 
             }
 
@@ -2027,15 +2027,15 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var lastSlash = _path.LastIndexOf('/');
+                var lastSlash = Path.LastIndexOf('/');
 
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
 
-                Context.AddRelatedObject(_entity, shortPath, item);
+                Context.AddRelatedObject(Entity, shortPath, item);
 
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
 
             {
 
@@ -2057,7 +2057,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IItemFetcher this[System.String id]
+        public global::Microsoft.Office365.OutlookServices.IItemFetcher this[System.String id]
 
         {
 
@@ -2065,9 +2065,9 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var path = GetPath<Microsoft.Office365.OutlookServices.Item>((i) => i.Id == id);
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.Item>((i) => i.Id == id);
 
-                var fetcher = new Microsoft.Office365.OutlookServices.ItemFetcher();
+                var fetcher = new global::Microsoft.Office365.OutlookServices.ItemFetcher();
 
                 fetcher.Initialize(Context, path);
 
@@ -2089,7 +2089,7 @@ namespace Microsoft.Office365.OutlookServices
 
         {
 
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
 
         }
 
@@ -2097,33 +2097,33 @@ namespace Microsoft.Office365.OutlookServices
 
     [global::Microsoft.OData.Client.Key("Id")]
 
-    public partial class User:Microsoft.Office365.OutlookServices.Entity, Microsoft.Office365.OutlookServices.IUser, Microsoft.Office365.OutlookServices.IUserFetcher
+    public partial class User:global::Microsoft.Office365.OutlookServices.Entity, global::Microsoft.Office365.OutlookServices.IUser, global::Microsoft.Office365.OutlookServices.IUserFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.Folder _RootFolder;
+        private global::Microsoft.Office365.OutlookServices.Folder _RootFolder;
 
-        private Microsoft.Office365.OutlookServices.Calendar _Calendar;
+        private global::Microsoft.Office365.OutlookServices.Calendar _Calendar;
 
-        private Microsoft.Office365.OutlookServices.FolderFetcher _RootFolderFetcher;
+        private global::Microsoft.Office365.OutlookServices.FolderFetcher _RootFolderFetcher;
 
-        private Microsoft.Office365.OutlookServices.CalendarFetcher _CalendarFetcher;
+        private global::Microsoft.Office365.OutlookServices.CalendarFetcher _CalendarFetcher;
 
-        private Microsoft.Office365.OutlookServices.FolderCollection _FoldersCollection;
+        private global::Microsoft.Office365.OutlookServices.FolderCollection _FoldersCollection;
 
-        private Microsoft.Office365.OutlookServices.MessageCollection _MessagesCollection;
+        private global::Microsoft.Office365.OutlookServices.MessageCollection _MessagesCollection;
 
-        private Microsoft.Office365.OutlookServices.CalendarCollection _CalendarsCollection;
+        private global::Microsoft.Office365.OutlookServices.CalendarCollection _CalendarsCollection;
 
-        private Microsoft.Office365.OutlookServices.CalendarGroupCollection _CalendarGroupsCollection;
+        private global::Microsoft.Office365.OutlookServices.CalendarGroupCollection _CalendarGroupsCollection;
 
-        private Microsoft.Office365.OutlookServices.EventCollection _EventsCollection;
+        private global::Microsoft.Office365.OutlookServices.EventCollection _EventsCollection;
 
-        private Microsoft.Office365.OutlookServices.EventCollection _CalendarViewCollection;
+        private global::Microsoft.Office365.OutlookServices.EventCollection _CalendarViewCollection;
 
-        private Microsoft.Office365.OutlookServices.ContactCollection _ContactsCollection;
+        private global::Microsoft.Office365.OutlookServices.ContactCollection _ContactsCollection;
 
-        private Microsoft.Office365.OutlookServices.ContactFolderCollection _ContactFoldersCollection;
+        private global::Microsoft.Office365.OutlookServices.ContactFolderCollection _ContactFoldersCollection;
 
         private System.String _DisplayName;
 
@@ -2131,21 +2131,21 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.Nullable<System.Guid> _MailboxGuid;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Folder> _FoldersConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Folder> _FoldersConcrete;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Message> _MessagesConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Message> _MessagesConcrete;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Calendar> _CalendarsConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Calendar> _CalendarsConcrete;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.CalendarGroup> _CalendarGroupsConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.CalendarGroup> _CalendarGroupsConcrete;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event> _EventsConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Event> _EventsConcrete;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event> _CalendarViewConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Event> _CalendarViewConcrete;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Contact> _ContactsConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Contact> _ContactsConcrete;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.ContactFolder> _ContactFoldersConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.ContactFolder> _ContactFoldersConcrete;
 
         public System.String DisplayName
 
@@ -2237,7 +2237,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IFolder> Microsoft.Office365.OutlookServices.IUser.Folders
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IFolder> global::Microsoft.Office365.OutlookServices.IUser.Folders
 
         {
 
@@ -2245,13 +2245,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IFolder, Microsoft.Office365.OutlookServices.Folder>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Folder>) Folders);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IFolder, global::Microsoft.Office365.OutlookServices.Folder>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Folder>) Folders);
 
             }
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IMessage> Microsoft.Office365.OutlookServices.IUser.Messages
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IMessage> global::Microsoft.Office365.OutlookServices.IUser.Messages
 
         {
 
@@ -2259,13 +2259,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IMessage, Microsoft.Office365.OutlookServices.Message>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Message>) Messages);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IMessage, global::Microsoft.Office365.OutlookServices.Message>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Message>) Messages);
 
             }
 
         }
 
-        Microsoft.Office365.OutlookServices.IFolder Microsoft.Office365.OutlookServices.IUser.RootFolder
+        global::Microsoft.Office365.OutlookServices.IFolder global::Microsoft.Office365.OutlookServices.IUser.RootFolder
 
         {
 
@@ -2285,7 +2285,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this.RootFolder = (Microsoft.Office365.OutlookServices.Folder)value;
+                    this.RootFolder = (global::Microsoft.Office365.OutlookServices.Folder)value;
 
                 }
 
@@ -2293,7 +2293,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.ICalendar> Microsoft.Office365.OutlookServices.IUser.Calendars
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.ICalendar> global::Microsoft.Office365.OutlookServices.IUser.Calendars
 
         {
 
@@ -2301,13 +2301,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.ICalendar, Microsoft.Office365.OutlookServices.Calendar>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Calendar>) Calendars);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.ICalendar, global::Microsoft.Office365.OutlookServices.Calendar>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Calendar>) Calendars);
 
             }
 
         }
 
-        Microsoft.Office365.OutlookServices.ICalendar Microsoft.Office365.OutlookServices.IUser.Calendar
+        global::Microsoft.Office365.OutlookServices.ICalendar global::Microsoft.Office365.OutlookServices.IUser.Calendar
 
         {
 
@@ -2327,7 +2327,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this.Calendar = (Microsoft.Office365.OutlookServices.Calendar)value;
+                    this.Calendar = (global::Microsoft.Office365.OutlookServices.Calendar)value;
 
                 }
 
@@ -2335,7 +2335,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.ICalendarGroup> Microsoft.Office365.OutlookServices.IUser.CalendarGroups
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.ICalendarGroup> global::Microsoft.Office365.OutlookServices.IUser.CalendarGroups
 
         {
 
@@ -2343,13 +2343,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.ICalendarGroup, Microsoft.Office365.OutlookServices.CalendarGroup>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.CalendarGroup>) CalendarGroups);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.ICalendarGroup, global::Microsoft.Office365.OutlookServices.CalendarGroup>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.CalendarGroup>) CalendarGroups);
 
             }
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEvent> Microsoft.Office365.OutlookServices.IUser.Events
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEvent> global::Microsoft.Office365.OutlookServices.IUser.Events
 
         {
 
@@ -2357,13 +2357,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Event>) Events);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IEvent, global::Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Event>) Events);
 
             }
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEvent> Microsoft.Office365.OutlookServices.IUser.CalendarView
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEvent> global::Microsoft.Office365.OutlookServices.IUser.CalendarView
 
         {
 
@@ -2371,13 +2371,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Event>) CalendarView);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IEvent, global::Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Event>) CalendarView);
 
             }
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IContact> Microsoft.Office365.OutlookServices.IUser.Contacts
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IContact> global::Microsoft.Office365.OutlookServices.IUser.Contacts
 
         {
 
@@ -2385,13 +2385,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IContact, Microsoft.Office365.OutlookServices.Contact>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Contact>) Contacts);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IContact, global::Microsoft.Office365.OutlookServices.Contact>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Contact>) Contacts);
 
             }
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IContactFolder> Microsoft.Office365.OutlookServices.IUser.ContactFolders
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IContactFolder> global::Microsoft.Office365.OutlookServices.IUser.ContactFolders
 
         {
 
@@ -2399,13 +2399,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IContactFolder, Microsoft.Office365.OutlookServices.ContactFolder>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.ContactFolder>) ContactFolders);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IContactFolder, global::Microsoft.Office365.OutlookServices.ContactFolder>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.ContactFolder>) ContactFolders);
 
             }
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Folder> Folders
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Folder> Folders
 
         {
 
@@ -2417,7 +2417,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._FoldersConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Folder>();
+                    this._FoldersConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Folder>();
 
                     this._FoldersConcrete.SetContainer(() => GetContainingEntity("Folders"));
 
@@ -2425,7 +2425,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Folder>)this._FoldersConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Folder>)this._FoldersConcrete;
 
             }
 
@@ -2457,7 +2457,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Message> Messages
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Message> Messages
 
         {
 
@@ -2469,7 +2469,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._MessagesConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Message>();
+                    this._MessagesConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Message>();
 
                     this._MessagesConcrete.SetContainer(() => GetContainingEntity("Messages"));
 
@@ -2477,7 +2477,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Message>)this._MessagesConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Message>)this._MessagesConcrete;
 
             }
 
@@ -2509,7 +2509,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.Folder RootFolder
+        public global::Microsoft.Office365.OutlookServices.Folder RootFolder
 
         {
 
@@ -2545,7 +2545,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Calendar> Calendars
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Calendar> Calendars
 
         {
 
@@ -2557,7 +2557,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Calendar>();
+                    this._CalendarsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Calendar>();
 
                     this._CalendarsConcrete.SetContainer(() => GetContainingEntity("Calendars"));
 
@@ -2565,7 +2565,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Calendar>)this._CalendarsConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Calendar>)this._CalendarsConcrete;
 
             }
 
@@ -2597,7 +2597,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.Calendar Calendar
+        public global::Microsoft.Office365.OutlookServices.Calendar Calendar
 
         {
 
@@ -2633,7 +2633,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.CalendarGroup> CalendarGroups
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.CalendarGroup> CalendarGroups
 
         {
 
@@ -2645,7 +2645,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarGroupsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.CalendarGroup>();
+                    this._CalendarGroupsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.CalendarGroup>();
 
                     this._CalendarGroupsConcrete.SetContainer(() => GetContainingEntity("CalendarGroups"));
 
@@ -2653,7 +2653,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.CalendarGroup>)this._CalendarGroupsConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.CalendarGroup>)this._CalendarGroupsConcrete;
 
             }
 
@@ -2685,7 +2685,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Event> Events
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Event> Events
 
         {
 
@@ -2697,7 +2697,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._EventsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event>();
+                    this._EventsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Event>();
 
                     this._EventsConcrete.SetContainer(() => GetContainingEntity("Events"));
 
@@ -2705,7 +2705,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Event>)this._EventsConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Event>)this._EventsConcrete;
 
             }
 
@@ -2737,7 +2737,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Event> CalendarView
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Event> CalendarView
 
         {
 
@@ -2749,7 +2749,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarViewConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event>();
+                    this._CalendarViewConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Event>();
 
                     this._CalendarViewConcrete.SetContainer(() => GetContainingEntity("CalendarView"));
 
@@ -2757,7 +2757,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Event>)this._CalendarViewConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Event>)this._CalendarViewConcrete;
 
             }
 
@@ -2789,7 +2789,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Contact> Contacts
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Contact> Contacts
 
         {
 
@@ -2801,7 +2801,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ContactsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Contact>();
+                    this._ContactsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Contact>();
 
                     this._ContactsConcrete.SetContainer(() => GetContainingEntity("Contacts"));
 
@@ -2809,7 +2809,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Contact>)this._ContactsConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Contact>)this._ContactsConcrete;
 
             }
 
@@ -2841,7 +2841,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.ContactFolder> ContactFolders
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.ContactFolder> ContactFolders
 
         {
 
@@ -2853,7 +2853,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ContactFoldersConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.ContactFolder>();
+                    this._ContactFoldersConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.ContactFolder>();
 
                     this._ContactFoldersConcrete.SetContainer(() => GetContainingEntity("ContactFolders"));
 
@@ -2861,7 +2861,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.ContactFolder>)this._ContactFoldersConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.ContactFolder>)this._ContactFoldersConcrete;
 
             }
 
@@ -2893,7 +2893,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IFolderCollection Microsoft.Office365.OutlookServices.IUserFetcher.Folders
+        global::Microsoft.Office365.OutlookServices.IFolderCollection global::Microsoft.Office365.OutlookServices.IUserFetcher.Folders
 
         {
 
@@ -2905,8 +2905,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._FoldersCollection = new Microsoft.Office365.OutlookServices.FolderCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Folder>(GetPath("Folders")) : null,
+                    this._FoldersCollection = new global::Microsoft.Office365.OutlookServices.FolderCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Folder>(GetPath("Folders")) : null,
                        Context,
                        this,
                        GetPath("Folders"));
@@ -2921,7 +2921,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IMessageCollection Microsoft.Office365.OutlookServices.IUserFetcher.Messages
+        global::Microsoft.Office365.OutlookServices.IMessageCollection global::Microsoft.Office365.OutlookServices.IUserFetcher.Messages
 
         {
 
@@ -2933,8 +2933,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._MessagesCollection = new Microsoft.Office365.OutlookServices.MessageCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Message>(GetPath("Messages")) : null,
+                    this._MessagesCollection = new global::Microsoft.Office365.OutlookServices.MessageCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Message>(GetPath("Messages")) : null,
                        Context,
                        this,
                        GetPath("Messages"));
@@ -2949,7 +2949,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IFolderFetcher Microsoft.Office365.OutlookServices.IUserFetcher.RootFolder
+        global::Microsoft.Office365.OutlookServices.IFolderFetcher global::Microsoft.Office365.OutlookServices.IUserFetcher.RootFolder
 
         {
 
@@ -2961,7 +2961,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._RootFolderFetcher = new Microsoft.Office365.OutlookServices.FolderFetcher();
+                    this._RootFolderFetcher = new global::Microsoft.Office365.OutlookServices.FolderFetcher();
 
                     this._RootFolderFetcher.Initialize(this.Context, GetPath("RootFolder"));
 
@@ -2975,7 +2975,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.ICalendarCollection Microsoft.Office365.OutlookServices.IUserFetcher.Calendars
+        global::Microsoft.Office365.OutlookServices.ICalendarCollection global::Microsoft.Office365.OutlookServices.IUserFetcher.Calendars
 
         {
 
@@ -2987,8 +2987,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarsCollection = new Microsoft.Office365.OutlookServices.CalendarCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Calendar>(GetPath("Calendars")) : null,
+                    this._CalendarsCollection = new global::Microsoft.Office365.OutlookServices.CalendarCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Calendar>(GetPath("Calendars")) : null,
                        Context,
                        this,
                        GetPath("Calendars"));
@@ -3003,7 +3003,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.ICalendarFetcher Microsoft.Office365.OutlookServices.IUserFetcher.Calendar
+        global::Microsoft.Office365.OutlookServices.ICalendarFetcher global::Microsoft.Office365.OutlookServices.IUserFetcher.Calendar
 
         {
 
@@ -3015,7 +3015,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarFetcher = new Microsoft.Office365.OutlookServices.CalendarFetcher();
+                    this._CalendarFetcher = new global::Microsoft.Office365.OutlookServices.CalendarFetcher();
 
                     this._CalendarFetcher.Initialize(this.Context, GetPath("Calendar"));
 
@@ -3029,7 +3029,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.ICalendarGroupCollection Microsoft.Office365.OutlookServices.IUserFetcher.CalendarGroups
+        global::Microsoft.Office365.OutlookServices.ICalendarGroupCollection global::Microsoft.Office365.OutlookServices.IUserFetcher.CalendarGroups
 
         {
 
@@ -3041,8 +3041,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarGroupsCollection = new Microsoft.Office365.OutlookServices.CalendarGroupCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.CalendarGroup>(GetPath("CalendarGroups")) : null,
+                    this._CalendarGroupsCollection = new global::Microsoft.Office365.OutlookServices.CalendarGroupCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.CalendarGroup>(GetPath("CalendarGroups")) : null,
                        Context,
                        this,
                        GetPath("CalendarGroups"));
@@ -3057,7 +3057,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IEventCollection Microsoft.Office365.OutlookServices.IUserFetcher.Events
+        global::Microsoft.Office365.OutlookServices.IEventCollection global::Microsoft.Office365.OutlookServices.IUserFetcher.Events
 
         {
 
@@ -3069,8 +3069,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._EventsCollection = new Microsoft.Office365.OutlookServices.EventCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Event>(GetPath("Events")) : null,
+                    this._EventsCollection = new global::Microsoft.Office365.OutlookServices.EventCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Event>(GetPath("Events")) : null,
                        Context,
                        this,
                        GetPath("Events"));
@@ -3085,7 +3085,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IEventCollection Microsoft.Office365.OutlookServices.IUserFetcher.CalendarView
+        global::Microsoft.Office365.OutlookServices.IEventCollection global::Microsoft.Office365.OutlookServices.IUserFetcher.CalendarView
 
         {
 
@@ -3097,8 +3097,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarViewCollection = new Microsoft.Office365.OutlookServices.EventCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Event>(GetPath("CalendarView")) : null,
+                    this._CalendarViewCollection = new global::Microsoft.Office365.OutlookServices.EventCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Event>(GetPath("CalendarView")) : null,
                        Context,
                        this,
                        GetPath("CalendarView"));
@@ -3113,7 +3113,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IContactCollection Microsoft.Office365.OutlookServices.IUserFetcher.Contacts
+        global::Microsoft.Office365.OutlookServices.IContactCollection global::Microsoft.Office365.OutlookServices.IUserFetcher.Contacts
 
         {
 
@@ -3125,8 +3125,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ContactsCollection = new Microsoft.Office365.OutlookServices.ContactCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Contact>(GetPath("Contacts")) : null,
+                    this._ContactsCollection = new global::Microsoft.Office365.OutlookServices.ContactCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Contact>(GetPath("Contacts")) : null,
                        Context,
                        this,
                        GetPath("Contacts"));
@@ -3141,7 +3141,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IContactFolderCollection Microsoft.Office365.OutlookServices.IUserFetcher.ContactFolders
+        global::Microsoft.Office365.OutlookServices.IContactFolderCollection global::Microsoft.Office365.OutlookServices.IUserFetcher.ContactFolders
 
         {
 
@@ -3153,8 +3153,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ContactFoldersCollection = new Microsoft.Office365.OutlookServices.ContactFolderCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.ContactFolder>(GetPath("ContactFolders")) : null,
+                    this._ContactFoldersCollection = new global::Microsoft.Office365.OutlookServices.ContactFolderCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.ContactFolder>(GetPath("ContactFolders")) : null,
                        Context,
                        this,
                        GetPath("ContactFolders"));
@@ -3175,7 +3175,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task SendMailAsync(Microsoft.Office365.OutlookServices.IMessage Message, System.Nullable<System.Boolean> SaveToSentItems)
+        public async System.Threading.Tasks.Task SendMailAsync(global::Microsoft.Office365.OutlookServices.IMessage Message, System.Nullable<System.Boolean> SaveToSentItems)
 
         {
 
@@ -3189,7 +3189,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/SendMail");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.SendMail");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[2]
 
@@ -3205,7 +3205,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IUser> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IUser> EnsureQuery()
 
         {
 
@@ -3213,7 +3213,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.User, Microsoft.Office365.OutlookServices.IUser>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.User, global::Microsoft.Office365.OutlookServices.IUser>();
 
             }
 
@@ -3223,13 +3223,13 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IUser> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IUser> _query;
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IUser> Microsoft.Office365.OutlookServices.IUserFetcher.ExecuteAsync()
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IUser> global::Microsoft.Office365.OutlookServices.IUserFetcher.ExecuteAsync()
 
         {
 
-            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<Microsoft.Office365.OutlookServices.IUser>();
+            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<global::Microsoft.Office365.OutlookServices.IUser>();
 
             tsc.SetResult(this);
 
@@ -3237,41 +3237,41 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IUserFetcher Microsoft.Office365.OutlookServices.IUserFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IUser, TTarget>> navigationPropertyAccessor)
+        global::Microsoft.Office365.OutlookServices.IUserFetcher global::Microsoft.Office365.OutlookServices.IUserFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IUser, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IUserFetcher) this;
+            return (global::Microsoft.Office365.OutlookServices.IUserFetcher) this;
 
         }
 
     }
 
-    internal partial class UserFetcher:Microsoft.Office365.OutlookServices.EntityFetcher, Microsoft.Office365.OutlookServices.IUserFetcher
+    internal partial class UserFetcher:global::Microsoft.Office365.OutlookServices.EntityFetcher, global::Microsoft.Office365.OutlookServices.IUserFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.FolderFetcher _RootFolderFetcher;
+        private global::Microsoft.Office365.OutlookServices.FolderFetcher _RootFolderFetcher;
 
-        private Microsoft.Office365.OutlookServices.CalendarFetcher _CalendarFetcher;
+        private global::Microsoft.Office365.OutlookServices.CalendarFetcher _CalendarFetcher;
 
-        private Microsoft.Office365.OutlookServices.FolderCollection _FoldersCollection;
+        private global::Microsoft.Office365.OutlookServices.FolderCollection _FoldersCollection;
 
-        private Microsoft.Office365.OutlookServices.MessageCollection _MessagesCollection;
+        private global::Microsoft.Office365.OutlookServices.MessageCollection _MessagesCollection;
 
-        private Microsoft.Office365.OutlookServices.CalendarCollection _CalendarsCollection;
+        private global::Microsoft.Office365.OutlookServices.CalendarCollection _CalendarsCollection;
 
-        private Microsoft.Office365.OutlookServices.CalendarGroupCollection _CalendarGroupsCollection;
+        private global::Microsoft.Office365.OutlookServices.CalendarGroupCollection _CalendarGroupsCollection;
 
-        private Microsoft.Office365.OutlookServices.EventCollection _EventsCollection;
+        private global::Microsoft.Office365.OutlookServices.EventCollection _EventsCollection;
 
-        private Microsoft.Office365.OutlookServices.EventCollection _CalendarViewCollection;
+        private global::Microsoft.Office365.OutlookServices.EventCollection _CalendarViewCollection;
 
-        private Microsoft.Office365.OutlookServices.ContactCollection _ContactsCollection;
+        private global::Microsoft.Office365.OutlookServices.ContactCollection _ContactsCollection;
 
-        private Microsoft.Office365.OutlookServices.ContactFolderCollection _ContactFoldersCollection;
+        private global::Microsoft.Office365.OutlookServices.ContactFolderCollection _ContactFoldersCollection;
 
-        public Microsoft.Office365.OutlookServices.IFolderCollection Folders
+        public global::Microsoft.Office365.OutlookServices.IFolderCollection Folders
 
         {
 
@@ -3283,8 +3283,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._FoldersCollection = new Microsoft.Office365.OutlookServices.FolderCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Folder>(GetPath("Folders")) : null,
+                    this._FoldersCollection = new global::Microsoft.Office365.OutlookServices.FolderCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Folder>(GetPath("Folders")) : null,
                        Context,
                        this,
                        GetPath("Folders"));
@@ -3299,7 +3299,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IMessageCollection Messages
+        public global::Microsoft.Office365.OutlookServices.IMessageCollection Messages
 
         {
 
@@ -3311,8 +3311,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._MessagesCollection = new Microsoft.Office365.OutlookServices.MessageCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Message>(GetPath("Messages")) : null,
+                    this._MessagesCollection = new global::Microsoft.Office365.OutlookServices.MessageCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Message>(GetPath("Messages")) : null,
                        Context,
                        this,
                        GetPath("Messages"));
@@ -3327,7 +3327,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IFolderFetcher RootFolder
+        public global::Microsoft.Office365.OutlookServices.IFolderFetcher RootFolder
 
         {
 
@@ -3339,7 +3339,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._RootFolderFetcher = new Microsoft.Office365.OutlookServices.FolderFetcher();
+                    this._RootFolderFetcher = new global::Microsoft.Office365.OutlookServices.FolderFetcher();
 
                     this._RootFolderFetcher.Initialize(this.Context, GetPath("RootFolder"));
 
@@ -3353,7 +3353,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.ICalendarCollection Calendars
+        public global::Microsoft.Office365.OutlookServices.ICalendarCollection Calendars
 
         {
 
@@ -3365,8 +3365,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarsCollection = new Microsoft.Office365.OutlookServices.CalendarCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Calendar>(GetPath("Calendars")) : null,
+                    this._CalendarsCollection = new global::Microsoft.Office365.OutlookServices.CalendarCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Calendar>(GetPath("Calendars")) : null,
                        Context,
                        this,
                        GetPath("Calendars"));
@@ -3381,7 +3381,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.ICalendarFetcher Calendar
+        public global::Microsoft.Office365.OutlookServices.ICalendarFetcher Calendar
 
         {
 
@@ -3393,7 +3393,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarFetcher = new Microsoft.Office365.OutlookServices.CalendarFetcher();
+                    this._CalendarFetcher = new global::Microsoft.Office365.OutlookServices.CalendarFetcher();
 
                     this._CalendarFetcher.Initialize(this.Context, GetPath("Calendar"));
 
@@ -3407,7 +3407,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.ICalendarGroupCollection CalendarGroups
+        public global::Microsoft.Office365.OutlookServices.ICalendarGroupCollection CalendarGroups
 
         {
 
@@ -3419,8 +3419,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarGroupsCollection = new Microsoft.Office365.OutlookServices.CalendarGroupCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.CalendarGroup>(GetPath("CalendarGroups")) : null,
+                    this._CalendarGroupsCollection = new global::Microsoft.Office365.OutlookServices.CalendarGroupCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.CalendarGroup>(GetPath("CalendarGroups")) : null,
                        Context,
                        this,
                        GetPath("CalendarGroups"));
@@ -3435,7 +3435,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IEventCollection Events
+        public global::Microsoft.Office365.OutlookServices.IEventCollection Events
 
         {
 
@@ -3447,8 +3447,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._EventsCollection = new Microsoft.Office365.OutlookServices.EventCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Event>(GetPath("Events")) : null,
+                    this._EventsCollection = new global::Microsoft.Office365.OutlookServices.EventCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Event>(GetPath("Events")) : null,
                        Context,
                        this,
                        GetPath("Events"));
@@ -3463,7 +3463,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IEventCollection CalendarView
+        public global::Microsoft.Office365.OutlookServices.IEventCollection CalendarView
 
         {
 
@@ -3475,8 +3475,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarViewCollection = new Microsoft.Office365.OutlookServices.EventCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Event>(GetPath("CalendarView")) : null,
+                    this._CalendarViewCollection = new global::Microsoft.Office365.OutlookServices.EventCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Event>(GetPath("CalendarView")) : null,
                        Context,
                        this,
                        GetPath("CalendarView"));
@@ -3491,7 +3491,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IContactCollection Contacts
+        public global::Microsoft.Office365.OutlookServices.IContactCollection Contacts
 
         {
 
@@ -3503,8 +3503,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ContactsCollection = new Microsoft.Office365.OutlookServices.ContactCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Contact>(GetPath("Contacts")) : null,
+                    this._ContactsCollection = new global::Microsoft.Office365.OutlookServices.ContactCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Contact>(GetPath("Contacts")) : null,
                        Context,
                        this,
                        GetPath("Contacts"));
@@ -3519,7 +3519,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IContactFolderCollection ContactFolders
+        public global::Microsoft.Office365.OutlookServices.IContactFolderCollection ContactFolders
 
         {
 
@@ -3531,8 +3531,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ContactFoldersCollection = new Microsoft.Office365.OutlookServices.ContactFolderCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.ContactFolder>(GetPath("ContactFolders")) : null,
+                    this._ContactFoldersCollection = new global::Microsoft.Office365.OutlookServices.ContactFolderCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.ContactFolder>(GetPath("ContactFolders")) : null,
                        Context,
                        this,
                        GetPath("ContactFolders"));
@@ -3553,7 +3553,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task SendMailAsync(Microsoft.Office365.OutlookServices.IMessage Message, System.Nullable<System.Boolean> SaveToSentItems)
+        public async System.Threading.Tasks.Task SendMailAsync(global::Microsoft.Office365.OutlookServices.IMessage Message, System.Nullable<System.Boolean> SaveToSentItems)
 
         {
 
@@ -3567,7 +3567,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/SendMail");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.SendMail");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[2]
 
@@ -3583,7 +3583,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IUser> ExecuteAsync()
+        public async global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IUser> ExecuteAsync()
 
         {
 
@@ -3591,11 +3591,11 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IUserFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IUser, TTarget>> navigationPropertyAccessor)
+        public global::Microsoft.Office365.OutlookServices.IUserFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IUser, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IUserFetcher) new Microsoft.Office365.OutlookServices.UserFetcher()
+            return (global::Microsoft.Office365.OutlookServices.IUserFetcher) new global::Microsoft.Office365.OutlookServices.UserFetcher()
 
             {
 
@@ -3607,7 +3607,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IUser> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IUser> EnsureQuery()
 
         {
 
@@ -3615,7 +3615,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.User, Microsoft.Office365.OutlookServices.IUser>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.User, global::Microsoft.Office365.OutlookServices.IUser>();
 
             }
 
@@ -3625,11 +3625,11 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IUser> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IUser> _query;
 
     }
 
-    internal partial class UserCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IUser>, Microsoft.Office365.OutlookServices.IUserCollection
+    internal partial class UserCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.IUser>, global::Microsoft.Office365.OutlookServices.IUserCollection
 
     {
 
@@ -3639,7 +3639,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IUserFetcher GetById(System.String id)
+        public global::Microsoft.Office365.OutlookServices.IUserFetcher GetById(System.String id)
 
         {
 
@@ -3647,7 +3647,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IUser>> ExecuteAsync()
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IUser>> ExecuteAsync()
 
         {
 
@@ -3655,15 +3655,15 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task AddUserAsync(Microsoft.Office365.OutlookServices.IUser item, System.Boolean dontSave = false)
+        public global::System.Threading.Tasks.Task AddUserAsync(global::Microsoft.Office365.OutlookServices.IUser item, System.Boolean deferSaveChanges = false)
 
         {
 
-            if (_entity == null)
+            if (Entity == null)
 
             {
 
-                Context.AddObject(_path, item);
+                Context.AddObject(Path, item);
 
             }
 
@@ -3671,15 +3671,15 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var lastSlash = _path.LastIndexOf('/');
+                var lastSlash = Path.LastIndexOf('/');
 
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
 
-                Context.AddRelatedObject(_entity, shortPath, item);
+                Context.AddRelatedObject(Entity, shortPath, item);
 
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
 
             {
 
@@ -3701,7 +3701,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IUserFetcher this[System.String id]
+        public global::Microsoft.Office365.OutlookServices.IUserFetcher this[System.String id]
 
         {
 
@@ -3709,9 +3709,9 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var path = GetPath<Microsoft.Office365.OutlookServices.User>((i) => i.Id == id);
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.User>((i) => i.Id == id);
 
-                var fetcher = new Microsoft.Office365.OutlookServices.UserFetcher();
+                var fetcher = new global::Microsoft.Office365.OutlookServices.UserFetcher();
 
                 fetcher.Initialize(Context, path);
 
@@ -3733,7 +3733,7 @@ namespace Microsoft.Office365.OutlookServices
 
         {
 
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
 
         }
 
@@ -3741,13 +3741,13 @@ namespace Microsoft.Office365.OutlookServices
 
     [global::Microsoft.OData.Client.Key("Id")]
 
-    public partial class Folder:Microsoft.Office365.OutlookServices.Entity, Microsoft.Office365.OutlookServices.IFolder, Microsoft.Office365.OutlookServices.IFolderFetcher
+    public partial class Folder:global::Microsoft.Office365.OutlookServices.Entity, global::Microsoft.Office365.OutlookServices.IFolder, global::Microsoft.Office365.OutlookServices.IFolderFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.FolderCollection _ChildFoldersCollection;
+        private global::Microsoft.Office365.OutlookServices.FolderCollection _ChildFoldersCollection;
 
-        private Microsoft.Office365.OutlookServices.MessageCollection _MessagesCollection;
+        private global::Microsoft.Office365.OutlookServices.MessageCollection _MessagesCollection;
 
         private System.String _ParentFolderId;
 
@@ -3755,9 +3755,9 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.Nullable<System.Int32> _ChildFolderCount;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Folder> _ChildFoldersConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Folder> _ChildFoldersConcrete;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Message> _MessagesConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Message> _MessagesConcrete;
 
         public System.String ParentFolderId
 
@@ -3849,7 +3849,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IFolder> Microsoft.Office365.OutlookServices.IFolder.ChildFolders
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IFolder> global::Microsoft.Office365.OutlookServices.IFolder.ChildFolders
 
         {
 
@@ -3857,13 +3857,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IFolder, Microsoft.Office365.OutlookServices.Folder>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Folder>) ChildFolders);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IFolder, global::Microsoft.Office365.OutlookServices.Folder>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Folder>) ChildFolders);
 
             }
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IMessage> Microsoft.Office365.OutlookServices.IFolder.Messages
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IMessage> global::Microsoft.Office365.OutlookServices.IFolder.Messages
 
         {
 
@@ -3871,13 +3871,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IMessage, Microsoft.Office365.OutlookServices.Message>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Message>) Messages);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IMessage, global::Microsoft.Office365.OutlookServices.Message>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Message>) Messages);
 
             }
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Folder> ChildFolders
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Folder> ChildFolders
 
         {
 
@@ -3889,7 +3889,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ChildFoldersConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Folder>();
+                    this._ChildFoldersConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Folder>();
 
                     this._ChildFoldersConcrete.SetContainer(() => GetContainingEntity("ChildFolders"));
 
@@ -3897,7 +3897,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Folder>)this._ChildFoldersConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Folder>)this._ChildFoldersConcrete;
 
             }
 
@@ -3929,7 +3929,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Message> Messages
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Message> Messages
 
         {
 
@@ -3941,7 +3941,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._MessagesConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Message>();
+                    this._MessagesConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Message>();
 
                     this._MessagesConcrete.SetContainer(() => GetContainingEntity("Messages"));
 
@@ -3949,7 +3949,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Message>)this._MessagesConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Message>)this._MessagesConcrete;
 
             }
 
@@ -3981,7 +3981,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IFolderCollection Microsoft.Office365.OutlookServices.IFolderFetcher.ChildFolders
+        global::Microsoft.Office365.OutlookServices.IFolderCollection global::Microsoft.Office365.OutlookServices.IFolderFetcher.ChildFolders
 
         {
 
@@ -3993,8 +3993,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ChildFoldersCollection = new Microsoft.Office365.OutlookServices.FolderCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Folder>(GetPath("ChildFolders")) : null,
+                    this._ChildFoldersCollection = new global::Microsoft.Office365.OutlookServices.FolderCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Folder>(GetPath("ChildFolders")) : null,
                        Context,
                        this,
                        GetPath("ChildFolders"));
@@ -4009,7 +4009,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IMessageCollection Microsoft.Office365.OutlookServices.IFolderFetcher.Messages
+        global::Microsoft.Office365.OutlookServices.IMessageCollection global::Microsoft.Office365.OutlookServices.IFolderFetcher.Messages
 
         {
 
@@ -4021,8 +4021,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._MessagesCollection = new Microsoft.Office365.OutlookServices.MessageCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Message>(GetPath("Messages")) : null,
+                    this._MessagesCollection = new global::Microsoft.Office365.OutlookServices.MessageCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Message>(GetPath("Messages")) : null,
                        Context,
                        this,
                        GetPath("Messages"));
@@ -4043,7 +4043,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFolder> CopyAsync(System.String DestinationId)
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFolder> CopyAsync(System.String DestinationId)
 
         {
 
@@ -4057,9 +4057,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Copy");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Copy");
 
-            return (Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -4071,7 +4071,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFolder> MoveAsync(System.String DestinationId)
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFolder> MoveAsync(System.String DestinationId)
 
         {
 
@@ -4085,9 +4085,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Move");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Move");
 
-            return (Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -4099,7 +4099,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IFolder> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IFolder> EnsureQuery()
 
         {
 
@@ -4107,7 +4107,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Folder, Microsoft.Office365.OutlookServices.IFolder>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.Folder, global::Microsoft.Office365.OutlookServices.IFolder>();
 
             }
 
@@ -4117,13 +4117,13 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IFolder> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IFolder> _query;
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFolder> Microsoft.Office365.OutlookServices.IFolderFetcher.ExecuteAsync()
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFolder> global::Microsoft.Office365.OutlookServices.IFolderFetcher.ExecuteAsync()
 
         {
 
-            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<Microsoft.Office365.OutlookServices.IFolder>();
+            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<global::Microsoft.Office365.OutlookServices.IFolder>();
 
             tsc.SetResult(this);
 
@@ -4131,25 +4131,25 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IFolderFetcher Microsoft.Office365.OutlookServices.IFolderFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IFolder, TTarget>> navigationPropertyAccessor)
+        global::Microsoft.Office365.OutlookServices.IFolderFetcher global::Microsoft.Office365.OutlookServices.IFolderFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IFolder, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IFolderFetcher) this;
+            return (global::Microsoft.Office365.OutlookServices.IFolderFetcher) this;
 
         }
 
     }
 
-    internal partial class FolderFetcher:Microsoft.Office365.OutlookServices.EntityFetcher, Microsoft.Office365.OutlookServices.IFolderFetcher
+    internal partial class FolderFetcher:global::Microsoft.Office365.OutlookServices.EntityFetcher, global::Microsoft.Office365.OutlookServices.IFolderFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.FolderCollection _ChildFoldersCollection;
+        private global::Microsoft.Office365.OutlookServices.FolderCollection _ChildFoldersCollection;
 
-        private Microsoft.Office365.OutlookServices.MessageCollection _MessagesCollection;
+        private global::Microsoft.Office365.OutlookServices.MessageCollection _MessagesCollection;
 
-        public Microsoft.Office365.OutlookServices.IFolderCollection ChildFolders
+        public global::Microsoft.Office365.OutlookServices.IFolderCollection ChildFolders
 
         {
 
@@ -4161,8 +4161,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ChildFoldersCollection = new Microsoft.Office365.OutlookServices.FolderCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Folder>(GetPath("ChildFolders")) : null,
+                    this._ChildFoldersCollection = new global::Microsoft.Office365.OutlookServices.FolderCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Folder>(GetPath("ChildFolders")) : null,
                        Context,
                        this,
                        GetPath("ChildFolders"));
@@ -4177,7 +4177,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IMessageCollection Messages
+        public global::Microsoft.Office365.OutlookServices.IMessageCollection Messages
 
         {
 
@@ -4189,8 +4189,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._MessagesCollection = new Microsoft.Office365.OutlookServices.MessageCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Message>(GetPath("Messages")) : null,
+                    this._MessagesCollection = new global::Microsoft.Office365.OutlookServices.MessageCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Message>(GetPath("Messages")) : null,
                        Context,
                        this,
                        GetPath("Messages"));
@@ -4211,7 +4211,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFolder> CopyAsync(System.String DestinationId)
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFolder> CopyAsync(System.String DestinationId)
 
         {
 
@@ -4225,9 +4225,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Copy");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Copy");
 
-            return (Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -4239,7 +4239,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFolder> MoveAsync(System.String DestinationId)
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFolder> MoveAsync(System.String DestinationId)
 
         {
 
@@ -4253,9 +4253,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Move");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Move");
 
-            return (Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -4267,7 +4267,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFolder> ExecuteAsync()
+        public async global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFolder> ExecuteAsync()
 
         {
 
@@ -4275,11 +4275,11 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IFolderFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IFolder, TTarget>> navigationPropertyAccessor)
+        public global::Microsoft.Office365.OutlookServices.IFolderFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IFolder, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IFolderFetcher) new Microsoft.Office365.OutlookServices.FolderFetcher()
+            return (global::Microsoft.Office365.OutlookServices.IFolderFetcher) new global::Microsoft.Office365.OutlookServices.FolderFetcher()
 
             {
 
@@ -4291,7 +4291,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IFolder> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IFolder> EnsureQuery()
 
         {
 
@@ -4299,7 +4299,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Folder, Microsoft.Office365.OutlookServices.IFolder>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.Folder, global::Microsoft.Office365.OutlookServices.IFolder>();
 
             }
 
@@ -4309,11 +4309,11 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IFolder> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IFolder> _query;
 
     }
 
-    internal partial class FolderCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IFolder>, Microsoft.Office365.OutlookServices.IFolderCollection
+    internal partial class FolderCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.IFolder>, global::Microsoft.Office365.OutlookServices.IFolderCollection
 
     {
 
@@ -4323,7 +4323,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IFolderFetcher GetById(System.String id)
+        public global::Microsoft.Office365.OutlookServices.IFolderFetcher GetById(System.String id)
 
         {
 
@@ -4331,7 +4331,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IFolder>> ExecuteAsync()
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IFolder>> ExecuteAsync()
 
         {
 
@@ -4339,15 +4339,15 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task AddFolderAsync(Microsoft.Office365.OutlookServices.IFolder item, System.Boolean dontSave = false)
+        public global::System.Threading.Tasks.Task AddFolderAsync(global::Microsoft.Office365.OutlookServices.IFolder item, System.Boolean deferSaveChanges = false)
 
         {
 
-            if (_entity == null)
+            if (Entity == null)
 
             {
 
-                Context.AddObject(_path, item);
+                Context.AddObject(Path, item);
 
             }
 
@@ -4355,15 +4355,15 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var lastSlash = _path.LastIndexOf('/');
+                var lastSlash = Path.LastIndexOf('/');
 
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
 
-                Context.AddRelatedObject(_entity, shortPath, item);
+                Context.AddRelatedObject(Entity, shortPath, item);
 
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
 
             {
 
@@ -4385,7 +4385,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IFolderFetcher this[System.String id]
+        public global::Microsoft.Office365.OutlookServices.IFolderFetcher this[System.String id]
 
         {
 
@@ -4393,9 +4393,9 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var path = GetPath<Microsoft.Office365.OutlookServices.Folder>((i) => i.Id == id);
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.Folder>((i) => i.Id == id);
 
-                var fetcher = new Microsoft.Office365.OutlookServices.FolderFetcher();
+                var fetcher = new global::Microsoft.Office365.OutlookServices.FolderFetcher();
 
                 fetcher.Initialize(Context, path);
 
@@ -4417,7 +4417,7 @@ namespace Microsoft.Office365.OutlookServices
 
         {
 
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
 
         }
 
@@ -4425,39 +4425,39 @@ namespace Microsoft.Office365.OutlookServices
 
     [global::Microsoft.OData.Client.Key("Id")]
 
-    public partial class Message:Microsoft.Office365.OutlookServices.Item, Microsoft.Office365.OutlookServices.IMessage, Microsoft.Office365.OutlookServices.IMessageFetcher
+    public partial class Message:global::Microsoft.Office365.OutlookServices.Item, global::Microsoft.Office365.OutlookServices.IMessage, global::Microsoft.Office365.OutlookServices.IMessageFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.AttachmentCollection _AttachmentsCollection;
+        private global::Microsoft.Office365.OutlookServices.AttachmentCollection _AttachmentsCollection;
 
         private System.String _Subject;
 
-        private Microsoft.Office365.OutlookServices.ItemBody _Body;
+        private global::Microsoft.Office365.OutlookServices.ItemBody _Body;
 
         private System.String _BodyPreview;
 
-        private Microsoft.Office365.OutlookServices.Importance _Importance;
+        private global::Microsoft.Office365.OutlookServices.Importance _Importance;
 
         private System.Nullable<System.Boolean> _HasAttachments;
 
         private System.String _ParentFolderId;
 
-        private Microsoft.Office365.OutlookServices.Recipient _From;
+        private global::Microsoft.Office365.OutlookServices.Recipient _From;
 
-        private Microsoft.Office365.OutlookServices.Recipient _Sender;
+        private global::Microsoft.Office365.OutlookServices.Recipient _Sender;
 
-        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.Recipient> _ToRecipients;
+        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.Recipient> _ToRecipients;
 
-        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.Recipient> _CcRecipients;
+        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.Recipient> _CcRecipients;
 
-        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.Recipient> _BccRecipients;
+        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.Recipient> _BccRecipients;
 
-        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.Recipient> _ReplyTo;
+        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.Recipient> _ReplyTo;
 
         private System.String _ConversationId;
 
-        private Microsoft.Office365.OutlookServices.ItemBody _UniqueBody;
+        private global::Microsoft.Office365.OutlookServices.ItemBody _UniqueBody;
 
         private System.Nullable<System.DateTimeOffset> _DateTimeReceived;
 
@@ -4471,7 +4471,7 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.Nullable<System.Boolean> _IsRead;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Attachment> _AttachmentsConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Attachment> _AttachmentsConcrete;
 
         public System.String Subject
 
@@ -4503,7 +4503,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.ItemBody Body
+        public global::Microsoft.Office365.OutlookServices.ItemBody Body
 
         {
 
@@ -4563,7 +4563,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.Importance Importance
+        public global::Microsoft.Office365.OutlookServices.Importance Importance
 
         {
 
@@ -4653,7 +4653,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.Recipient From
+        public global::Microsoft.Office365.OutlookServices.Recipient From
 
         {
 
@@ -4683,7 +4683,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.Recipient Sender
+        public global::Microsoft.Office365.OutlookServices.Recipient Sender
 
         {
 
@@ -4713,7 +4713,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Recipient> ToRecipients
+        public System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Recipient> ToRecipients
 
         {
 
@@ -4721,11 +4721,11 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (this._ToRecipients == default(System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Recipient>))
+                if (this._ToRecipients == default(System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Recipient>))
 
                 {
 
-                    this._ToRecipients = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.Recipient>();
+                    this._ToRecipients = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.Recipient>();
 
                     this._ToRecipients.SetContainer(() => GetContainingEntity("ToRecipients"));
 
@@ -4759,7 +4759,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Recipient> CcRecipients
+        public System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Recipient> CcRecipients
 
         {
 
@@ -4767,11 +4767,11 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (this._CcRecipients == default(System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Recipient>))
+                if (this._CcRecipients == default(System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Recipient>))
 
                 {
 
-                    this._CcRecipients = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.Recipient>();
+                    this._CcRecipients = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.Recipient>();
 
                     this._CcRecipients.SetContainer(() => GetContainingEntity("CcRecipients"));
 
@@ -4805,7 +4805,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Recipient> BccRecipients
+        public System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Recipient> BccRecipients
 
         {
 
@@ -4813,11 +4813,11 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (this._BccRecipients == default(System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Recipient>))
+                if (this._BccRecipients == default(System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Recipient>))
 
                 {
 
-                    this._BccRecipients = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.Recipient>();
+                    this._BccRecipients = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.Recipient>();
 
                     this._BccRecipients.SetContainer(() => GetContainingEntity("BccRecipients"));
 
@@ -4851,7 +4851,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Recipient> ReplyTo
+        public System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Recipient> ReplyTo
 
         {
 
@@ -4859,11 +4859,11 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (this._ReplyTo == default(System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Recipient>))
+                if (this._ReplyTo == default(System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Recipient>))
 
                 {
 
-                    this._ReplyTo = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.Recipient>();
+                    this._ReplyTo = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.Recipient>();
 
                     this._ReplyTo.SetContainer(() => GetContainingEntity("ReplyTo"));
 
@@ -4927,7 +4927,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.ItemBody UniqueBody
+        public global::Microsoft.Office365.OutlookServices.ItemBody UniqueBody
 
         {
 
@@ -5137,7 +5137,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IAttachment> Microsoft.Office365.OutlookServices.IMessage.Attachments
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IAttachment> global::Microsoft.Office365.OutlookServices.IMessage.Attachments
 
         {
 
@@ -5145,13 +5145,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IAttachment, Microsoft.Office365.OutlookServices.Attachment>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Attachment>) Attachments);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IAttachment, global::Microsoft.Office365.OutlookServices.Attachment>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Attachment>) Attachments);
 
             }
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Attachment> Attachments
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Attachment> Attachments
 
         {
 
@@ -5163,7 +5163,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._AttachmentsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Attachment>();
+                    this._AttachmentsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Attachment>();
 
                     this._AttachmentsConcrete.SetContainer(() => GetContainingEntity("Attachments"));
 
@@ -5171,7 +5171,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Attachment>)this._AttachmentsConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Attachment>)this._AttachmentsConcrete;
 
             }
 
@@ -5203,7 +5203,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IAttachmentCollection Microsoft.Office365.OutlookServices.IMessageFetcher.Attachments
+        global::Microsoft.Office365.OutlookServices.IAttachmentCollection global::Microsoft.Office365.OutlookServices.IMessageFetcher.Attachments
 
         {
 
@@ -5215,8 +5215,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._AttachmentsCollection = new Microsoft.Office365.OutlookServices.AttachmentCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Attachment>(GetPath("Attachments")) : null,
+                    this._AttachmentsCollection = new global::Microsoft.Office365.OutlookServices.AttachmentCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Attachment>(GetPath("Attachments")) : null,
                        Context,
                        this,
                        GetPath("Attachments"));
@@ -5237,7 +5237,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CopyAsync(System.String DestinationId)
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CopyAsync(System.String DestinationId)
 
         {
 
@@ -5251,9 +5251,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Copy");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Copy");
 
-            return (Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -5265,7 +5265,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> MoveAsync(System.String DestinationId)
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> MoveAsync(System.String DestinationId)
 
         {
 
@@ -5279,9 +5279,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Move");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Move");
 
-            return (Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -5293,7 +5293,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CreateReplyAsync()
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CreateReplyAsync()
 
         {
 
@@ -5307,9 +5307,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateReply");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateReply");
 
-            return (Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -5319,7 +5319,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CreateReplyAllAsync()
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CreateReplyAllAsync()
 
         {
 
@@ -5333,9 +5333,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateReplyAll");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateReplyAll");
 
-            return (Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -5345,7 +5345,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CreateForwardAsync()
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CreateForwardAsync()
 
         {
 
@@ -5359,9 +5359,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateForward");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateForward");
 
-            return (Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -5385,7 +5385,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Reply");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Reply");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -5413,7 +5413,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/ReplyAll");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.ReplyAll");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -5427,7 +5427,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task ForwardAsync(System.String Comment, System.Collections.Generic.ICollection<Microsoft.Office365.OutlookServices.Recipient> ToRecipients)
+        public async System.Threading.Tasks.Task ForwardAsync(System.String Comment, System.Collections.Generic.ICollection<global::Microsoft.Office365.OutlookServices.Recipient> ToRecipients)
 
         {
 
@@ -5441,7 +5441,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Forward");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Forward");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[2]
 
@@ -5471,7 +5471,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Send");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Send");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[0]
 
@@ -5483,7 +5483,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IMessage> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IMessage> EnsureQuery()
 
         {
 
@@ -5491,7 +5491,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Message, Microsoft.Office365.OutlookServices.IMessage>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.Message, global::Microsoft.Office365.OutlookServices.IMessage>();
 
             }
 
@@ -5501,13 +5501,13 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IMessage> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IMessage> _query;
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> Microsoft.Office365.OutlookServices.IMessageFetcher.ExecuteAsync()
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> global::Microsoft.Office365.OutlookServices.IMessageFetcher.ExecuteAsync()
 
         {
 
-            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<Microsoft.Office365.OutlookServices.IMessage>();
+            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<global::Microsoft.Office365.OutlookServices.IMessage>();
 
             tsc.SetResult(this);
 
@@ -5515,23 +5515,23 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IMessageFetcher Microsoft.Office365.OutlookServices.IMessageFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IMessage, TTarget>> navigationPropertyAccessor)
+        global::Microsoft.Office365.OutlookServices.IMessageFetcher global::Microsoft.Office365.OutlookServices.IMessageFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IMessage, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IMessageFetcher) this;
+            return (global::Microsoft.Office365.OutlookServices.IMessageFetcher) this;
 
         }
 
     }
 
-    internal partial class MessageFetcher:Microsoft.Office365.OutlookServices.ItemFetcher, Microsoft.Office365.OutlookServices.IMessageFetcher
+    internal partial class MessageFetcher:global::Microsoft.Office365.OutlookServices.ItemFetcher, global::Microsoft.Office365.OutlookServices.IMessageFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.AttachmentCollection _AttachmentsCollection;
+        private global::Microsoft.Office365.OutlookServices.AttachmentCollection _AttachmentsCollection;
 
-        public Microsoft.Office365.OutlookServices.IAttachmentCollection Attachments
+        public global::Microsoft.Office365.OutlookServices.IAttachmentCollection Attachments
 
         {
 
@@ -5543,8 +5543,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._AttachmentsCollection = new Microsoft.Office365.OutlookServices.AttachmentCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Attachment>(GetPath("Attachments")) : null,
+                    this._AttachmentsCollection = new global::Microsoft.Office365.OutlookServices.AttachmentCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Attachment>(GetPath("Attachments")) : null,
                        Context,
                        this,
                        GetPath("Attachments"));
@@ -5565,7 +5565,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CopyAsync(System.String DestinationId)
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CopyAsync(System.String DestinationId)
 
         {
 
@@ -5579,9 +5579,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Copy");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Copy");
 
-            return (Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -5593,7 +5593,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> MoveAsync(System.String DestinationId)
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> MoveAsync(System.String DestinationId)
 
         {
 
@@ -5607,9 +5607,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Move");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Move");
 
-            return (Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -5621,7 +5621,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CreateReplyAsync()
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CreateReplyAsync()
 
         {
 
@@ -5635,9 +5635,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateReply");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateReply");
 
-            return (Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -5647,7 +5647,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CreateReplyAllAsync()
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CreateReplyAllAsync()
 
         {
 
@@ -5661,9 +5661,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateReplyAll");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateReplyAll");
 
-            return (Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -5673,7 +5673,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CreateForwardAsync()
+        public async System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CreateForwardAsync()
 
         {
 
@@ -5687,9 +5687,9 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateForward");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateForward");
 
-            return (Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
+            return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
             {
 
@@ -5713,7 +5713,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Reply");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Reply");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -5741,7 +5741,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/ReplyAll");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.ReplyAll");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -5755,7 +5755,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async System.Threading.Tasks.Task ForwardAsync(System.String Comment, System.Collections.Generic.ICollection<Microsoft.Office365.OutlookServices.Recipient> ToRecipients)
+        public async System.Threading.Tasks.Task ForwardAsync(System.String Comment, System.Collections.Generic.ICollection<global::Microsoft.Office365.OutlookServices.Recipient> ToRecipients)
 
         {
 
@@ -5769,7 +5769,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Forward");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Forward");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[2]
 
@@ -5799,7 +5799,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Send");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Send");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[0]
 
@@ -5811,7 +5811,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> ExecuteAsync()
+        public async global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> ExecuteAsync()
 
         {
 
@@ -5819,11 +5819,11 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IMessageFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IMessage, TTarget>> navigationPropertyAccessor)
+        public global::Microsoft.Office365.OutlookServices.IMessageFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IMessage, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IMessageFetcher) new Microsoft.Office365.OutlookServices.MessageFetcher()
+            return (global::Microsoft.Office365.OutlookServices.IMessageFetcher) new global::Microsoft.Office365.OutlookServices.MessageFetcher()
 
             {
 
@@ -5835,7 +5835,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IMessage> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IMessage> EnsureQuery()
 
         {
 
@@ -5843,7 +5843,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Message, Microsoft.Office365.OutlookServices.IMessage>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.Message, global::Microsoft.Office365.OutlookServices.IMessage>();
 
             }
 
@@ -5853,11 +5853,11 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IMessage> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IMessage> _query;
 
     }
 
-    internal partial class MessageCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IMessage>, Microsoft.Office365.OutlookServices.IMessageCollection
+    internal partial class MessageCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.IMessage>, global::Microsoft.Office365.OutlookServices.IMessageCollection
 
     {
 
@@ -5867,7 +5867,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IMessageFetcher GetById(System.String id)
+        public global::Microsoft.Office365.OutlookServices.IMessageFetcher GetById(System.String id)
 
         {
 
@@ -5875,7 +5875,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IMessage>> ExecuteAsync()
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IMessage>> ExecuteAsync()
 
         {
 
@@ -5883,15 +5883,15 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task AddMessageAsync(Microsoft.Office365.OutlookServices.IMessage item, System.Boolean dontSave = false)
+        public global::System.Threading.Tasks.Task AddMessageAsync(global::Microsoft.Office365.OutlookServices.IMessage item, System.Boolean deferSaveChanges = false)
 
         {
 
-            if (_entity == null)
+            if (Entity == null)
 
             {
 
-                Context.AddObject(_path, item);
+                Context.AddObject(Path, item);
 
             }
 
@@ -5899,15 +5899,15 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var lastSlash = _path.LastIndexOf('/');
+                var lastSlash = Path.LastIndexOf('/');
 
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
 
-                Context.AddRelatedObject(_entity, shortPath, item);
+                Context.AddRelatedObject(Entity, shortPath, item);
 
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
 
             {
 
@@ -5929,7 +5929,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IMessageFetcher this[System.String id]
+        public global::Microsoft.Office365.OutlookServices.IMessageFetcher this[System.String id]
 
         {
 
@@ -5937,9 +5937,9 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var path = GetPath<Microsoft.Office365.OutlookServices.Message>((i) => i.Id == id);
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.Message>((i) => i.Id == id);
 
-                var fetcher = new Microsoft.Office365.OutlookServices.MessageFetcher();
+                var fetcher = new global::Microsoft.Office365.OutlookServices.MessageFetcher();
 
                 fetcher.Initialize(Context, path);
 
@@ -5961,7 +5961,7 @@ namespace Microsoft.Office365.OutlookServices
 
         {
 
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
 
         }
 
@@ -5969,7 +5969,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [global::Microsoft.OData.Client.Key("Id")]
 
-    public partial class FileAttachment:Microsoft.Office365.OutlookServices.Attachment, Microsoft.Office365.OutlookServices.IFileAttachment, Microsoft.Office365.OutlookServices.IFileAttachmentFetcher
+    public partial class FileAttachment:global::Microsoft.Office365.OutlookServices.Attachment, global::Microsoft.Office365.OutlookServices.IFileAttachment, global::Microsoft.Office365.OutlookServices.IFileAttachmentFetcher
 
     {
 
@@ -6107,7 +6107,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IFileAttachment> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IFileAttachment> EnsureQuery()
 
         {
 
@@ -6115,7 +6115,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.FileAttachment, Microsoft.Office365.OutlookServices.IFileAttachment>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.FileAttachment, global::Microsoft.Office365.OutlookServices.IFileAttachment>();
 
             }
 
@@ -6125,13 +6125,13 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IFileAttachment> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IFileAttachment> _query;
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFileAttachment> Microsoft.Office365.OutlookServices.IFileAttachmentFetcher.ExecuteAsync()
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFileAttachment> global::Microsoft.Office365.OutlookServices.IFileAttachmentFetcher.ExecuteAsync()
 
         {
 
-            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<Microsoft.Office365.OutlookServices.IFileAttachment>();
+            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<global::Microsoft.Office365.OutlookServices.IFileAttachment>();
 
             tsc.SetResult(this);
 
@@ -6139,17 +6139,17 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IFileAttachmentFetcher Microsoft.Office365.OutlookServices.IFileAttachmentFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IFileAttachment, TTarget>> navigationPropertyAccessor)
+        global::Microsoft.Office365.OutlookServices.IFileAttachmentFetcher global::Microsoft.Office365.OutlookServices.IFileAttachmentFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IFileAttachment, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IFileAttachmentFetcher) this;
+            return (global::Microsoft.Office365.OutlookServices.IFileAttachmentFetcher) this;
 
         }
 
     }
 
-    internal partial class FileAttachmentFetcher:Microsoft.Office365.OutlookServices.AttachmentFetcher, Microsoft.Office365.OutlookServices.IFileAttachmentFetcher
+    internal partial class FileAttachmentFetcher:global::Microsoft.Office365.OutlookServices.AttachmentFetcher, global::Microsoft.Office365.OutlookServices.IFileAttachmentFetcher
 
     {
 
@@ -6159,7 +6159,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFileAttachment> ExecuteAsync()
+        public async global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFileAttachment> ExecuteAsync()
 
         {
 
@@ -6167,11 +6167,11 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IFileAttachmentFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IFileAttachment, TTarget>> navigationPropertyAccessor)
+        public global::Microsoft.Office365.OutlookServices.IFileAttachmentFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IFileAttachment, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IFileAttachmentFetcher) new Microsoft.Office365.OutlookServices.FileAttachmentFetcher()
+            return (global::Microsoft.Office365.OutlookServices.IFileAttachmentFetcher) new global::Microsoft.Office365.OutlookServices.FileAttachmentFetcher()
 
             {
 
@@ -6183,7 +6183,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IFileAttachment> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IFileAttachment> EnsureQuery()
 
         {
 
@@ -6191,7 +6191,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.FileAttachment, Microsoft.Office365.OutlookServices.IFileAttachment>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.FileAttachment, global::Microsoft.Office365.OutlookServices.IFileAttachment>();
 
             }
 
@@ -6201,11 +6201,11 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IFileAttachment> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IFileAttachment> _query;
 
     }
 
-    internal partial class FileAttachmentCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IFileAttachment>, Microsoft.Office365.OutlookServices.IFileAttachmentCollection
+    internal partial class FileAttachmentCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.IFileAttachment>, global::Microsoft.Office365.OutlookServices.IFileAttachmentCollection
 
     {
 
@@ -6215,7 +6215,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IFileAttachmentFetcher GetById(System.String id)
+        public global::Microsoft.Office365.OutlookServices.IFileAttachmentFetcher GetById(System.String id)
 
         {
 
@@ -6223,7 +6223,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IFileAttachment>> ExecuteAsync()
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IFileAttachment>> ExecuteAsync()
 
         {
 
@@ -6231,15 +6231,15 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task AddFileAttachmentAsync(Microsoft.Office365.OutlookServices.IFileAttachment item, System.Boolean dontSave = false)
+        public global::System.Threading.Tasks.Task AddFileAttachmentAsync(global::Microsoft.Office365.OutlookServices.IFileAttachment item, System.Boolean deferSaveChanges = false)
 
         {
 
-            if (_entity == null)
+            if (Entity == null)
 
             {
 
-                Context.AddObject(_path, item);
+                Context.AddObject(Path, item);
 
             }
 
@@ -6247,15 +6247,15 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var lastSlash = _path.LastIndexOf('/');
+                var lastSlash = Path.LastIndexOf('/');
 
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
 
-                Context.AddRelatedObject(_entity, shortPath, item);
+                Context.AddRelatedObject(Entity, shortPath, item);
 
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
 
             {
 
@@ -6277,7 +6277,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IFileAttachmentFetcher this[System.String id]
+        public global::Microsoft.Office365.OutlookServices.IFileAttachmentFetcher this[System.String id]
 
         {
 
@@ -6285,9 +6285,9 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var path = GetPath<Microsoft.Office365.OutlookServices.FileAttachment>((i) => i.Id == id);
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.FileAttachment>((i) => i.Id == id);
 
-                var fetcher = new Microsoft.Office365.OutlookServices.FileAttachmentFetcher();
+                var fetcher = new global::Microsoft.Office365.OutlookServices.FileAttachmentFetcher();
 
                 fetcher.Initialize(Context, path);
 
@@ -6309,7 +6309,7 @@ namespace Microsoft.Office365.OutlookServices
 
         {
 
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
 
         }
 
@@ -6317,15 +6317,15 @@ namespace Microsoft.Office365.OutlookServices
 
     [global::Microsoft.OData.Client.Key("Id")]
 
-    public partial class ItemAttachment:Microsoft.Office365.OutlookServices.Attachment, Microsoft.Office365.OutlookServices.IItemAttachment, Microsoft.Office365.OutlookServices.IItemAttachmentFetcher
+    public partial class ItemAttachment:global::Microsoft.Office365.OutlookServices.Attachment, global::Microsoft.Office365.OutlookServices.IItemAttachment, global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.Item _Item;
+        private global::Microsoft.Office365.OutlookServices.Item _Item;
 
-        private Microsoft.Office365.OutlookServices.ItemFetcher _ItemFetcher;
+        private global::Microsoft.Office365.OutlookServices.ItemFetcher _ItemFetcher;
 
-        Microsoft.Office365.OutlookServices.IItem Microsoft.Office365.OutlookServices.IItemAttachment.Item
+        global::Microsoft.Office365.OutlookServices.IItem global::Microsoft.Office365.OutlookServices.IItemAttachment.Item
 
         {
 
@@ -6345,7 +6345,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this.Item = (Microsoft.Office365.OutlookServices.Item)value;
+                    this.Item = (global::Microsoft.Office365.OutlookServices.Item)value;
 
                 }
 
@@ -6353,7 +6353,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.Item Item
+        public global::Microsoft.Office365.OutlookServices.Item Item
 
         {
 
@@ -6389,7 +6389,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IItemFetcher Microsoft.Office365.OutlookServices.IItemAttachmentFetcher.Item
+        global::Microsoft.Office365.OutlookServices.IItemFetcher global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher.Item
 
         {
 
@@ -6401,7 +6401,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ItemFetcher = new Microsoft.Office365.OutlookServices.ItemFetcher();
+                    this._ItemFetcher = new global::Microsoft.Office365.OutlookServices.ItemFetcher();
 
                     this._ItemFetcher.Initialize(this.Context, GetPath("Item"));
 
@@ -6421,7 +6421,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IItemAttachment> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IItemAttachment> EnsureQuery()
 
         {
 
@@ -6429,7 +6429,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.ItemAttachment, Microsoft.Office365.OutlookServices.IItemAttachment>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.ItemAttachment, global::Microsoft.Office365.OutlookServices.IItemAttachment>();
 
             }
 
@@ -6439,13 +6439,13 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IItemAttachment> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IItemAttachment> _query;
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IItemAttachment> Microsoft.Office365.OutlookServices.IItemAttachmentFetcher.ExecuteAsync()
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IItemAttachment> global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher.ExecuteAsync()
 
         {
 
-            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<Microsoft.Office365.OutlookServices.IItemAttachment>();
+            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<global::Microsoft.Office365.OutlookServices.IItemAttachment>();
 
             tsc.SetResult(this);
 
@@ -6453,23 +6453,23 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IItemAttachmentFetcher Microsoft.Office365.OutlookServices.IItemAttachmentFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IItemAttachment, TTarget>> navigationPropertyAccessor)
+        global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IItemAttachment, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IItemAttachmentFetcher) this;
+            return (global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher) this;
 
         }
 
     }
 
-    internal partial class ItemAttachmentFetcher:Microsoft.Office365.OutlookServices.AttachmentFetcher, Microsoft.Office365.OutlookServices.IItemAttachmentFetcher
+    internal partial class ItemAttachmentFetcher:global::Microsoft.Office365.OutlookServices.AttachmentFetcher, global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.ItemFetcher _ItemFetcher;
+        private global::Microsoft.Office365.OutlookServices.ItemFetcher _ItemFetcher;
 
-        public Microsoft.Office365.OutlookServices.IItemFetcher Item
+        public global::Microsoft.Office365.OutlookServices.IItemFetcher Item
 
         {
 
@@ -6481,7 +6481,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ItemFetcher = new Microsoft.Office365.OutlookServices.ItemFetcher();
+                    this._ItemFetcher = new global::Microsoft.Office365.OutlookServices.ItemFetcher();
 
                     this._ItemFetcher.Initialize(this.Context, GetPath("Item"));
 
@@ -6501,7 +6501,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IItemAttachment> ExecuteAsync()
+        public async global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IItemAttachment> ExecuteAsync()
 
         {
 
@@ -6509,11 +6509,11 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IItemAttachmentFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IItemAttachment, TTarget>> navigationPropertyAccessor)
+        public global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IItemAttachment, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IItemAttachmentFetcher) new Microsoft.Office365.OutlookServices.ItemAttachmentFetcher()
+            return (global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher) new global::Microsoft.Office365.OutlookServices.ItemAttachmentFetcher()
 
             {
 
@@ -6525,7 +6525,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IItemAttachment> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IItemAttachment> EnsureQuery()
 
         {
 
@@ -6533,7 +6533,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.ItemAttachment, Microsoft.Office365.OutlookServices.IItemAttachment>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.ItemAttachment, global::Microsoft.Office365.OutlookServices.IItemAttachment>();
 
             }
 
@@ -6543,11 +6543,11 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IItemAttachment> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IItemAttachment> _query;
 
     }
 
-    internal partial class ItemAttachmentCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IItemAttachment>, Microsoft.Office365.OutlookServices.IItemAttachmentCollection
+    internal partial class ItemAttachmentCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.IItemAttachment>, global::Microsoft.Office365.OutlookServices.IItemAttachmentCollection
 
     {
 
@@ -6557,7 +6557,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IItemAttachmentFetcher GetById(System.String id)
+        public global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher GetById(System.String id)
 
         {
 
@@ -6565,7 +6565,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IItemAttachment>> ExecuteAsync()
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IItemAttachment>> ExecuteAsync()
 
         {
 
@@ -6573,15 +6573,15 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task AddItemAttachmentAsync(Microsoft.Office365.OutlookServices.IItemAttachment item, System.Boolean dontSave = false)
+        public global::System.Threading.Tasks.Task AddItemAttachmentAsync(global::Microsoft.Office365.OutlookServices.IItemAttachment item, System.Boolean deferSaveChanges = false)
 
         {
 
-            if (_entity == null)
+            if (Entity == null)
 
             {
 
-                Context.AddObject(_path, item);
+                Context.AddObject(Path, item);
 
             }
 
@@ -6589,15 +6589,15 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var lastSlash = _path.LastIndexOf('/');
+                var lastSlash = Path.LastIndexOf('/');
 
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
 
-                Context.AddRelatedObject(_entity, shortPath, item);
+                Context.AddRelatedObject(Entity, shortPath, item);
 
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
 
             {
 
@@ -6619,7 +6619,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IItemAttachmentFetcher this[System.String id]
+        public global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher this[System.String id]
 
         {
 
@@ -6627,9 +6627,9 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var path = GetPath<Microsoft.Office365.OutlookServices.ItemAttachment>((i) => i.Id == id);
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.ItemAttachment>((i) => i.Id == id);
 
-                var fetcher = new Microsoft.Office365.OutlookServices.ItemAttachmentFetcher();
+                var fetcher = new global::Microsoft.Office365.OutlookServices.ItemAttachmentFetcher();
 
                 fetcher.Initialize(Context, path);
 
@@ -6651,7 +6651,7 @@ namespace Microsoft.Office365.OutlookServices
 
         {
 
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
 
         }
 
@@ -6659,21 +6659,21 @@ namespace Microsoft.Office365.OutlookServices
 
     [global::Microsoft.OData.Client.Key("Id")]
 
-    public partial class Calendar:Microsoft.Office365.OutlookServices.Entity, Microsoft.Office365.OutlookServices.ICalendar, Microsoft.Office365.OutlookServices.ICalendarFetcher
+    public partial class Calendar:global::Microsoft.Office365.OutlookServices.Entity, global::Microsoft.Office365.OutlookServices.ICalendar, global::Microsoft.Office365.OutlookServices.ICalendarFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.EventCollection _CalendarViewCollection;
+        private global::Microsoft.Office365.OutlookServices.EventCollection _CalendarViewCollection;
 
-        private Microsoft.Office365.OutlookServices.EventCollection _EventsCollection;
+        private global::Microsoft.Office365.OutlookServices.EventCollection _EventsCollection;
 
         private System.String _Name;
 
         private System.String _ChangeKey;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event> _CalendarViewConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Event> _CalendarViewConcrete;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event> _EventsConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Event> _EventsConcrete;
 
         public System.String Name
 
@@ -6735,7 +6735,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEvent> Microsoft.Office365.OutlookServices.ICalendar.CalendarView
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEvent> global::Microsoft.Office365.OutlookServices.ICalendar.CalendarView
 
         {
 
@@ -6743,13 +6743,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Event>) CalendarView);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IEvent, global::Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Event>) CalendarView);
 
             }
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEvent> Microsoft.Office365.OutlookServices.ICalendar.Events
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEvent> global::Microsoft.Office365.OutlookServices.ICalendar.Events
 
         {
 
@@ -6757,13 +6757,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Event>) Events);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IEvent, global::Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Event>) Events);
 
             }
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Event> CalendarView
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Event> CalendarView
 
         {
 
@@ -6775,7 +6775,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarViewConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event>();
+                    this._CalendarViewConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Event>();
 
                     this._CalendarViewConcrete.SetContainer(() => GetContainingEntity("CalendarView"));
 
@@ -6783,7 +6783,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Event>)this._CalendarViewConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Event>)this._CalendarViewConcrete;
 
             }
 
@@ -6815,7 +6815,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Event> Events
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Event> Events
 
         {
 
@@ -6827,7 +6827,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._EventsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event>();
+                    this._EventsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Event>();
 
                     this._EventsConcrete.SetContainer(() => GetContainingEntity("Events"));
 
@@ -6835,7 +6835,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Event>)this._EventsConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Event>)this._EventsConcrete;
 
             }
 
@@ -6867,7 +6867,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IEventCollection Microsoft.Office365.OutlookServices.ICalendarFetcher.CalendarView
+        global::Microsoft.Office365.OutlookServices.IEventCollection global::Microsoft.Office365.OutlookServices.ICalendarFetcher.CalendarView
 
         {
 
@@ -6879,8 +6879,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarViewCollection = new Microsoft.Office365.OutlookServices.EventCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Event>(GetPath("CalendarView")) : null,
+                    this._CalendarViewCollection = new global::Microsoft.Office365.OutlookServices.EventCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Event>(GetPath("CalendarView")) : null,
                        Context,
                        this,
                        GetPath("CalendarView"));
@@ -6895,7 +6895,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IEventCollection Microsoft.Office365.OutlookServices.ICalendarFetcher.Events
+        global::Microsoft.Office365.OutlookServices.IEventCollection global::Microsoft.Office365.OutlookServices.ICalendarFetcher.Events
 
         {
 
@@ -6907,8 +6907,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._EventsCollection = new Microsoft.Office365.OutlookServices.EventCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Event>(GetPath("Events")) : null,
+                    this._EventsCollection = new global::Microsoft.Office365.OutlookServices.EventCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Event>(GetPath("Events")) : null,
                        Context,
                        this,
                        GetPath("Events"));
@@ -6929,7 +6929,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.ICalendar> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.ICalendar> EnsureQuery()
 
         {
 
@@ -6937,7 +6937,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Calendar, Microsoft.Office365.OutlookServices.ICalendar>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.Calendar, global::Microsoft.Office365.OutlookServices.ICalendar>();
 
             }
 
@@ -6947,13 +6947,13 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.ICalendar> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.ICalendar> _query;
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.ICalendar> Microsoft.Office365.OutlookServices.ICalendarFetcher.ExecuteAsync()
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.ICalendar> global::Microsoft.Office365.OutlookServices.ICalendarFetcher.ExecuteAsync()
 
         {
 
-            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<Microsoft.Office365.OutlookServices.ICalendar>();
+            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<global::Microsoft.Office365.OutlookServices.ICalendar>();
 
             tsc.SetResult(this);
 
@@ -6961,25 +6961,25 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.ICalendarFetcher Microsoft.Office365.OutlookServices.ICalendarFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.ICalendar, TTarget>> navigationPropertyAccessor)
+        global::Microsoft.Office365.OutlookServices.ICalendarFetcher global::Microsoft.Office365.OutlookServices.ICalendarFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.ICalendar, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.ICalendarFetcher) this;
+            return (global::Microsoft.Office365.OutlookServices.ICalendarFetcher) this;
 
         }
 
     }
 
-    internal partial class CalendarFetcher:Microsoft.Office365.OutlookServices.EntityFetcher, Microsoft.Office365.OutlookServices.ICalendarFetcher
+    internal partial class CalendarFetcher:global::Microsoft.Office365.OutlookServices.EntityFetcher, global::Microsoft.Office365.OutlookServices.ICalendarFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.EventCollection _CalendarViewCollection;
+        private global::Microsoft.Office365.OutlookServices.EventCollection _CalendarViewCollection;
 
-        private Microsoft.Office365.OutlookServices.EventCollection _EventsCollection;
+        private global::Microsoft.Office365.OutlookServices.EventCollection _EventsCollection;
 
-        public Microsoft.Office365.OutlookServices.IEventCollection CalendarView
+        public global::Microsoft.Office365.OutlookServices.IEventCollection CalendarView
 
         {
 
@@ -6991,8 +6991,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarViewCollection = new Microsoft.Office365.OutlookServices.EventCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Event>(GetPath("CalendarView")) : null,
+                    this._CalendarViewCollection = new global::Microsoft.Office365.OutlookServices.EventCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Event>(GetPath("CalendarView")) : null,
                        Context,
                        this,
                        GetPath("CalendarView"));
@@ -7007,7 +7007,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IEventCollection Events
+        public global::Microsoft.Office365.OutlookServices.IEventCollection Events
 
         {
 
@@ -7019,8 +7019,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._EventsCollection = new Microsoft.Office365.OutlookServices.EventCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Event>(GetPath("Events")) : null,
+                    this._EventsCollection = new global::Microsoft.Office365.OutlookServices.EventCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Event>(GetPath("Events")) : null,
                        Context,
                        this,
                        GetPath("Events"));
@@ -7041,7 +7041,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.ICalendar> ExecuteAsync()
+        public async global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.ICalendar> ExecuteAsync()
 
         {
 
@@ -7049,11 +7049,11 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.ICalendarFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.ICalendar, TTarget>> navigationPropertyAccessor)
+        public global::Microsoft.Office365.OutlookServices.ICalendarFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.ICalendar, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.ICalendarFetcher) new Microsoft.Office365.OutlookServices.CalendarFetcher()
+            return (global::Microsoft.Office365.OutlookServices.ICalendarFetcher) new global::Microsoft.Office365.OutlookServices.CalendarFetcher()
 
             {
 
@@ -7065,7 +7065,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.ICalendar> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.ICalendar> EnsureQuery()
 
         {
 
@@ -7073,7 +7073,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Calendar, Microsoft.Office365.OutlookServices.ICalendar>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.Calendar, global::Microsoft.Office365.OutlookServices.ICalendar>();
 
             }
 
@@ -7083,11 +7083,11 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.ICalendar> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.ICalendar> _query;
 
     }
 
-    internal partial class CalendarCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.ICalendar>, Microsoft.Office365.OutlookServices.ICalendarCollection
+    internal partial class CalendarCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.ICalendar>, global::Microsoft.Office365.OutlookServices.ICalendarCollection
 
     {
 
@@ -7097,7 +7097,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.ICalendarFetcher GetById(System.String id)
+        public global::Microsoft.Office365.OutlookServices.ICalendarFetcher GetById(System.String id)
 
         {
 
@@ -7105,7 +7105,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.ICalendar>> ExecuteAsync()
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.ICalendar>> ExecuteAsync()
 
         {
 
@@ -7113,15 +7113,15 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task AddCalendarAsync(Microsoft.Office365.OutlookServices.ICalendar item, System.Boolean dontSave = false)
+        public global::System.Threading.Tasks.Task AddCalendarAsync(global::Microsoft.Office365.OutlookServices.ICalendar item, System.Boolean deferSaveChanges = false)
 
         {
 
-            if (_entity == null)
+            if (Entity == null)
 
             {
 
-                Context.AddObject(_path, item);
+                Context.AddObject(Path, item);
 
             }
 
@@ -7129,15 +7129,15 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var lastSlash = _path.LastIndexOf('/');
+                var lastSlash = Path.LastIndexOf('/');
 
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
 
-                Context.AddRelatedObject(_entity, shortPath, item);
+                Context.AddRelatedObject(Entity, shortPath, item);
 
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
 
             {
 
@@ -7159,7 +7159,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.ICalendarFetcher this[System.String id]
+        public global::Microsoft.Office365.OutlookServices.ICalendarFetcher this[System.String id]
 
         {
 
@@ -7167,9 +7167,9 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var path = GetPath<Microsoft.Office365.OutlookServices.Calendar>((i) => i.Id == id);
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.Calendar>((i) => i.Id == id);
 
-                var fetcher = new Microsoft.Office365.OutlookServices.CalendarFetcher();
+                var fetcher = new global::Microsoft.Office365.OutlookServices.CalendarFetcher();
 
                 fetcher.Initialize(Context, path);
 
@@ -7191,7 +7191,7 @@ namespace Microsoft.Office365.OutlookServices
 
         {
 
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
 
         }
 
@@ -7199,11 +7199,11 @@ namespace Microsoft.Office365.OutlookServices
 
     [global::Microsoft.OData.Client.Key("Id")]
 
-    public partial class CalendarGroup:Microsoft.Office365.OutlookServices.Entity, Microsoft.Office365.OutlookServices.ICalendarGroup, Microsoft.Office365.OutlookServices.ICalendarGroupFetcher
+    public partial class CalendarGroup:global::Microsoft.Office365.OutlookServices.Entity, global::Microsoft.Office365.OutlookServices.ICalendarGroup, global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.CalendarCollection _CalendarsCollection;
+        private global::Microsoft.Office365.OutlookServices.CalendarCollection _CalendarsCollection;
 
         private System.String _Name;
 
@@ -7211,7 +7211,7 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.Nullable<System.Guid> _ClassId;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Calendar> _CalendarsConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Calendar> _CalendarsConcrete;
 
         public System.String Name
 
@@ -7303,7 +7303,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.ICalendar> Microsoft.Office365.OutlookServices.ICalendarGroup.Calendars
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.ICalendar> global::Microsoft.Office365.OutlookServices.ICalendarGroup.Calendars
 
         {
 
@@ -7311,13 +7311,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.ICalendar, Microsoft.Office365.OutlookServices.Calendar>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Calendar>) Calendars);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.ICalendar, global::Microsoft.Office365.OutlookServices.Calendar>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Calendar>) Calendars);
 
             }
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Calendar> Calendars
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Calendar> Calendars
 
         {
 
@@ -7329,7 +7329,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Calendar>();
+                    this._CalendarsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Calendar>();
 
                     this._CalendarsConcrete.SetContainer(() => GetContainingEntity("Calendars"));
 
@@ -7337,7 +7337,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Calendar>)this._CalendarsConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Calendar>)this._CalendarsConcrete;
 
             }
 
@@ -7369,7 +7369,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.ICalendarCollection Microsoft.Office365.OutlookServices.ICalendarGroupFetcher.Calendars
+        global::Microsoft.Office365.OutlookServices.ICalendarCollection global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher.Calendars
 
         {
 
@@ -7381,8 +7381,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarsCollection = new Microsoft.Office365.OutlookServices.CalendarCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Calendar>(GetPath("Calendars")) : null,
+                    this._CalendarsCollection = new global::Microsoft.Office365.OutlookServices.CalendarCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Calendar>(GetPath("Calendars")) : null,
                        Context,
                        this,
                        GetPath("Calendars"));
@@ -7403,7 +7403,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.ICalendarGroup> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.ICalendarGroup> EnsureQuery()
 
         {
 
@@ -7411,7 +7411,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.CalendarGroup, Microsoft.Office365.OutlookServices.ICalendarGroup>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.CalendarGroup, global::Microsoft.Office365.OutlookServices.ICalendarGroup>();
 
             }
 
@@ -7421,13 +7421,13 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.ICalendarGroup> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.ICalendarGroup> _query;
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.ICalendarGroup> Microsoft.Office365.OutlookServices.ICalendarGroupFetcher.ExecuteAsync()
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.ICalendarGroup> global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher.ExecuteAsync()
 
         {
 
-            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<Microsoft.Office365.OutlookServices.ICalendarGroup>();
+            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<global::Microsoft.Office365.OutlookServices.ICalendarGroup>();
 
             tsc.SetResult(this);
 
@@ -7435,23 +7435,23 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.ICalendarGroupFetcher Microsoft.Office365.OutlookServices.ICalendarGroupFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.ICalendarGroup, TTarget>> navigationPropertyAccessor)
+        global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.ICalendarGroup, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.ICalendarGroupFetcher) this;
+            return (global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher) this;
 
         }
 
     }
 
-    internal partial class CalendarGroupFetcher:Microsoft.Office365.OutlookServices.EntityFetcher, Microsoft.Office365.OutlookServices.ICalendarGroupFetcher
+    internal partial class CalendarGroupFetcher:global::Microsoft.Office365.OutlookServices.EntityFetcher, global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.CalendarCollection _CalendarsCollection;
+        private global::Microsoft.Office365.OutlookServices.CalendarCollection _CalendarsCollection;
 
-        public Microsoft.Office365.OutlookServices.ICalendarCollection Calendars
+        public global::Microsoft.Office365.OutlookServices.ICalendarCollection Calendars
 
         {
 
@@ -7463,8 +7463,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarsCollection = new Microsoft.Office365.OutlookServices.CalendarCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Calendar>(GetPath("Calendars")) : null,
+                    this._CalendarsCollection = new global::Microsoft.Office365.OutlookServices.CalendarCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Calendar>(GetPath("Calendars")) : null,
                        Context,
                        this,
                        GetPath("Calendars"));
@@ -7485,7 +7485,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.ICalendarGroup> ExecuteAsync()
+        public async global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.ICalendarGroup> ExecuteAsync()
 
         {
 
@@ -7493,11 +7493,11 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.ICalendarGroupFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.ICalendarGroup, TTarget>> navigationPropertyAccessor)
+        public global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.ICalendarGroup, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.ICalendarGroupFetcher) new Microsoft.Office365.OutlookServices.CalendarGroupFetcher()
+            return (global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher) new global::Microsoft.Office365.OutlookServices.CalendarGroupFetcher()
 
             {
 
@@ -7509,7 +7509,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.ICalendarGroup> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.ICalendarGroup> EnsureQuery()
 
         {
 
@@ -7517,7 +7517,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.CalendarGroup, Microsoft.Office365.OutlookServices.ICalendarGroup>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.CalendarGroup, global::Microsoft.Office365.OutlookServices.ICalendarGroup>();
 
             }
 
@@ -7527,11 +7527,11 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.ICalendarGroup> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.ICalendarGroup> _query;
 
     }
 
-    internal partial class CalendarGroupCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.ICalendarGroup>, Microsoft.Office365.OutlookServices.ICalendarGroupCollection
+    internal partial class CalendarGroupCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.ICalendarGroup>, global::Microsoft.Office365.OutlookServices.ICalendarGroupCollection
 
     {
 
@@ -7541,7 +7541,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.ICalendarGroupFetcher GetById(System.String id)
+        public global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher GetById(System.String id)
 
         {
 
@@ -7549,7 +7549,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.ICalendarGroup>> ExecuteAsync()
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.ICalendarGroup>> ExecuteAsync()
 
         {
 
@@ -7557,15 +7557,15 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task AddCalendarGroupAsync(Microsoft.Office365.OutlookServices.ICalendarGroup item, System.Boolean dontSave = false)
+        public global::System.Threading.Tasks.Task AddCalendarGroupAsync(global::Microsoft.Office365.OutlookServices.ICalendarGroup item, System.Boolean deferSaveChanges = false)
 
         {
 
-            if (_entity == null)
+            if (Entity == null)
 
             {
 
-                Context.AddObject(_path, item);
+                Context.AddObject(Path, item);
 
             }
 
@@ -7573,15 +7573,15 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var lastSlash = _path.LastIndexOf('/');
+                var lastSlash = Path.LastIndexOf('/');
 
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
 
-                Context.AddRelatedObject(_entity, shortPath, item);
+                Context.AddRelatedObject(Entity, shortPath, item);
 
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
 
             {
 
@@ -7603,7 +7603,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.ICalendarGroupFetcher this[System.String id]
+        public global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher this[System.String id]
 
         {
 
@@ -7611,9 +7611,9 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var path = GetPath<Microsoft.Office365.OutlookServices.CalendarGroup>((i) => i.Id == id);
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.CalendarGroup>((i) => i.Id == id);
 
-                var fetcher = new Microsoft.Office365.OutlookServices.CalendarGroupFetcher();
+                var fetcher = new global::Microsoft.Office365.OutlookServices.CalendarGroupFetcher();
 
                 fetcher.Initialize(Context, path);
 
@@ -7635,7 +7635,7 @@ namespace Microsoft.Office365.OutlookServices
 
         {
 
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
 
         }
 
@@ -7643,25 +7643,25 @@ namespace Microsoft.Office365.OutlookServices
 
     [global::Microsoft.OData.Client.Key("Id")]
 
-    public partial class Event:Microsoft.Office365.OutlookServices.Item, Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.IEventFetcher
+    public partial class Event:global::Microsoft.Office365.OutlookServices.Item, global::Microsoft.Office365.OutlookServices.IEvent, global::Microsoft.Office365.OutlookServices.IEventFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.Calendar _Calendar;
+        private global::Microsoft.Office365.OutlookServices.Calendar _Calendar;
 
-        private Microsoft.Office365.OutlookServices.CalendarFetcher _CalendarFetcher;
+        private global::Microsoft.Office365.OutlookServices.CalendarFetcher _CalendarFetcher;
 
-        private Microsoft.Office365.OutlookServices.AttachmentCollection _AttachmentsCollection;
+        private global::Microsoft.Office365.OutlookServices.AttachmentCollection _AttachmentsCollection;
 
-        private Microsoft.Office365.OutlookServices.EventCollection _InstancesCollection;
+        private global::Microsoft.Office365.OutlookServices.EventCollection _InstancesCollection;
 
         private System.String _Subject;
 
-        private Microsoft.Office365.OutlookServices.ItemBody _Body;
+        private global::Microsoft.Office365.OutlookServices.ItemBody _Body;
 
         private System.String _BodyPreview;
 
-        private Microsoft.Office365.OutlookServices.Importance _Importance;
+        private global::Microsoft.Office365.OutlookServices.Importance _Importance;
 
         private System.Nullable<System.Boolean> _HasAttachments;
 
@@ -7669,9 +7669,9 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.Nullable<System.DateTimeOffset> _End;
 
-        private Microsoft.Office365.OutlookServices.Location _Location;
+        private global::Microsoft.Office365.OutlookServices.Location _Location;
 
-        private Microsoft.Office365.OutlookServices.FreeBusyStatus _ShowAs;
+        private global::Microsoft.Office365.OutlookServices.FreeBusyStatus _ShowAs;
 
         private System.Nullable<System.Boolean> _IsAllDay;
 
@@ -7681,23 +7681,23 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.Nullable<System.Boolean> _ResponseRequested;
 
-        private Microsoft.Office365.OutlookServices.EventType _Type;
+        private global::Microsoft.Office365.OutlookServices.EventType _Type;
 
         private System.String _SeriesMasterId;
 
-        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.Attendee> _Attendees;
+        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.Attendee> _Attendees;
 
-        private Microsoft.Office365.OutlookServices.PatternedRecurrence _Recurrence;
+        private global::Microsoft.Office365.OutlookServices.PatternedRecurrence _Recurrence;
 
-        private Microsoft.Office365.OutlookServices.Recipient _Organizer;
+        private global::Microsoft.Office365.OutlookServices.Recipient _Organizer;
 
         private System.String _StartTimeZone;
 
         private System.String _EndTimeZone;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Attachment> _AttachmentsConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Attachment> _AttachmentsConcrete;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event> _InstancesConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Event> _InstancesConcrete;
 
         public System.String Subject
 
@@ -7729,7 +7729,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.ItemBody Body
+        public global::Microsoft.Office365.OutlookServices.ItemBody Body
 
         {
 
@@ -7789,7 +7789,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.Importance Importance
+        public global::Microsoft.Office365.OutlookServices.Importance Importance
 
         {
 
@@ -7909,7 +7909,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.Location Location
+        public global::Microsoft.Office365.OutlookServices.Location Location
 
         {
 
@@ -7939,7 +7939,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.FreeBusyStatus ShowAs
+        public global::Microsoft.Office365.OutlookServices.FreeBusyStatus ShowAs
 
         {
 
@@ -8089,7 +8089,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.EventType Type
+        public global::Microsoft.Office365.OutlookServices.EventType Type
 
         {
 
@@ -8149,7 +8149,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Attendee> Attendees
+        public System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Attendee> Attendees
 
         {
 
@@ -8157,11 +8157,11 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (this._Attendees == default(System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Attendee>))
+                if (this._Attendees == default(System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Attendee>))
 
                 {
 
-                    this._Attendees = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.Attendee>();
+                    this._Attendees = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.Attendee>();
 
                     this._Attendees.SetContainer(() => GetContainingEntity("Attendees"));
 
@@ -8195,7 +8195,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.PatternedRecurrence Recurrence
+        public global::Microsoft.Office365.OutlookServices.PatternedRecurrence Recurrence
 
         {
 
@@ -8225,7 +8225,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.Recipient Organizer
+        public global::Microsoft.Office365.OutlookServices.Recipient Organizer
 
         {
 
@@ -8315,7 +8315,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IAttachment> Microsoft.Office365.OutlookServices.IEvent.Attachments
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IAttachment> global::Microsoft.Office365.OutlookServices.IEvent.Attachments
 
         {
 
@@ -8323,13 +8323,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IAttachment, Microsoft.Office365.OutlookServices.Attachment>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Attachment>) Attachments);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IAttachment, global::Microsoft.Office365.OutlookServices.Attachment>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Attachment>) Attachments);
 
             }
 
         }
 
-        Microsoft.Office365.OutlookServices.ICalendar Microsoft.Office365.OutlookServices.IEvent.Calendar
+        global::Microsoft.Office365.OutlookServices.ICalendar global::Microsoft.Office365.OutlookServices.IEvent.Calendar
 
         {
 
@@ -8349,7 +8349,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this.Calendar = (Microsoft.Office365.OutlookServices.Calendar)value;
+                    this.Calendar = (global::Microsoft.Office365.OutlookServices.Calendar)value;
 
                 }
 
@@ -8357,7 +8357,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEvent> Microsoft.Office365.OutlookServices.IEvent.Instances
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEvent> global::Microsoft.Office365.OutlookServices.IEvent.Instances
 
         {
 
@@ -8365,13 +8365,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IEvent, Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Event>) Instances);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IEvent, global::Microsoft.Office365.OutlookServices.Event>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Event>) Instances);
 
             }
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Attachment> Attachments
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Attachment> Attachments
 
         {
 
@@ -8383,7 +8383,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._AttachmentsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Attachment>();
+                    this._AttachmentsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Attachment>();
 
                     this._AttachmentsConcrete.SetContainer(() => GetContainingEntity("Attachments"));
 
@@ -8391,7 +8391,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Attachment>)this._AttachmentsConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Attachment>)this._AttachmentsConcrete;
 
             }
 
@@ -8423,7 +8423,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.Calendar Calendar
+        public global::Microsoft.Office365.OutlookServices.Calendar Calendar
 
         {
 
@@ -8459,7 +8459,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Event> Instances
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Event> Instances
 
         {
 
@@ -8471,7 +8471,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._InstancesConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Event>();
+                    this._InstancesConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Event>();
 
                     this._InstancesConcrete.SetContainer(() => GetContainingEntity("Instances"));
 
@@ -8479,7 +8479,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Event>)this._InstancesConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Event>)this._InstancesConcrete;
 
             }
 
@@ -8511,7 +8511,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IAttachmentCollection Microsoft.Office365.OutlookServices.IEventFetcher.Attachments
+        global::Microsoft.Office365.OutlookServices.IAttachmentCollection global::Microsoft.Office365.OutlookServices.IEventFetcher.Attachments
 
         {
 
@@ -8523,8 +8523,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._AttachmentsCollection = new Microsoft.Office365.OutlookServices.AttachmentCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Attachment>(GetPath("Attachments")) : null,
+                    this._AttachmentsCollection = new global::Microsoft.Office365.OutlookServices.AttachmentCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Attachment>(GetPath("Attachments")) : null,
                        Context,
                        this,
                        GetPath("Attachments"));
@@ -8539,7 +8539,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.ICalendarFetcher Microsoft.Office365.OutlookServices.IEventFetcher.Calendar
+        global::Microsoft.Office365.OutlookServices.ICalendarFetcher global::Microsoft.Office365.OutlookServices.IEventFetcher.Calendar
 
         {
 
@@ -8551,7 +8551,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarFetcher = new Microsoft.Office365.OutlookServices.CalendarFetcher();
+                    this._CalendarFetcher = new global::Microsoft.Office365.OutlookServices.CalendarFetcher();
 
                     this._CalendarFetcher.Initialize(this.Context, GetPath("Calendar"));
 
@@ -8565,7 +8565,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IEventCollection Microsoft.Office365.OutlookServices.IEventFetcher.Instances
+        global::Microsoft.Office365.OutlookServices.IEventCollection global::Microsoft.Office365.OutlookServices.IEventFetcher.Instances
 
         {
 
@@ -8577,8 +8577,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._InstancesCollection = new Microsoft.Office365.OutlookServices.EventCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Event>(GetPath("Instances")) : null,
+                    this._InstancesCollection = new global::Microsoft.Office365.OutlookServices.EventCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Event>(GetPath("Instances")) : null,
                        Context,
                        this,
                        GetPath("Instances"));
@@ -8613,7 +8613,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Accept");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Accept");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -8641,7 +8641,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Decline");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Decline");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -8669,7 +8669,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/TentativelyAccept");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.TentativelyAccept");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -8683,7 +8683,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IEvent> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IEvent> EnsureQuery()
 
         {
 
@@ -8691,7 +8691,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Event, Microsoft.Office365.OutlookServices.IEvent>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.Event, global::Microsoft.Office365.OutlookServices.IEvent>();
 
             }
 
@@ -8701,13 +8701,13 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IEvent> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IEvent> _query;
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IEvent> Microsoft.Office365.OutlookServices.IEventFetcher.ExecuteAsync()
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IEvent> global::Microsoft.Office365.OutlookServices.IEventFetcher.ExecuteAsync()
 
         {
 
-            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<Microsoft.Office365.OutlookServices.IEvent>();
+            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<global::Microsoft.Office365.OutlookServices.IEvent>();
 
             tsc.SetResult(this);
 
@@ -8715,27 +8715,27 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IEventFetcher Microsoft.Office365.OutlookServices.IEventFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IEvent, TTarget>> navigationPropertyAccessor)
+        global::Microsoft.Office365.OutlookServices.IEventFetcher global::Microsoft.Office365.OutlookServices.IEventFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IEvent, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IEventFetcher) this;
+            return (global::Microsoft.Office365.OutlookServices.IEventFetcher) this;
 
         }
 
     }
 
-    internal partial class EventFetcher:Microsoft.Office365.OutlookServices.ItemFetcher, Microsoft.Office365.OutlookServices.IEventFetcher
+    internal partial class EventFetcher:global::Microsoft.Office365.OutlookServices.ItemFetcher, global::Microsoft.Office365.OutlookServices.IEventFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.CalendarFetcher _CalendarFetcher;
+        private global::Microsoft.Office365.OutlookServices.CalendarFetcher _CalendarFetcher;
 
-        private Microsoft.Office365.OutlookServices.AttachmentCollection _AttachmentsCollection;
+        private global::Microsoft.Office365.OutlookServices.AttachmentCollection _AttachmentsCollection;
 
-        private Microsoft.Office365.OutlookServices.EventCollection _InstancesCollection;
+        private global::Microsoft.Office365.OutlookServices.EventCollection _InstancesCollection;
 
-        public Microsoft.Office365.OutlookServices.IAttachmentCollection Attachments
+        public global::Microsoft.Office365.OutlookServices.IAttachmentCollection Attachments
 
         {
 
@@ -8747,8 +8747,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._AttachmentsCollection = new Microsoft.Office365.OutlookServices.AttachmentCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Attachment>(GetPath("Attachments")) : null,
+                    this._AttachmentsCollection = new global::Microsoft.Office365.OutlookServices.AttachmentCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Attachment>(GetPath("Attachments")) : null,
                        Context,
                        this,
                        GetPath("Attachments"));
@@ -8763,7 +8763,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.ICalendarFetcher Calendar
+        public global::Microsoft.Office365.OutlookServices.ICalendarFetcher Calendar
 
         {
 
@@ -8775,7 +8775,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._CalendarFetcher = new Microsoft.Office365.OutlookServices.CalendarFetcher();
+                    this._CalendarFetcher = new global::Microsoft.Office365.OutlookServices.CalendarFetcher();
 
                     this._CalendarFetcher.Initialize(this.Context, GetPath("Calendar"));
 
@@ -8789,7 +8789,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IEventCollection Instances
+        public global::Microsoft.Office365.OutlookServices.IEventCollection Instances
 
         {
 
@@ -8801,8 +8801,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._InstancesCollection = new Microsoft.Office365.OutlookServices.EventCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Event>(GetPath("Instances")) : null,
+                    this._InstancesCollection = new global::Microsoft.Office365.OutlookServices.EventCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Event>(GetPath("Instances")) : null,
                        Context,
                        this,
                        GetPath("Instances"));
@@ -8837,7 +8837,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Accept");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Accept");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -8865,7 +8865,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Decline");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Decline");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -8893,7 +8893,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/TentativelyAccept");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.TentativelyAccept");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -8907,7 +8907,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IEvent> ExecuteAsync()
+        public async global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IEvent> ExecuteAsync()
 
         {
 
@@ -8915,11 +8915,11 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IEventFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IEvent, TTarget>> navigationPropertyAccessor)
+        public global::Microsoft.Office365.OutlookServices.IEventFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IEvent, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IEventFetcher) new Microsoft.Office365.OutlookServices.EventFetcher()
+            return (global::Microsoft.Office365.OutlookServices.IEventFetcher) new global::Microsoft.Office365.OutlookServices.EventFetcher()
 
             {
 
@@ -8931,7 +8931,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IEvent> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IEvent> EnsureQuery()
 
         {
 
@@ -8939,7 +8939,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Event, Microsoft.Office365.OutlookServices.IEvent>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.Event, global::Microsoft.Office365.OutlookServices.IEvent>();
 
             }
 
@@ -8949,11 +8949,11 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IEvent> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IEvent> _query;
 
     }
 
-    internal partial class EventCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IEvent>, Microsoft.Office365.OutlookServices.IEventCollection
+    internal partial class EventCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.IEvent>, global::Microsoft.Office365.OutlookServices.IEventCollection
 
     {
 
@@ -8963,7 +8963,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IEventFetcher GetById(System.String id)
+        public global::Microsoft.Office365.OutlookServices.IEventFetcher GetById(System.String id)
 
         {
 
@@ -8971,7 +8971,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEvent>> ExecuteAsync()
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEvent>> ExecuteAsync()
 
         {
 
@@ -8979,15 +8979,15 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task AddEventAsync(Microsoft.Office365.OutlookServices.IEvent item, System.Boolean dontSave = false)
+        public global::System.Threading.Tasks.Task AddEventAsync(global::Microsoft.Office365.OutlookServices.IEvent item, System.Boolean deferSaveChanges = false)
 
         {
 
-            if (_entity == null)
+            if (Entity == null)
 
             {
 
-                Context.AddObject(_path, item);
+                Context.AddObject(Path, item);
 
             }
 
@@ -8995,15 +8995,15 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var lastSlash = _path.LastIndexOf('/');
+                var lastSlash = Path.LastIndexOf('/');
 
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
 
-                Context.AddRelatedObject(_entity, shortPath, item);
+                Context.AddRelatedObject(Entity, shortPath, item);
 
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
 
             {
 
@@ -9025,7 +9025,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IEventFetcher this[System.String id]
+        public global::Microsoft.Office365.OutlookServices.IEventFetcher this[System.String id]
 
         {
 
@@ -9033,9 +9033,9 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var path = GetPath<Microsoft.Office365.OutlookServices.Event>((i) => i.Id == id);
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.Event>((i) => i.Id == id);
 
-                var fetcher = new Microsoft.Office365.OutlookServices.EventFetcher();
+                var fetcher = new global::Microsoft.Office365.OutlookServices.EventFetcher();
 
                 fetcher.Initialize(Context, path);
 
@@ -9057,7 +9057,7 @@ namespace Microsoft.Office365.OutlookServices
 
         {
 
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
 
         }
 
@@ -9065,7 +9065,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [global::Microsoft.OData.Client.Key("Id")]
 
-    public partial class Contact:Microsoft.Office365.OutlookServices.Item, Microsoft.Office365.OutlookServices.IContact, Microsoft.Office365.OutlookServices.IContactFetcher
+    public partial class Contact:global::Microsoft.Office365.OutlookServices.Item, global::Microsoft.Office365.OutlookServices.IContact, global::Microsoft.Office365.OutlookServices.IContactFetcher
 
     {
 
@@ -9091,7 +9091,7 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.String _Generation;
 
-        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.EmailAddress> _EmailAddresses;
+        private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.EmailAddress> _EmailAddresses;
 
         private Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<System.String> _ImAddresses;
 
@@ -9117,11 +9117,11 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.String _MobilePhone1;
 
-        private Microsoft.Office365.OutlookServices.PhysicalAddress _HomeAddress;
+        private global::Microsoft.Office365.OutlookServices.PhysicalAddress _HomeAddress;
 
-        private Microsoft.Office365.OutlookServices.PhysicalAddress _BusinessAddress;
+        private global::Microsoft.Office365.OutlookServices.PhysicalAddress _BusinessAddress;
 
-        private Microsoft.Office365.OutlookServices.PhysicalAddress _OtherAddress;
+        private global::Microsoft.Office365.OutlookServices.PhysicalAddress _OtherAddress;
 
         private System.String _YomiCompanyName;
 
@@ -9459,7 +9459,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.EmailAddress> EmailAddresses
+        public System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.EmailAddress> EmailAddresses
 
         {
 
@@ -9467,11 +9467,11 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (this._EmailAddresses == default(System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.EmailAddress>))
+                if (this._EmailAddresses == default(System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.EmailAddress>))
 
                 {
 
-                    this._EmailAddresses = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<Microsoft.Office365.OutlookServices.EmailAddress>();
+                    this._EmailAddresses = new Microsoft.OData.ProxyExtensions.NonEntityTypeCollectionImpl<global::Microsoft.Office365.OutlookServices.EmailAddress>();
 
                     this._EmailAddresses.SetContainer(() => GetContainingEntity("EmailAddresses"));
 
@@ -9913,7 +9913,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.PhysicalAddress HomeAddress
+        public global::Microsoft.Office365.OutlookServices.PhysicalAddress HomeAddress
 
         {
 
@@ -9943,7 +9943,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.PhysicalAddress BusinessAddress
+        public global::Microsoft.Office365.OutlookServices.PhysicalAddress BusinessAddress
 
         {
 
@@ -9973,7 +9973,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.PhysicalAddress OtherAddress
+        public global::Microsoft.Office365.OutlookServices.PhysicalAddress OtherAddress
 
         {
 
@@ -10099,7 +10099,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IContact> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IContact> EnsureQuery()
 
         {
 
@@ -10107,7 +10107,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Contact, Microsoft.Office365.OutlookServices.IContact>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.Contact, global::Microsoft.Office365.OutlookServices.IContact>();
 
             }
 
@@ -10117,13 +10117,13 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IContact> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IContact> _query;
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IContact> Microsoft.Office365.OutlookServices.IContactFetcher.ExecuteAsync()
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IContact> global::Microsoft.Office365.OutlookServices.IContactFetcher.ExecuteAsync()
 
         {
 
-            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<Microsoft.Office365.OutlookServices.IContact>();
+            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<global::Microsoft.Office365.OutlookServices.IContact>();
 
             tsc.SetResult(this);
 
@@ -10131,17 +10131,17 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IContactFetcher Microsoft.Office365.OutlookServices.IContactFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IContact, TTarget>> navigationPropertyAccessor)
+        global::Microsoft.Office365.OutlookServices.IContactFetcher global::Microsoft.Office365.OutlookServices.IContactFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IContact, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IContactFetcher) this;
+            return (global::Microsoft.Office365.OutlookServices.IContactFetcher) this;
 
         }
 
     }
 
-    internal partial class ContactFetcher:Microsoft.Office365.OutlookServices.ItemFetcher, Microsoft.Office365.OutlookServices.IContactFetcher
+    internal partial class ContactFetcher:global::Microsoft.Office365.OutlookServices.ItemFetcher, global::Microsoft.Office365.OutlookServices.IContactFetcher
 
     {
 
@@ -10151,7 +10151,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IContact> ExecuteAsync()
+        public async global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IContact> ExecuteAsync()
 
         {
 
@@ -10159,11 +10159,11 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IContactFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IContact, TTarget>> navigationPropertyAccessor)
+        public global::Microsoft.Office365.OutlookServices.IContactFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IContact, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IContactFetcher) new Microsoft.Office365.OutlookServices.ContactFetcher()
+            return (global::Microsoft.Office365.OutlookServices.IContactFetcher) new global::Microsoft.Office365.OutlookServices.ContactFetcher()
 
             {
 
@@ -10175,7 +10175,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IContact> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IContact> EnsureQuery()
 
         {
 
@@ -10183,7 +10183,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.Contact, Microsoft.Office365.OutlookServices.IContact>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.Contact, global::Microsoft.Office365.OutlookServices.IContact>();
 
             }
 
@@ -10193,11 +10193,11 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IContact> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IContact> _query;
 
     }
 
-    internal partial class ContactCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IContact>, Microsoft.Office365.OutlookServices.IContactCollection
+    internal partial class ContactCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.IContact>, global::Microsoft.Office365.OutlookServices.IContactCollection
 
     {
 
@@ -10207,7 +10207,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IContactFetcher GetById(System.String id)
+        public global::Microsoft.Office365.OutlookServices.IContactFetcher GetById(System.String id)
 
         {
 
@@ -10215,7 +10215,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IContact>> ExecuteAsync()
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IContact>> ExecuteAsync()
 
         {
 
@@ -10223,15 +10223,15 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task AddContactAsync(Microsoft.Office365.OutlookServices.IContact item, System.Boolean dontSave = false)
+        public global::System.Threading.Tasks.Task AddContactAsync(global::Microsoft.Office365.OutlookServices.IContact item, System.Boolean deferSaveChanges = false)
 
         {
 
-            if (_entity == null)
+            if (Entity == null)
 
             {
 
-                Context.AddObject(_path, item);
+                Context.AddObject(Path, item);
 
             }
 
@@ -10239,15 +10239,15 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var lastSlash = _path.LastIndexOf('/');
+                var lastSlash = Path.LastIndexOf('/');
 
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
 
-                Context.AddRelatedObject(_entity, shortPath, item);
+                Context.AddRelatedObject(Entity, shortPath, item);
 
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
 
             {
 
@@ -10269,7 +10269,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IContactFetcher this[System.String id]
+        public global::Microsoft.Office365.OutlookServices.IContactFetcher this[System.String id]
 
         {
 
@@ -10277,9 +10277,9 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var path = GetPath<Microsoft.Office365.OutlookServices.Contact>((i) => i.Id == id);
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.Contact>((i) => i.Id == id);
 
-                var fetcher = new Microsoft.Office365.OutlookServices.ContactFetcher();
+                var fetcher = new global::Microsoft.Office365.OutlookServices.ContactFetcher();
 
                 fetcher.Initialize(Context, path);
 
@@ -10301,7 +10301,7 @@ namespace Microsoft.Office365.OutlookServices
 
         {
 
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
 
         }
 
@@ -10309,21 +10309,21 @@ namespace Microsoft.Office365.OutlookServices
 
     [global::Microsoft.OData.Client.Key("Id")]
 
-    public partial class ContactFolder:Microsoft.Office365.OutlookServices.Entity, Microsoft.Office365.OutlookServices.IContactFolder, Microsoft.Office365.OutlookServices.IContactFolderFetcher
+    public partial class ContactFolder:global::Microsoft.Office365.OutlookServices.Entity, global::Microsoft.Office365.OutlookServices.IContactFolder, global::Microsoft.Office365.OutlookServices.IContactFolderFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.ContactCollection _ContactsCollection;
+        private global::Microsoft.Office365.OutlookServices.ContactCollection _ContactsCollection;
 
-        private Microsoft.Office365.OutlookServices.ContactFolderCollection _ChildFoldersCollection;
+        private global::Microsoft.Office365.OutlookServices.ContactFolderCollection _ChildFoldersCollection;
 
         private System.String _ParentFolderId;
 
         private System.String _DisplayName;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Contact> _ContactsConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Contact> _ContactsConcrete;
 
-        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.ContactFolder> _ChildFoldersConcrete;
+        private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.ContactFolder> _ChildFoldersConcrete;
 
         public System.String ParentFolderId
 
@@ -10385,7 +10385,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IContact> Microsoft.Office365.OutlookServices.IContactFolder.Contacts
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IContact> global::Microsoft.Office365.OutlookServices.IContactFolder.Contacts
 
         {
 
@@ -10393,13 +10393,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IContact, Microsoft.Office365.OutlookServices.Contact>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.Contact>) Contacts);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IContact, global::Microsoft.Office365.OutlookServices.Contact>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.Contact>) Contacts);
 
             }
 
         }
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IContactFolder> Microsoft.Office365.OutlookServices.IContactFolder.ChildFolders
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IContactFolder> global::Microsoft.Office365.OutlookServices.IContactFolder.ChildFolders
 
         {
 
@@ -10407,13 +10407,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return new Microsoft.OData.ProxyExtensions.PagedCollection<Microsoft.Office365.OutlookServices.IContactFolder, Microsoft.Office365.OutlookServices.ContactFolder>(Context, (DataServiceCollection<Microsoft.Office365.OutlookServices.ContactFolder>) ChildFolders);
+                return new Microsoft.OData.ProxyExtensions.PagedCollection<global::Microsoft.Office365.OutlookServices.IContactFolder, global::Microsoft.Office365.OutlookServices.ContactFolder>(Context, (DataServiceCollection<global::Microsoft.Office365.OutlookServices.ContactFolder>) ChildFolders);
 
             }
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Contact> Contacts
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Contact> Contacts
 
         {
 
@@ -10425,7 +10425,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ContactsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.Contact>();
+                    this._ContactsConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Contact>();
 
                     this._ContactsConcrete.SetContainer(() => GetContainingEntity("Contacts"));
 
@@ -10433,7 +10433,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Contact>)this._ContactsConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Contact>)this._ContactsConcrete;
 
             }
 
@@ -10465,7 +10465,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.ContactFolder> ChildFolders
+        public global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.ContactFolder> ChildFolders
 
         {
 
@@ -10477,7 +10477,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ChildFoldersConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<Microsoft.Office365.OutlookServices.ContactFolder>();
+                    this._ChildFoldersConcrete = new Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.ContactFolder>();
 
                     this._ChildFoldersConcrete.SetContainer(() => GetContainingEntity("ChildFolders"));
 
@@ -10485,7 +10485,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 
 
-                return (global::System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.ContactFolder>)this._ChildFoldersConcrete;
+                return (global::System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.ContactFolder>)this._ChildFoldersConcrete;
 
             }
 
@@ -10517,7 +10517,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IContactCollection Microsoft.Office365.OutlookServices.IContactFolderFetcher.Contacts
+        global::Microsoft.Office365.OutlookServices.IContactCollection global::Microsoft.Office365.OutlookServices.IContactFolderFetcher.Contacts
 
         {
 
@@ -10529,8 +10529,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ContactsCollection = new Microsoft.Office365.OutlookServices.ContactCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Contact>(GetPath("Contacts")) : null,
+                    this._ContactsCollection = new global::Microsoft.Office365.OutlookServices.ContactCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Contact>(GetPath("Contacts")) : null,
                        Context,
                        this,
                        GetPath("Contacts"));
@@ -10545,7 +10545,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IContactFolderCollection Microsoft.Office365.OutlookServices.IContactFolderFetcher.ChildFolders
+        global::Microsoft.Office365.OutlookServices.IContactFolderCollection global::Microsoft.Office365.OutlookServices.IContactFolderFetcher.ChildFolders
 
         {
 
@@ -10557,8 +10557,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ChildFoldersCollection = new Microsoft.Office365.OutlookServices.ContactFolderCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.ContactFolder>(GetPath("ChildFolders")) : null,
+                    this._ChildFoldersCollection = new global::Microsoft.Office365.OutlookServices.ContactFolderCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.ContactFolder>(GetPath("ChildFolders")) : null,
                        Context,
                        this,
                        GetPath("ChildFolders"));
@@ -10579,7 +10579,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IContactFolder> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IContactFolder> EnsureQuery()
 
         {
 
@@ -10587,7 +10587,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.ContactFolder, Microsoft.Office365.OutlookServices.IContactFolder>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.ContactFolder, global::Microsoft.Office365.OutlookServices.IContactFolder>();
 
             }
 
@@ -10597,13 +10597,13 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IContactFolder> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IContactFolder> _query;
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IContactFolder> Microsoft.Office365.OutlookServices.IContactFolderFetcher.ExecuteAsync()
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IContactFolder> global::Microsoft.Office365.OutlookServices.IContactFolderFetcher.ExecuteAsync()
 
         {
 
-            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<Microsoft.Office365.OutlookServices.IContactFolder>();
+            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<global::Microsoft.Office365.OutlookServices.IContactFolder>();
 
             tsc.SetResult(this);
 
@@ -10611,25 +10611,25 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        Microsoft.Office365.OutlookServices.IContactFolderFetcher Microsoft.Office365.OutlookServices.IContactFolderFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IContactFolder, TTarget>> navigationPropertyAccessor)
+        global::Microsoft.Office365.OutlookServices.IContactFolderFetcher global::Microsoft.Office365.OutlookServices.IContactFolderFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IContactFolder, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IContactFolderFetcher) this;
+            return (global::Microsoft.Office365.OutlookServices.IContactFolderFetcher) this;
 
         }
 
     }
 
-    internal partial class ContactFolderFetcher:Microsoft.Office365.OutlookServices.EntityFetcher, Microsoft.Office365.OutlookServices.IContactFolderFetcher
+    internal partial class ContactFolderFetcher:global::Microsoft.Office365.OutlookServices.EntityFetcher, global::Microsoft.Office365.OutlookServices.IContactFolderFetcher
 
     {
 
-        private Microsoft.Office365.OutlookServices.ContactCollection _ContactsCollection;
+        private global::Microsoft.Office365.OutlookServices.ContactCollection _ContactsCollection;
 
-        private Microsoft.Office365.OutlookServices.ContactFolderCollection _ChildFoldersCollection;
+        private global::Microsoft.Office365.OutlookServices.ContactFolderCollection _ChildFoldersCollection;
 
-        public Microsoft.Office365.OutlookServices.IContactCollection Contacts
+        public global::Microsoft.Office365.OutlookServices.IContactCollection Contacts
 
         {
 
@@ -10641,8 +10641,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ContactsCollection = new Microsoft.Office365.OutlookServices.ContactCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.Contact>(GetPath("Contacts")) : null,
+                    this._ContactsCollection = new global::Microsoft.Office365.OutlookServices.ContactCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.Contact>(GetPath("Contacts")) : null,
                        Context,
                        this,
                        GetPath("Contacts"));
@@ -10657,7 +10657,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IContactFolderCollection ChildFolders
+        public global::Microsoft.Office365.OutlookServices.IContactFolderCollection ChildFolders
 
         {
 
@@ -10669,8 +10669,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._ChildFoldersCollection = new Microsoft.Office365.OutlookServices.ContactFolderCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.ContactFolder>(GetPath("ChildFolders")) : null,
+                    this._ChildFoldersCollection = new global::Microsoft.Office365.OutlookServices.ContactFolderCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.ContactFolder>(GetPath("ChildFolders")) : null,
                        Context,
                        this,
                        GetPath("ChildFolders"));
@@ -10691,7 +10691,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public async global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IContactFolder> ExecuteAsync()
+        public async global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IContactFolder> ExecuteAsync()
 
         {
 
@@ -10699,11 +10699,11 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IContactFolderFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IContactFolder, TTarget>> navigationPropertyAccessor)
+        public global::Microsoft.Office365.OutlookServices.IContactFolderFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IContactFolder, TTarget>> navigationPropertyAccessor)
 
         {
 
-            return (Microsoft.Office365.OutlookServices.IContactFolderFetcher) new Microsoft.Office365.OutlookServices.ContactFolderFetcher()
+            return (global::Microsoft.Office365.OutlookServices.IContactFolderFetcher) new global::Microsoft.Office365.OutlookServices.ContactFolderFetcher()
 
             {
 
@@ -10715,7 +10715,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IContactFolder> EnsureQuery()
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IContactFolder> EnsureQuery()
 
         {
 
@@ -10723,7 +10723,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._query = CreateQuery<Microsoft.Office365.OutlookServices.ContactFolder, Microsoft.Office365.OutlookServices.IContactFolder>();
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.ContactFolder, global::Microsoft.Office365.OutlookServices.IContactFolder>();
 
             }
 
@@ -10733,11 +10733,11 @@ namespace Microsoft.Office365.OutlookServices
 
         
 
-        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<Microsoft.Office365.OutlookServices.IContactFolder> _query;
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IContactFolder> _query;
 
     }
 
-    internal partial class ContactFolderCollection:Microsoft.OData.ProxyExtensions.QueryableSet<Microsoft.Office365.OutlookServices.IContactFolder>, Microsoft.Office365.OutlookServices.IContactFolderCollection
+    internal partial class ContactFolderCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.IContactFolder>, global::Microsoft.Office365.OutlookServices.IContactFolderCollection
 
     {
 
@@ -10747,7 +10747,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IContactFolderFetcher GetById(System.String id)
+        public global::Microsoft.Office365.OutlookServices.IContactFolderFetcher GetById(System.String id)
 
         {
 
@@ -10755,7 +10755,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IContactFolder>> ExecuteAsync()
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IContactFolder>> ExecuteAsync()
 
         {
 
@@ -10763,15 +10763,15 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public global::System.Threading.Tasks.Task AddContactFolderAsync(Microsoft.Office365.OutlookServices.IContactFolder item, System.Boolean dontSave = false)
+        public global::System.Threading.Tasks.Task AddContactFolderAsync(global::Microsoft.Office365.OutlookServices.IContactFolder item, System.Boolean deferSaveChanges = false)
 
         {
 
-            if (_entity == null)
+            if (Entity == null)
 
             {
 
-                Context.AddObject(_path, item);
+                Context.AddObject(Path, item);
 
             }
 
@@ -10779,15 +10779,15 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var lastSlash = _path.LastIndexOf('/');
+                var lastSlash = Path.LastIndexOf('/');
 
-                var shortPath = (lastSlash >= 0 && lastSlash < _path.Length - 1) ? _path.Substring(lastSlash + 1) : _path;
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
 
-                Context.AddRelatedObject(_entity, shortPath, item);
+                Context.AddRelatedObject(Entity, shortPath, item);
 
             }
 
-            if (!dontSave)
+            if (!deferSaveChanges)
 
             {
 
@@ -10809,7 +10809,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IContactFolderFetcher this[System.String id]
+        public global::Microsoft.Office365.OutlookServices.IContactFolderFetcher this[System.String id]
 
         {
 
@@ -10817,9 +10817,9 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                var path = GetPath<Microsoft.Office365.OutlookServices.ContactFolder>((i) => i.Id == id);
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.ContactFolder>((i) => i.Id == id);
 
-                var fetcher = new Microsoft.Office365.OutlookServices.ContactFolderFetcher();
+                var fetcher = new global::Microsoft.Office365.OutlookServices.ContactFolderFetcher();
 
                 fetcher.Initialize(Context, path);
 
@@ -10841,23 +10841,23 @@ namespace Microsoft.Office365.OutlookServices
 
         {
 
-            return new DataServiceQuerySingle<long>(Context, _path + "/$count").GetValueAsync();
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
 
         }
 
     }
 
-    public partial class OutlookServicesClient:Microsoft.Office365.OutlookServices.IOutlookServicesClient
+    public partial class OutlookServicesClient:global::Microsoft.Office365.OutlookServices.IOutlookServicesClient
 
     {
 
         private const System.String _path = "";
 
-        private Microsoft.Office365.OutlookServices.UserFetcher _MeFetcher;
+        private global::Microsoft.Office365.OutlookServices.UserFetcher _MeFetcher;
 
-        private Microsoft.Office365.OutlookServices.UserCollection _UsersCollection;
+        private global::Microsoft.Office365.OutlookServices.UserCollection _UsersCollection;
 
-        public Microsoft.Office365.OutlookServices.IUserCollection Users
+        public global::Microsoft.Office365.OutlookServices.IUserCollection Users
 
         {
 
@@ -10869,8 +10869,8 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._UsersCollection = new Microsoft.Office365.OutlookServices.UserCollection(
-                       Context != null ? Context.CreateQuery<Microsoft.Office365.OutlookServices.User>(GetPath("Users")) : null,
+                    this._UsersCollection = new global::Microsoft.Office365.OutlookServices.UserCollection(
+                       Context != null ? Context.CreateQuery<global::Microsoft.Office365.OutlookServices.User>(GetPath("Users")) : null,
                        Context,
                        this,
                        GetPath("Users"));
@@ -10885,7 +10885,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Microsoft.Office365.OutlookServices.IUserFetcher Me
+        public global::Microsoft.Office365.OutlookServices.IUserFetcher Me
 
         {
 
@@ -10897,7 +10897,7 @@ namespace Microsoft.Office365.OutlookServices
 
                 {
 
-                    this._MeFetcher = new Microsoft.Office365.OutlookServices.UserFetcher();
+                    this._MeFetcher = new global::Microsoft.Office365.OutlookServices.UserFetcher();
 
                     this._MeFetcher.Initialize(this.Context, GetPath("Me"));
 
@@ -10913,7 +10913,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                this._MeFetcher = (Microsoft.Office365.OutlookServices.UserFetcher)value;
+                this._MeFetcher = (global::Microsoft.Office365.OutlookServices.UserFetcher)value;
 
             }
 
@@ -10945,7 +10945,7 @@ namespace Microsoft.Office365.OutlookServices
 
         partial void OnContextCreated();
 
-        public void AddToUsers(Microsoft.Office365.OutlookServices.IUser users)
+        public void AddToUsers(global::Microsoft.Office365.OutlookServices.IUser users)
 
         {
 
@@ -10979,7 +10979,7 @@ namespace Microsoft.Office365.OutlookServices
 
             string resolvedType;
 
-            resolvedType = Context.DefaultResolveNameInternal(clientType,  "Microsoft.OutlookServices", "Microsoft.Office365.OutlookServices");
+            resolvedType = Context.DefaultResolveNameInternal(clientType, "Microsoft.OutlookServices", "Microsoft.Office365.OutlookServices");
 
             if (!string.IsNullOrEmpty(resolvedType))
 
@@ -11768,17 +11768,17 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IEntityCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IEntity>
+    public partial interface IEntityCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.IEntity>
 
     {
 
-        Microsoft.Office365.OutlookServices.IEntityFetcher GetById(System.String id);
+        global::Microsoft.Office365.OutlookServices.IEntityFetcher GetById(System.String id);
 
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEntity>> ExecuteAsync();
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEntity>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddEntityAsync(Microsoft.Office365.OutlookServices.IEntity item, System.Boolean dontSave = false);
+        global::System.Threading.Tasks.Task AddEntityAsync(global::Microsoft.Office365.OutlookServices.IEntity item, System.Boolean deferSaveChanges = false);
 
-         Microsoft.Office365.OutlookServices.IEntityFetcher this[System.String id]
+         global::Microsoft.Office365.OutlookServices.IEntityFetcher this[System.String id]
 
         {get;}
 
@@ -11794,7 +11794,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IAttachment:Microsoft.Office365.OutlookServices.IEntity
+    public partial interface IAttachment:global::Microsoft.Office365.OutlookServices.IEntity
 
     {
 
@@ -11817,7 +11817,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IAttachmentFetcher:Microsoft.Office365.OutlookServices.IEntityFetcher
+    public partial interface IAttachmentFetcher:global::Microsoft.Office365.OutlookServices.IEntityFetcher
 
     {
 
@@ -11825,17 +11825,17 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IAttachmentCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IAttachment>
+    public partial interface IAttachmentCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.IAttachment>
 
     {
 
-        Microsoft.Office365.OutlookServices.IAttachmentFetcher GetById(System.String id);
+        global::Microsoft.Office365.OutlookServices.IAttachmentFetcher GetById(System.String id);
 
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IAttachment>> ExecuteAsync();
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IAttachment>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddAttachmentAsync(Microsoft.Office365.OutlookServices.IAttachment item, System.Boolean dontSave = false);
+        global::System.Threading.Tasks.Task AddAttachmentAsync(global::Microsoft.Office365.OutlookServices.IAttachment item, System.Boolean deferSaveChanges = false);
 
-         Microsoft.Office365.OutlookServices.IAttachmentFetcher this[System.String id]
+         global::Microsoft.Office365.OutlookServices.IAttachmentFetcher this[System.String id]
 
         {get;}
 
@@ -11851,7 +11851,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IItem:Microsoft.Office365.OutlookServices.IEntity
+    public partial interface IItem:global::Microsoft.Office365.OutlookServices.IEntity
 
     {
 
@@ -11871,7 +11871,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IItemFetcher:Microsoft.Office365.OutlookServices.IEntityFetcher
+    public partial interface IItemFetcher:global::Microsoft.Office365.OutlookServices.IEntityFetcher
 
     {
 
@@ -11879,17 +11879,17 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IItemCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IItem>
+    public partial interface IItemCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.IItem>
 
     {
 
-        Microsoft.Office365.OutlookServices.IItemFetcher GetById(System.String id);
+        global::Microsoft.Office365.OutlookServices.IItemFetcher GetById(System.String id);
 
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IItem>> ExecuteAsync();
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IItem>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddItemAsync(Microsoft.Office365.OutlookServices.IItem item, System.Boolean dontSave = false);
+        global::System.Threading.Tasks.Task AddItemAsync(global::Microsoft.Office365.OutlookServices.IItem item, System.Boolean deferSaveChanges = false);
 
-         Microsoft.Office365.OutlookServices.IItemFetcher this[System.String id]
+         global::Microsoft.Office365.OutlookServices.IItemFetcher this[System.String id]
 
         {get;}
 
@@ -11905,7 +11905,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IUser:Microsoft.Office365.OutlookServices.IEntity
+    public partial interface IUser:global::Microsoft.Office365.OutlookServices.IEntity
 
     {
 
@@ -11918,97 +11918,97 @@ namespace Microsoft.Office365.OutlookServices
         System.Nullable<System.Guid> MailboxGuid
         {get;set;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IFolder> Folders
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IFolder> Folders
         {get;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IMessage> Messages
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IMessage> Messages
         {get;}
 
-        Microsoft.Office365.OutlookServices.IFolder RootFolder
+        global::Microsoft.Office365.OutlookServices.IFolder RootFolder
         {get;set;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.ICalendar> Calendars
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.ICalendar> Calendars
         {get;}
 
-        Microsoft.Office365.OutlookServices.ICalendar Calendar
+        global::Microsoft.Office365.OutlookServices.ICalendar Calendar
         {get;set;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.ICalendarGroup> CalendarGroups
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.ICalendarGroup> CalendarGroups
         {get;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEvent> Events
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEvent> Events
         {get;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEvent> CalendarView
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEvent> CalendarView
         {get;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IContact> Contacts
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IContact> Contacts
         {get;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IContactFolder> ContactFolders
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IContactFolder> ContactFolders
         {get;}
 
-        System.Threading.Tasks.Task SendMailAsync(Microsoft.Office365.OutlookServices.IMessage Message, System.Nullable<System.Boolean> SaveToSentItems);
+        System.Threading.Tasks.Task SendMailAsync(global::Microsoft.Office365.OutlookServices.IMessage Message, System.Nullable<System.Boolean> SaveToSentItems);
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IUserFetcher:Microsoft.Office365.OutlookServices.IEntityFetcher
+    public partial interface IUserFetcher:global::Microsoft.Office365.OutlookServices.IEntityFetcher
 
     {
 
-        Microsoft.Office365.OutlookServices.IFolderCollection Folders
+        global::Microsoft.Office365.OutlookServices.IFolderCollection Folders
         {get;}
 
-        Microsoft.Office365.OutlookServices.IMessageCollection Messages
+        global::Microsoft.Office365.OutlookServices.IMessageCollection Messages
         {get;}
 
-        Microsoft.Office365.OutlookServices.IFolderFetcher RootFolder
+        global::Microsoft.Office365.OutlookServices.IFolderFetcher RootFolder
         {get;}
 
-        Microsoft.Office365.OutlookServices.ICalendarCollection Calendars
+        global::Microsoft.Office365.OutlookServices.ICalendarCollection Calendars
         {get;}
 
-        Microsoft.Office365.OutlookServices.ICalendarFetcher Calendar
+        global::Microsoft.Office365.OutlookServices.ICalendarFetcher Calendar
         {get;}
 
-        Microsoft.Office365.OutlookServices.ICalendarGroupCollection CalendarGroups
+        global::Microsoft.Office365.OutlookServices.ICalendarGroupCollection CalendarGroups
         {get;}
 
-        Microsoft.Office365.OutlookServices.IEventCollection Events
+        global::Microsoft.Office365.OutlookServices.IEventCollection Events
         {get;}
 
-        Microsoft.Office365.OutlookServices.IEventCollection CalendarView
+        global::Microsoft.Office365.OutlookServices.IEventCollection CalendarView
         {get;}
 
-        Microsoft.Office365.OutlookServices.IContactCollection Contacts
+        global::Microsoft.Office365.OutlookServices.IContactCollection Contacts
         {get;}
 
-        Microsoft.Office365.OutlookServices.IContactFolderCollection ContactFolders
+        global::Microsoft.Office365.OutlookServices.IContactFolderCollection ContactFolders
         {get;}
 
-        System.Threading.Tasks.Task SendMailAsync(Microsoft.Office365.OutlookServices.IMessage Message, System.Nullable<System.Boolean> SaveToSentItems);
+        System.Threading.Tasks.Task SendMailAsync(global::Microsoft.Office365.OutlookServices.IMessage Message, System.Nullable<System.Boolean> SaveToSentItems);
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IUser> ExecuteAsync();
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IUser> ExecuteAsync();
 
-        Microsoft.Office365.OutlookServices.IUserFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IUser, TTarget>> navigationPropertyAccessor);
+        global::Microsoft.Office365.OutlookServices.IUserFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IUser, TTarget>> navigationPropertyAccessor);
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IUserCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IUser>
+    public partial interface IUserCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.IUser>
 
     {
 
-        Microsoft.Office365.OutlookServices.IUserFetcher GetById(System.String id);
+        global::Microsoft.Office365.OutlookServices.IUserFetcher GetById(System.String id);
 
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IUser>> ExecuteAsync();
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IUser>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddUserAsync(Microsoft.Office365.OutlookServices.IUser item, System.Boolean dontSave = false);
+        global::System.Threading.Tasks.Task AddUserAsync(global::Microsoft.Office365.OutlookServices.IUser item, System.Boolean deferSaveChanges = false);
 
-         Microsoft.Office365.OutlookServices.IUserFetcher this[System.String id]
+         global::Microsoft.Office365.OutlookServices.IUserFetcher this[System.String id]
 
         {get;}
 
@@ -12024,7 +12024,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IFolder:Microsoft.Office365.OutlookServices.IEntity
+    public partial interface IFolder:global::Microsoft.Office365.OutlookServices.IEntity
 
     {
 
@@ -12037,53 +12037,53 @@ namespace Microsoft.Office365.OutlookServices
         System.Nullable<System.Int32> ChildFolderCount
         {get;set;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IFolder> ChildFolders
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IFolder> ChildFolders
         {get;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IMessage> Messages
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IMessage> Messages
         {get;}
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFolder> CopyAsync(System.String DestinationId);
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFolder> CopyAsync(System.String DestinationId);
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFolder> MoveAsync(System.String DestinationId);
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFolder> MoveAsync(System.String DestinationId);
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IFolderFetcher:Microsoft.Office365.OutlookServices.IEntityFetcher
+    public partial interface IFolderFetcher:global::Microsoft.Office365.OutlookServices.IEntityFetcher
 
     {
 
-        Microsoft.Office365.OutlookServices.IFolderCollection ChildFolders
+        global::Microsoft.Office365.OutlookServices.IFolderCollection ChildFolders
         {get;}
 
-        Microsoft.Office365.OutlookServices.IMessageCollection Messages
+        global::Microsoft.Office365.OutlookServices.IMessageCollection Messages
         {get;}
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFolder> CopyAsync(System.String DestinationId);
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFolder> CopyAsync(System.String DestinationId);
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFolder> MoveAsync(System.String DestinationId);
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFolder> MoveAsync(System.String DestinationId);
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFolder> ExecuteAsync();
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFolder> ExecuteAsync();
 
-        Microsoft.Office365.OutlookServices.IFolderFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IFolder, TTarget>> navigationPropertyAccessor);
+        global::Microsoft.Office365.OutlookServices.IFolderFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IFolder, TTarget>> navigationPropertyAccessor);
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IFolderCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IFolder>
+    public partial interface IFolderCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.IFolder>
 
     {
 
-        Microsoft.Office365.OutlookServices.IFolderFetcher GetById(System.String id);
+        global::Microsoft.Office365.OutlookServices.IFolderFetcher GetById(System.String id);
 
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IFolder>> ExecuteAsync();
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IFolder>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddFolderAsync(Microsoft.Office365.OutlookServices.IFolder item, System.Boolean dontSave = false);
+        global::System.Threading.Tasks.Task AddFolderAsync(global::Microsoft.Office365.OutlookServices.IFolder item, System.Boolean deferSaveChanges = false);
 
-         Microsoft.Office365.OutlookServices.IFolderFetcher this[System.String id]
+         global::Microsoft.Office365.OutlookServices.IFolderFetcher this[System.String id]
 
         {get;}
 
@@ -12099,20 +12099,20 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IMessage:Microsoft.Office365.OutlookServices.IItem
+    public partial interface IMessage:global::Microsoft.Office365.OutlookServices.IItem
 
     {
 
         System.String Subject
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.ItemBody Body
+        global::Microsoft.Office365.OutlookServices.ItemBody Body
         {get;set;}
 
         System.String BodyPreview
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.Importance Importance
+        global::Microsoft.Office365.OutlookServices.Importance Importance
         {get;set;}
 
         System.Nullable<System.Boolean> HasAttachments
@@ -12121,28 +12121,28 @@ namespace Microsoft.Office365.OutlookServices
         System.String ParentFolderId
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.Recipient From
+        global::Microsoft.Office365.OutlookServices.Recipient From
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.Recipient Sender
+        global::Microsoft.Office365.OutlookServices.Recipient Sender
         {get;set;}
 
-        System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Recipient> ToRecipients
+        System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Recipient> ToRecipients
         {get;set;}
 
-        System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Recipient> CcRecipients
+        System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Recipient> CcRecipients
         {get;set;}
 
-        System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Recipient> BccRecipients
+        System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Recipient> BccRecipients
         {get;set;}
 
-        System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Recipient> ReplyTo
+        System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Recipient> ReplyTo
         {get;set;}
 
         System.String ConversationId
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.ItemBody UniqueBody
+        global::Microsoft.Office365.OutlookServices.ItemBody UniqueBody
         {get;set;}
 
         System.Nullable<System.DateTimeOffset> DateTimeReceived
@@ -12163,24 +12163,24 @@ namespace Microsoft.Office365.OutlookServices
         System.Nullable<System.Boolean> IsRead
         {get;set;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IAttachment> Attachments
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IAttachment> Attachments
         {get;}
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CopyAsync(System.String DestinationId);
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CopyAsync(System.String DestinationId);
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> MoveAsync(System.String DestinationId);
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> MoveAsync(System.String DestinationId);
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CreateReplyAsync();
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CreateReplyAsync();
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CreateReplyAllAsync();
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CreateReplyAllAsync();
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CreateForwardAsync();
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CreateForwardAsync();
 
         System.Threading.Tasks.Task ReplyAsync(System.String Comment);
 
         System.Threading.Tasks.Task ReplyAllAsync(System.String Comment);
 
-        System.Threading.Tasks.Task ForwardAsync(System.String Comment, System.Collections.Generic.ICollection<Microsoft.Office365.OutlookServices.Recipient> ToRecipients);
+        System.Threading.Tasks.Task ForwardAsync(System.String Comment, System.Collections.Generic.ICollection<global::Microsoft.Office365.OutlookServices.Recipient> ToRecipients);
 
         System.Threading.Tasks.Task SendAsync();
 
@@ -12188,50 +12188,50 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IMessageFetcher:Microsoft.Office365.OutlookServices.IItemFetcher
+    public partial interface IMessageFetcher:global::Microsoft.Office365.OutlookServices.IItemFetcher
 
     {
 
-        Microsoft.Office365.OutlookServices.IAttachmentCollection Attachments
+        global::Microsoft.Office365.OutlookServices.IAttachmentCollection Attachments
         {get;}
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CopyAsync(System.String DestinationId);
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CopyAsync(System.String DestinationId);
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> MoveAsync(System.String DestinationId);
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> MoveAsync(System.String DestinationId);
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CreateReplyAsync();
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CreateReplyAsync();
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CreateReplyAllAsync();
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CreateReplyAllAsync();
 
-        System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> CreateForwardAsync();
+        System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> CreateForwardAsync();
 
         System.Threading.Tasks.Task ReplyAsync(System.String Comment);
 
         System.Threading.Tasks.Task ReplyAllAsync(System.String Comment);
 
-        System.Threading.Tasks.Task ForwardAsync(System.String Comment, System.Collections.Generic.ICollection<Microsoft.Office365.OutlookServices.Recipient> ToRecipients);
+        System.Threading.Tasks.Task ForwardAsync(System.String Comment, System.Collections.Generic.ICollection<global::Microsoft.Office365.OutlookServices.Recipient> ToRecipients);
 
         System.Threading.Tasks.Task SendAsync();
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IMessage> ExecuteAsync();
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IMessage> ExecuteAsync();
 
-        Microsoft.Office365.OutlookServices.IMessageFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IMessage, TTarget>> navigationPropertyAccessor);
+        global::Microsoft.Office365.OutlookServices.IMessageFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IMessage, TTarget>> navigationPropertyAccessor);
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IMessageCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IMessage>
+    public partial interface IMessageCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.IMessage>
 
     {
 
-        Microsoft.Office365.OutlookServices.IMessageFetcher GetById(System.String id);
+        global::Microsoft.Office365.OutlookServices.IMessageFetcher GetById(System.String id);
 
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IMessage>> ExecuteAsync();
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IMessage>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddMessageAsync(Microsoft.Office365.OutlookServices.IMessage item, System.Boolean dontSave = false);
+        global::System.Threading.Tasks.Task AddMessageAsync(global::Microsoft.Office365.OutlookServices.IMessage item, System.Boolean deferSaveChanges = false);
 
-         Microsoft.Office365.OutlookServices.IMessageFetcher this[System.String id]
+         global::Microsoft.Office365.OutlookServices.IMessageFetcher this[System.String id]
 
         {get;}
 
@@ -12247,7 +12247,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IFileAttachment:Microsoft.Office365.OutlookServices.IAttachment
+    public partial interface IFileAttachment:global::Microsoft.Office365.OutlookServices.IAttachment
 
     {
 
@@ -12267,29 +12267,29 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IFileAttachmentFetcher:Microsoft.Office365.OutlookServices.IAttachmentFetcher
+    public partial interface IFileAttachmentFetcher:global::Microsoft.Office365.OutlookServices.IAttachmentFetcher
 
     {
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IFileAttachment> ExecuteAsync();
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IFileAttachment> ExecuteAsync();
 
-        Microsoft.Office365.OutlookServices.IFileAttachmentFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IFileAttachment, TTarget>> navigationPropertyAccessor);
+        global::Microsoft.Office365.OutlookServices.IFileAttachmentFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IFileAttachment, TTarget>> navigationPropertyAccessor);
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IFileAttachmentCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IFileAttachment>
+    public partial interface IFileAttachmentCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.IFileAttachment>
 
     {
 
-        Microsoft.Office365.OutlookServices.IFileAttachmentFetcher GetById(System.String id);
+        global::Microsoft.Office365.OutlookServices.IFileAttachmentFetcher GetById(System.String id);
 
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IFileAttachment>> ExecuteAsync();
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IFileAttachment>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddFileAttachmentAsync(Microsoft.Office365.OutlookServices.IFileAttachment item, System.Boolean dontSave = false);
+        global::System.Threading.Tasks.Task AddFileAttachmentAsync(global::Microsoft.Office365.OutlookServices.IFileAttachment item, System.Boolean deferSaveChanges = false);
 
-         Microsoft.Office365.OutlookServices.IFileAttachmentFetcher this[System.String id]
+         global::Microsoft.Office365.OutlookServices.IFileAttachmentFetcher this[System.String id]
 
         {get;}
 
@@ -12305,43 +12305,43 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IItemAttachment:Microsoft.Office365.OutlookServices.IAttachment
+    public partial interface IItemAttachment:global::Microsoft.Office365.OutlookServices.IAttachment
 
     {
 
-        Microsoft.Office365.OutlookServices.IItem Item
+        global::Microsoft.Office365.OutlookServices.IItem Item
         {get;set;}
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IItemAttachmentFetcher:Microsoft.Office365.OutlookServices.IAttachmentFetcher
+    public partial interface IItemAttachmentFetcher:global::Microsoft.Office365.OutlookServices.IAttachmentFetcher
 
     {
 
-        Microsoft.Office365.OutlookServices.IItemFetcher Item
+        global::Microsoft.Office365.OutlookServices.IItemFetcher Item
         {get;}
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IItemAttachment> ExecuteAsync();
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IItemAttachment> ExecuteAsync();
 
-        Microsoft.Office365.OutlookServices.IItemAttachmentFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IItemAttachment, TTarget>> navigationPropertyAccessor);
+        global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IItemAttachment, TTarget>> navigationPropertyAccessor);
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IItemAttachmentCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IItemAttachment>
+    public partial interface IItemAttachmentCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.IItemAttachment>
 
     {
 
-        Microsoft.Office365.OutlookServices.IItemAttachmentFetcher GetById(System.String id);
+        global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher GetById(System.String id);
 
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IItemAttachment>> ExecuteAsync();
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IItemAttachment>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddItemAttachmentAsync(Microsoft.Office365.OutlookServices.IItemAttachment item, System.Boolean dontSave = false);
+        global::System.Threading.Tasks.Task AddItemAttachmentAsync(global::Microsoft.Office365.OutlookServices.IItemAttachment item, System.Boolean deferSaveChanges = false);
 
-         Microsoft.Office365.OutlookServices.IItemAttachmentFetcher this[System.String id]
+         global::Microsoft.Office365.OutlookServices.IItemAttachmentFetcher this[System.String id]
 
         {get;}
 
@@ -12357,7 +12357,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface ICalendar:Microsoft.Office365.OutlookServices.IEntity
+    public partial interface ICalendar:global::Microsoft.Office365.OutlookServices.IEntity
 
     {
 
@@ -12367,45 +12367,45 @@ namespace Microsoft.Office365.OutlookServices
         System.String ChangeKey
         {get;set;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEvent> CalendarView
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEvent> CalendarView
         {get;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEvent> Events
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEvent> Events
         {get;}
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface ICalendarFetcher:Microsoft.Office365.OutlookServices.IEntityFetcher
+    public partial interface ICalendarFetcher:global::Microsoft.Office365.OutlookServices.IEntityFetcher
 
     {
 
-        Microsoft.Office365.OutlookServices.IEventCollection CalendarView
+        global::Microsoft.Office365.OutlookServices.IEventCollection CalendarView
         {get;}
 
-        Microsoft.Office365.OutlookServices.IEventCollection Events
+        global::Microsoft.Office365.OutlookServices.IEventCollection Events
         {get;}
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.ICalendar> ExecuteAsync();
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.ICalendar> ExecuteAsync();
 
-        Microsoft.Office365.OutlookServices.ICalendarFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.ICalendar, TTarget>> navigationPropertyAccessor);
+        global::Microsoft.Office365.OutlookServices.ICalendarFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.ICalendar, TTarget>> navigationPropertyAccessor);
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface ICalendarCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.ICalendar>
+    public partial interface ICalendarCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.ICalendar>
 
     {
 
-        Microsoft.Office365.OutlookServices.ICalendarFetcher GetById(System.String id);
+        global::Microsoft.Office365.OutlookServices.ICalendarFetcher GetById(System.String id);
 
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.ICalendar>> ExecuteAsync();
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.ICalendar>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddCalendarAsync(Microsoft.Office365.OutlookServices.ICalendar item, System.Boolean dontSave = false);
+        global::System.Threading.Tasks.Task AddCalendarAsync(global::Microsoft.Office365.OutlookServices.ICalendar item, System.Boolean deferSaveChanges = false);
 
-         Microsoft.Office365.OutlookServices.ICalendarFetcher this[System.String id]
+         global::Microsoft.Office365.OutlookServices.ICalendarFetcher this[System.String id]
 
         {get;}
 
@@ -12421,7 +12421,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface ICalendarGroup:Microsoft.Office365.OutlookServices.IEntity
+    public partial interface ICalendarGroup:global::Microsoft.Office365.OutlookServices.IEntity
 
     {
 
@@ -12434,39 +12434,39 @@ namespace Microsoft.Office365.OutlookServices
         System.Nullable<System.Guid> ClassId
         {get;set;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.ICalendar> Calendars
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.ICalendar> Calendars
         {get;}
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface ICalendarGroupFetcher:Microsoft.Office365.OutlookServices.IEntityFetcher
+    public partial interface ICalendarGroupFetcher:global::Microsoft.Office365.OutlookServices.IEntityFetcher
 
     {
 
-        Microsoft.Office365.OutlookServices.ICalendarCollection Calendars
+        global::Microsoft.Office365.OutlookServices.ICalendarCollection Calendars
         {get;}
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.ICalendarGroup> ExecuteAsync();
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.ICalendarGroup> ExecuteAsync();
 
-        Microsoft.Office365.OutlookServices.ICalendarGroupFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.ICalendarGroup, TTarget>> navigationPropertyAccessor);
+        global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.ICalendarGroup, TTarget>> navigationPropertyAccessor);
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface ICalendarGroupCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.ICalendarGroup>
+    public partial interface ICalendarGroupCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.ICalendarGroup>
 
     {
 
-        Microsoft.Office365.OutlookServices.ICalendarGroupFetcher GetById(System.String id);
+        global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher GetById(System.String id);
 
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.ICalendarGroup>> ExecuteAsync();
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.ICalendarGroup>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddCalendarGroupAsync(Microsoft.Office365.OutlookServices.ICalendarGroup item, System.Boolean dontSave = false);
+        global::System.Threading.Tasks.Task AddCalendarGroupAsync(global::Microsoft.Office365.OutlookServices.ICalendarGroup item, System.Boolean deferSaveChanges = false);
 
-         Microsoft.Office365.OutlookServices.ICalendarGroupFetcher this[System.String id]
+         global::Microsoft.Office365.OutlookServices.ICalendarGroupFetcher this[System.String id]
 
         {get;}
 
@@ -12482,20 +12482,20 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IEvent:Microsoft.Office365.OutlookServices.IItem
+    public partial interface IEvent:global::Microsoft.Office365.OutlookServices.IItem
 
     {
 
         System.String Subject
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.ItemBody Body
+        global::Microsoft.Office365.OutlookServices.ItemBody Body
         {get;set;}
 
         System.String BodyPreview
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.Importance Importance
+        global::Microsoft.Office365.OutlookServices.Importance Importance
         {get;set;}
 
         System.Nullable<System.Boolean> HasAttachments
@@ -12507,10 +12507,10 @@ namespace Microsoft.Office365.OutlookServices
         System.Nullable<System.DateTimeOffset> End
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.Location Location
+        global::Microsoft.Office365.OutlookServices.Location Location
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.FreeBusyStatus ShowAs
+        global::Microsoft.Office365.OutlookServices.FreeBusyStatus ShowAs
         {get;set;}
 
         System.Nullable<System.Boolean> IsAllDay
@@ -12525,19 +12525,19 @@ namespace Microsoft.Office365.OutlookServices
         System.Nullable<System.Boolean> ResponseRequested
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.EventType Type
+        global::Microsoft.Office365.OutlookServices.EventType Type
         {get;set;}
 
         System.String SeriesMasterId
         {get;set;}
 
-        System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.Attendee> Attendees
+        System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.Attendee> Attendees
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.PatternedRecurrence Recurrence
+        global::Microsoft.Office365.OutlookServices.PatternedRecurrence Recurrence
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.Recipient Organizer
+        global::Microsoft.Office365.OutlookServices.Recipient Organizer
         {get;set;}
 
         System.String StartTimeZone
@@ -12546,13 +12546,13 @@ namespace Microsoft.Office365.OutlookServices
         System.String EndTimeZone
         {get;set;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IAttachment> Attachments
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IAttachment> Attachments
         {get;}
 
-        Microsoft.Office365.OutlookServices.ICalendar Calendar
+        global::Microsoft.Office365.OutlookServices.ICalendar Calendar
         {get;set;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEvent> Instances
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEvent> Instances
         {get;}
 
         System.Threading.Tasks.Task AcceptAsync(System.String Comment);
@@ -12565,17 +12565,17 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IEventFetcher:Microsoft.Office365.OutlookServices.IItemFetcher
+    public partial interface IEventFetcher:global::Microsoft.Office365.OutlookServices.IItemFetcher
 
     {
 
-        Microsoft.Office365.OutlookServices.IAttachmentCollection Attachments
+        global::Microsoft.Office365.OutlookServices.IAttachmentCollection Attachments
         {get;}
 
-        Microsoft.Office365.OutlookServices.ICalendarFetcher Calendar
+        global::Microsoft.Office365.OutlookServices.ICalendarFetcher Calendar
         {get;}
 
-        Microsoft.Office365.OutlookServices.IEventCollection Instances
+        global::Microsoft.Office365.OutlookServices.IEventCollection Instances
         {get;}
 
         System.Threading.Tasks.Task AcceptAsync(System.String Comment);
@@ -12584,25 +12584,25 @@ namespace Microsoft.Office365.OutlookServices
 
         System.Threading.Tasks.Task TentativelyAcceptAsync(System.String Comment);
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IEvent> ExecuteAsync();
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IEvent> ExecuteAsync();
 
-        Microsoft.Office365.OutlookServices.IEventFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IEvent, TTarget>> navigationPropertyAccessor);
+        global::Microsoft.Office365.OutlookServices.IEventFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IEvent, TTarget>> navigationPropertyAccessor);
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IEventCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IEvent>
+    public partial interface IEventCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.IEvent>
 
     {
 
-        Microsoft.Office365.OutlookServices.IEventFetcher GetById(System.String id);
+        global::Microsoft.Office365.OutlookServices.IEventFetcher GetById(System.String id);
 
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IEvent>> ExecuteAsync();
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEvent>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddEventAsync(Microsoft.Office365.OutlookServices.IEvent item, System.Boolean dontSave = false);
+        global::System.Threading.Tasks.Task AddEventAsync(global::Microsoft.Office365.OutlookServices.IEvent item, System.Boolean deferSaveChanges = false);
 
-         Microsoft.Office365.OutlookServices.IEventFetcher this[System.String id]
+         global::Microsoft.Office365.OutlookServices.IEventFetcher this[System.String id]
 
         {get;}
 
@@ -12618,7 +12618,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IContact:Microsoft.Office365.OutlookServices.IItem
+    public partial interface IContact:global::Microsoft.Office365.OutlookServices.IItem
 
     {
 
@@ -12655,7 +12655,7 @@ namespace Microsoft.Office365.OutlookServices
         System.String Generation
         {get;set;}
 
-        System.Collections.Generic.IList<Microsoft.Office365.OutlookServices.EmailAddress> EmailAddresses
+        System.Collections.Generic.IList<global::Microsoft.Office365.OutlookServices.EmailAddress> EmailAddresses
         {get;set;}
 
         System.Collections.Generic.IList<System.String> ImAddresses
@@ -12694,13 +12694,13 @@ namespace Microsoft.Office365.OutlookServices
         System.String MobilePhone1
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.PhysicalAddress HomeAddress
+        global::Microsoft.Office365.OutlookServices.PhysicalAddress HomeAddress
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.PhysicalAddress BusinessAddress
+        global::Microsoft.Office365.OutlookServices.PhysicalAddress BusinessAddress
         {get;set;}
 
-        Microsoft.Office365.OutlookServices.PhysicalAddress OtherAddress
+        global::Microsoft.Office365.OutlookServices.PhysicalAddress OtherAddress
         {get;set;}
 
         System.String YomiCompanyName
@@ -12716,29 +12716,29 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IContactFetcher:Microsoft.Office365.OutlookServices.IItemFetcher
+    public partial interface IContactFetcher:global::Microsoft.Office365.OutlookServices.IItemFetcher
 
     {
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IContact> ExecuteAsync();
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IContact> ExecuteAsync();
 
-        Microsoft.Office365.OutlookServices.IContactFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IContact, TTarget>> navigationPropertyAccessor);
+        global::Microsoft.Office365.OutlookServices.IContactFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IContact, TTarget>> navigationPropertyAccessor);
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IContactCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IContact>
+    public partial interface IContactCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.IContact>
 
     {
 
-        Microsoft.Office365.OutlookServices.IContactFetcher GetById(System.String id);
+        global::Microsoft.Office365.OutlookServices.IContactFetcher GetById(System.String id);
 
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IContact>> ExecuteAsync();
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IContact>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddContactAsync(Microsoft.Office365.OutlookServices.IContact item, System.Boolean dontSave = false);
+        global::System.Threading.Tasks.Task AddContactAsync(global::Microsoft.Office365.OutlookServices.IContact item, System.Boolean deferSaveChanges = false);
 
-         Microsoft.Office365.OutlookServices.IContactFetcher this[System.String id]
+         global::Microsoft.Office365.OutlookServices.IContactFetcher this[System.String id]
 
         {get;}
 
@@ -12754,7 +12754,7 @@ namespace Microsoft.Office365.OutlookServices
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IContactFolder:Microsoft.Office365.OutlookServices.IEntity
+    public partial interface IContactFolder:global::Microsoft.Office365.OutlookServices.IEntity
 
     {
 
@@ -12764,45 +12764,45 @@ namespace Microsoft.Office365.OutlookServices
         System.String DisplayName
         {get;set;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IContact> Contacts
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IContact> Contacts
         {get;}
 
-        Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IContactFolder> ChildFolders
+        Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IContactFolder> ChildFolders
         {get;}
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IContactFolderFetcher:Microsoft.Office365.OutlookServices.IEntityFetcher
+    public partial interface IContactFolderFetcher:global::Microsoft.Office365.OutlookServices.IEntityFetcher
 
     {
 
-        Microsoft.Office365.OutlookServices.IContactCollection Contacts
+        global::Microsoft.Office365.OutlookServices.IContactCollection Contacts
         {get;}
 
-        Microsoft.Office365.OutlookServices.IContactFolderCollection ChildFolders
+        global::Microsoft.Office365.OutlookServices.IContactFolderCollection ChildFolders
         {get;}
 
-        global::System.Threading.Tasks.Task<Microsoft.Office365.OutlookServices.IContactFolder> ExecuteAsync();
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IContactFolder> ExecuteAsync();
 
-        Microsoft.Office365.OutlookServices.IContactFolderFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<Microsoft.Office365.OutlookServices.IContactFolder, TTarget>> navigationPropertyAccessor);
+        global::Microsoft.Office365.OutlookServices.IContactFolderFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IContactFolder, TTarget>> navigationPropertyAccessor);
 
     }
 
     [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
 
-    public partial interface IContactFolderCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<Microsoft.Office365.OutlookServices.IContactFolder>
+    public partial interface IContactFolderCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.IContactFolder>
 
     {
 
-        Microsoft.Office365.OutlookServices.IContactFolderFetcher GetById(System.String id);
+        global::Microsoft.Office365.OutlookServices.IContactFolderFetcher GetById(System.String id);
 
-        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<Microsoft.Office365.OutlookServices.IContactFolder>> ExecuteAsync();
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IContactFolder>> ExecuteAsync();
 
-        global::System.Threading.Tasks.Task AddContactFolderAsync(Microsoft.Office365.OutlookServices.IContactFolder item, System.Boolean dontSave = false);
+        global::System.Threading.Tasks.Task AddContactFolderAsync(global::Microsoft.Office365.OutlookServices.IContactFolder item, System.Boolean deferSaveChanges = false);
 
-         Microsoft.Office365.OutlookServices.IContactFolderFetcher this[System.String id]
+         global::Microsoft.Office365.OutlookServices.IContactFolderFetcher this[System.String id]
 
         {get;}
 
@@ -12820,10 +12820,10 @@ namespace Microsoft.Office365.OutlookServices
 
     {
 
-        Microsoft.Office365.OutlookServices.IUserCollection Users
+        global::Microsoft.Office365.OutlookServices.IUserCollection Users
         {get;}
 
-        Microsoft.Office365.OutlookServices.IUserFetcher Me
+        global::Microsoft.Office365.OutlookServices.IUserFetcher Me
         {get;}
 
     }

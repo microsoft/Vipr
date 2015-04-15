@@ -23,6 +23,9 @@ namespace Vipr
                     !Path.IsPathRooted(filePath))
                     filePath = Path.Combine(Environment.CurrentDirectory, filePath);
 
+                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
                 File.WriteAllText(filePath, file.Contents);
             }
         }

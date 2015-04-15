@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.OData.Client;
 using Microsoft.Spatial;
+using ProxyExtensionsUnitTests.Extensions;
 using Xunit;
 
 namespace ProxyExtensionsUnitTests
@@ -37,7 +38,7 @@ namespace ProxyExtensionsUnitTests
                 prod1.Category = newCategory;
                 // Calling 'OnPropertyChanged' for 'Category'
                 // So 'Category' property must be updated on the server side.
-                prod1.OnPropertyChanged("Category");
+                prod1.CallOnPropertyChanged("Category");
 
                 var productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod1);
                 productFetcher.UpdateAsync(prod1).Wait();
@@ -95,7 +96,7 @@ namespace ProxyExtensionsUnitTests
                 newComment.SetContainer(() => new Tuple<EntityBase, string>(prod3, "Comment"));
 
                 prod3.Comment = newComment;
-                prod3.OnPropertyChanged("Comment");
+                prod3.CallOnPropertyChanged("Comment");
                 var productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod3);
                 productFetcher.UpdateAsync(prod3).Wait();
 
@@ -123,21 +124,21 @@ namespace ProxyExtensionsUnitTests
                 Product prod1 = products.CurrentPage[1] as Product;
                 string newCategory = Any.AlphanumericString();
                 prod1.Category = newCategory;
-                prod1.OnPropertyChanged("Category");
+                prod1.CallOnPropertyChanged("Category");
                 var productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod1);
                 productFetcher.UpdateAsync(prod1, true).Wait();
 
                 Product prod2 = products.CurrentPage[2] as Product;
                 string newName = Any.CompanyName();
                 prod2.Name = newName;
-                prod2.OnPropertyChanged("Name");
+                prod2.CallOnPropertyChanged("Name");
                 productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod2);
                 productFetcher.UpdateAsync(prod2, true).Wait();
 
                 Product prod3 = products.CurrentPage[3] as Product;
                 decimal newPrice = Any.Decimal();
                 prod3.Price = newPrice;
-                prod3.OnPropertyChanged("Price");
+                prod3.CallOnPropertyChanged("Price");
                 productFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, prod3);
                 productFetcher.UpdateAsync(prod3, true).Wait();
 
@@ -197,7 +198,7 @@ namespace ProxyExtensionsUnitTests
                 // lets update the binary primitive property
                 var newBlob = Any.Sequence<byte>(x => Any.Byte()).ToArray();
                 supplier.Blob = newBlob;
-                supplier.OnPropertyChanged("Blob");
+                supplier.CallOnPropertyChanged("Blob");
                 var supplierFetcher = TestRestShallowObjectFetcher.CreateFetcher(context, supplier);
                 supplierFetcher.UpdateAsync(supplier).Wait();
 
@@ -228,7 +229,7 @@ namespace ProxyExtensionsUnitTests
                 // lets update the geospatial primitive property
                 var newLocation = GeographyPoint.Create(Any.Double(-90, 90), Any.Double(-180, 180));
                 supplier.Location = newLocation;
-                supplier.OnPropertyChanged("Location");
+                supplier.CallOnPropertyChanged("Location");
 
                 // Bug - Location is a property of primitive type - "Microsoft.Spatial.GeographyPoint".
                 // Its underlying type is "Microsoft.Data.Spatial.GeographyPointImplementation".
