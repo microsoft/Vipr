@@ -35,7 +35,7 @@ namespace Microsoft.OData.ProxyExtensions
         {
             ThrowIfNotInitialized();
 
-            return new Uri(Context.BaseUri.ToString().TrimEnd('/') + "/" + GetPath(null));
+            return new Uri(Context.BaseUri.ToString().TrimEnd('/') + "/" + GetPath(null).TrimStart('/'));
         }
 
         protected IReadOnlyQueryableSet<TIInstance> CreateQuery<TInstance, TIInstance>()

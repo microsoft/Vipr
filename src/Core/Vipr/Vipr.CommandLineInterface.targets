@@ -12,7 +12,7 @@
     <ViprCommand>$(MSBuildThisFileDirectory)..\Tools\Vipr.exe $(ViprMetadataPath) $(ViprOutputArgument)</ViprCommand>
   </PropertyGroup>
 
-  <Target Name="BeforeBuild">
+  <Target Name="BeforeBuild" Inputs="@ViprMetadataPath" Outputs="$(MSBuildProjectDirectory)CSharpProxy.cs">
     <Exec   Command="$(ViprCommand)"
             LogStandardErrorAsError="true"
             Condition="'$(RunVipr)' == 'true' " />
