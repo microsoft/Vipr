@@ -22,6 +22,11 @@ namespace CSharpWriterUnitTests
             Init();
         }
 
+        protected void Init()
+        {
+            base.Init();
+        }
+
         [Fact]
         public void The_Collection_parses_the_response()
         {
@@ -40,7 +45,7 @@ namespace CSharpWriterUnitTests
             {
                 mockService
                     .OnInvokeMethodRequest("GET",
-                        collectionPath + "/" + Method.FullName,
+                        collectionPath + "/" + ServerMethodNameGenerator(),
                         null,
                         null)
                     .RespondWithGetEntity(TargetEntity.Class.GetDefaultEntitySetName(), response);

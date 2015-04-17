@@ -141,9 +141,16 @@
     <Compile Include="EnumType.cs" />
     <Compile Include="Given_an_Indenter.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Base.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Collection_with_OmitMethodNamespaceInUriPaths.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Instance_with_OmitMethodNamespaceInUriPaths.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Bound_VoidMethod_with_OmitMethodNamespaceInUriPaths.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function_Collection_with_OmitMethodNamespaceInUriPaths.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function_Instance_with_OmitMethodNamespaceInUriPaths.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_VoidMethod_with_OmitMethodNamespaceInUriPaths.cs" />
     <Compile Include="Given_an_OdcmClass_Service_Bound_Function_Collection.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function_Collection.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Collection.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Bound_Function_Collection_with_OmitMethodNamespaceInUriPaths.cs" />
     <Compile Include="Given_an_OdcmClass_Service_Bound_Function_Instance.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function_Instance.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Instance.cs" />
@@ -159,6 +166,8 @@
     <Compile Include="Given_an_OdcmClass_Entity_Navigation_Property_Collection_forced_to_pascal_case.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Navigation_Property_Key_forced_to_pascal_case.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Navigation_Property_Instance_forced_to_pascal_case.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Bound_Function_Instance_with_OmitMethodNamespaceInUriPaths.cs" />
+    <Compile Include="Given_an_OdcmClass_Service_Bound_VoidMethod_with_OmitMethodNamespaceInUriPaths.cs" />
     <Compile Include="Given_an_OdcmClass_Service_Navigation_Property_Collection.cs" />
     <Compile Include="Given_an_OdcmClass_Service_Navigation_Property_Instance.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_VoidMethod.cs" />
@@ -173,6 +182,7 @@
     <Compile Include="Given_an_OdcmClass_Entity_Abstract.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Derived.cs" />
     <Compile Include="Given_a_nullable_Primitive_OdcmProperty.cs" />
+    <Compile Include="Given_OmitMethodNamespaceInUriPaths_configuration_is_true.cs" />
     <Compile Include="Given_well_known_EDMX.cs" />
     <Compile Include="MockServiceExtensions.cs" />
     <Compile Include="NavigationPropertyTestBase.cs" />

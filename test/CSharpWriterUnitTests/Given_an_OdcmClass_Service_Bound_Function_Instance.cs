@@ -14,7 +14,7 @@ namespace CSharpWriterUnitTests
 {
     public class Given_an_OdcmClass_Service_Bound_Function_Instance : Given_an_OdcmClass_Service_Bound_Function_Base
     {
-        public Given_an_OdcmClass_Service_Bound_Function_Instance()
+        public Given_an_OdcmClass_Service_Bound_Function_Instance() : base()
         {
             IsCollection = false;
 
@@ -23,15 +23,18 @@ namespace CSharpWriterUnitTests
             Init();
         }
 
-        [Fact]
-        public void The_Service_parses_the_response()
+        protected void Init()
         {
             Init(m =>
             {
                 m.Verbs = OdcmAllowedVerbs.Get;
                 m.Parameters.Clear();
             });
+        }
 
+        [Fact]
+        public void The_Service_parses_the_response()
+        {
             var responseKeyValues = Class.GetSampleKeyArguments().ToArray();
             var response = Class.GetSampleJObject(responseKeyValues);
 
@@ -39,7 +42,7 @@ namespace CSharpWriterUnitTests
             {
                 mockService
                     .OnInvokeMethodRequest("GET",
-                        "/" + Method.FullName,
+                        "/" + ServerMethodNameGenerator(),
                         null,
                         null)
                     .RespondWithGetEntity(TargetEntity.Class.GetDefaultEntitySetName(), response);

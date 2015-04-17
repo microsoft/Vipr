@@ -22,5 +22,6 @@ namespace Vipr.Writer.CSharp.Settings
         public bool ForcePropertyPascalCasing { get; set; }
 
         public Visibility MediaEntityAddAsyncVisibility { get; set; }
+        public bool OmitMethodNamespaceInUriPaths { get; set; }
     }
 }

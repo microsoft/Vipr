@@ -43,7 +43,9 @@ namespace Vipr.Writer.CSharp
             }
 
             IsAsync = true;
-            ModelName = odcmMethod.FullName;
+            ModelName = ConfigurationService.Settings.OmitMethodNamespaceInUriPaths 
+                ? odcmMethod.Name
+                : odcmMethod.FullName;
             Description = odcmMethod.Description;
             Name = odcmMethod.Name + "Async";
             Parameters = odcmMethod.Parameters.Select(Parameter.FromOdcmParameter);
