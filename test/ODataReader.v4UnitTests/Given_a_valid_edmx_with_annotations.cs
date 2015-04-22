@@ -17,7 +17,7 @@ namespace ODataReader.v4UnitTests
     {
         // TODO: At the moment, the sample edmx does not have annotations on the sites of all items which can be annotated.
         // It may be expedient to automatically generate these sorts of documents for different test cases. 
-        [Fact]
+        [Fact(Skip = "https://github.com/Microsoft/Vipr/issues/84")]
         public void InsertRestrictions_should_be_properly_parsed()
         {
             OdcmReader odata4Reader = new OdcmReader();
@@ -36,7 +36,7 @@ namespace ODataReader.v4UnitTests
             annotationValue.NonInsertableNavigationProperties.Should().HaveCount(1).And.Contain("sectionGroups");
         }
 
-        [Fact]
+        [Fact(Skip = "https://github.com/Microsoft/Vipr/issues/84")]
         public void UpdateRestrictions_should_be_properly_parsed()
         {
             OdcmReader odata4Reader = new OdcmReader();
@@ -55,7 +55,7 @@ namespace ODataReader.v4UnitTests
             annotationValue.NonUpdatableNavigationProperties.Should().HaveCount(2).And.Contain("sectionGroups").And.Contain("sections");
         }
 
-        [Fact]
+        [Fact(Skip = "https://github.com/Microsoft/Vipr/issues/84")]
         public void DeleteRestrictions_should_be_properly_parsed()
         {
             OdcmReader odata4Reader = new OdcmReader();
