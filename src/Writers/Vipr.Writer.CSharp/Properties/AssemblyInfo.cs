@@ -12,6 +12,6 @@ using System.Reflection;
 [assembly: AssemblyProduct("CSharpWriter")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyVersionAttribute("1.0.*")]
+[assembly: AssemblyVersionAttribute("1.0.0.0")]
 [assembly: AssemblyFileVersionAttribute("1.0.*")]
 

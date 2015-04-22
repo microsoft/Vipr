@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.MockService;
 using Vipr.Core.CodeModel;
 using Xunit;
 
@@ -15,21 +16,24 @@ namespace CSharpWriterUnitTests
 {
     public class Given_an_OdcmClass_Entity_Collection_Bound_VoidMethod : EntityTestBase
     {
-        private OdcmMethod _method;
+        protected OdcmMethod Method;
         private readonly Type _expectedReturnType = typeof(Task);
-        private string _expectedMethodName;
-        private IEnumerable<Type> _expectedMethodParameters;
+        private readonly string _expectedMethodName;
+        private readonly IEnumerable<Type> _expectedMethodParameters;
+        protected Func<string> ServerMethodNameGenerator;
 
         
         public Given_an_OdcmClass_Entity_Collection_Bound_VoidMethod()
         {
-            _method = Any.OdcmMethod(m => m.IsBoundToCollection = true);
+            Method = Any.OdcmMethod(m => m.IsBoundToCollection = true);
 
-            _expectedMethodName = _method.Name + "Async";
+            _expectedMethodName = Method.Name + "Async";
 
-            _expectedMethodParameters = _method.Parameters.Select(p => Proxy.GetClass(p.Type.Namespace, p.Type.Name));
+            _expectedMethodParameters = Method.Parameters.Select(p => Proxy.GetClass(p.Type.Namespace, p.Type.Name));
 
-            Init(m => m.Namespaces[0].Classes.First().Methods.Add(_method));
+            Init(m => m.Namespaces[0].Classes.First().Methods.Add(Method));
+
+            ServerMethodNameGenerator = () => Method.FullName;
         }
 
         [Fact]
@@ -75,6 +79,58 @@ namespace CSharpWriterUnitTests
             _expectedReturnType,
             _expectedMethodName,
             _expectedMethodParameters);
+        }
+
+        [Fact]
+        public void When_the_verb_is_POST_the_Collection_passes_parameters_on_the_URI_and_in_the_body()
+        {
+            Init(m =>
+            {
+                Method = Any.OdcmMethodPost();
+                Method.Class = Class;
+                Method.ReturnType = null;
+                Method.IsCollection = false;
+                Method.IsBoundToCollection = true;
+                Class.Methods.Add(Method);
+            });
+
+            using (var mockService = new MockService(true))
+            {
+                var collectionPath = Any.UriPath(1);
+
+                var collection = mockService
+                    .GetDefaultContext(Model)
+                    .CreateCollection(CollectionType, ConcreteType, collectionPath);
+
+                mockService.ValidateParameterPassing("POST", collection, "/" + collectionPath, Method,
+                    ServerMethodNameGenerator(), null);
+            }
+        }
+
+        [Fact]
+        public void When_the_verb_is_GET_the_Concrete_passes_parameters_on_the_URI()
+        {
+            Init(m =>
+            {
+                Method = Any.OdcmMethodGet();
+                Method.Class = Class;
+                Method.ReturnType = null;
+                Method.IsCollection = false;
+                Method.IsBoundToCollection = true;
+                Class.Methods.Add(Method);
+            });
+
+            using (var mockService = new MockService(true))
+            {
+                var collectionPath = Any.UriPath(1);
+
+                var collection = mockService
+                    .GetDefaultContext(Model)
+                    .CreateCollection(CollectionType, ConcreteType, collectionPath);
+
+                mockService.ValidateParameterPassing("GET", collection, "/" + collectionPath, Method,
+                    ServerMethodNameGenerator(), null);
+            }
         }
     }
 }

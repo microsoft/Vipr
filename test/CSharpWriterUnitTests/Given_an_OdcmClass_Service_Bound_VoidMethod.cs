@@ -14,18 +14,19 @@ namespace CSharpWriterUnitTests
 {
     public class Given_an_OdcmClass_Service_Bound_VoidMethod : EntityTestBase
     {
-        private OdcmMethod _method;
+        protected OdcmMethod Method;
         private readonly Type _expectedReturnType = typeof(Task);
-        private string _expectedMethodName;
+        private readonly string _expectedMethodName;
+        protected Func<string> ServerMethodNameGenerator;
 
         
         public Given_an_OdcmClass_Service_Bound_VoidMethod()
         {
-            _method = Any.OdcmMethod();
+            Method = Any.OdcmMethod();
 
-            _expectedMethodName = _method.Name + "Async";
+            _expectedMethodName = Method.Name + "Async";
 
-            Init(m => m.EntityContainer.Methods.Add(_method));
+            Init(m => m.EntityContainer.Methods.Add(Method));
         }
 
         [Fact]
@@ -51,7 +52,7 @@ namespace CSharpWriterUnitTests
 
         private IEnumerable<Type> GetMethodParameterTypes()
         {
-            return _method.Parameters.Select(p => Proxy.GetClass(p.Type.Namespace, p.Type.Name));
+            return Method.Parameters.Select(p => Proxy.GetClass(p.Type.Namespace, p.Type.Name));
         }
     }
 }

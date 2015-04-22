@@ -15,17 +15,20 @@ namespace CSharpWriterUnitTests
 {
     public class Given_an_OdcmClass_Entity_Bound_VoidMethod : EntityTestBase
     {
-        private OdcmMethod _method;
+        protected OdcmMethod Method;
         private readonly Type _expectedReturnType = typeof(Task);
         private readonly string _expectedMethodName;
+        protected Func<string> ServerMethodNameGenerator;
 
         public Given_an_OdcmClass_Entity_Bound_VoidMethod()
         {
-            _method = Any.OdcmMethod();
+            Method = Any.OdcmMethod();
 
-            _expectedMethodName = _method.Name + "Async";
+            _expectedMethodName = Method.Name + "Async";
 
-            Init(m => m.Namespaces[0].Classes.First().Methods.Add(_method));
+            Init(m => m.Namespaces[0].Classes.First().Methods.Add(Method));
+
+            ServerMethodNameGenerator = () => Method.FullName;
         }
 
         [Fact]
@@ -73,18 +76,18 @@ namespace CSharpWriterUnitTests
         [Fact]
         public void The_Collection_interface_does_not_expose_the_method()
         {
-            CollectionInterface.Should().NotHaveMethod(_method.Name);
+            CollectionInterface.Should().NotHaveMethod(Method.Name);
         }
 
         [Fact]
         public void The_Collection_class_does_not_expose_the_method()
         {
-            CollectionType.Should().NotHaveMethod(_method.Name);
+            CollectionType.Should().NotHaveMethod(Method.Name);
         }
 
         private IEnumerable<Type> GetMethodParameterTypes()
         {
-            return _method.Parameters.Select(p => Proxy.GetClass(p.Type.Namespace, p.Type.Name));
+            return Method.Parameters.Select(p => Proxy.GetClass(p.Type.Namespace, p.Type.Name));
         }
 
         [Fact]
@@ -92,11 +95,11 @@ namespace CSharpWriterUnitTests
         {
             Init(m =>
             {
-                _method = Any.OdcmMethodPost();
-                _method.Class = Class;
-                _method.ReturnType = null;
-                _method.IsCollection = false;
-                Class.Methods.Add(_method);
+                Method = Any.OdcmMethodPost();
+                Method.Class = Class;
+                Method.ReturnType = null;
+                Method.IsCollection = false;
+                Class.Methods.Add(Method);
             });
 
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
@@ -109,7 +112,8 @@ namespace CSharpWriterUnitTests
                     .GetDefaultContext(Model)
                     .CreateConcrete(ConcreteType);
 
-                mockService.ValidateParameterPassing("POST", concrete, instancePath, _method, null);
+                mockService.ValidateParameterPassing("POST", concrete, instancePath, Method, 
+                    ServerMethodNameGenerator(), null);
             }
         }
 
@@ -118,11 +122,11 @@ namespace CSharpWriterUnitTests
         {
             Init(m =>
             {
-                _method = Any.OdcmMethodPost();
-                _method.Class = Class;
-                _method.ReturnType = null;
-                _method.IsCollection = false;
-                Class.Methods.Add(_method);
+                Method = Any.OdcmMethodPost();
+                Method.Class = Class;
+                Method.ReturnType = null;
+                Method.IsCollection = false;
+                Class.Methods.Add(Method);
             });
 
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
@@ -134,8 +138,8 @@ namespace CSharpWriterUnitTests
                     .GetDefaultContext(Model)
                     .CreateFetcher(FetcherType, fetcherPath);
 
-                mockService.ValidateParameterPassing("POST", fetcher, fetcherPath, _method,
-                    null);
+                mockService.ValidateParameterPassing("POST", fetcher, fetcherPath, Method,
+                    ServerMethodNameGenerator(), null);
             }
         }
 
@@ -144,11 +148,11 @@ namespace CSharpWriterUnitTests
         {
             Init(m =>
             {
-                _method = Any.OdcmMethodGet();
-                _method.Class = Class;
-                _method.ReturnType = null;
-                _method.IsCollection = false;
-                Class.Methods.Add(_method);
+                Method = Any.OdcmMethodGet();
+                Method.Class = Class;
+                Method.ReturnType = null;
+                Method.IsCollection = false;
+                Class.Methods.Add(Method);
             });
 
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
@@ -161,7 +165,8 @@ namespace CSharpWriterUnitTests
                     .GetDefaultContext(Model)
                     .CreateConcrete(ConcreteType);
 
-                mockService.ValidateParameterPassing("GET", concrete, instancePath, _method, null);
+                mockService.ValidateParameterPassing("GET", concrete, instancePath, Method,
+                    ServerMethodNameGenerator(), null);
             }
         }
 
@@ -170,11 +175,11 @@ namespace CSharpWriterUnitTests
         {
             Init(m =>
             {
-                _method = Any.OdcmMethodGet();
-                _method.Class = Class;
-                _method.ReturnType = null;
-                _method.IsCollection = false;
-                Class.Methods.Add(_method);
+                Method = Any.OdcmMethodGet();
+                Method.Class = Class;
+                Method.ReturnType = null;
+                Method.IsCollection = false;
+                Class.Methods.Add(Method);
             });
 
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
@@ -186,8 +191,8 @@ namespace CSharpWriterUnitTests
                     .GetDefaultContext(Model)
                     .CreateFetcher(FetcherType, fetcherPath);
 
-                mockService.ValidateParameterPassing("GET", fetcher, fetcherPath, _method,
-                    null);
+                mockService.ValidateParameterPassing("GET", fetcher, fetcherPath, Method,
+                    ServerMethodNameGenerator(), null);
             }
         }
     }

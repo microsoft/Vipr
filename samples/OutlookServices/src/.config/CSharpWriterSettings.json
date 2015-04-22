@@ -1,5 +1,6 @@
 {
-	"OmitUpcastMethods": true,
+    "OmitUpcastMethods" : true,
+    "OmitMethodNamespaceInUriPaths" :  true,
 	"OdcmNamespaceToProxyNamespace" :
 	{
 		"Microsoft.OutlookServices":"Microsoft.Office365.OutlookServices"

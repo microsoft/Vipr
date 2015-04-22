@@ -61,7 +61,7 @@ namespace CSharpWriterUnitTests
 
                 mockService
                     .OnInvokeMethodRequest("GET",
-                        instanceAndPath.Item1 + "/" + Method.FullName,
+                        instanceAndPath.Item1 + "/" + ServerMethodNameGenerator(),
                         null,
                         null)
                     .RespondWithGetEntity(TargetEntity.Class.GetDefaultEntitySetName(), response);

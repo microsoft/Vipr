@@ -3466,7 +3466,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.SendMail");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/SendMail");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[2]
 
@@ -3844,7 +3844,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.SendMail");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/SendMail");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[2]
 
@@ -4334,7 +4334,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Copy");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Copy");
 
             return (global::Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
 
@@ -4362,7 +4362,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Move");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Move");
 
             return (global::Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
 
@@ -4502,7 +4502,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Copy");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Copy");
 
             return (global::Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
 
@@ -4530,7 +4530,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Move");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Move");
 
             return (global::Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5560,7 +5560,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Copy");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Copy");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5588,7 +5588,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Move");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Move");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5616,7 +5616,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateReply");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateReply");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5642,7 +5642,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateReplyAll");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateReplyAll");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5668,7 +5668,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateForward");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateForward");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5694,7 +5694,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Reply");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Reply");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -5722,7 +5722,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.ReplyAll");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/ReplyAll");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -5750,7 +5750,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Forward");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Forward");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[2]
 
@@ -5780,7 +5780,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Send");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Send");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[0]
 
@@ -5888,7 +5888,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Copy");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Copy");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5916,7 +5916,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Move");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Move");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5944,7 +5944,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateReply");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateReply");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5970,7 +5970,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateReplyAll");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateReplyAll");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5996,7 +5996,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateForward");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateForward");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -6022,7 +6022,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Reply");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Reply");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -6050,7 +6050,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.ReplyAll");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/ReplyAll");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -6078,7 +6078,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Forward");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Forward");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[2]
 
@@ -6108,7 +6108,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Send");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Send");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[0]
 
@@ -9082,7 +9082,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Accept");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Accept");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -9110,7 +9110,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Decline");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Decline");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -9138,7 +9138,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.TentativelyAccept");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/TentativelyAccept");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -9306,7 +9306,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Accept");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Accept");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -9334,7 +9334,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Decline");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Decline");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -9362,7 +9362,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.TentativelyAccept");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/TentativelyAccept");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
