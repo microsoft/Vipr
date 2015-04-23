@@ -1,4 +1,7 @@
-﻿namespace Microsoft.Office365.OutlookServices
+﻿using System;
+using System.Reflection;
+
+namespace Microsoft.Office365.OutlookServices
 {
     partial interface IUserFetcher
     {
@@ -171,6 +174,14 @@
             query = query.AddQueryOption("endDateTime", endDateTime.ToString(DateTimeOffsetZuluFormat));
 
             return new EventCollection(query, Context, this, path);
+        }
+    }
+
+    public partial class OutlookServicesClient
+    {
+        partial void OnContextCreated()
+        {
+            Context.BuildingRequest += (sender, args) => args.Headers.Add("X-ClientService-ClientTag", String.Format("Office 365 API Tools {0}", "1.0.33.0"));
         }
     }
 }
