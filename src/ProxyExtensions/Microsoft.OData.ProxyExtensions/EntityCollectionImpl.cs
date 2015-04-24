@@ -22,13 +22,7 @@ namespace Microsoft.OData.ProxyExtensions
 
         protected override void InsertItem(int index, T item)
         {
-            InvokeOnEntity(t =>
-            {
-                if (t.Item1.Context.GetEntityDescriptor(item) == null)
-                    t.Item1.Context.AddRelatedObject(t.Item1, t.Item2, item);
-                else
-                    t.Item1.Context.AddLink(t.Item1, t.Item2, item);
-            });
+            InvokeOnEntity(t => t.Item1.Context.AddRelatedObject(t.Item1, t.Item2, item));
 
             base.InsertItem(index, item);
         }
@@ -58,11 +52,9 @@ namespace Microsoft.OData.ProxyExtensions
             InvokeOnEntity(t =>
             {
                 t.Item1.Context.DeleteLink(t.Item1, t.Item2, this[index]);
-                if (t.Item1.Context.GetEntityDescriptor(item) == null)
-                    t.Item1.Context.AddRelatedObject(t.Item1, t.Item2, item);
-                else
-                    t.Item1.Context.AddLink(t.Item1, t.Item2, item);
-            });
+                t.Item1.Context.AddRelatedObject(t.Item1, t.Item2, item);
+            }
+                );
 
             base.SetItem(index, item);
         }
