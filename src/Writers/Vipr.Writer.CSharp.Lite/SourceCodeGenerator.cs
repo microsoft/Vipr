@@ -450,12 +450,39 @@ namespace Vipr.Writer.CSharp.Lite
             }
         }
 
+        private void Write(FetcherUpdateLinkMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                _("return base.UpdateLinkAsync(source, target, deferSaveChanges);");
+            }
+        }
+
         private void Write(FetcherDeleteMethod method)
         {
             WriteSignature(method);
             using (_builder.IndentBraced)
             {
                 _("return base.DeleteAsync(item, deferSaveChanges);");
+            }
+        }
+
+        private void Write(FetcherDeleteLinkMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                _("return base.FetcherDeleteLinkAsync(source, deferSaveChanges);");
+            }
+        }
+
+        private void Write(FetcherSetMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                _("return base.SetAsync(source, target, deferSaveChanges);");
             }
         }
 
@@ -1143,7 +1170,7 @@ namespace Vipr.Writer.CSharp.Lite
             _("set");
             using (_builder.IndentBraced)
             {
-                _("{0} = value;", property.UpdatedName);
+                 _("{0} = value;", property.UpdatedName);
             }
         }
 
@@ -1152,7 +1179,7 @@ namespace Vipr.Writer.CSharp.Lite
             _("get");
             using (_builder.IndentBraced)
             {
-                _("return {0};", property.UpdatedName);
+               _("return {0};", property.UpdatedName);
             }
         }
 

@@ -44,7 +44,7 @@ namespace CSharpLiteWriterUnitTests
             
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .OnInvokeMethodRequest("PATCH", expectedPath, null, jobject)
+                    .OnPatchEntityRequest(expectedPath, jobject)
                         .RespondWithODataOk())
             {
                 var context = _mockedService.GetDefaultContext(Model);

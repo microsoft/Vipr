@@ -10,6 +10,7 @@ namespace Microsoft.OData.ProxyExtensions.Lite
     public class RestShallowObjectFetcher : BaseEntityType
     {
         private string _path;
+        private string _propertyName;
         private bool _isInitialized;
 
         public new DataServiceContextWrapper Context
@@ -23,6 +24,7 @@ namespace Microsoft.OData.ProxyExtensions.Lite
             Context = context;
             _path = path;
             _isInitialized = true;
+            _propertyName = GetProperty();
         }
 
         /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
@@ -38,6 +40,30 @@ namespace Microsoft.OData.ProxyExtensions.Lite
         {
             if (Context == null) throw new InvalidOperationException("Not Initialized");
             Context.DeleteObject(item);
+            return FetcherSaveChangesAsync(deferSaveChanges);
+        }
+
+        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
+        protected Task SetAsync<T>(object source, T target, bool deferSaveChanges = false)
+        {
+            ThrowIfNotInitialized();
+            Context.UpdateRelatedObject(source, _propertyName, target);
+            return FetcherSaveChangesAsync(deferSaveChanges);
+        }
+
+        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
+        protected Task FetcherDeleteLinkAsync(object source, bool deferSaveChanges = false)
+        {
+            ThrowIfNotInitialized();
+            Context.SetLink(source, _propertyName, null);
+            return FetcherSaveChangesAsync(deferSaveChanges);
+        }
+
+        /// <param name="deferSaveChanges">true to delay saving until batch is saved; false to save immediately.</param>
+        protected Task UpdateLinkAsync<T>(object source, T target, bool deferSaveChanges = false)
+        {
+            ThrowIfNotInitialized();
+            Context.SetLink(source, _propertyName, target);
             return FetcherSaveChangesAsync(deferSaveChanges);
         }
 
@@ -81,6 +107,14 @@ namespace Microsoft.OData.ProxyExtensions.Lite
         {
             if (!_isInitialized)
                 throw new InvalidOperationException("Initialize must be called before invoking this operation.");
+        }
+
+        private string GetProperty()
+        {
+            var path = GetPath(null);
+            path = path.TrimEnd(new char[] {'/'});
+            var property = path.Substring(path.LastIndexOf('/') + 1);
+            return property;
         }
     }
 }
