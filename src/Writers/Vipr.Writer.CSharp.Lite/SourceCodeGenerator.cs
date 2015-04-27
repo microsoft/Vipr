@@ -1170,7 +1170,7 @@ namespace Vipr.Writer.CSharp.Lite
             _("set");
             using (_builder.IndentBraced)
             {
-                 _("{0} = value;", property.UpdatedName);
+                _("{0} = value;", property.UpdatedName);
             }
         }
 
@@ -1179,7 +1179,7 @@ namespace Vipr.Writer.CSharp.Lite
             _("get");
             using (_builder.IndentBraced)
             {
-               _("return {0};", property.UpdatedName);
+                _("return {0};", property.UpdatedName);
             }
         }
 
