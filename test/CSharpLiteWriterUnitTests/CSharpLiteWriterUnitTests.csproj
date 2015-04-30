@@ -138,8 +138,11 @@
     <Compile Include="Given_an_Indenter.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Base.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Fetcher_DeleteAsync_Method.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Fetcher_DeleteLinkAsync_Method.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Fetcher_SaveChangesAsync_Method.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Fetcher_SetAsync_Method.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Fetcher_UpdateAsync_Method.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Fetcher_UpdateLinkAsync_Method.cs" />
     <Compile Include="Given_an_OdcmClass_Service_Bound_Function_Collection.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function_Collection.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Collection.cs" />

@@ -73,6 +73,7 @@
     <Compile Include="ExplicitlyImplementableMember.cs" />
     <Compile Include="Feature.cs" />
     <Compile Include="Features.cs" />
+    <Compile Include="FetcherDeleteLinkMethod.cs" />
     <Compile Include="FetcherDeleteMethod.cs" />
     <Compile Include="FetcherExecuteAsyncMethod.cs" />
     <Compile Include="DefaultConstructor.cs" />
@@ -85,7 +86,9 @@
     <Compile Include="FetcherNavigationProperty.cs" />
     <Compile Include="ConcreteUpcastMethod.cs" />
     <Compile Include="FetcherSaveChangesAsyncMethod.cs" />
+    <Compile Include="FetcherSetMethod.cs" />
     <Compile Include="FetcherUpcastMethod.cs" />
+    <Compile Include="FetcherUpdateLinkMethod.cs" />
     <Compile Include="FetcherUpdateMethod.cs" />
     <Compile Include="Fields.cs" />
     <Compile Include="GeneratedEdmModelCreateXmlReaderMethod.cs" />

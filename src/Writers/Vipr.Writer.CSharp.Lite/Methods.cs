@@ -37,7 +37,10 @@ namespace Vipr.Writer.CSharp.Lite
                 retVal.Add(new FetcherExecuteAsyncMethod(odcmClass));
                 retVal.Add(FetcherExpandMethod.ForFetcher(odcmClass));
                 retVal.Add(FetcherUpdateMethod.ForFetcher(odcmClass));
+                retVal.Add(FetcherUpdateLinkMethod.ForFetcher(odcmClass));
                 retVal.Add(FetcherDeleteMethod.ForFetcher(odcmClass));
+                retVal.Add(FetcherDeleteLinkMethod.ForFetcher(odcmClass));
+                retVal.Add(FetcherSetMethod.ForFetcher(odcmClass));
                 retVal.Add(FetcherSaveChangesAsyncMethod.ForFetcher(odcmClass));
             }
 

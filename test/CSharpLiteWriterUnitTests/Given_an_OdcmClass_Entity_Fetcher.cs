@@ -90,5 +90,41 @@ namespace CSharpLiteWriterUnitTests
                 new System.Type[] { typeof(bool), typeof(Microsoft.OData.Client.SaveChangesOptions) },
                 "Because it allows saving changes made to entities.");
         }
+
+        [Fact]
+        public void The_Fetcher_class_implements_an_UpdateLinkAsync_method()
+        {
+            FetcherType.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                false,
+                typeof(Task),
+                "UpdateLinkAsync",
+                new System.Type[] { typeof(object), ConcreteInterface, typeof(bool) },
+                "Because it allows updating relationship between entities.");
+        }
+
+        [Fact]
+        public void The_Fetcher_class_implements_a_DeleteLinkAsync_method()
+        {
+            FetcherType.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                false,
+                typeof(Task),
+                "DeleteLinkAsync",
+                new System.Type[] { ConcreteInterface, typeof(bool) },
+                "Because it allows deleting relationship between entities.");
+        }
+
+        [Fact]
+        public void The_Fetcher_class_implements_an_SetAsync_method()
+        {
+            FetcherType.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                false,
+                typeof(Task),
+                "SetAsync",
+                new System.Type[] {typeof(object), ConcreteInterface, typeof(bool) },
+                "Because it allows creating new entities.");
+        }
     }
 }
