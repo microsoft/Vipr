@@ -56,7 +56,7 @@ namespace CSharpLiteWriterUnitTests
             ConcreteType.Should().HaveExplicitProperty(
                 ConcreteInterface,
                 CSharpAccessModifiers.Public,
-                CSharpAccessModifiers.Public,
+                null,
                 NavTargetConcreteInterface,
                 NavigationProperty.Name);
         }
@@ -66,7 +66,7 @@ namespace CSharpLiteWriterUnitTests
         {
             ConcreteInterface.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
-                CSharpAccessModifiers.Public,
+                null,
                 NavTargetConcreteInterface,
                 NavigationProperty.Name);
         }

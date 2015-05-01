@@ -186,42 +186,12 @@ namespace Vipr.Writer.CSharp.Lite
             }
         }
 
-        private void Write(AddAsyncMethod method)
+        private void Write(CollectionAddAsyncMethod method)
         {
             WriteSignature(method);
             using (_builder.IndentBraced)
             {
-                _("if (Entity == null)");
-
-                using (_builder.IndentBraced)
-                {
-                    _("Context.AddObject(Path, item);");
-                }
-
-                _("else");
-
-                using (_builder.IndentBraced)
-                {
-                    _("var lastSlash = Path.LastIndexOf('/');");
-                    _("var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;");
-                    _("Context.AddRelatedObject(Entity, shortPath, item);");
-                }
-
-                _("if (!deferSaveChanges)");
-
-                using (_builder.IndentBraced)
-                {
-                    _("return Context.SaveChangesAsync();");
-                }
-
-                _("else");
-
-                using (_builder.IndentBraced)
-                {
-                    _("var retVal = new global::System.Threading.Tasks.TaskCompletionSource<object>();");
-                    _("retVal.SetResult(null);");
-                    _("return retVal.Task;");
-                }
+                _("return base.AddAsync(item, deferSaveChanges);");
             }
         }
 
@@ -278,6 +248,42 @@ namespace Vipr.Writer.CSharp.Lite
             using (_builder.IndentBraced)
             {
                 _("return ExecuteAsyncInternal();");
+            }
+        }
+
+        private void Write(CollectionAddLinkAsyncMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                _("return base.AddLinkAsync(source, target, deferSaveChanges);");
+            }
+        }
+
+        private void Write(CollectionRemoveLinkAsyncMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                _("return base.RemoveLinkAsync(source, target, deferSaveChanges);");
+            }
+        }
+
+        private void Write(CollectionUpdateAsyncMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                _("return base.UpdateAsync(item, deferSaveChanges);");
+            }
+        }
+
+        private void Write(CollectionDeleteAsyncMethod method)
+        {
+            WriteSignature(method);
+            using (_builder.IndentBraced)
+            {
+                _("return base.DeleteAsync(item, deferSaveChanges);");
             }
         }
 
@@ -758,12 +764,7 @@ namespace Vipr.Writer.CSharp.Lite
 
                 using (_builder.IndentBraced)
                 {
-                    _("return new {0}<{1}, {2}>(Context, ({3}<{2}>) {4});",
-                        NamesService.GetExtensionTypeName("PagedCollection"),
-                        NamesService.GetConcreteInterfaceName(property.OdcmType),
-                        NamesService.GetConcreteTypeName(property.OdcmType),
-                        "DataServiceCollection",
-                        property.Name);
+                    _("return {0}.Cast<{1}>().ToList();", property.Name, NamesService.GetConcreteInterfaceName(property.OdcmType));
                 }
             }
         }
@@ -781,29 +782,10 @@ namespace Vipr.Writer.CSharp.Lite
                     _("if (this.{0} == null)", property.FieldName);
                     using (_builder.IndentBraced)
                     {
-                        _("this.{0} = new {1}<{2}>();", property.FieldName, NamesService.GetExtensionTypeName("EntityCollectionImpl"), property.InstanceType);
-                        _("this.{0}.SetContainer(() => GetContainingEntity(\"{1}\"));", property.FieldName, property.ModelName);
+                        _("this.{0} = new {1}<{2}>();", property.FieldName, new Identifier("global::System.Collections.Generic", "List"), property.InstanceType);
                     }
                     _("");
                     _("return ({0})this.{1};", property.Type, property.FieldName);
-                }
-
-                _("set");
-
-                using (_builder.IndentBraced)
-                {
-                    WriteInitializationEnforcer();
-
-                    _("{0}.Clear();", property.Name);
-                    _("if (value != null)");
-                    using (_builder.IndentBraced)
-                    {
-                        _("foreach (var i in value)");
-                        using (_builder.IndentBraced)
-                        {
-                            _("{0}.Add(i);", property.Name);
-                        }
-                    }
                 }
             }
         }
@@ -896,12 +878,7 @@ namespace Vipr.Writer.CSharp.Lite
                     _("if (this.{0} != value)", property.FieldName);
                     using (_builder.IndentBraced)
                     {
-                        _("this.{0} = value;", property.FieldName);
-                        _("if (Context != null && Context.GetEntityDescriptor(this) != null && (value == null || Context.GetEntityDescriptor(value) != null))");
-                        using (_builder.IndentBraced)
-                        {
-                            _("Context.SetLink(this, \"{0}\", value);", property.ModelName);
-                        }
+                        _("this.{0} = ({1})value;", property.FieldName, property.FieldType);
                     }
                 }
             }
@@ -917,18 +894,7 @@ namespace Vipr.Writer.CSharp.Lite
 
                 using (_builder.IndentBraced)
                 {
-                    _("return this.{0};", property.FieldName);
-                }
-
-                _("set");
-
-                using (_builder.IndentBraced)
-                {
-                    _("if (this.{0} != value)", property.Name);
-                    using (_builder.IndentBraced)
-                    {
-                        _("this.{0} = ({1})value;", property.Name, property.FieldType);
-                    }
+                    _("return this.{0};", property.Name);
                 }
             }
         }
@@ -1036,7 +1002,11 @@ namespace Vipr.Writer.CSharp.Lite
             {
                 WriteObsoletedPropertyGet(property);
 
-                WriteObsoletedPropertySet(property);
+                // if it is a collection navigation property then do not emit a setter
+                if (!(property is ObsoletedNavigationProperty && ((ObsoletedNavigationProperty)property).IsCollection))
+                {
+                    WriteObsoletedPropertySet(property);
+                }
             }
         }
 

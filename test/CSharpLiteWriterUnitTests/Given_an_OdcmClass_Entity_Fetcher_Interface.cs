@@ -70,6 +70,42 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
+        public void It_exposes_a_UpdateLinkAsync_Method()
+        {
+            FetcherInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                false,
+                typeof(Task),
+                "UpdateLinkAsync",
+                new System.Type[] { typeof(object), ConcreteInterface, typeof(bool) },
+                "Because it allows updating relationship between entities.");
+        }
+
+        [Fact]
+        public void It_exposes_a_DeleteLinkAsync_Method()
+        {
+            FetcherInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                false,
+                typeof(Task),
+                "DeleteLinkAsync",
+                new System.Type[] { ConcreteInterface, typeof(bool) },
+                "Because it allows deleting relationship between entities.");
+        }
+
+        [Fact]
+        public void It_exposes_a_SetAsync_Method()
+        {
+            FetcherInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                false,
+                typeof(Task),
+                "SetAsync",
+                new System.Type[] { typeof(object), ConcreteInterface, typeof(bool) },
+                "Because it allows creating new entities.");
+        }
+
+        [Fact]
         public void It_exposes_a_SaveChangesAsync_Method()
         {
             FetcherInterface.Should().HaveMethod(

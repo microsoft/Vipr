@@ -12,6 +12,7 @@ namespace Vipr.Writer.CSharp.Lite
             FieldName = NamesService.GetPropertyFieldName(odcmProperty);
             FieldType = NamesService.GetConcreteTypeName(odcmProperty.Type);
             Type = new Type(NamesService.GetConcreteInterfaceName(odcmProperty.Type));
+            PrivateSet = true;
         }
 
         public Identifier FieldType { get; set; }

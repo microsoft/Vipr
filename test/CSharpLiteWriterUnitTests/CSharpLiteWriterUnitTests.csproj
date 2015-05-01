@@ -137,6 +137,10 @@
     <Compile Include="EnumType.cs" />
     <Compile Include="Given_an_Indenter.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Base.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_AddLinkAsync_Method.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_DeleteAsync_Method.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_RemoveLinkAsync_Method.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Collection_UpdateAsync_Method.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Fetcher_DeleteAsync_Method.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Fetcher_DeleteLinkAsync_Method.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Fetcher_SaveChangesAsync_Method.cs" />

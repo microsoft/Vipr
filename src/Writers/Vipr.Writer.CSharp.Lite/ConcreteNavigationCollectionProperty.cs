@@ -14,7 +14,7 @@ namespace Vipr.Writer.CSharp.Lite
             FieldName = NamesService.GetConcreteFieldName(odcmProperty);
             OdcmType = odcmProperty.Type;
             PrivateSet = true;
-            Type = new Type(NamesService.GetExtensionTypeName("IPagedCollection"),
+            Type = new Type(new Identifier("global::System.Collections.Generic", "IList"),
                 new Type(NamesService.GetConcreteInterfaceName(odcmProperty.Type)));
         }
 

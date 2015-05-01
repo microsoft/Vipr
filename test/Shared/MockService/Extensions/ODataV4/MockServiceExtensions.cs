@@ -11,6 +11,15 @@ namespace Microsoft.MockService.Extensions.ODataV4
                 .OnRequest(c => c.Request.Method == "POST" && c.Request.Path.Value == entitySetPath);
         }
 
+        public static ResponseBuilder OnPostAddLinkRequest(this MockService mockService, string entitySetPath, JObject expectedBody)
+        {
+            return mockService
+                .OnRequest(c => c.Request.Method == "POST" &&
+                    c.Request.Path.Value == entitySetPath + "/$ref" &&
+                    ((c.Request.Body.Length == 0 && expectedBody == null) ||
+                     (JToken.DeepEquals(expectedBody, c.Request.Body.ToJObject()))));
+        }
+
         public static ResponseBuilder OnPutUpdateLinkRequest(this MockService mockService, string entitySetPath, JObject expectedBody)
         {
             return mockService
@@ -45,6 +54,15 @@ namespace Microsoft.MockService.Extensions.ODataV4
         {
             return mockService
                 .OnRequest(c => c.Request.Method == "DELETE" && c.Request.Path.Value == entityPath + "/$ref");
+        }
+
+        public static ResponseBuilder OnDeleteLinkRequest(this MockService mockService, string entityPath, string idQueryPath)
+        {
+            return mockService
+                .OnRequest(
+                    c =>
+                        c.Request.Method == "DELETE" && c.Request.Path.Value == entityPath + "/$ref" &&
+                        c.Request.QueryString.Value == "$id=" + idQueryPath);
         }
 
         public static ResponseBuilder OnGetEntityWithExpandRequest(this MockService mockService, string entitySetPath,

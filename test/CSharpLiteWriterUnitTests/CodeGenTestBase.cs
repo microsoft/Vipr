@@ -67,7 +67,8 @@ namespace CSharpLiteWriterUnitTests
                 "System.Runtime.dll",
                 "System.Threading.Tasks.dll",
                 "System.Xml.ReaderWriter.dll",
-                "System.Xml.dll"
+                "System.Xml.dll",
+                "System.Collections.dll"
             };
 
         public Assembly GetProxy(OdcmModel model, IConfigurationProvider configurationProvider = null, IEnumerable<string> internalsVisibleTo = null)
