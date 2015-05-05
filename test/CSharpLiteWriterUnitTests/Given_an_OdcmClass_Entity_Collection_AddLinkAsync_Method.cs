@@ -10,63 +10,41 @@ using Xunit;
 
 namespace CSharpLiteWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Collection_AddLinkAsync_Method : EntityTestBase
+    public class Given_an_OdcmClass_Entity_Collection_AddLinkAsync_Method : NavigationPropertyTestBase
     {
         private MockService _mockedService;
-        private OdcmEntityClass _navPropertyClass;
-        private OdcmProperty _navProperty;
-        private System.Type _navPropertyFetcherType;
-        private System.Type _navPropertyCollectionFetcherType;
-        private System.Type _navPropertyConcreteType;
-        private EntityArtifacts _navPropertyEntity;
 
         public Given_an_OdcmClass_Entity_Collection_AddLinkAsync_Method()
         {
             Init(odcmModel =>
             {
                 // create a collection navigation property for 'Class' entity type.
-                _navPropertyClass = Any.OdcmEntityClass(Namespace);
-                odcmModel.AddType(_navPropertyClass);
-                _navProperty = Any.OdcmProperty(p =>
+                NavTargetClass = Any.OdcmEntityClass(Namespace);
+                odcmModel.AddType(NavTargetClass);
+                NavigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = Class;
                     p.Projection = new OdcmProjection()
                     {
-                        Type = _navPropertyClass
+                        Type = NavTargetClass
                     };
                     p.IsCollection = true;
                 });
-                Class.Properties.Add(_navProperty);
+                Class.Properties.Add(NavigationProperty);
 
                 var serviceClass = Model.EntityContainer;
 
-                var projection = new OdcmProjection() { Type = _navPropertyClass };
+                var projection = new OdcmProjection() { Type = NavTargetClass };
 
-                serviceClass.Properties.Add(new OdcmProperty(_navPropertyClass.Name) { Class = serviceClass, Projection = projection });
+                serviceClass.Properties.Add(new OdcmProperty(NavTargetClass.Name) { Class = serviceClass, Projection = projection });
 
-                serviceClass.Properties.Add(new OdcmProperty(_navPropertyClass.Name + "s")
+                serviceClass.Properties.Add(new OdcmProperty(NavTargetClass.Name + "s")
                 {
                     Class = serviceClass,
                     Projection = projection,
                     IsCollection = true
                 });
             });
-
-            _navPropertyFetcherType = Proxy.GetClass(_navPropertyClass.Namespace, _navPropertyClass.Name + "Fetcher");
-            _navPropertyCollectionFetcherType = Proxy.GetClass(_navPropertyClass.Namespace,
-                _navPropertyClass.Name + "Collection");
-            _navPropertyConcreteType = Proxy.GetClass(_navPropertyClass.Namespace, _navPropertyClass.Name);
-
-            _navPropertyEntity = new EntityArtifacts()
-            {
-                Class = _navPropertyClass,
-                ConcreteType = Proxy.GetClass(_navPropertyClass.Namespace, _navPropertyClass.Name),
-                ConcreteInterface = Proxy.GetClass(_navPropertyClass.Namespace, "I" + _navPropertyClass.Name),
-                FetcherType = Proxy.GetClass(_navPropertyClass.Namespace, _navPropertyClass.Name + "Fetcher"),
-                FetcherInterface = Proxy.GetClass(_navPropertyClass.Namespace, "I" + _navPropertyClass.Name + "Fetcher"),
-                CollectionType = Proxy.GetClass(_navPropertyClass.Namespace, _navPropertyClass.Name + "Collection"),
-                CollectionInterface = Proxy.GetInterface(_navPropertyClass.Namespace, "I" + _navPropertyClass.Name + "Collection")
-            };
         }
 
         /*
@@ -87,27 +65,27 @@ namespace CSharpLiteWriterUnitTests
         public void It_adds_a_link_to_a_collection_valued_navigation_property()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + _navProperty.Name;
-            var entity2KeyValues = _navPropertyClass.GetSampleKeyArguments().ToArray();
-            var entity2Path = _navPropertyClass.GetDefaultEntityPath(entity2KeyValues);
+            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
+            var relatedEntityKeyValues = NavTargetClass.GetSampleKeyArguments().ToArray();
+            var relatedEntityPath = NavTargetClass.GetDefaultEntityPath(relatedEntityKeyValues);
 
             using (_mockedService = new MockService())
             {
                 var baseAddress = _mockedService.GetBaseAddress().TrimEnd('/');
                 var expectedJObject = new JObject();
-                expectedJObject["@odata.id"] = baseAddress + entity2Path;
+                expectedJObject["@odata.id"] = baseAddress + relatedEntityPath;
 
                 _mockedService
                     .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .SetupPostEntity(_navPropertyEntity, entity2KeyValues)
+                    .SetupPostEntity(NavTargetEntity, relatedEntityKeyValues)
                     .OnPostAddLinkRequest(propertyPath, expectedJObject)
                     .RespondWithODataOk();
 
                 var context = _mockedService.GetDefaultContext(Model);
-                var collection = context.CreateCollection(_navPropertyCollectionFetcherType, _navPropertyConcreteType,
+                var collection = context.CreateCollection(NavTargetCollectionType, NavTargetConcreteType,
                     propertyPath);
                 var sourceInstance = context.CreateConcrete(ConcreteType);
-                var targetInstance = context.CreateConcrete(_navPropertyConcreteType);
+                var targetInstance = context.CreateConcrete(NavTargetConcreteType);
 
                 collection.InvokeMethod<Task>("AddLinkAsync", new object[] { sourceInstance, targetInstance, System.Type.Missing }).Wait();
             }
@@ -117,19 +95,19 @@ namespace CSharpLiteWriterUnitTests
         public void It_does_not_add_a_link_when_delay_saving()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + _navProperty.Name;
-            var entity2KeyValues = _navPropertyClass.GetSampleKeyArguments().ToArray();
+            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
+            var relatedEntityKeyValues = NavTargetClass.GetSampleKeyArguments().ToArray();
 
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .SetupPostEntity(_navPropertyEntity, entity2KeyValues))
+                    .SetupPostEntity(NavTargetEntity, relatedEntityKeyValues))
             {
 
                 var context = _mockedService.GetDefaultContext(Model);
-                var collection = context.CreateCollection(_navPropertyCollectionFetcherType, _navPropertyConcreteType,
+                var collection = context.CreateCollection(NavTargetCollectionType, NavTargetConcreteType,
                     propertyPath);
                 var sourceInstance = context.CreateConcrete(ConcreteType);
-                var targetInstance = context.CreateConcrete(_navPropertyConcreteType);
+                var targetInstance = context.CreateConcrete(NavTargetConcreteType);
                 
                 collection.InvokeMethod<Task>("AddLinkAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
             }

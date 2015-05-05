@@ -10,32 +10,29 @@ using Xunit;
 
 namespace CSharpLiteWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Fetcher_DeleteLinkAsync_Method : EntityTestBase
+    public class Given_an_OdcmClass_Entity_Fetcher_DeleteLinkAsync_Method : NavigationPropertyTestBase
     {
         private MockService _mockedService;
-        private OdcmEntityClass _navPropertyClass;
-        private OdcmProperty _navProperty;
-        private System.Type _navPropertyFetcherType;
 
         public Given_an_OdcmClass_Entity_Fetcher_DeleteLinkAsync_Method()
         {
             Init(odcmModel =>
             {
                 // create a single-valued navigation property for 'Class' entity type.
-                _navPropertyClass = Any.OdcmEntityClass(Namespace);
-                odcmModel.AddType(_navPropertyClass);
-                _navProperty = Any.OdcmProperty(p =>
+                NavTargetClass = Any.OdcmEntityClass(Namespace);
+                odcmModel.AddType(NavTargetClass);
+                NavigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = Class;
                     p.Projection = new OdcmProjection()
                     {
-                        Type = _navPropertyClass
+                        Type = NavTargetClass
                     };
                 });
-                Class.Properties.Add(_navProperty);
+                Class.Properties.Add(NavigationProperty);
             });
 
-            _navPropertyFetcherType = Proxy.GetClass(_navPropertyClass.Namespace, _navPropertyClass.Name + "Fetcher");
+            NavTargetFetcherType = Proxy.GetClass(NavTargetClass.Namespace, NavTargetClass.Name + "Fetcher");
         }
 
         /*
@@ -53,7 +50,7 @@ namespace CSharpLiteWriterUnitTests
         public void It_deletes_the_link_between_entity_and_singlevalued_navigation_property()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + _navProperty.Name;
+            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
 
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues)
@@ -61,7 +58,7 @@ namespace CSharpLiteWriterUnitTests
                         .RespondWithODataOk())
             {
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(_navPropertyFetcherType, propertyPath);
+                var fetcher = context.CreateFetcher(NavTargetFetcherType, propertyPath);
                 var sourceInstance = context.CreateConcrete(ConcreteType);
 
                 fetcher.InvokeMethod<Task>("DeleteLinkAsync", new object[] { sourceInstance, System.Type.Missing }).Wait();
@@ -72,13 +69,13 @@ namespace CSharpLiteWriterUnitTests
         public void It_does_not_delete_a_link_when_delay_saving()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + _navProperty.Name;
+            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
 
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues))
             {
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(_navPropertyFetcherType, propertyPath);
+                var fetcher = context.CreateFetcher(NavTargetFetcherType, propertyPath);
                 var sourceInstance = context.CreateConcrete(ConcreteType);
 
                 //delay save when deleting the link
