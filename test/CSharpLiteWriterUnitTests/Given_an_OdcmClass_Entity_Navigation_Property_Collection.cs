@@ -12,6 +12,8 @@ using Microsoft.OData.ProxyExtensions.Lite;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
+using System.Threading.Tasks;
+using FluentAssertions.Common;
 
 namespace CSharpLiteWriterUnitTests
 {
@@ -43,7 +45,7 @@ namespace CSharpLiteWriterUnitTests
         {
             ConcreteType.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
-                CSharpAccessModifiers.Public,
+                null,
                 typeof(IList<>).MakeGenericType(NavTargetConcreteType),
                 NavigationProperty.Name);
         }
@@ -70,23 +72,23 @@ namespace CSharpLiteWriterUnitTests
 
 
         [Fact]
-        public void The_Concrete_interface_exposes_a_readonly_IPagedCollectionOfConcreteInterface_property()
+        public void The_Concrete_interface_exposes_a_readonly_IListOfConcreteInterface_property()
         {
             ConcreteInterface.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
                 null,
-                typeof(IPagedCollection<>).MakeGenericType(NavTargetConcreteInterface),
+                typeof(IList<>).MakeGenericType(NavTargetConcreteInterface),
                 NavigationProperty.Name);
         }
 
         [Fact]
-        public void The_Concrete_class_explicitly_implements_readonly_ConcreteInterface_IPagedCollectionOfConcreteInterface_property()
+        public void The_Concrete_class_explicitly_implements_readonly_ConcreteInterface_IListOfConcreteInterface_property()
         {
             ConcreteType.Should().HaveExplicitProperty(
                 ConcreteInterface,
                 CSharpAccessModifiers.Public,
                 null,
-                typeof(IPagedCollection<>).MakeGenericType(NavTargetConcreteInterface),
+                typeof(IList<>).MakeGenericType(NavTargetConcreteInterface),
                 NavigationProperty.Name);
         }
 
@@ -142,7 +144,7 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void When_updated_through_Concrete_accessor_then_request_is_sent_to_server_with_original_name()
+        public void When_updated_through_Collection_Fetcher_then_request_is_sent_to_server_with_original_name()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
 
@@ -156,15 +158,15 @@ namespace CSharpLiteWriterUnitTests
                 var instance = context
                     .CreateConcrete(ConcreteType);
 
+                var fetcher = context.CreateFetcher(FetcherType, Class.GetDefaultEntityPath(entityKeyValues));
+
+                var collectionFetcher = fetcher.GetPropertyValue(NavigationProperty.Name);
+
+                var addMethod = "Add" + NavTargetConcreteType.Name + "Async";
+
                 var relatedInstance = Activator.CreateInstance(NavTargetConcreteType);
 
-                var collection = Activator.CreateInstance(typeof(List<>).MakeGenericType(NavTargetConcreteType));
-
-                collection.InvokeMethod("Add", new[] { relatedInstance });
-
-                instance.SetPropertyValue(NavigationProperty.Name, collection);
-
-                context.SaveChangesAsync().Wait();
+                collectionFetcher.InvokeMethod<Task>(addMethod, new object[] { relatedInstance, System.Type.Missing }).Wait();
             }
         }
     }
@@ -193,17 +195,16 @@ public class Given_an_OdcmClass_Entity_Uninitialized : NavigationPropertyTestBas
     }
 
     [Fact]
-    public void When_not_bound_to_Context_and_updated_through_Concrete_accessor_then_throws_InvalidOperationException()
+    public void When_not_bound_to_Context_and_updated_through_Collection_Fetcher_then_throws_InvalidOperationException()
     {
-        var instance = Activator.CreateInstance(ConcreteType);
-
         var relatedInstance = Activator.CreateInstance(NavTargetConcreteType);
 
-        var collection = Activator.CreateInstance(typeof(List<>).MakeGenericType(NavTargetConcreteType));
+        var collectionFetcher = Activator.CreateInstance(NavTargetCollectionType, BindingFlags.NonPublic | BindingFlags.Instance, null,
+            new object[] {null, null, null, ""}, null);
 
-        collection.InvokeMethod("Add", new[] { relatedInstance });
+        var addMethod = "Add" + NavTargetConcreteType.Name + "Async";
 
-        Action act = () => instance.SetPropertyValue(NavigationProperty.Name, collection);
+        Action act = () => collectionFetcher.InvokeMethod<Task>(addMethod, new object[] { relatedInstance, System.Type.Missing }).Wait();
 
         act.ShouldThrow<TargetInvocationException>()
             .WithInnerException<InvalidOperationException>()

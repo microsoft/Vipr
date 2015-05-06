@@ -16,6 +16,7 @@ namespace Vipr.Writer.CSharp.Lite
             InstanceType = NamesService.GetConcreteTypeName(odcmProperty.Type);
             Type = new Type(new Identifier("global::System.Collections.Generic", "IList"),
                 new Type(NamesService.GetConcreteTypeName(odcmProperty.Type)));
+            PrivateSet = true;
         }
 
         public new static ConcreteNavigationCollectionAccessorProperty ForConcrete(OdcmProperty odcmProperty)

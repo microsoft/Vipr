@@ -10,15 +10,15 @@ using Xunit;
 
 namespace CSharpLiteWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Fetcher_UpdateLinkAsync_Method : NavigationPropertyTestBase
+    public class Given_an_OdcmClass_Entity_Collection_AddLinkAsync_Method : NavigationPropertyTestBase
     {
         private MockService _mockedService;
 
-        public Given_an_OdcmClass_Entity_Fetcher_UpdateLinkAsync_Method()
+        public Given_an_OdcmClass_Entity_Collection_AddLinkAsync_Method()
         {
             Init(odcmModel =>
             {
-                // create a single-valued navigation property for 'Class' entity type.
+                // create a collection navigation property for 'Class' entity type.
                 NavTargetClass = Any.OdcmEntityClass(Namespace);
                 odcmModel.AddType(NavTargetClass);
                 NavigationProperty = Any.OdcmProperty(p =>
@@ -28,6 +28,7 @@ namespace CSharpLiteWriterUnitTests
                     {
                         Type = NavTargetClass
                     };
+                    p.IsCollection = true;
                 });
                 Class.Properties.Add(NavigationProperty);
 
@@ -47,22 +48,21 @@ namespace CSharpLiteWriterUnitTests
         }
 
         /*
-         * PUT request can be used to modify relationships/links between entities.
-         * In this test 'UpdateLinkAsync' is called to update a link between an entitytype and its 
-         * single-valued navigation property.
+         * POST request can be used to a add a reference to a collection-valued navigation property
+         * In this test 'AddLinkAsync' is called to add a link to a collection-valued navigation property.
          * Example request
-         * PUT http://services.odata.org/V4/TripPinServiceRW/People('russellwhyte')/Photo/$ref
+         * POST http://services.odata.org/V4/TripPinServiceRW/People('russellwhyte')/Friends/$ref
          * Request Body
-         * {"@odata.id":"http://services.odata.org/V4/TripPinServiceRW/Photos(2)"}
+         * {"@odata.id":"http://services.odata.org/V4/TripPinServiceRW/People('scottketchum')"}
          * 
-         * This request modifies the link between entity "People('russellwhyte')" and its single-valued navigation 
-         * property called 'Photo' to point to Photos(2).
+         * This request add the link "People('scottketchum')" to the collection-valued navigation 
+         * property called 'Friends'.
          * 
-         * Spec - http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part1-protocol/odata-v4.0-errata02-os-part1-protocol-complete.html#_Toc406398335
+         * Spec - http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part1-protocol/odata-v4.0-errata02-os-part1-protocol-complete.html#_Toc406398333
          */
 
         [Fact]
-        public void It_Updates_the_link_between_entity_and_singlevalued_navigation_property()
+        public void It_adds_a_link_to_a_collection_valued_navigation_property()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
@@ -78,20 +78,21 @@ namespace CSharpLiteWriterUnitTests
                 _mockedService
                     .SetupPostEntity(TargetEntity, entityKeyValues)
                     .SetupPostEntity(NavTargetEntity, relatedEntityKeyValues)
-                    .OnPutUpdateLinkRequest(propertyPath, expectedJObject)
+                    .OnPostAddLinkRequest(propertyPath, expectedJObject)
                     .RespondWithODataOk();
-            
+
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(NavTargetFetcherType, propertyPath);
+                var collection = context.CreateCollection(NavTargetCollectionType, NavTargetConcreteType,
+                    propertyPath);
                 var sourceInstance = context.CreateConcrete(ConcreteType);
                 var targetInstance = context.CreateConcrete(NavTargetConcreteType);
 
-                fetcher.InvokeMethod<Task>("UpdateLinkAsync", new object[] { sourceInstance, targetInstance, System.Type.Missing }).Wait();
+                collection.InvokeMethod<Task>("AddLinkAsync", new object[] { sourceInstance, targetInstance, System.Type.Missing }).Wait();
             }
         }
 
         [Fact]
-        public void It_does_not_update_a_link_when_delay_saving()
+        public void It_does_not_add_a_link_when_delay_saving()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
@@ -103,40 +104,40 @@ namespace CSharpLiteWriterUnitTests
             {
 
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(NavTargetFetcherType, propertyPath);
+                var collection = context.CreateCollection(NavTargetCollectionType, NavTargetConcreteType,
+                    propertyPath);
                 var sourceInstance = context.CreateConcrete(ConcreteType);
                 var targetInstance = context.CreateConcrete(NavTargetConcreteType);
-
-                fetcher.InvokeMethod<Task>("UpdateLinkAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
+                
+                collection.InvokeMethod<Task>("AddLinkAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
             }
         }
 
         [Fact]
-        public void It_updates_a_link_when_delay_saving_and_calling_SaveChangesAsync()
+        public void It_adds_a_link_when_delay_saving_and_calling_SaveChangesAsync()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
             var relatedEntityKeyValues = NavTargetClass.GetSampleKeyArguments().ToArray();
             var relatedEntityPath = NavTargetClass.GetDefaultEntityPath(relatedEntityKeyValues);
 
-            using (_mockedService = new MockService())
+            using (_mockedService = new MockService()
+                    .SetupPostEntity(TargetEntity, entityKeyValues)
+                    .SetupPostEntity(NavTargetEntity, relatedEntityKeyValues))
             {
                 var baseAddress = _mockedService.GetBaseAddress().TrimEnd('/');
                 var expectedJObject = new JObject();
                 expectedJObject["@odata.id"] = baseAddress + relatedEntityPath;
 
-                _mockedService
-                    .SetupPostEntity(TargetEntity, entityKeyValues)
-                    .SetupPostEntity(NavTargetEntity, relatedEntityKeyValues);
-
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(NavTargetFetcherType, propertyPath);
+                var collection = context.CreateCollection(NavTargetCollectionType, NavTargetConcreteType,
+                    propertyPath);
                 var sourceInstance = context.CreateConcrete(ConcreteType);
                 var targetInstance = context.CreateConcrete(NavTargetConcreteType);
 
-                fetcher.InvokeMethod<Task>("UpdateLinkAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
+                collection.InvokeMethod<Task>("AddLinkAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
 
-                _mockedService = _mockedService.OnPutUpdateLinkRequest(propertyPath, expectedJObject)
+                _mockedService = _mockedService.OnPostAddLinkRequest(propertyPath, expectedJObject)
                     .RespondWithODataOk();
 
                 context.SaveChangesAsync().Wait();

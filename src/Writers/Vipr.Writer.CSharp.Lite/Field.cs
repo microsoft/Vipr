@@ -72,7 +72,8 @@ namespace Vipr.Writer.CSharp.Lite
             return new Field
             {
                 Name = NamesService.GetConcreteFieldName(property),
-                Type = new Type(NamesService.GetExtensionTypeName("EntityCollectionImpl"), new Type(NamesService.GetConcreteTypeName((OdcmClass)property.Type)))
+                Type = new Type(new Identifier("global::System.Collections.Generic", "List"),
+                                new Type(NamesService.GetConcreteTypeName(property.Type)))
             };
         }
     }

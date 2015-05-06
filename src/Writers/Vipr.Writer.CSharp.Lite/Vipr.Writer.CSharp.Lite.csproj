@@ -44,14 +44,18 @@
   <ItemGroup>
     <Compile Include="AddAsyncMediaMethod.cs" />
     <Compile Include="Classes.cs" />
+    <Compile Include="CollectionAddLinkAsyncMethod.cs" />
     <Compile Include="CollectionCountAsyncMethod.cs" />
+    <Compile Include="CollectionDeleteAsyncMethod.cs" />
+    <Compile Include="CollectionRemoveLinkAsyncMethod.cs" />
+    <Compile Include="CollectionUpdateAsyncMethod.cs" />
     <Compile Include="ContainerAddToCollectionMethod.cs" />
     <Compile Include="AttributableStructure.cs" />
     <Compile Include="Attribute.cs" />
     <Compile Include="Attributes.cs" />
     <Compile Include="AutoProperty.cs" />
     <Compile Include="Class.cs" />
-    <Compile Include="AddAsyncMethod.cs" />
+    <Compile Include="CollectionAddAsyncMethod.cs" />
     <Compile Include="ConcreteExecuteAsyncMethod.cs" />
     <Compile Include="ConcreteNavigationCollectionAccessorProperty.cs" />
     <Compile Include="ConcreteNavigationCollectionProperty.cs" />

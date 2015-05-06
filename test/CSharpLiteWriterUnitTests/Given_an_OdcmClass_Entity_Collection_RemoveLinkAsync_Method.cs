@@ -10,15 +10,15 @@ using Xunit;
 
 namespace CSharpLiteWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Fetcher_UpdateLinkAsync_Method : NavigationPropertyTestBase
+    public class Given_an_OdcmClass_Entity_Collection_RemoveLinkAsync_Method : NavigationPropertyTestBase
     {
         private MockService _mockedService;
 
-        public Given_an_OdcmClass_Entity_Fetcher_UpdateLinkAsync_Method()
+        public Given_an_OdcmClass_Entity_Collection_RemoveLinkAsync_Method()
         {
             Init(odcmModel =>
             {
-                // create a single-valued navigation property for 'Class' entity type.
+                // create a collection navigation property for 'Class' entity type.
                 NavTargetClass = Any.OdcmEntityClass(Namespace);
                 odcmModel.AddType(NavTargetClass);
                 NavigationProperty = Any.OdcmProperty(p =>
@@ -28,6 +28,7 @@ namespace CSharpLiteWriterUnitTests
                     {
                         Type = NavTargetClass
                     };
+                    p.IsCollection = true;
                 });
                 Class.Properties.Add(NavigationProperty);
 
@@ -47,22 +48,17 @@ namespace CSharpLiteWriterUnitTests
         }
 
         /*
-         * PUT request can be used to modify relationships/links between entities.
-         * In this test 'UpdateLinkAsync' is called to update a link between an entitytype and its 
-         * single-valued navigation property.
+         * DELETE request can be used to remove a reference from a collection-valued navigation property.
+         * In this test 'RemoveLinkAsync' is called to delete an entity reference from a collection-valued navigation property.
          * Example request
-         * PUT http://services.odata.org/V4/TripPinServiceRW/People('russellwhyte')/Photo/$ref
-         * Request Body
-         * {"@odata.id":"http://services.odata.org/V4/TripPinServiceRW/Photos(2)"}
+         * DELETE http://services.odata.org/V4/TripPinServiceRW/People('russellwhyte')/Friends/$ref?$id=http://services.odata.org/V4/TripPinServiceRW/People('scottketchum')
+         * This request removes the link "People('scottketchum')" from the collection-valued navigation property called 'Friends'.
          * 
-         * This request modifies the link between entity "People('russellwhyte')" and its single-valued navigation 
-         * property called 'Photo' to point to Photos(2).
-         * 
-         * Spec - http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part1-protocol/odata-v4.0-errata02-os-part1-protocol-complete.html#_Toc406398335
+         * Spec - http://docs.oasis-open.org/odata/odata/v4.0/errata02/os/complete/part1-protocol/odata-v4.0-errata02-os-part1-protocol-complete.html#_Toc406398334
          */
 
         [Fact]
-        public void It_Updates_the_link_between_entity_and_singlevalued_navigation_property()
+        public void It_deletes_a_link_from_a_collection_valued_navigation_property()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
@@ -72,26 +68,27 @@ namespace CSharpLiteWriterUnitTests
             using (_mockedService = new MockService())
             {
                 var baseAddress = _mockedService.GetBaseAddress().TrimEnd('/');
-                var expectedJObject = new JObject();
-                expectedJObject["@odata.id"] = baseAddress + relatedEntityPath;
+                var idQueryPath = baseAddress + relatedEntityPath;
+                
 
                 _mockedService
                     .SetupPostEntity(TargetEntity, entityKeyValues)
                     .SetupPostEntity(NavTargetEntity, relatedEntityKeyValues)
-                    .OnPutUpdateLinkRequest(propertyPath, expectedJObject)
+                    .OnDeleteLinkRequest(propertyPath, idQueryPath)
                     .RespondWithODataOk();
-            
+
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(NavTargetFetcherType, propertyPath);
+                var collection = context.CreateCollection(NavTargetCollectionType, NavTargetConcreteType,
+                    propertyPath);
                 var sourceInstance = context.CreateConcrete(ConcreteType);
                 var targetInstance = context.CreateConcrete(NavTargetConcreteType);
-
-                fetcher.InvokeMethod<Task>("UpdateLinkAsync", new object[] { sourceInstance, targetInstance, System.Type.Missing }).Wait();
+                
+                collection.InvokeMethod<Task>("RemoveLinkAsync", new object[] { sourceInstance, targetInstance, System.Type.Missing }).Wait();
             }
         }
 
         [Fact]
-        public void It_does_not_update_a_link_when_delay_saving()
+        public void It_does_not_remove_a_link_when_delay_saving()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
@@ -103,16 +100,17 @@ namespace CSharpLiteWriterUnitTests
             {
 
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(NavTargetFetcherType, propertyPath);
+                var collection = context.CreateCollection(NavTargetCollectionType, NavTargetConcreteType,
+                    propertyPath);
                 var sourceInstance = context.CreateConcrete(ConcreteType);
                 var targetInstance = context.CreateConcrete(NavTargetConcreteType);
-
-                fetcher.InvokeMethod<Task>("UpdateLinkAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
+                
+                collection.InvokeMethod<Task>("RemoveLinkAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
             }
         }
 
         [Fact]
-        public void It_updates_a_link_when_delay_saving_and_calling_SaveChangesAsync()
+        public void It_removes_a_link_when_delay_saving_and_calling_SaveChangesAsync()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
@@ -122,21 +120,21 @@ namespace CSharpLiteWriterUnitTests
             using (_mockedService = new MockService())
             {
                 var baseAddress = _mockedService.GetBaseAddress().TrimEnd('/');
-                var expectedJObject = new JObject();
-                expectedJObject["@odata.id"] = baseAddress + relatedEntityPath;
+                var idQueryPath = baseAddress + relatedEntityPath;
 
                 _mockedService
                     .SetupPostEntity(TargetEntity, entityKeyValues)
                     .SetupPostEntity(NavTargetEntity, relatedEntityKeyValues);
 
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(NavTargetFetcherType, propertyPath);
+                var collection = context.CreateCollection(NavTargetCollectionType, NavTargetConcreteType,
+                    propertyPath);
                 var sourceInstance = context.CreateConcrete(ConcreteType);
                 var targetInstance = context.CreateConcrete(NavTargetConcreteType);
 
-                fetcher.InvokeMethod<Task>("UpdateLinkAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
+                collection.InvokeMethod<Task>("RemoveLinkAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
 
-                _mockedService = _mockedService.OnPutUpdateLinkRequest(propertyPath, expectedJObject)
+                _mockedService = _mockedService.OnDeleteLinkRequest(propertyPath, idQueryPath)
                     .RespondWithODataOk();
 
                 context.SaveChangesAsync().Wait();

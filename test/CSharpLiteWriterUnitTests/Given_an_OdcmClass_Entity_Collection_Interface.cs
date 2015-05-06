@@ -104,6 +104,54 @@ namespace CSharpLiteWriterUnitTests
                     "Because it allows adding elements to the Entity Set.");
         }
 
+        [Fact]
+        public void It_has_a_UpdateAsync_method()
+        {
+            CollectionInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                false,
+                typeof(Task),
+                "UpdateAsync",
+                new System.Type[] { ConcreteInterface, typeof(bool) },
+                "Because it allows updating entities.");
+        }
+
+        [Fact]
+        public void It_has_a_DeleteAsync_method()
+        {
+            CollectionInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                false,
+                typeof(Task),
+                "DeleteAsync",
+                new System.Type[] { ConcreteInterface, typeof(bool) },
+                "Because it allows deleting entities.");
+        }
+
+        [Fact]
+        public void It_has_an_AddLinkAsync_method()
+        {
+            CollectionInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                false,
+                typeof(Task),
+                "AddLinkAsync",
+                new System.Type[] { typeof(object), ConcreteInterface, typeof(bool) },
+                "Because it allows updating relationship between entities.");
+        }
+
+        [Fact]
+        public void It_has_an_RemoveLinkAsync_method()
+        {
+            CollectionInterface.Should().HaveMethod(
+                CSharpAccessModifiers.Public,
+                false,
+                typeof(Task),
+                "RemoveLinkAsync",
+                new System.Type[] { typeof(object), ConcreteInterface, typeof(bool) },
+                "Because it allows deleting relationship between entities.");
+        }
+
         private Type[] GetKeyPropertyTypes()
         {
             return Class.Key

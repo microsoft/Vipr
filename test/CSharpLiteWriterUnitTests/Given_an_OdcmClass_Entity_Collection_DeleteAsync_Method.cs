@@ -10,22 +10,22 @@ using Xunit;
 
 namespace CSharpLiteWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Fetcher_DeleteAsync_Method : EntityTestBase
+    public class Given_an_OdcmClass_Entity_Collection_DeleteAsync_Method : EntityTestBase
     {
         private MockService _mockedService;
         private OdcmProperty _structuralInstanceProperty;
 
-        public Given_an_OdcmClass_Entity_Fetcher_DeleteAsync_Method()
+        public Given_an_OdcmClass_Entity_Collection_DeleteAsync_Method()
         {
             Init();
         }
 
         [Fact]
-        public void It_deletes_an_entity_from_its_own_path()
+        public void It_deletes_an_entity_from_a_collection()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var expectedPath = Class.GetDefaultEntityPath(entityKeyValues);
-            
+
 
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues)
@@ -33,10 +33,11 @@ namespace CSharpLiteWriterUnitTests
                         .RespondWithODataOk())
             {
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(FetcherType, Class.GetDefaultEntityPath(entityKeyValues));
+                var collection = context.CreateCollection(CollectionType, ConcreteType,
+                    Class.GetDefaultEntitySetPath());
                 var instance = context.CreateConcrete(ConcreteType);
 
-                fetcher.InvokeMethod<Task>("DeleteAsync", new object[] { instance, System.Type.Missing }).Wait();
+                collection.InvokeMethod<Task>("DeleteAsync", new object[] { instance, System.Type.Missing }).Wait();
             }
         }
 
@@ -49,11 +50,12 @@ namespace CSharpLiteWriterUnitTests
                     .SetupPostEntity(TargetEntity, entityKeyValues))
             {
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(FetcherType, Class.GetDefaultEntityPath(entityKeyValues));
+                var collection = context.CreateCollection(CollectionType, ConcreteType,
+                    Class.GetDefaultEntitySetPath());
                 var instance = context.CreateConcrete(ConcreteType);
 
                 //delay save when deleting
-                fetcher.InvokeMethod<Task>("DeleteAsync", new object[] { instance, true }).Wait();
+                collection.InvokeMethod<Task>("DeleteAsync", new object[] { instance, true }).Wait();
             }
         }
 
@@ -68,10 +70,11 @@ namespace CSharpLiteWriterUnitTests
                     .SetupPostEntity(TargetEntity, entityKeyValues))
             {
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(FetcherType, Class.GetDefaultEntityPath(entityKeyValues));
+                var collection = context.CreateCollection(CollectionType, ConcreteType,
+                    Class.GetDefaultEntitySetPath());
                 var instance = context.CreateConcrete(ConcreteType);
 
-                fetcher.InvokeMethod<Task>("DeleteAsync", new object[] { instance, true }).Wait();
+                collection.InvokeMethod<Task>("DeleteAsync", new object[] { instance, true }).Wait();
 
                 _mockedService = _mockedService.OnDeleteEntityRequest(expectedPath)
                     .RespondWithODataOk();

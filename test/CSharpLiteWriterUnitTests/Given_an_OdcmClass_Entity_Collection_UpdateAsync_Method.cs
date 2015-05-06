@@ -10,12 +10,12 @@ using Xunit;
 
 namespace CSharpLiteWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Fetcher_UpdateAsync_Method : EntityTestBase
+    public class Given_an_OdcmClass_Entity_Collection_UpdateAsync_Method : EntityTestBase
     {
         private MockService _mockedService;
         private OdcmProperty _structuralInstanceProperty;
 
-        public Given_an_OdcmClass_Entity_Fetcher_UpdateAsync_Method()
+        public Given_an_OdcmClass_Entity_Collection_UpdateAsync_Method()
         {
             base.Init(m =>
             {
@@ -32,28 +32,28 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void It_updates_an_entity_from_its_own_path()
+        public void It_updates_an_entity_in_a_collection()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
             var expectedPath = Class.GetDefaultEntityPath(entityKeyValues);
             var newValue = Any.Word();
-            
+
             var jobject = new JObject();
             jobject["@odata.type"] = "#" + Class.FullName;
             jobject[_structuralInstanceProperty.Name] = newValue;
-            
+
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues)
                     .OnPatchEntityRequest(expectedPath, jobject)
                         .RespondWithODataOk())
             {
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(FetcherType, Class.GetDefaultEntityPath(entityKeyValues));
+                var collection = context.CreateCollection(CollectionType, ConcreteType, Class.GetDefaultEntitySetPath());
                 var instance = context.CreateConcrete(ConcreteType);
 
                 instance.SetPropertyValue(_structuralInstanceProperty.Name, newValue);
 
-                fetcher.InvokeMethod<Task>("UpdateAsync", new object[] { instance, System.Type.Missing }).Wait();
+                collection.InvokeMethod<Task>("UpdateAsync", new object[] { instance, System.Type.Missing }).Wait();
             }
         }
 
@@ -61,18 +61,18 @@ namespace CSharpLiteWriterUnitTests
         public void It_does_not_update_an_entity_when_delay_saving()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            
+
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues))
             {
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(FetcherType, Class.GetDefaultEntityPath(entityKeyValues));
+                var collection = context.CreateCollection(CollectionType, ConcreteType, Class.GetDefaultEntitySetPath());
                 var instance = context.CreateConcrete(ConcreteType);
 
                 instance.SetPropertyValue(_structuralInstanceProperty.Name, Any.Word());
 
                 //delay save when updating
-                fetcher.InvokeMethod<Task>("UpdateAsync", new object[] { instance, true }).Wait();
+                collection.InvokeMethod<Task>("UpdateAsync", new object[] { instance, true }).Wait();
             }
         }
 
@@ -91,12 +91,12 @@ namespace CSharpLiteWriterUnitTests
                     .SetupPostEntity(TargetEntity, entityKeyValues))
             {
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(FetcherType, Class.GetDefaultEntityPath(entityKeyValues));
+                var collection = context.CreateCollection(CollectionType, ConcreteType, Class.GetDefaultEntitySetPath());
                 var instance = context.CreateConcrete(ConcreteType);
 
                 instance.SetPropertyValue(_structuralInstanceProperty.Name, newValue);
 
-                fetcher.InvokeMethod<Task>("UpdateAsync", new object[] { instance, true }).Wait();
+                collection.InvokeMethod<Task>("UpdateAsync", new object[] { instance, true }).Wait();
 
                 _mockedService = _mockedService.OnPatchEntityRequest(expectedPath, jobject)
                     .RespondWithODataOk();

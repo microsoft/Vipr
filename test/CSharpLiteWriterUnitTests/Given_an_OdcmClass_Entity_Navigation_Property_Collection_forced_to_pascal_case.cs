@@ -9,6 +9,7 @@ using Microsoft.OData.ProxyExtensions.Lite;
 using Moq;
 using Vipr.Core;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace CSharpLiteWriterUnitTests
 {
@@ -101,15 +102,15 @@ namespace CSharpLiteWriterUnitTests
                 var instance = context
                     .CreateConcrete(ConcreteType);
 
+                var fetcher = context.CreateFetcher(FetcherType, Class.GetDefaultEntityPath(entityKeyValues));
+
+                var collectionFetcher = fetcher.GetPropertyValue(_pascalCasedName);
+
+                var addMethod = "Add" + ConcreteType.Name + "Async";
+
                 var relatedInstance = Activator.CreateInstance(ConcreteType);
 
-                var collection = Activator.CreateInstance(typeof (List<>).MakeGenericType(ConcreteType));
-
-                collection.InvokeMethod("Add", new[] { relatedInstance });
-
-                instance.SetPropertyValue(_pascalCasedName, collection);
-
-                context.SaveChangesAsync().Wait();
+                collectionFetcher.InvokeMethod<Task>(addMethod, new object[] { relatedInstance, System.Type.Missing }).Wait();
             }
         }
     }

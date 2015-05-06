@@ -72,7 +72,11 @@ namespace Vipr.Writer.CSharp.Lite
                 {
                     new CollectionGetByIdMethod(odcmClass),
                     new CollectionExecuteAsyncMethod(odcmClass),
-                    new AddAsyncMethod(odcmClass)
+                    new CollectionAddLinkAsyncMethod(odcmClass),
+                    new CollectionRemoveLinkAsyncMethod(odcmClass),
+                    new CollectionAddAsyncMethod(odcmClass),
+                    new CollectionUpdateAsyncMethod(odcmClass),
+                    new CollectionDeleteAsyncMethod(odcmClass)
                 });
         }
 

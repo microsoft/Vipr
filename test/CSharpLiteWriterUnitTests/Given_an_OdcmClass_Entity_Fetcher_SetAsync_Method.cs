@@ -12,34 +12,27 @@ using Xunit;
 
 namespace CSharpLiteWriterUnitTests
 {
-    public class Given_an_OdcmClass_Entity_Fetcher_SetAsync_Method : EntityTestBase
+    public class Given_an_OdcmClass_Entity_Fetcher_SetAsync_Method : NavigationPropertyTestBase
     {
         private MockService _mockedService;
-        private OdcmEntityClass _navPropertyClass;
-        private OdcmProperty _navProperty;
-        private System.Type _navPropertyFetcherType;
-        private System.Type _navPropertyConcreteType;
 
         public Given_an_OdcmClass_Entity_Fetcher_SetAsync_Method()
         {
             Init(odcmModel =>
             {
                 // create a single-valued navigation property for 'Class' entity type.
-                _navPropertyClass = Any.OdcmEntityClass(Namespace);
-                odcmModel.AddType(_navPropertyClass);
-                _navProperty = Any.OdcmProperty(p =>
+                NavTargetClass = Any.OdcmEntityClass(Namespace);
+                odcmModel.AddType(NavTargetClass);
+                NavigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = Class;
                     p.Projection = new OdcmProjection()
                     {
-                        Type = _navPropertyClass
+                        Type = NavTargetClass
                     };
                 });
-                Class.Properties.Add(_navProperty);
+                Class.Properties.Add(NavigationProperty);
             });
-
-            _navPropertyFetcherType = Proxy.GetClass(_navPropertyClass.Namespace, _navPropertyClass.Name + "Fetcher");
-            _navPropertyConcreteType = Proxy.GetClass(_navPropertyClass.Namespace, _navPropertyClass.Name);
         }
 
         /*
@@ -60,14 +53,14 @@ namespace CSharpLiteWriterUnitTests
         public void It_creates_a_new_entity_for_singlevalued_navigation_property()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + _navProperty.Name;
-            var entity2KeyValues = _navPropertyClass.GetSampleKeyArguments().ToArray();
+            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
+            var relatedEntityKeyValues = NavTargetClass.GetSampleKeyArguments().ToArray();
             var expectedJObject = new JObject();
-            var targetInstance = Activator.CreateInstance(_navPropertyConcreteType);
+            var targetInstance = Activator.CreateInstance(NavTargetConcreteType);
 
-            foreach (var keyProperty in entity2KeyValues)
+            foreach (var keyProperty in relatedEntityKeyValues)
             {
-                var key = _navPropertyConcreteType.GetKeyProperties().Single(p => p.Name == keyProperty.Item1);
+                var key = NavTargetConcreteType.GetKeyProperties().Single(p => p.Name == keyProperty.Item1);
                 key.SetValue(targetInstance, keyProperty.Item2);
                 expectedJObject[keyProperty.Item1] = (string)keyProperty.Item2;
             }
@@ -78,7 +71,7 @@ namespace CSharpLiteWriterUnitTests
                     .RespondWithODataOk())
             {
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(_navPropertyFetcherType, propertyPath);
+                var fetcher = context.CreateFetcher(NavTargetFetcherType, propertyPath);
                 var sourceInstance = context.CreateConcrete(ConcreteType);
 
                 fetcher.InvokeMethod<Task>("SetAsync", new object[] { sourceInstance, targetInstance, System.Type.Missing }).Wait();
@@ -89,17 +82,49 @@ namespace CSharpLiteWriterUnitTests
         public void It_does_not_create_a_new_entity_when_delay_saving()
         {
             var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
-            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + _navProperty.Name;
-            var targetInstance = Activator.CreateInstance(_navPropertyConcreteType);
+            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
+            var targetInstance = Activator.CreateInstance(NavTargetConcreteType);
 
             using (_mockedService = new MockService()
                     .SetupPostEntity(TargetEntity, entityKeyValues))
             {
                 var context = _mockedService.GetDefaultContext(Model);
-                var fetcher = context.CreateFetcher(_navPropertyFetcherType, propertyPath);
+                var fetcher = context.CreateFetcher(NavTargetFetcherType, propertyPath);
                 var sourceInstance = context.CreateConcrete(ConcreteType);
 
                 fetcher.InvokeMethod<Task>("SetAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
+            }
+        }
+
+        [Fact]
+        public void It_creates_a_new_entity_when_delay_saving_and_calling_SaveChangesAsync()
+        {
+            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
+            var relatedEntityKeyValues = NavTargetClass.GetSampleKeyArguments().ToArray();
+            var expectedJObject = new JObject();
+            var targetInstance = Activator.CreateInstance(NavTargetConcreteType);
+
+            foreach (var keyProperty in relatedEntityKeyValues)
+            {
+                var key = NavTargetConcreteType.GetKeyProperties().Single(p => p.Name == keyProperty.Item1);
+                key.SetValue(targetInstance, keyProperty.Item2);
+                expectedJObject[keyProperty.Item1] = (string)keyProperty.Item2;
+            }
+
+            using (_mockedService = new MockService()
+                    .SetupPostEntity(TargetEntity, entityKeyValues))
+            {
+                var context = _mockedService.GetDefaultContext(Model);
+                var fetcher = context.CreateFetcher(NavTargetFetcherType, propertyPath);
+                var sourceInstance = context.CreateConcrete(ConcreteType);
+
+                fetcher.InvokeMethod<Task>("SetAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
+
+                _mockedService = _mockedService.OnPatchEntityRequest(propertyPath, expectedJObject)
+                    .RespondWithODataOk();
+
+                context.SaveChangesAsync().Wait();
             }
         }
     }

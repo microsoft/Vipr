@@ -42,7 +42,6 @@
     <Compile Include="ComplexTypeBase.cs" />
     <Compile Include="DataServiceContextWrapper.cs" />
     <Compile Include="EntityBase.cs" />
-    <Compile Include="EntityCollectionImpl.cs" />
     <Compile Include="IBatchElementResult.cs" />
     <Compile Include="IConcreteTypeAccessor.cs" />
     <Compile Include="IMediaEntityBase.cs" />

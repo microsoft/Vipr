@@ -5,9 +5,9 @@ using Vipr.Core.CodeModel;
 
 namespace Vipr.Writer.CSharp.Lite
 {
-    public class AddAsyncMethod : Method
+    public class CollectionAddAsyncMethod : Method
     {
-        public AddAsyncMethod(OdcmClass odcmClass)
+        public CollectionAddAsyncMethod(OdcmClass odcmClass)
         {
             Name = "Add" + odcmClass.Name + "Async";
 
