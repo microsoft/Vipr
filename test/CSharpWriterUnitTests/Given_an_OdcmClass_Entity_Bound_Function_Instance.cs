@@ -23,6 +23,11 @@ namespace CSharpWriterUnitTests
             Init();
         }
 
+        protected void Init()
+        {
+            base.Init();
+        }
+
         [Fact]
         public void The_Concrete_parses_the_response()
         {
@@ -42,7 +47,7 @@ namespace CSharpWriterUnitTests
             {
                 mockService
                     .OnInvokeMethodRequest("GET",
-                        instancePath + "/" + Method.FullName,
+                        instancePath + "/" + ServerMethodNameGenerator(),
                         null,
                         null)
                     .RespondWithGetEntity(TargetEntity.Class.GetDefaultEntitySetName(), response);

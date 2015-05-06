@@ -75,6 +75,47 @@ namespace Microsoft.Office365.OutlookServices
 
     
 
+    public enum CalendarColor : int
+
+    {
+
+        LightBlue
+         = 0
+        ,
+        LightGreen
+         = 1
+        ,
+        LightOrange
+         = 2
+        ,
+        LightGray
+         = 3
+        ,
+        LightYellow
+         = 4
+        ,
+        LightTeal
+         = 5
+        ,
+        LightPink
+         = 6
+        ,
+        LightBrown
+         = 7
+        ,
+        LightRed
+         = 8
+        ,
+        MaxColor
+         = 9
+        ,
+        Auto
+         = -1
+        ,
+    }
+
+    
+
     public enum FreeBusyStatus : int
 
     {
@@ -101,26 +142,6 @@ namespace Microsoft.Office365.OutlookServices
 
     
 
-    public enum EventType : int
-
-    {
-
-        SingleInstance
-         = 0
-        ,
-        Occurrence
-         = 1
-        ,
-        Exception
-         = 2
-        ,
-        SeriesMaster
-         = 3
-        ,
-    }
-
-    
-
     public enum ResponseType : int
 
     {
@@ -142,6 +163,26 @@ namespace Microsoft.Office365.OutlookServices
         ,
         NotResponded
          = 5
+        ,
+    }
+
+    
+
+    public enum EventType : int
+
+    {
+
+        SingleInstance
+         = 0
+        ,
+        Occurrence
+         = 1
+        ,
+        Exception
+         = 2
+        ,
+        SeriesMaster
+         = 3
         ,
     }
 
@@ -461,6 +502,10 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.String _DisplayName;
 
+        private global::Microsoft.Office365.OutlookServices.PhysicalAddress _Address;
+
+        private global::Microsoft.Office365.OutlookServices.GeoCoordinates _Coordinates;
+
         public System.String DisplayName
 
         {
@@ -491,6 +536,66 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
+        public global::Microsoft.Office365.OutlookServices.PhysicalAddress Address
+
+        {
+
+            get
+
+            {
+
+                return _Address;
+
+            }
+
+            set
+
+            {
+
+                if (value != _Address)
+
+                {
+
+                    _Address = value;
+
+                    OnPropertyChanged("Address");
+
+                }
+
+            }
+
+        }
+
+        public global::Microsoft.Office365.OutlookServices.GeoCoordinates Coordinates
+
+        {
+
+            get
+
+            {
+
+                return _Coordinates;
+
+            }
+
+            set
+
+            {
+
+                if (value != _Coordinates)
+
+                {
+
+                    _Coordinates = value;
+
+                    OnPropertyChanged("Coordinates");
+
+                }
+
+            }
+
+        }
+
         public Location(): base()
 
         {
@@ -499,45 +604,21 @@ namespace Microsoft.Office365.OutlookServices
 
     }
 
-    public partial class Attendee:global::Microsoft.Office365.OutlookServices.Recipient
+    public partial class PhysicalAddress:Microsoft.OData.ProxyExtensions.ComplexTypeBase
 
     {
 
-        private global::Microsoft.Office365.OutlookServices.ResponseStatus _Status;
+        private System.String _Street;
 
-        private global::Microsoft.Office365.OutlookServices.AttendeeType _Type;
+        private System.String _City;
 
-        public global::Microsoft.Office365.OutlookServices.ResponseStatus Status
+        private System.String _State;
 
-        {
+        private System.String _CountryOrRegion;
 
-            get
+        private System.String _PostalCode;
 
-            {
-
-                return _Status;
-
-            }
-
-            set
-
-            {
-
-                if (value != _Status)
-
-                {
-
-                    _Status = value;
-
-                    OnPropertyChanged("Status");
-
-                }
-
-            }
-
-        }
-
-        public global::Microsoft.Office365.OutlookServices.AttendeeType Type
+        public System.String Street
 
         {
 
@@ -545,7 +626,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return _Type;
+                return _Street;
 
             }
 
@@ -553,13 +634,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (value != _Type)
+                if (value != _Street)
 
                 {
 
-                    _Type = value;
+                    _Street = value;
 
-                    OnPropertyChanged("Type");
+                    OnPropertyChanged("Street");
 
                 }
 
@@ -567,7 +648,299 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public Attendee()
+        public System.String City
+
+        {
+
+            get
+
+            {
+
+                return _City;
+
+            }
+
+            set
+
+            {
+
+                if (value != _City)
+
+                {
+
+                    _City = value;
+
+                    OnPropertyChanged("City");
+
+                }
+
+            }
+
+        }
+
+        public System.String State
+
+        {
+
+            get
+
+            {
+
+                return _State;
+
+            }
+
+            set
+
+            {
+
+                if (value != _State)
+
+                {
+
+                    _State = value;
+
+                    OnPropertyChanged("State");
+
+                }
+
+            }
+
+        }
+
+        public System.String CountryOrRegion
+
+        {
+
+            get
+
+            {
+
+                return _CountryOrRegion;
+
+            }
+
+            set
+
+            {
+
+                if (value != _CountryOrRegion)
+
+                {
+
+                    _CountryOrRegion = value;
+
+                    OnPropertyChanged("CountryOrRegion");
+
+                }
+
+            }
+
+        }
+
+        public System.String PostalCode
+
+        {
+
+            get
+
+            {
+
+                return _PostalCode;
+
+            }
+
+            set
+
+            {
+
+                if (value != _PostalCode)
+
+                {
+
+                    _PostalCode = value;
+
+                    OnPropertyChanged("PostalCode");
+
+                }
+
+            }
+
+        }
+
+        public PhysicalAddress(): base()
+
+        {
+
+        }
+
+    }
+
+    public partial class GeoCoordinates:Microsoft.OData.ProxyExtensions.ComplexTypeBase
+
+    {
+
+        private System.Nullable<System.Double> _Altitude;
+
+        private System.Nullable<System.Double> _Latitude;
+
+        private System.Nullable<System.Double> _Longitude;
+
+        private System.Nullable<System.Double> _Accuracy;
+
+        private System.Nullable<System.Double> _AltitudeAccuracy;
+
+        public System.Nullable<System.Double> Altitude
+
+        {
+
+            get
+
+            {
+
+                return _Altitude;
+
+            }
+
+            set
+
+            {
+
+                if (value != _Altitude)
+
+                {
+
+                    _Altitude = value;
+
+                    OnPropertyChanged("Altitude");
+
+                }
+
+            }
+
+        }
+
+        public System.Nullable<System.Double> Latitude
+
+        {
+
+            get
+
+            {
+
+                return _Latitude;
+
+            }
+
+            set
+
+            {
+
+                if (value != _Latitude)
+
+                {
+
+                    _Latitude = value;
+
+                    OnPropertyChanged("Latitude");
+
+                }
+
+            }
+
+        }
+
+        public System.Nullable<System.Double> Longitude
+
+        {
+
+            get
+
+            {
+
+                return _Longitude;
+
+            }
+
+            set
+
+            {
+
+                if (value != _Longitude)
+
+                {
+
+                    _Longitude = value;
+
+                    OnPropertyChanged("Longitude");
+
+                }
+
+            }
+
+        }
+
+        public System.Nullable<System.Double> Accuracy
+
+        {
+
+            get
+
+            {
+
+                return _Accuracy;
+
+            }
+
+            set
+
+            {
+
+                if (value != _Accuracy)
+
+                {
+
+                    _Accuracy = value;
+
+                    OnPropertyChanged("Accuracy");
+
+                }
+
+            }
+
+        }
+
+        public System.Nullable<System.Double> AltitudeAccuracy
+
+        {
+
+            get
+
+            {
+
+                return _AltitudeAccuracy;
+
+            }
+
+            set
+
+            {
+
+                if (value != _AltitudeAccuracy)
+
+                {
+
+                    _AltitudeAccuracy = value;
+
+                    OnPropertyChanged("AltitudeAccuracy");
+
+                }
+
+            }
+
+        }
+
+        public GeoCoordinates(): base()
 
         {
 
@@ -644,6 +1017,82 @@ namespace Microsoft.Office365.OutlookServices
         }
 
         public ResponseStatus(): base()
+
+        {
+
+        }
+
+    }
+
+    public partial class Attendee:global::Microsoft.Office365.OutlookServices.Recipient
+
+    {
+
+        private global::Microsoft.Office365.OutlookServices.ResponseStatus _Status;
+
+        private global::Microsoft.Office365.OutlookServices.AttendeeType _Type;
+
+        public global::Microsoft.Office365.OutlookServices.ResponseStatus Status
+
+        {
+
+            get
+
+            {
+
+                return _Status;
+
+            }
+
+            set
+
+            {
+
+                if (value != _Status)
+
+                {
+
+                    _Status = value;
+
+                    OnPropertyChanged("Status");
+
+                }
+
+            }
+
+        }
+
+        public global::Microsoft.Office365.OutlookServices.AttendeeType Type
+
+        {
+
+            get
+
+            {
+
+                return _Type;
+
+            }
+
+            set
+
+            {
+
+                if (value != _Type)
+
+                {
+
+                    _Type = value;
+
+                    OnPropertyChanged("Type");
+
+                }
+
+            }
+
+        }
+
+        public Attendee()
 
         {
 
@@ -1112,178 +1561,6 @@ namespace Microsoft.Office365.OutlookServices
         }
 
         public RecurrenceRange(): base()
-
-        {
-
-        }
-
-    }
-
-    public partial class PhysicalAddress:Microsoft.OData.ProxyExtensions.ComplexTypeBase
-
-    {
-
-        private System.String _Street;
-
-        private System.String _City;
-
-        private System.String _State;
-
-        private System.String _CountryOrRegion;
-
-        private System.String _PostalCode;
-
-        public System.String Street
-
-        {
-
-            get
-
-            {
-
-                return _Street;
-
-            }
-
-            set
-
-            {
-
-                if (value != _Street)
-
-                {
-
-                    _Street = value;
-
-                    OnPropertyChanged("Street");
-
-                }
-
-            }
-
-        }
-
-        public System.String City
-
-        {
-
-            get
-
-            {
-
-                return _City;
-
-            }
-
-            set
-
-            {
-
-                if (value != _City)
-
-                {
-
-                    _City = value;
-
-                    OnPropertyChanged("City");
-
-                }
-
-            }
-
-        }
-
-        public System.String State
-
-        {
-
-            get
-
-            {
-
-                return _State;
-
-            }
-
-            set
-
-            {
-
-                if (value != _State)
-
-                {
-
-                    _State = value;
-
-                    OnPropertyChanged("State");
-
-                }
-
-            }
-
-        }
-
-        public System.String CountryOrRegion
-
-        {
-
-            get
-
-            {
-
-                return _CountryOrRegion;
-
-            }
-
-            set
-
-            {
-
-                if (value != _CountryOrRegion)
-
-                {
-
-                    _CountryOrRegion = value;
-
-                    OnPropertyChanged("CountryOrRegion");
-
-                }
-
-            }
-
-        }
-
-        public System.String PostalCode
-
-        {
-
-            get
-
-            {
-
-                return _PostalCode;
-
-            }
-
-            set
-
-            {
-
-                if (value != _PostalCode)
-
-                {
-
-                    _PostalCode = value;
-
-                    OnPropertyChanged("PostalCode");
-
-                }
-
-            }
-
-        }
-
-        public PhysicalAddress(): base()
 
         {
 
@@ -3189,7 +3466,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.SendMail");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/SendMail");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[2]
 
@@ -3567,7 +3844,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.SendMail");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/SendMail");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[2]
 
@@ -4057,7 +4334,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Copy");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Copy");
 
             return (global::Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
 
@@ -4085,7 +4362,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Move");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Move");
 
             return (global::Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
 
@@ -4225,7 +4502,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Copy");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Copy");
 
             return (global::Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
 
@@ -4253,7 +4530,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Move");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Move");
 
             return (global::Microsoft.Office365.OutlookServices.IFolder) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Folder>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Folder>(requestUri, "POST", true, new OperationParameter[]
 
@@ -4470,6 +4747,8 @@ namespace Microsoft.Office365.OutlookServices
         private System.Nullable<System.Boolean> _IsDraft;
 
         private System.Nullable<System.Boolean> _IsRead;
+
+        private System.String _WebLink;
 
         private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Attachment> _AttachmentsConcrete;
 
@@ -5137,6 +5416,36 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
+        public System.String WebLink
+
+        {
+
+            get
+
+            {
+
+                return _WebLink;
+
+            }
+
+            set
+
+            {
+
+                if (value != _WebLink)
+
+                {
+
+                    _WebLink = value;
+
+                    OnPropertyChanged("WebLink");
+
+                }
+
+            }
+
+        }
+
         Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IAttachment> global::Microsoft.Office365.OutlookServices.IMessage.Attachments
 
         {
@@ -5251,7 +5560,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Copy");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Copy");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5279,7 +5588,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Move");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Move");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5307,7 +5616,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateReply");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateReply");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5333,7 +5642,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateReplyAll");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateReplyAll");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5359,7 +5668,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateForward");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateForward");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5385,7 +5694,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Reply");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Reply");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -5413,7 +5722,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.ReplyAll");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/ReplyAll");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -5441,7 +5750,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Forward");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Forward");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[2]
 
@@ -5471,7 +5780,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Send");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Send");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[0]
 
@@ -5579,7 +5888,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Copy");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Copy");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5607,7 +5916,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Move");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Move");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5635,7 +5944,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateReply");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateReply");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5661,7 +5970,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateReplyAll");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateReplyAll");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5687,7 +5996,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.CreateForward");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/CreateForward");
 
             return (global::Microsoft.Office365.OutlookServices.IMessage) Enumerable.Single<global::Microsoft.Office365.OutlookServices.Message>(await this.Context.ExecuteAsync<global::Microsoft.Office365.OutlookServices.Message>(requestUri, "POST", true, new OperationParameter[]
 
@@ -5713,7 +6022,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Reply");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Reply");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -5741,7 +6050,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.ReplyAll");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/ReplyAll");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -5769,7 +6078,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Forward");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Forward");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[2]
 
@@ -5799,7 +6108,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Send");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Send");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[0]
 
@@ -6671,6 +6980,8 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.String _ChangeKey;
 
+        private global::Microsoft.Office365.OutlookServices.CalendarColor _Color;
+
         private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Event> _CalendarViewConcrete;
 
         private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Event> _EventsConcrete;
@@ -6728,6 +7039,36 @@ namespace Microsoft.Office365.OutlookServices
                     _ChangeKey = value;
 
                     OnPropertyChanged("ChangeKey");
+
+                }
+
+            }
+
+        }
+
+        public global::Microsoft.Office365.OutlookServices.CalendarColor Color
+
+        {
+
+            get
+
+            {
+
+                return _Color;
+
+            }
+
+            set
+
+            {
+
+                if (value != _Color)
+
+                {
+
+                    _Color = value;
+
+                    OnPropertyChanged("Color");
 
                 }
 
@@ -7667,11 +8008,19 @@ namespace Microsoft.Office365.OutlookServices
 
         private System.Nullable<System.DateTimeOffset> _Start;
 
+        private System.String _StartTimeZone;
+
         private System.Nullable<System.DateTimeOffset> _End;
+
+        private System.String _EndTimeZone;
+
+        private System.Nullable<System.Int32> _Reminder;
 
         private global::Microsoft.Office365.OutlookServices.Location _Location;
 
         private global::Microsoft.Office365.OutlookServices.FreeBusyStatus _ShowAs;
+
+        private global::Microsoft.Office365.OutlookServices.ResponseStatus _ResponseStatus;
 
         private System.Nullable<System.Boolean> _IsAllDay;
 
@@ -7691,9 +8040,9 @@ namespace Microsoft.Office365.OutlookServices
 
         private global::Microsoft.Office365.OutlookServices.Recipient _Organizer;
 
-        private System.String _StartTimeZone;
+        private System.String _iCalUId;
 
-        private System.String _EndTimeZone;
+        private System.String _WebLink;
 
         private Microsoft.OData.ProxyExtensions.EntityCollectionImpl<global::Microsoft.Office365.OutlookServices.Attachment> _AttachmentsConcrete;
 
@@ -7879,6 +8228,36 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
+        public System.String StartTimeZone
+
+        {
+
+            get
+
+            {
+
+                return _StartTimeZone;
+
+            }
+
+            set
+
+            {
+
+                if (value != _StartTimeZone)
+
+                {
+
+                    _StartTimeZone = value;
+
+                    OnPropertyChanged("StartTimeZone");
+
+                }
+
+            }
+
+        }
+
         public System.Nullable<System.DateTimeOffset> End
 
         {
@@ -7902,6 +8281,66 @@ namespace Microsoft.Office365.OutlookServices
                     _End = value;
 
                     OnPropertyChanged("End");
+
+                }
+
+            }
+
+        }
+
+        public System.String EndTimeZone
+
+        {
+
+            get
+
+            {
+
+                return _EndTimeZone;
+
+            }
+
+            set
+
+            {
+
+                if (value != _EndTimeZone)
+
+                {
+
+                    _EndTimeZone = value;
+
+                    OnPropertyChanged("EndTimeZone");
+
+                }
+
+            }
+
+        }
+
+        public System.Nullable<System.Int32> Reminder
+
+        {
+
+            get
+
+            {
+
+                return _Reminder;
+
+            }
+
+            set
+
+            {
+
+                if (value != _Reminder)
+
+                {
+
+                    _Reminder = value;
+
+                    OnPropertyChanged("Reminder");
 
                 }
 
@@ -7962,6 +8401,36 @@ namespace Microsoft.Office365.OutlookServices
                     _ShowAs = value;
 
                     OnPropertyChanged("ShowAs");
+
+                }
+
+            }
+
+        }
+
+        public global::Microsoft.Office365.OutlookServices.ResponseStatus ResponseStatus
+
+        {
+
+            get
+
+            {
+
+                return _ResponseStatus;
+
+            }
+
+            set
+
+            {
+
+                if (value != _ResponseStatus)
+
+                {
+
+                    _ResponseStatus = value;
+
+                    OnPropertyChanged("ResponseStatus");
 
                 }
 
@@ -8255,7 +8724,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public System.String StartTimeZone
+        public System.String iCalUId
 
         {
 
@@ -8263,7 +8732,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return _StartTimeZone;
+                return _iCalUId;
 
             }
 
@@ -8271,13 +8740,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (value != _StartTimeZone)
+                if (value != _iCalUId)
 
                 {
 
-                    _StartTimeZone = value;
+                    _iCalUId = value;
 
-                    OnPropertyChanged("StartTimeZone");
+                    OnPropertyChanged("iCalUId");
 
                 }
 
@@ -8285,7 +8754,7 @@ namespace Microsoft.Office365.OutlookServices
 
         }
 
-        public System.String EndTimeZone
+        public System.String WebLink
 
         {
 
@@ -8293,7 +8762,7 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                return _EndTimeZone;
+                return _WebLink;
 
             }
 
@@ -8301,13 +8770,13 @@ namespace Microsoft.Office365.OutlookServices
 
             {
 
-                if (value != _EndTimeZone)
+                if (value != _WebLink)
 
                 {
 
-                    _EndTimeZone = value;
+                    _WebLink = value;
 
-                    OnPropertyChanged("EndTimeZone");
+                    OnPropertyChanged("WebLink");
 
                 }
 
@@ -8613,7 +9082,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Accept");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Accept");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -8641,7 +9110,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Decline");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Decline");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -8669,7 +9138,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.TentativelyAccept");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/TentativelyAccept");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -8837,7 +9306,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Accept");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Accept");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -8865,7 +9334,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.Decline");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Decline");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -8893,7 +9362,7 @@ namespace Microsoft.Office365.OutlookServices
 
              throw new Exception("cannot find entity");
 
-            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/Microsoft.OutlookServices.TentativelyAccept");
+            Uri requestUri = new Uri(myUri.ToString().TrimEnd('/') + "/TentativelyAccept");
 
             await this.Context.ExecuteAsync(requestUri, "POST", new OperationParameter[1]
 
@@ -10847,6 +11316,380 @@ namespace Microsoft.Office365.OutlookServices
 
     }
 
+    [global::Microsoft.OData.Client.Key("Id")]
+
+    public partial class EventMessage:global::Microsoft.Office365.OutlookServices.Message, global::Microsoft.Office365.OutlookServices.IEventMessage, global::Microsoft.Office365.OutlookServices.IEventMessageFetcher
+
+    {
+
+        private global::Microsoft.Office365.OutlookServices.Event _Event;
+
+        private global::Microsoft.Office365.OutlookServices.EventFetcher _EventFetcher;
+
+        private global::Microsoft.Office365.OutlookServices.MeetingMessageType _MeetingMessageType;
+
+        public global::Microsoft.Office365.OutlookServices.MeetingMessageType MeetingMessageType
+
+        {
+
+            get
+
+            {
+
+                return _MeetingMessageType;
+
+            }
+
+            set
+
+            {
+
+                if (value != _MeetingMessageType)
+
+                {
+
+                    _MeetingMessageType = value;
+
+                    OnPropertyChanged("MeetingMessageType");
+
+                }
+
+            }
+
+        }
+
+        global::Microsoft.Office365.OutlookServices.IEvent global::Microsoft.Office365.OutlookServices.IEventMessage.Event
+
+        {
+
+            get
+
+            {
+
+                return this._Event;
+
+            }
+
+            set
+
+            {
+
+                if (this.Event != value)
+
+                {
+
+                    this.Event = (global::Microsoft.Office365.OutlookServices.Event)value;
+
+                }
+
+            }
+
+        }
+
+        public global::Microsoft.Office365.OutlookServices.Event Event
+
+        {
+
+            get
+
+            {
+
+                return this._Event;
+
+            }
+
+            set
+
+            {
+
+                if (this._Event != value)
+
+                {
+
+                    this._Event = value;
+
+                    if (Context != null && Context.GetEntityDescriptor(this) != null && (value == null || Context.GetEntityDescriptor(value) != null))
+
+                    {
+
+                        Context.SetLink(this, "Event", value);
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        global::Microsoft.Office365.OutlookServices.IEventFetcher global::Microsoft.Office365.OutlookServices.IEventMessageFetcher.Event
+
+        {
+
+            get
+
+            {
+
+                if (this._EventFetcher == null)
+
+                {
+
+                    this._EventFetcher = new global::Microsoft.Office365.OutlookServices.EventFetcher();
+
+                    this._EventFetcher.Initialize(this.Context, GetPath("Event"));
+
+                }
+
+                
+
+                return this._EventFetcher;
+
+            }
+
+        }
+
+        public EventMessage()
+
+        {
+
+        }
+
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IEventMessage> EnsureQuery()
+
+        {
+
+            if (this._query == null)
+
+            {
+
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.EventMessage, global::Microsoft.Office365.OutlookServices.IEventMessage>();
+
+            }
+
+            return this._query;
+
+        }
+
+        
+
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IEventMessage> _query;
+
+        global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IEventMessage> global::Microsoft.Office365.OutlookServices.IEventMessageFetcher.ExecuteAsync()
+
+        {
+
+            var tsc = new global::System.Threading.Tasks.TaskCompletionSource<global::Microsoft.Office365.OutlookServices.IEventMessage>();
+
+            tsc.SetResult(this);
+
+            return tsc.Task;
+
+        }
+
+        global::Microsoft.Office365.OutlookServices.IEventMessageFetcher global::Microsoft.Office365.OutlookServices.IEventMessageFetcher.Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IEventMessage, TTarget>> navigationPropertyAccessor)
+
+        {
+
+            return (global::Microsoft.Office365.OutlookServices.IEventMessageFetcher) this;
+
+        }
+
+    }
+
+    internal partial class EventMessageFetcher:global::Microsoft.Office365.OutlookServices.MessageFetcher, global::Microsoft.Office365.OutlookServices.IEventMessageFetcher
+
+    {
+
+        private global::Microsoft.Office365.OutlookServices.EventFetcher _EventFetcher;
+
+        public global::Microsoft.Office365.OutlookServices.IEventFetcher Event
+
+        {
+
+            get
+
+            {
+
+                if (this._EventFetcher == null)
+
+                {
+
+                    this._EventFetcher = new global::Microsoft.Office365.OutlookServices.EventFetcher();
+
+                    this._EventFetcher.Initialize(this.Context, GetPath("Event"));
+
+                }
+
+                
+
+                return this._EventFetcher;
+
+            }
+
+        }
+
+        public EventMessageFetcher()
+
+        {
+
+        }
+
+        public async new global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IEventMessage> ExecuteAsync()
+
+        {
+
+            return await EnsureQuery().ExecuteSingleAsync();
+
+        }
+
+        public global::Microsoft.Office365.OutlookServices.IEventMessageFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IEventMessage, TTarget>> navigationPropertyAccessor)
+
+        {
+
+            return (global::Microsoft.Office365.OutlookServices.IEventMessageFetcher) new global::Microsoft.Office365.OutlookServices.EventMessageFetcher()
+
+            {
+
+                _query = this.EnsureQuery().Expand<TTarget>(navigationPropertyAccessor)
+
+            }
+
+            ;
+
+        }
+
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IEventMessage> EnsureQuery()
+
+        {
+
+            if (this._query == null)
+
+            {
+
+                this._query = CreateQuery<global::Microsoft.Office365.OutlookServices.EventMessage, global::Microsoft.Office365.OutlookServices.IEventMessage>();
+
+            }
+
+            return this._query;
+
+        }
+
+        
+
+        private Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSet<global::Microsoft.Office365.OutlookServices.IEventMessage> _query;
+
+    }
+
+    internal partial class EventMessageCollection:Microsoft.OData.ProxyExtensions.QueryableSet<global::Microsoft.Office365.OutlookServices.IEventMessage>, global::Microsoft.Office365.OutlookServices.IEventMessageCollection
+
+    {
+
+        internal EventMessageCollection(global::Microsoft.OData.Client.DataServiceQuery inner,Microsoft.OData.ProxyExtensions.DataServiceContextWrapper context,object entity,string path): base(inner, context, entity as Microsoft.OData.ProxyExtensions.EntityBase, path)
+
+        {
+
+        }
+
+        public global::Microsoft.Office365.OutlookServices.IEventMessageFetcher GetById(System.String id)
+
+        {
+
+            return this[id];
+
+        }
+
+        public global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEventMessage>> ExecuteAsync()
+
+        {
+
+            return ExecuteAsyncInternal();
+
+        }
+
+        public global::System.Threading.Tasks.Task AddEventMessageAsync(global::Microsoft.Office365.OutlookServices.IEventMessage item, System.Boolean deferSaveChanges = false)
+
+        {
+
+            if (Entity == null)
+
+            {
+
+                Context.AddObject(Path, item);
+
+            }
+
+            else
+
+            {
+
+                var lastSlash = Path.LastIndexOf('/');
+
+                var shortPath = (lastSlash >= 0 && lastSlash < Path.Length - 1) ? Path.Substring(lastSlash + 1) : Path;
+
+                Context.AddRelatedObject(Entity, shortPath, item);
+
+            }
+
+            if (!deferSaveChanges)
+
+            {
+
+                return Context.SaveChangesAsync();
+
+            }
+
+            else
+
+            {
+
+                var retVal = new global::System.Threading.Tasks.TaskCompletionSource<object>();
+
+                retVal.SetResult(null);
+
+                return retVal.Task;
+
+            }
+
+        }
+
+        public global::Microsoft.Office365.OutlookServices.IEventMessageFetcher this[System.String id]
+
+        {
+
+            get
+
+            {
+
+                var path = GetPath<global::Microsoft.Office365.OutlookServices.EventMessage>((i) => i.Id == id);
+
+                var fetcher = new global::Microsoft.Office365.OutlookServices.EventMessageFetcher();
+
+                fetcher.Initialize(Context, path);
+
+                
+
+                return fetcher;
+
+            }
+
+        }
+
+    }
+
+    internal partial class EventMessageCollection
+
+    {
+
+        public global::System.Threading.Tasks.Task<System.Int64> CountAsync()
+
+        {
+
+            return new DataServiceQuerySingle<long>(Context, Path + "/$count").GetValueAsync();
+
+        }
+
+    }
+
     public partial class OutlookServicesClient:global::Microsoft.Office365.OutlookServices.IOutlookServicesClient
 
     {
@@ -10979,7 +11822,7 @@ namespace Microsoft.Office365.OutlookServices
 
             string resolvedType;
 
-            resolvedType = Context.DefaultResolveNameInternal(clientType, "Microsoft.OutlookServices", "Microsoft.Office365.OutlookServices");
+            resolvedType = Context.DefaultResolveNameInternal(clientType,  "Microsoft.OutlookServices", "Microsoft.Office365.OutlookServices");
 
             if (!string.IsNullOrEmpty(resolvedType))
 
@@ -11191,6 +12034,8 @@ namespace Microsoft.Office365.OutlookServices
             
                     <Property Name=""IsRead"" Type=""Edm.Boolean"" />
             
+                    <Property Name=""WebLink"" Type=""Edm.String"" />
+            
                     <NavigationProperty ContainsTarget=""true"" Name=""Attachments"" Type=""Collection(Microsoft.OutlookServices.Attachment)"" />
             
                   </EntityType>
@@ -11335,11 +12180,39 @@ namespace Microsoft.Office365.OutlookServices
             
                     <Property Name=""ChangeKey"" Type=""Edm.String"" />
             
+                    <Property Name=""Color"" Type=""Microsoft.OutlookServices.CalendarColor"" />
+            
                     <NavigationProperty ContainsTarget=""true"" Name=""CalendarView"" Type=""Collection(Microsoft.OutlookServices.Event)"" />
             
                     <NavigationProperty ContainsTarget=""true"" Name=""Events"" Type=""Collection(Microsoft.OutlookServices.Event)"" />
             
                   </EntityType>
+            
+                  <EnumType Name=""CalendarColor"">
+            
+                    <Member Name=""LightBlue"" Value=""0"" />
+            
+                    <Member Name=""LightGreen"" Value=""1"" />
+            
+                    <Member Name=""LightOrange"" Value=""2"" />
+            
+                    <Member Name=""LightGray"" Value=""3"" />
+            
+                    <Member Name=""LightYellow"" Value=""4"" />
+            
+                    <Member Name=""LightTeal"" Value=""5"" />
+            
+                    <Member Name=""LightPink"" Value=""6"" />
+            
+                    <Member Name=""LightBrown"" Value=""7"" />
+            
+                    <Member Name=""LightRed"" Value=""8"" />
+            
+                    <Member Name=""MaxColor"" Value=""9"" />
+            
+                    <Member Name=""Auto"" Value=""-1"" />
+            
+                  </EnumType>
             
                   <EntityType BaseType=""Microsoft.OutlookServices.Entity"" Name=""CalendarGroup"">
             
@@ -11367,11 +12240,19 @@ namespace Microsoft.Office365.OutlookServices
             
                     <Property Name=""Start"" Type=""Edm.DateTimeOffset"" />
             
+                    <Property Name=""StartTimeZone"" Type=""Edm.String"" />
+            
                     <Property Name=""End"" Type=""Edm.DateTimeOffset"" />
+            
+                    <Property Name=""EndTimeZone"" Type=""Edm.String"" />
+            
+                    <Property Name=""Reminder"" Type=""Edm.Int32"" />
             
                     <Property Name=""Location"" Type=""Microsoft.OutlookServices.Location"" />
             
                     <Property Name=""ShowAs"" Type=""Microsoft.OutlookServices.FreeBusyStatus"" />
+            
+                    <Property Name=""ResponseStatus"" Type=""Microsoft.OutlookServices.ResponseStatus"" />
             
                     <Property Name=""IsAllDay"" Type=""Edm.Boolean"" />
             
@@ -11391,9 +12272,9 @@ namespace Microsoft.Office365.OutlookServices
             
                     <Property Name=""Organizer"" Type=""Microsoft.OutlookServices.Recipient"" />
             
-                    <Property Name=""StartTimeZone"" Type=""Edm.String"" />
+                    <Property Name=""iCalUId"" Type=""Edm.String"" />
             
-                    <Property Name=""EndTimeZone"" Type=""Edm.String"" />
+                    <Property Name=""WebLink"" Type=""Edm.String"" />
             
                     <NavigationProperty ContainsTarget=""true"" Name=""Attachments"" Type=""Collection(Microsoft.OutlookServices.Attachment)"" />
             
@@ -11406,6 +12287,38 @@ namespace Microsoft.Office365.OutlookServices
                   <ComplexType Name=""Location"">
             
                     <Property Name=""DisplayName"" Type=""Edm.String"" />
+            
+                    <Property Name=""Address"" Type=""Microsoft.OutlookServices.PhysicalAddress"" />
+            
+                    <Property Name=""Coordinates"" Type=""Microsoft.OutlookServices.GeoCoordinates"" />
+            
+                  </ComplexType>
+            
+                  <ComplexType Name=""PhysicalAddress"">
+            
+                    <Property Name=""Street"" Type=""Edm.String"" />
+            
+                    <Property Name=""City"" Type=""Edm.String"" />
+            
+                    <Property Name=""State"" Type=""Edm.String"" />
+            
+                    <Property Name=""CountryOrRegion"" Type=""Edm.String"" />
+            
+                    <Property Name=""PostalCode"" Type=""Edm.String"" />
+            
+                  </ComplexType>
+            
+                  <ComplexType Name=""GeoCoordinates"">
+            
+                    <Property Name=""Altitude"" Type=""Edm.Double"" />
+            
+                    <Property Name=""Latitude"" Type=""Edm.Double"" />
+            
+                    <Property Name=""Longitude"" Type=""Edm.Double"" />
+            
+                    <Property Name=""Accuracy"" Type=""Edm.Double"" />
+            
+                    <Property Name=""AltitudeAccuracy"" Type=""Edm.Double"" />
             
                   </ComplexType>
             
@@ -11424,26 +12337,6 @@ namespace Microsoft.Office365.OutlookServices
                     <Member Name=""Unknown"" Value=""-1"" />
             
                   </EnumType>
-            
-                  <EnumType Name=""EventType"">
-            
-                    <Member Name=""SingleInstance"" Value=""0"" />
-            
-                    <Member Name=""Occurrence"" Value=""1"" />
-            
-                    <Member Name=""Exception"" Value=""2"" />
-            
-                    <Member Name=""SeriesMaster"" Value=""3"" />
-            
-                  </EnumType>
-            
-                  <ComplexType BaseType=""Microsoft.OutlookServices.Recipient"" Name=""Attendee"">
-            
-                    <Property Name=""Status"" Type=""Microsoft.OutlookServices.ResponseStatus"" />
-            
-                    <Property Name=""Type"" Type=""Microsoft.OutlookServices.AttendeeType"" />
-            
-                  </ComplexType>
             
                   <ComplexType Name=""ResponseStatus"">
             
@@ -11468,6 +12361,26 @@ namespace Microsoft.Office365.OutlookServices
                     <Member Name=""NotResponded"" Value=""5"" />
             
                   </EnumType>
+            
+                  <EnumType Name=""EventType"">
+            
+                    <Member Name=""SingleInstance"" Value=""0"" />
+            
+                    <Member Name=""Occurrence"" Value=""1"" />
+            
+                    <Member Name=""Exception"" Value=""2"" />
+            
+                    <Member Name=""SeriesMaster"" Value=""3"" />
+            
+                  </EnumType>
+            
+                  <ComplexType BaseType=""Microsoft.OutlookServices.Recipient"" Name=""Attendee"">
+            
+                    <Property Name=""Status"" Type=""Microsoft.OutlookServices.ResponseStatus"" />
+            
+                    <Property Name=""Type"" Type=""Microsoft.OutlookServices.AttendeeType"" />
+            
+                  </ComplexType>
             
                   <EnumType Name=""AttendeeType"">
             
@@ -11663,20 +12576,6 @@ namespace Microsoft.Office365.OutlookServices
             
                   </EntityType>
             
-                  <ComplexType Name=""PhysicalAddress"">
-            
-                    <Property Name=""Street"" Type=""Edm.String"" />
-            
-                    <Property Name=""City"" Type=""Edm.String"" />
-            
-                    <Property Name=""State"" Type=""Edm.String"" />
-            
-                    <Property Name=""CountryOrRegion"" Type=""Edm.String"" />
-            
-                    <Property Name=""PostalCode"" Type=""Edm.String"" />
-            
-                  </ComplexType>
-            
                   <EntityType BaseType=""Microsoft.OutlookServices.Entity"" Name=""ContactFolder"">
             
                     <Property Name=""ParentFolderId"" Type=""Edm.String"" />
@@ -11686,6 +12585,14 @@ namespace Microsoft.Office365.OutlookServices
                     <NavigationProperty ContainsTarget=""true"" Name=""Contacts"" Type=""Collection(Microsoft.OutlookServices.Contact)"" />
             
                     <NavigationProperty ContainsTarget=""true"" Name=""ChildFolders"" Type=""Collection(Microsoft.OutlookServices.ContactFolder)"" />
+            
+                  </EntityType>
+            
+                  <EntityType BaseType=""Microsoft.OutlookServices.Message"" Name=""EventMessage"">
+            
+                    <Property Name=""MeetingMessageType"" Type=""Microsoft.OutlookServices.MeetingMessageType"" />
+            
+                    <NavigationProperty ContainsTarget=""true"" Name=""Event"" Type=""Microsoft.OutlookServices.Event"" />
             
                   </EntityType>
             
@@ -12163,6 +13070,9 @@ namespace Microsoft.Office365.OutlookServices
         System.Nullable<System.Boolean> IsRead
         {get;set;}
 
+        System.String WebLink
+        {get;set;}
+
         Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IAttachment> Attachments
         {get;}
 
@@ -12367,6 +13277,9 @@ namespace Microsoft.Office365.OutlookServices
         System.String ChangeKey
         {get;set;}
 
+        global::Microsoft.Office365.OutlookServices.CalendarColor Color
+        {get;set;}
+
         Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEvent> CalendarView
         {get;}
 
@@ -12504,13 +13417,25 @@ namespace Microsoft.Office365.OutlookServices
         System.Nullable<System.DateTimeOffset> Start
         {get;set;}
 
+        System.String StartTimeZone
+        {get;set;}
+
         System.Nullable<System.DateTimeOffset> End
+        {get;set;}
+
+        System.String EndTimeZone
+        {get;set;}
+
+        System.Nullable<System.Int32> Reminder
         {get;set;}
 
         global::Microsoft.Office365.OutlookServices.Location Location
         {get;set;}
 
         global::Microsoft.Office365.OutlookServices.FreeBusyStatus ShowAs
+        {get;set;}
+
+        global::Microsoft.Office365.OutlookServices.ResponseStatus ResponseStatus
         {get;set;}
 
         System.Nullable<System.Boolean> IsAllDay
@@ -12540,10 +13465,10 @@ namespace Microsoft.Office365.OutlookServices
         global::Microsoft.Office365.OutlookServices.Recipient Organizer
         {get;set;}
 
-        System.String StartTimeZone
+        System.String iCalUId
         {get;set;}
 
-        System.String EndTimeZone
+        System.String WebLink
         {get;set;}
 
         Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IAttachment> Attachments
@@ -12809,6 +13734,61 @@ namespace Microsoft.Office365.OutlookServices
     }
 
     public partial interface IContactFolderCollection
+
+    {
+
+        global::System.Threading.Tasks.Task<System.Int64> CountAsync();
+
+    }
+
+    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
+
+    public partial interface IEventMessage:global::Microsoft.Office365.OutlookServices.IMessage
+
+    {
+
+        global::Microsoft.Office365.OutlookServices.MeetingMessageType MeetingMessageType
+        {get;set;}
+
+        global::Microsoft.Office365.OutlookServices.IEvent Event
+        {get;set;}
+
+    }
+
+    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
+
+    public partial interface IEventMessageFetcher:global::Microsoft.Office365.OutlookServices.IMessageFetcher
+
+    {
+
+        global::Microsoft.Office365.OutlookServices.IEventFetcher Event
+        {get;}
+
+        new global::System.Threading.Tasks.Task<global::Microsoft.Office365.OutlookServices.IEventMessage> ExecuteAsync();
+
+        global::Microsoft.Office365.OutlookServices.IEventMessageFetcher Expand<TTarget>(System.Linq.Expressions.Expression<System.Func<global::Microsoft.Office365.OutlookServices.IEventMessage, TTarget>> navigationPropertyAccessor);
+
+    }
+
+    [Microsoft.OData.ProxyExtensions.LowerCaseProperty]
+
+    public partial interface IEventMessageCollection:Microsoft.OData.ProxyExtensions.IReadOnlyQueryableSetBase<global::Microsoft.Office365.OutlookServices.IEventMessage>
+
+    {
+
+        global::Microsoft.Office365.OutlookServices.IEventMessageFetcher GetById(System.String id);
+
+        global::System.Threading.Tasks.Task<Microsoft.OData.ProxyExtensions.IPagedCollection<global::Microsoft.Office365.OutlookServices.IEventMessage>> ExecuteAsync();
+
+        global::System.Threading.Tasks.Task AddEventMessageAsync(global::Microsoft.Office365.OutlookServices.IEventMessage item, System.Boolean deferSaveChanges = false);
+
+         global::Microsoft.Office365.OutlookServices.IEventMessageFetcher this[System.String id]
+
+        {get;}
+
+    }
+
+    public partial interface IEventMessageCollection
 
     {
 

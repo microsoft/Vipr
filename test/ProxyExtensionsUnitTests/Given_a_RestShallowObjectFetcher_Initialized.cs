@@ -59,7 +59,7 @@ namespace ProxyExtensionsUnitTests
         }
 
         [Fact]
-        public void When_the_path_does_not_have_a_trailing_slash_GetUrl_returns_the_path_appended_to_the_Context_base_uri()
+        public void When_the_path_does_not_have_a_leading_or_trailing_slash_GetUrl_returns_the_path_appended_to_the_Context_base_uri()
         {
             var baseUriString = Any.Uri(allowQuerystring: false).AbsoluteUri.TrimEnd('/');
 
@@ -84,6 +84,21 @@ namespace ProxyExtensionsUnitTests
             var fetcher = new TestRestShallowObjectFetcher();
 
             fetcher.Initialize(context, _path);
+            fetcher.GetUrl().AbsoluteUri
+                .Should().Be(new Uri(baseUriString + "/" + _path).AbsoluteUri);
+        }
+
+        [Fact]
+        public void When_the_path_has_a_leading_slash_GetUrl_returns_the_path_appended_to_the_Context_base_uri_with_a_single_slash()
+        {
+            var baseUriString = Any.Uri(allowQuerystring: false).AbsoluteUri.TrimEnd('/');
+
+            var context = new DataServiceContextWrapper(new Uri(baseUriString), Any.EnumValue<ODataProtocolVersion>(),
+                () => Task.FromResult(Any.String()));
+
+            var fetcher = new TestRestShallowObjectFetcher();
+
+            fetcher.Initialize(context, "/" + _path);
             fetcher.GetUrl().AbsoluteUri
                 .Should().Be(new Uri(baseUriString + "/" + _path).AbsoluteUri);
         }

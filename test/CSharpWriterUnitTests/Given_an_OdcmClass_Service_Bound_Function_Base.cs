@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.MockService;
 using Vipr.Core.CodeModel;
 using Xunit;
@@ -22,6 +20,12 @@ namespace CSharpWriterUnitTests
         private Type _expectedReturnType;
         private string _expectedMethodName;
         private IEnumerable<Type> _expectedMethodParameters;
+        protected Func<string> ServerMethodNameGenerator;
+
+        protected Given_an_OdcmClass_Service_Bound_Function_Base()
+        {
+            ServerMethodNameGenerator = () => Method.FullName;
+        }
 
         public void Init(Action<OdcmMethod> config = null)
         {
@@ -81,7 +85,7 @@ namespace CSharpWriterUnitTests
                 var service = mockService
                     .CreateContainer(EntityContainerType);
 
-                mockService.ValidateParameterPassing("POST", service, "", Method,
+                mockService.ValidateParameterPassing("POST", service, "", Method, ServerMethodNameGenerator(),
                     TargetEntity);
             }
         }
@@ -104,7 +108,7 @@ namespace CSharpWriterUnitTests
                 var service = mockService
                     .CreateContainer(EntityContainerType);
 
-                mockService.ValidateParameterPassing("GET", service, "", Method,
+                mockService.ValidateParameterPassing("GET", service, "", Method, ServerMethodNameGenerator(),
                     TargetEntity);
             }
         }

@@ -94,7 +94,7 @@ namespace CSharpWriterUnitTests
                     targetEntity.Class.GetSampleJObject(targetEntity.Class.GetSampleKeyArguments()));
         }
 
-        public static void ValidateParameterPassing(this MockService mockService, string httpMethod, object instance, string instancePath, OdcmMethod method, EntityArtifacts entityArtifacts)
+        public static void ValidateParameterPassing(this MockService mockService, string httpMethod, object instance, string instancePath, OdcmMethod method, string serverMethodName, EntityArtifacts entityArtifacts)
         {
             var expectedMethodName = method.Name + "Async";
 
@@ -106,7 +106,7 @@ namespace CSharpWriterUnitTests
 
             var responseBuilder = mockService
                 .OnInvokeMethodRequest(httpMethod,
-                    instancePath + "/" + method.FullName,
+                    instancePath + "/" + serverMethodName,
                     uriArguments.ToTestReadableStringCollection(),
                     ArgumentOfTupleExtensions.ToJObject(bodyArguments));
 

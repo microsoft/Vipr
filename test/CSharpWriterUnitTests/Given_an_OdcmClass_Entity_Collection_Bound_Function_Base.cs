@@ -20,6 +20,12 @@ namespace CSharpWriterUnitTests
         private Type _expectedReturnType;
         private string _expectedMethodName;
         private IEnumerable<Type> _expectedMethodParameters;
+        protected Func<string> ServerMethodNameGenerator;
+
+        protected Given_an_OdcmClass_Entity_Collection_Bound_Function_Base()
+        {
+            ServerMethodNameGenerator = () => Method.FullName;
+        }
 
         public void Init(Action<OdcmMethod> config = null)
         {
@@ -107,7 +113,7 @@ namespace CSharpWriterUnitTests
                     .CreateCollection(CollectionType, ConcreteType, collectionPath);
                 
                 mockService.ValidateParameterPassing("POST", collection, "/" + collectionPath, Method,
-                    TargetEntity);
+                    ServerMethodNameGenerator(), TargetEntity);
             }
         }
 
@@ -133,7 +139,7 @@ namespace CSharpWriterUnitTests
                     .CreateCollection(CollectionType, ConcreteType, collectionPath);
 
                 mockService.ValidateParameterPassing("GET", collection, "/" + collectionPath, Method,
-                    TargetEntity);
+                    ServerMethodNameGenerator(), TargetEntity);
             }
         }
     }
