@@ -110,5 +110,37 @@ namespace CSharpLiteWriterUnitTests
                 fetcher.InvokeMethod<Task>("UpdateLinkAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
             }
         }
+
+        [Fact]
+        public void It_updates_a_link_when_delay_saving_and_calling_SaveChangesAsync()
+        {
+            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
+            var relatedEntityKeyValues = NavTargetClass.GetSampleKeyArguments().ToArray();
+            var relatedEntityPath = NavTargetClass.GetDefaultEntityPath(relatedEntityKeyValues);
+
+            using (_mockedService = new MockService())
+            {
+                var baseAddress = _mockedService.GetBaseAddress().TrimEnd('/');
+                var expectedJObject = new JObject();
+                expectedJObject["@odata.id"] = baseAddress + relatedEntityPath;
+
+                _mockedService
+                    .SetupPostEntity(TargetEntity, entityKeyValues)
+                    .SetupPostEntity(NavTargetEntity, relatedEntityKeyValues);
+
+                var context = _mockedService.GetDefaultContext(Model);
+                var fetcher = context.CreateFetcher(NavTargetFetcherType, propertyPath);
+                var sourceInstance = context.CreateConcrete(ConcreteType);
+                var targetInstance = context.CreateConcrete(NavTargetConcreteType);
+
+                fetcher.InvokeMethod<Task>("UpdateLinkAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
+
+                _mockedService = _mockedService.OnPutUpdateLinkRequest(propertyPath, expectedJObject)
+                    .RespondWithODataOk();
+
+                context.SaveChangesAsync().Wait();
+            }
+        }
     }
 }

@@ -108,5 +108,37 @@ namespace CSharpLiteWriterUnitTests
                 collection.InvokeMethod<Task>("RemoveLinkAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
             }
         }
+
+        [Fact]
+        public void It_removes_a_link_when_delay_saving_and_calling_SaveChangesAsync()
+        {
+            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
+            var relatedEntityKeyValues = NavTargetClass.GetSampleKeyArguments().ToArray();
+            var relatedEntityPath = NavTargetClass.GetDefaultEntityPath(relatedEntityKeyValues);
+
+            using (_mockedService = new MockService())
+            {
+                var baseAddress = _mockedService.GetBaseAddress().TrimEnd('/');
+                var idQueryPath = baseAddress + relatedEntityPath;
+
+                _mockedService
+                    .SetupPostEntity(TargetEntity, entityKeyValues)
+                    .SetupPostEntity(NavTargetEntity, relatedEntityKeyValues);
+
+                var context = _mockedService.GetDefaultContext(Model);
+                var collection = context.CreateCollection(NavTargetCollectionType, NavTargetConcreteType,
+                    propertyPath);
+                var sourceInstance = context.CreateConcrete(ConcreteType);
+                var targetInstance = context.CreateConcrete(NavTargetConcreteType);
+
+                collection.InvokeMethod<Task>("RemoveLinkAsync", new object[] { sourceInstance, targetInstance, true }).Wait();
+
+                _mockedService = _mockedService.OnDeleteLinkRequest(propertyPath, idQueryPath)
+                    .RespondWithODataOk();
+
+                context.SaveChangesAsync().Wait();
+            }
+        }
     }
 }

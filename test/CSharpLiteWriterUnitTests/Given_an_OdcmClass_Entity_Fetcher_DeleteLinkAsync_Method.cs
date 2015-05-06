@@ -82,5 +82,27 @@ namespace CSharpLiteWriterUnitTests
                 fetcher.InvokeMethod<Task>("DeleteLinkAsync", new object[] { sourceInstance, true }).Wait();
             }
         }
+
+        [Fact]
+        public void It_deletes_a_link_when_delay_saving_and_calling_SaveChangesAsync()
+        {
+            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var propertyPath = Class.GetDefaultEntityPath(entityKeyValues) + "/" + NavigationProperty.Name;
+
+            using (_mockedService = new MockService()
+                    .SetupPostEntity(TargetEntity, entityKeyValues))
+            {
+                var context = _mockedService.GetDefaultContext(Model);
+                var fetcher = context.CreateFetcher(NavTargetFetcherType, propertyPath);
+                var sourceInstance = context.CreateConcrete(ConcreteType);
+
+                fetcher.InvokeMethod<Task>("DeleteLinkAsync", new object[] { sourceInstance, true }).Wait();
+
+                _mockedService = _mockedService.OnDeleteLinkRequest(propertyPath)
+                    .RespondWithODataOk();
+
+                context.SaveChangesAsync().Wait();
+            }
+        }
     }
 }

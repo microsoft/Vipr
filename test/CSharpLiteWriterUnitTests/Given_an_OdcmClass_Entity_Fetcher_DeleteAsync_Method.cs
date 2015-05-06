@@ -56,5 +56,28 @@ namespace CSharpLiteWriterUnitTests
                 fetcher.InvokeMethod<Task>("DeleteAsync", new object[] { instance, true }).Wait();
             }
         }
+
+        [Fact]
+        public void It_deletes_an_entity_when_delay_saving_and_calling_SaveChangesAsync()
+        {
+            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var expectedPath = Class.GetDefaultEntityPath(entityKeyValues);
+
+
+            using (_mockedService = new MockService()
+                    .SetupPostEntity(TargetEntity, entityKeyValues))
+            {
+                var context = _mockedService.GetDefaultContext(Model);
+                var fetcher = context.CreateFetcher(FetcherType, Class.GetDefaultEntityPath(entityKeyValues));
+                var instance = context.CreateConcrete(ConcreteType);
+
+                fetcher.InvokeMethod<Task>("DeleteAsync", new object[] { instance, true }).Wait();
+
+                _mockedService = _mockedService.OnDeleteEntityRequest(expectedPath)
+                    .RespondWithODataOk();
+
+                context.SaveChangesAsync().Wait();
+            }
+        }
     }
 }

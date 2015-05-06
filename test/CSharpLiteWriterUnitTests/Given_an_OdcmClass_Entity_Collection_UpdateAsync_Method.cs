@@ -75,5 +75,34 @@ namespace CSharpLiteWriterUnitTests
                 collection.InvokeMethod<Task>("UpdateAsync", new object[] { instance, true }).Wait();
             }
         }
+
+        [Fact]
+        public void It_updates_an_entity_when_delay_saving_and_calling_SaveChangesAsync()
+        {
+            var entityKeyValues = Class.GetSampleKeyArguments().ToArray();
+            var expectedPath = Class.GetDefaultEntityPath(entityKeyValues);
+            var newValue = Any.Word();
+
+            var jobject = new JObject();
+            jobject["@odata.type"] = "#" + Class.FullName;
+            jobject[_structuralInstanceProperty.Name] = newValue;
+
+            using (_mockedService = new MockService()
+                    .SetupPostEntity(TargetEntity, entityKeyValues))
+            {
+                var context = _mockedService.GetDefaultContext(Model);
+                var collection = context.CreateCollection(CollectionType, ConcreteType, Class.GetDefaultEntitySetPath());
+                var instance = context.CreateConcrete(ConcreteType);
+
+                instance.SetPropertyValue(_structuralInstanceProperty.Name, newValue);
+
+                collection.InvokeMethod<Task>("UpdateAsync", new object[] { instance, true }).Wait();
+
+                _mockedService = _mockedService.OnPatchEntityRequest(expectedPath, jobject)
+                    .RespondWithODataOk();
+
+                context.SaveChangesAsync().Wait();
+            }
+        }
     }
 }
