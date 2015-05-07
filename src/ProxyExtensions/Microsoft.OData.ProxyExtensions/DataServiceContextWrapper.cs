@@ -34,7 +34,7 @@ namespace Microsoft.OData.ProxyExtensions
 
             IgnoreMissingProperties = true;
 
-            BuildingRequest += (sender, args) => args.Headers.Add("Authorization", "Bearer " + _accessTokenGetter().Result);
+            BuildingRequest += async (sender, args) => args.Headers.Add("Authorization", "Bearer " + await _accessTokenGetter());
 
             Configurations.RequestPipeline.OnEntryStarting(args =>
             {
