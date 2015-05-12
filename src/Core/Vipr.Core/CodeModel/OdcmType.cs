@@ -45,7 +45,7 @@ namespace Vipr.Core.CodeModel
         /// </summary>
         /// <param name="capabilities">A list of capabilities</param>
         /// <returns>A Projection of this OdcmType with the given capabilities</returns>
-        public OdcmProjection GetProjection(IList<OdcmCapability> capabilities)
+        public OdcmProjection GetProjection(IEnumerable<OdcmCapability> capabilities)
         {
             //Find if we already have a 'Projection' for the given capabilities.
             OdcmProjection projection =

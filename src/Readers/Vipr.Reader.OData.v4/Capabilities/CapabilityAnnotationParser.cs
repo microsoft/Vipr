@@ -15,6 +15,13 @@ namespace Vipr.Reader.OData.v4.Capabilities
 {
     public abstract class CapabilityAnnotationParser
     {
+        protected PropertyCapabilitiesCache _propertyCapabilitiesCache;
+
+        protected CapabilityAnnotationParser(PropertyCapabilitiesCache propertyCapabilitiesCache)
+        {
+            _propertyCapabilitiesCache = propertyCapabilitiesCache;
+        }
+
         private static IEdmModel _capabilitiesModel;
 
         public static IEdmModel CapabilitiesModel
@@ -37,7 +44,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
             }
         }
 
-        public abstract void ParseCapabilityAnnotationForEntitySet(OdcmProperty odcmEntitySet, IEdmValueAnnotation annotation,
-            ODataCapabilitiesReader.PropertyCapabilitiesCache propertyCache);
+        public abstract void ParseCapabilityAnnotationForEntitySet(OdcmProperty odcmEntitySet,
+            IEdmValueAnnotation annotation);
     }
 }

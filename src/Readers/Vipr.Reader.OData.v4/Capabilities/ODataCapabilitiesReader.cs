@@ -13,29 +13,22 @@ namespace Vipr.Reader.OData.v4.Capabilities
 {
     public partial class ODataCapabilitiesReader
     {
-        private static List<CapabilityAnnotationParser> _defaultCapabilityAnnotationParsers;
-
         /// <summary>
         /// Default list of Capability Annotation parsers
         /// </summary>
-        public static List<CapabilityAnnotationParser> DefaultCapabilityAnnotationParsers
+        private static List<CapabilityAnnotationParser> GetCapabilityAnnotationParsers(PropertyCapabilitiesCache propertyCapabilitiesCache)
         {
-            get
+            var defaultCapabilityAnnotationParsers = new List<CapabilityAnnotationParser>();
+            IEnumerable<Type> parserTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsSubclassOf(typeof(CapabilityAnnotationParser)) && !t.IsAbstract);
+
+            foreach (var parserType in parserTypes)
             {
-                if (_defaultCapabilityAnnotationParsers == null)
-                {
-                    _defaultCapabilityAnnotationParsers = new List<CapabilityAnnotationParser>();
-                    IEnumerable<Type> parserTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsSubclassOf(typeof(CapabilityAnnotationParser)) && !t.IsAbstract);
-
-                    foreach (var parserType in parserTypes)
-                    {
-                        var parser = (CapabilityAnnotationParser)Activator.CreateInstance(parserType);
-                        _defaultCapabilityAnnotationParsers.Add(parser);
-                    }
-                }
-
-                return _defaultCapabilityAnnotationParsers;
+                var parser =
+                    (CapabilityAnnotationParser) Activator.CreateInstance(parserType, propertyCapabilitiesCache);
+                defaultCapabilityAnnotationParsers.Add(parser);
             }
+
+            return defaultCapabilityAnnotationParsers;
         }
 
         public static void SetCapabilitiesForEntityContainer(OdcmServiceClass odcmServiceClass, IEdmEntityContainer edmEntityContainer, IEdmModel serviceModel)
@@ -46,24 +39,25 @@ namespace Vipr.Reader.OData.v4.Capabilities
         /// <summary>
         /// Sets the OdcmCapabilities for the given annotated EntitySet and also for the annotated navigation properties.
         /// </summary>
-        public static void SetCapabilitiesForEntitySet(OdcmProperty odcmEntitySet, IEdmEntitySet edmEntitySet, IEdmModel serviceModel)
+        public static void SetCapabilitiesForEntitySet(OdcmProperty odcmEntitySet,
+            IEdmEntitySet edmEntitySet, IEdmModel serviceModel,
+            PropertyCapabilitiesCache propertyCapabilitiesCache)
         {
             if (odcmEntitySet == null) throw new ArgumentNullException("odcmEntitySet");
             if (edmEntitySet == null) throw new ArgumentNullException("edmEntitySet");
             if (serviceModel == null) throw new ArgumentNullException("serviceModel");
+            if (propertyCapabilitiesCache == null) throw new ArgumentNullException("propertyCapabilitiesCache");
 
             var annotations = serviceModel.FindVocabularyAnnotations(edmEntitySet);
-            PropertyCapabilitiesCache propertyCache = new PropertyCapabilitiesCache();
 
             foreach (var annotation in annotations)
             {
-                foreach (var annotationParser in DefaultCapabilityAnnotationParsers)
+                foreach (var annotationParser in GetCapabilityAnnotationParsers(propertyCapabilitiesCache))
                 {
-                    annotationParser.ParseCapabilityAnnotationForEntitySet(odcmEntitySet, (IEdmValueAnnotation)annotation, propertyCache);
+                    annotationParser.ParseCapabilityAnnotationForEntitySet(odcmEntitySet,
+                        (IEdmValueAnnotation) annotation);
                 }
             }
-
-            propertyCache.EnsureProjectionsForProperties();
         }
     }
 }

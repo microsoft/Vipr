@@ -69,6 +69,7 @@ namespace Vipr.Reader.OData.v4
 
             private IEdmModel _edmModel = null;
             private OdcmModel _odcmModel;
+            private PropertyCapabilitiesCache _propertyCapabilitiesCache;
 
             public OdcmModel GenerateOdcmModel(IEnumerable<TextFile> serviceMetadata)
             {
@@ -98,10 +99,13 @@ namespace Vipr.Reader.OData.v4
                 }
 
                 _odcmModel = new OdcmModel(serviceMetadata);
+                _propertyCapabilitiesCache = new PropertyCapabilitiesCache();
 
                 AddPrimitives();
 
                 WriteNamespaces();
+
+                _propertyCapabilitiesCache.EnsureProjectionsForProperties();
 
                 return _odcmModel;
             }
@@ -121,7 +125,8 @@ namespace Vipr.Reader.OData.v4
 
                 if(annotatableEdmEntity is IEdmEntitySet && odcmObject is OdcmProperty)
                 {
-                    ODataCapabilitiesReader.SetCapabilitiesForEntitySet((OdcmProperty)odcmObject, (IEdmEntitySet)annotatableEdmEntity, _edmModel);
+                    ODataCapabilitiesReader.SetCapabilitiesForEntitySet((OdcmProperty) odcmObject,
+                        (IEdmEntitySet) annotatableEdmEntity, _edmModel, _propertyCapabilitiesCache);
                 }
 
                 if (annotatableEdmEntity is IEdmEntityContainer && odcmObject is OdcmServiceClass)
@@ -417,11 +422,15 @@ namespace Vipr.Reader.OData.v4
                 var odcmProperty = new OdcmProperty(entitySet.Name)
                 {
                     Class = odcmClass,
-                    // get the 'Projection' with default capabilities
-                    Projection = odcmType.GetProjection(OdcmCapability.DefaultOdcmCapabilities),
+                    Projection = new OdcmProjection
+                    {
+                        Type = odcmType
+                    },
                     IsCollection = true,
                     IsLink = true
                 };
+
+                _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultEntitySetCapabilities);
 
                 AddVocabularyAnnotations(odcmProperty, entitySet);
 
@@ -434,9 +443,14 @@ namespace Vipr.Reader.OData.v4
                 var odcmProperty = new OdcmProperty(singleton.Name)
                 {
                     Class = odcmClass,
-                    Projection = odcmType.GetProjection(OdcmCapability.DefaultOdcmCapabilities),
+                    Projection = new OdcmProjection
+                    {
+                        Type = odcmType
+                    },
                     IsLink = true
                 };
+
+                _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultSingletonCapabilities);
 
                 AddVocabularyAnnotations(odcmProperty, singleton);
 
@@ -504,7 +518,10 @@ namespace Vipr.Reader.OData.v4
                 {
                     Class = odcmClass,
                     IsNullable = property.Type.IsNullable,
-                    Projection = odcmType.GetProjection(OdcmCapability.DefaultOdcmCapabilities),
+                    Projection = new OdcmProjection
+                    {
+                        Type = odcmType
+                    },
                     IsCollection = property.Type.IsCollection(),
                     ContainsTarget =
                         property is IEdmNavigationProperty && ((IEdmNavigationProperty)property).ContainsTarget,
@@ -514,6 +531,8 @@ namespace Vipr.Reader.OData.v4
                             ((IEdmStructuralProperty)property).DefaultValueString :
                             null
                 };
+
+                _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultPropertyCapabilities);
 
                 AddVocabularyAnnotations(odcmProperty, property);
 

@@ -1,44 +1,53 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Vipr.Core.CodeModel;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
 namespace Vipr.Reader.OData.v4.Capabilities
 {
-    public partial class ODataCapabilitiesReader
+    /// <summary>
+    /// Maintains a cache of OdcmProperties along with the OdcmCapabilities.
+    /// Once fully populated it can be used to create 'Projections' for the cached OdcmProperties
+    /// </summary>
+    public class PropertyCapabilitiesCache
     {
-        /// <summary>
-        /// Maintains a cache of OdcmProperties along with the OdcmCapabilities. 
-        /// Once fully populated it can be used to create 'Projections' for the cached OdcmProperties
-        /// </summary>
-        public class PropertyCapabilitiesCache
+        private Dictionary<OdcmProperty, IEnumerable<OdcmCapability>> _propertyCache =
+            new Dictionary<OdcmProperty, IEnumerable<OdcmCapability>>();
+
+        public void Add(OdcmProperty property, IEnumerable<OdcmCapability> capabilities)
         {
-            private Dictionary<OdcmProperty, List<OdcmCapability>> _propertyCache =
-                new Dictionary<OdcmProperty, List<OdcmCapability>>();
+            if (property == null) throw new ArgumentNullException("property");
+            if (capabilities == null) throw new ArgumentNullException("capabilities");
 
-            public void AddCapabilityToProperty(OdcmProperty property, OdcmCapability capability)
+            _propertyCache.Add(property, capabilities);
+        }
+
+        public IEnumerable<OdcmCapability> GetCapabilities(OdcmProperty property)
+        {
+            if (property == null) throw new ArgumentNullException("property");
+
+            IEnumerable<OdcmCapability> capabilities;
+            if (!_propertyCache.TryGetValue(property, out capabilities))
             {
-                List<OdcmCapability> capabilities;
-                if (!_propertyCache.TryGetValue(property, out capabilities))
-                {
-                    capabilities = new List<OdcmCapability>();
-                    _propertyCache.Add(property, capabilities);
-                }
-
-                capabilities.Add(capability);
+                throw new InvalidOperationException(string.Format("Property {0}.{1} not found in the cache",
+                    property.Class.Name, property.Name));
             }
 
-            public void EnsureProjectionsForProperties()
+            return capabilities;
+        }
+
+        public void EnsureProjectionsForProperties()
+        {
+            foreach (var propertyPair in _propertyCache)
             {
-                foreach (var propertyPair in _propertyCache)
-                {
-                    var property = propertyPair.Key;
-                    var capabilities = propertyPair.Value;
-                    var propertyType = property.Type;
-                    property.Projection = propertyType.GetProjection(capabilities);
-                }
+                var property = propertyPair.Key;
+                var capabilities = propertyPair.Value;
+                var propertyType = property.Projection.Type;
+                property.Projection = propertyType.GetProjection(capabilities);
             }
         }
     }

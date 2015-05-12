@@ -42,9 +42,9 @@ namespace Vipr.Core
             return false;
         }
 
-        public static bool ContainsAllCapabilities(this OdcmProjection odcmProjection, IList<OdcmCapability> capabilities)
+        public static bool ContainsAllCapabilities(this OdcmProjection odcmProjection, IEnumerable<OdcmCapability> capabilities)
         {
-            return capabilities.Count == odcmProjection.Capabilities.Count &&
+            return capabilities.Count() == odcmProjection.Capabilities.Count() &&
                    odcmProjection.Capabilities.All(capabilities.Contains);
         }
 
