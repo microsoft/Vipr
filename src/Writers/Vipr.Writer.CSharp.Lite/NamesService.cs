@@ -2,11 +2,12 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using Vipr.Core;
 using Vipr.Core.CodeModel;
 
 namespace Vipr.Writer.CSharp.Lite
 {
-    internal static class NamesService
+    public static class NamesService
     {
         private const string DataServiceKey = "global::Microsoft.OData.Client.Key";
         private const string EntitySet = "global::Microsoft.OData.Client.EntitySet";
@@ -133,15 +134,30 @@ namespace Vipr.Writer.CSharp.Lite
             return new Identifier(resolvedName.Namespace, resolvedName.Name + "Fetcher");
         }
 
-        public static Identifier GetFetcherInterfaceName(OdcmType odcmType)
+        public static Identifier GetFetcherInterfaceName(OdcmType odcmType, OdcmProjection projection = null)
         {
+            if (projection == null)
+            {
+                projection = odcmType.DefaultProjection;
+            }
+
             var fetcherTypeName = GetFetcherTypeName(odcmType);
-            return GetConcreteInterfaceName(fetcherTypeName);
+            return new Identifier(fetcherTypeName.Namespace,
+                "I" + fetcherTypeName.Name + GetProjectionSuffix(projection));
         }
 
-        private static Identifier GetConcreteInterfaceName(Identifier typeName)
+        private static string GetProjectionSuffix(OdcmProjection projection)
         {
-            return new Identifier(typeName.Namespace, "I" + typeName.Name);
+            string suffix = String.Empty;
+            if (projection != null)
+            {
+                suffix = projection.GetProjectionShortForm();
+                if(!string.IsNullOrEmpty(suffix))
+                {
+                    suffix = "_" + suffix;
+                }
+            }
+            return suffix;
         }
 
         internal static string GetFetcherCollectionFieldName(OdcmProperty odcmProperty)
@@ -154,18 +170,23 @@ namespace Vipr.Writer.CSharp.Lite
             return GetPropertyFieldName(odcmProperty) + "Fetcher";
         }
 
-        public static Identifier GetCollectionTypeName(OdcmClass odcmClass)
+        public static Identifier GetCollectionTypeName(OdcmType odcmType)
         {
-            Identifier instanceTypeName = GetConcreteTypeName(odcmClass);
+            Identifier instanceTypeName = GetConcreteTypeName(odcmType);
 
             return new Identifier(instanceTypeName.Namespace, instanceTypeName.Name + "Collection");
         }
 
-        public static Identifier GetCollectionInterfaceName(OdcmClass odcmClass)
+        public static Identifier GetCollectionInterfaceName(OdcmType odcmType, OdcmProjection projection = null)
         {
-            Identifier collectionTypeName = GetCollectionTypeName(odcmClass);
+            if (projection == null)
+            {
+                projection = odcmType.DefaultProjection;
+            }
+            Identifier collectionTypeName = GetCollectionTypeName(odcmType);
 
-            return new Identifier(collectionTypeName.Namespace, "I" + collectionTypeName.Name);
+            return new Identifier(collectionTypeName.Namespace,
+                "I" + collectionTypeName.Name + GetProjectionSuffix(projection));
         }
 
         public static string GetConcreteFieldName(OdcmProperty property)

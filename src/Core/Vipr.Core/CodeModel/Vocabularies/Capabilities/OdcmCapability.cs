@@ -12,7 +12,11 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
     {
         public abstract string TermName { get; }
 
+        public abstract string ShortName { get; }
+
         public abstract bool Equals(OdcmCapability otherCapability);
+
+        public abstract int GetHashCode();
 
         private static List<OdcmCapability> GetAllOdcmCapabilities()
         {

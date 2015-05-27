@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
+using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
 namespace Microsoft.Its.Recipes
 {
@@ -57,7 +58,7 @@ namespace Microsoft.Its.Recipes
                 @class.Properties.AddRange(Any.Sequence(i => Any.OdcmProperty(p =>
                 {
                     p.Class = @class;
-                    p.Projection.Type = classes.RandomElement();
+                    p.Projection = classes.RandomElement().DefaultProjection;
                 })));
             }
             foreach (var @class in classes)
@@ -65,7 +66,7 @@ namespace Microsoft.Its.Recipes
                 @class.Properties.AddRange(Any.Sequence(i => Any.OdcmProperty(p =>
                 {
                     p.Class = @class;
-                    p.Projection.Type = classes.RandomElement();
+                    p.Projection = classes.RandomElement().DefaultProjection;
                 })));
             }
 
@@ -114,6 +115,39 @@ namespace Microsoft.Its.Recipes
             return retVal;
         }
 
+        public static OdcmProjection OdcmProjection(OdcmType odcmType, Action<OdcmProjection> config = null)
+        {
+            var projection = new OdcmProjection
+            {
+                Type = odcmType,
+                Capabilities = OdcmCapability.DefaultOdcmCapabilities
+            };
+
+            foreach (var capability in projection.Capabilities)
+            {
+                if (capability is OdcmBooleanCapability)
+                {
+                    ((OdcmBooleanCapability) capability).Value = Any.Bool();
+                }
+            }
+
+            if (config != null) config(projection);
+
+            return projection;
+        }
+
+        public static IEnumerable<OdcmProjection> OdcmProjections(OdcmType odcmType, int count = 5, Action<OdcmProjection> config = null)
+        {
+            List<OdcmProjection> projections = new List<OdcmProjection>();
+
+            for (int i = 0; i < count; i++)
+            {
+                projections.Add(Any.OdcmProjection(odcmType, config));
+            }
+
+            return projections;
+        }
+
         private static OdcmType PrimitiveOdcmType(Action<OdcmType> config = null)
         {
             var retVal = new OdcmPrimitiveType("String", Vipr.Core.CodeModel.OdcmNamespace.Edm);
@@ -148,10 +182,7 @@ namespace Microsoft.Its.Recipes
         {
             var retVal = new OdcmProperty(Any.CSharpIdentifier())
             {
-                Projection = new OdcmProjection()
-                {
-                    Type = Any.PrimitiveOdcmType()
-                }
+                Projection = Any.PrimitiveOdcmType().DefaultProjection
             };
 
             if (config != null) config(retVal);
@@ -166,7 +197,7 @@ namespace Microsoft.Its.Recipes
 
         private static OdcmProperty OdcmEntityProperty(OdcmClass @class, Action<OdcmProperty> config)
         {
-            var projection = new OdcmProjection() { Type = @class };
+            var projection = @class.DefaultProjection;
             var retVal = new OdcmProperty(Any.CSharpIdentifier()) { Projection = projection };
 
             if (config != null) config(retVal);
@@ -176,7 +207,7 @@ namespace Microsoft.Its.Recipes
 
         public static OdcmProperty ComplexOdcmProperty(OdcmNamespace odcmNamespace, Action<OdcmProperty> config = null)
         {
-            var projection = new OdcmProjection() {Type = Any.ComplexOdcmClass(odcmNamespace)};
+            var projection = Any.ComplexOdcmClass(odcmNamespace).DefaultProjection;
             var retVal = new OdcmProperty(Any.CSharpIdentifier()) { Projection = projection };
 
 
@@ -218,7 +249,7 @@ namespace Microsoft.Its.Recipes
                 retVal.Properties.AddRange(Any.Sequence(i => Any.OdcmProperty(p =>
                 {
                     p.Class = retVal;
-                    p.Projection.Type = odcmNamespace.Classes.Where(c => c.Kind == OdcmClassKind.Complex).RandomElement();
+                    p.Projection = odcmNamespace.Classes.Where(c => c.Kind == OdcmClassKind.Complex).RandomElement().DefaultProjection;
                 })));
 
             retVal.Properties.AddRange(Any.Sequence(i => Any.OdcmEntityProperty(retVal, p => { p.Class = retVal; })));
@@ -243,7 +274,7 @@ namespace Microsoft.Its.Recipes
 
             foreach (var entity in entities)
             {
-                var projection = new OdcmProjection() { Type = entity };
+                var projection = entity.DefaultProjection;
 
                 retVal.Properties.Add(new OdcmProperty(entity.Name) { Class = retVal, Projection = projection });
 

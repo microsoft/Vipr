@@ -12,16 +12,24 @@ namespace Vipr.Writer.CSharp.Lite
     {
         public Dictionary<Parameter, OdcmProperty> ParameterToPropertyMap { get; private set; }
 
-        public CollectionGetByIdIndexer(OdcmEntityClass odcmClass)
+        public CollectionGetByIdIndexer(OdcmEntityClass odcmClass, OdcmProjection projection)
         {
             ParameterToPropertyMap = odcmClass.Key.ToDictionary(Parameter.FromProperty, p => p);
 
             Parameters = global::Vipr.Writer.CSharp.Lite.Parameters.GetKeyParameters(odcmClass);
-            ReturnType = new Type(NamesService.GetFetcherInterfaceName(odcmClass));
+            ReturnType = new Type(NamesService.GetFetcherInterfaceName(odcmClass, projection));
             OdcmClass = odcmClass;
 
             IsSettable = false;
             IsGettable = true;
+        }
+
+        public static CollectionGetByIdIndexer ForCollectionClass(OdcmEntityClass odcmClass, OdcmProjection projection)
+        {
+            return new CollectionGetByIdIndexer(odcmClass, projection)
+            {
+                DefiningInterface = NamesService.GetCollectionInterfaceName(odcmClass, projection)
+            };
         }
 
         public OdcmClass OdcmClass { get; private set; }

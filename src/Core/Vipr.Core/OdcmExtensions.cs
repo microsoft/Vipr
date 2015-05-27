@@ -42,12 +42,6 @@ namespace Vipr.Core
             return false;
         }
 
-        public static bool ContainsAllCapabilities(this OdcmProjection odcmProjection, IEnumerable<OdcmCapability> capabilities)
-        {
-            return capabilities.Count() == odcmProjection.Capabilities.Count() &&
-                   odcmProjection.Capabilities.All(capabilities.Contains);
-        }
-
         public static IEnumerable<OdcmClass> NestedDerivedTypes(this OdcmClass odcmClass)
         {
             var graph = new Queue<OdcmClass>();
@@ -73,6 +67,23 @@ namespace Vipr.Core
         {
             return odcmMethod.Parameters
                 .Where(p => p.CallingConvention == OdcmCallingConvention.InHttpMessageBody);
+        }
+
+        public static string GetProjectionShortForm(this OdcmProjection projection)
+        {
+            var result = string.Empty;
+
+            var capabilities = projection.Capabilities.OrderBy(c => c.ShortName);
+
+            foreach (var capability in capabilities)
+            {
+                if (capability is OdcmBooleanCapability && ((OdcmBooleanCapability)capability).Value)
+                {
+                    result = result + "_" + capability.ShortName;
+                }
+            }
+
+            return result.Trim('_');
         }
     }
 }

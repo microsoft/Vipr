@@ -81,6 +81,16 @@ namespace Microsoft.OData.ProxyExtensions.Lite
             return Context.SaveChangesAsync(saveChangesOption);
         }
 
+        protected TFetcher GetFetcherById<TInstance, TFetcher>(Expression<Func<TInstance, bool>> whereExpression)
+            where TFetcher : RestShallowObjectFetcher, new()
+            where TInstance : TSource
+        {
+            var path = GetPath(whereExpression);
+            var fetcher = new TFetcher();
+            fetcher.Initialize(Context, path);
+            return fetcher;
+        }
+
         protected Uri GetUrl()
         {
             return new Uri(Context.BaseUri.ToString().TrimEnd('/') + "/" + Path);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using FluentAssertions;
 using Newtonsoft.Json.Linq;
 
@@ -53,11 +54,15 @@ namespace CSharpLiteWriterUnitTests
         }
 
         public static T InvokeMethod<T>(this object @object, string methodName, object[] args = null,
-            Type[] types = null)
+            Type[] types = null, string @interface = null)
         {
             args = args ?? new object[0];
 
-            var method = @object.GetType().GetMethod(methodName);
+            var type = @object.GetType();
+            var method = string.IsNullOrEmpty(@interface)
+                ? @object.GetType().GetMethod(methodName)
+                : type.GetInterface(@interface).GetMethod(methodName);
+
             if (types != null)
                 method = method.MakeGenericMethod(types);
 
@@ -69,9 +74,9 @@ namespace CSharpLiteWriterUnitTests
             return @object.InvokeMethod("get_Item", args);
         }
 
-        public static T GetIndexerValue<T>(this object @object, object[] args = null)
+        public static T GetIndexerValue<T>(this object @object, object[] args = null, string @interface = null)
         {
-            return @object.InvokeMethod<T>("get_Item", args: args);
+            return @object.InvokeMethod<T>("get_Item", args: args, @interface: @interface);
         }
 
         public static void ValidateCollectionPropertyValues(this object collection, IList<IEnumerable<Tuple<string, object>>> entitiesProperties)

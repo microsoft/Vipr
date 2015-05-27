@@ -21,5 +21,12 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
 
             return other.GetType() == this.GetType() && other.Value == this.Value;
         }
+
+        public override int GetHashCode()
+        {
+            int hash = this.GetType().GetHashCode();
+            hash = hash * 31 + this.Value.GetHashCode();
+            return hash;
+        }
     }
 }

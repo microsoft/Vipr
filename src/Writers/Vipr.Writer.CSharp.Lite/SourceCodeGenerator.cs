@@ -349,7 +349,9 @@ namespace Vipr.Writer.CSharp.Lite
             WriteSignature(method);
             using (_builder.IndentBraced)
             {
-                _("return this[{0}];", method.Parameters.ToArgumentString());
+                _("return GetFetcherById<{0}, {1}>((i) => {2});", NamesService.GetConcreteTypeName(method.OdcmClass),
+                    NamesService.GetFetcherTypeName(method.OdcmClass),
+                    method.ParameterToPropertyMap.ToEquivalenceString("i"));
             }
         }
 
@@ -362,11 +364,9 @@ namespace Vipr.Writer.CSharp.Lite
 
                 using (_builder.IndentBraced)
                 {
-                    _("var path = GetPath<{0}>((i) => {1});", NamesService.GetConcreteTypeName(indexer.OdcmClass), indexer.ParameterToPropertyMap.ToEquivalenceString("i"));
-                    _("var fetcher = new {0}();", NamesService.GetFetcherTypeName(indexer.OdcmClass));
-                    _("fetcher.Initialize(Context, path);");
-                    _("");
-                    _("return fetcher;");
+                    _("return GetFetcherById<{0}, {1}>((i) => {2});", NamesService.GetConcreteTypeName(indexer.OdcmClass),
+                     NamesService.GetFetcherTypeName(indexer.OdcmClass),
+                     indexer.ParameterToPropertyMap.ToEquivalenceString("i"));
                 }
             }
         }
@@ -428,22 +428,15 @@ namespace Vipr.Writer.CSharp.Lite
             WriteSignature(method);
             using (_builder.IndentBraced)
             {
-                if (method.DefiningInterface == null)
-                {
-                    _("return ({0}) new {1}()",
-                        NamesService.GetFetcherInterfaceName(method.OdcmClass),
-                        NamesService.GetFetcherTypeName(method.OdcmClass));
+                _("return ({0}) new {1}()",
+                    method.ReturnType.TypeIdentifier,
+                    NamesService.GetFetcherTypeName(method.OdcmClass));
 
-                    using (_builder.IndentBraced)
-                    {
-                        _("_query = this.EnsureQuery().Expand<TTarget>(navigationPropertyAccessor)");
-                    }
-                    _(";");
-                }
-                else
+                using (_builder.IndentBraced)
                 {
-                    _("return ({0}) this;", NamesService.GetFetcherInterfaceName(method.OdcmClass));
+                    _("_query = this.EnsureQuery().Expand<TTarget>(navigationPropertyAccessor)");
                 }
+                _(";");
             }
         }
 
@@ -680,7 +673,11 @@ namespace Vipr.Writer.CSharp.Lite
         {
             var accessModifier = @public.HasValue ? @public.Value ? "public" : "private" : "";
 
-            _("{0} {1} this[{2}]", accessModifier, indexer.ReturnType, indexer.Parameters.ToParametersString());
+            var explicitName = indexer.DefiningInterface == null
+                ? string.Empty
+                : indexer.DefiningInterface + ".";
+
+            _("{0} {1}this[{2}]", indexer.ReturnType, explicitName, indexer.Parameters.ToParametersString());
         }
 
         private void Write(DefaultConstructor constructor)

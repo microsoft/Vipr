@@ -45,8 +45,8 @@ namespace Vipr.Writer.CSharp.Lite
                 Constructors = global::Vipr.Writer.CSharp.Lite.Constructors.ForFetcher(odcmClass),
                 Fields = global::Vipr.Writer.CSharp.Lite.Fields.ForFetcher(odcmClass),
                 Identifier = NamesService.GetFetcherTypeName(odcmClass),
-                Interfaces = global::Vipr.Writer.CSharp.Lite.ImplementedInterfaces.ForFetcher(odcmClass),
-                Methods = global::Vipr.Writer.CSharp.Lite.Methods.ForFetcher(odcmClass),
+                Interfaces = global::Vipr.Writer.CSharp.Lite.ImplementedInterfaces.ForFetcherClass(odcmClass),
+                Methods = global::Vipr.Writer.CSharp.Lite.Methods.ForFetcherClass(odcmClass),
                 Properties = global::Vipr.Writer.CSharp.Lite.Properties.ForFetcher(odcmClass),
             };
         }
@@ -97,9 +97,9 @@ namespace Vipr.Writer.CSharp.Lite
                 BaseClass = new Type(NamesService.GetExtensionTypeName("QueryableSet"),
                                      new Type(NamesService.GetConcreteInterfaceName(odcmClass))),
                 Constructors = global::Vipr.Writer.CSharp.Lite.Constructors.ForCollection(odcmClass),
-                Interfaces = global::Vipr.Writer.CSharp.Lite.ImplementedInterfaces.ForCollection(odcmClass),
+                Interfaces = global::Vipr.Writer.CSharp.Lite.ImplementedInterfaces.ForCollectionClass(odcmClass),
                 Identifier = NamesService.GetCollectionTypeName(odcmClass),
-                Methods = global::Vipr.Writer.CSharp.Lite.Methods.ForCollection(odcmClass),
+                Methods = global::Vipr.Writer.CSharp.Lite.Methods.ForCollectionClass(odcmClass),
                 Indexers = global::Vipr.Writer.CSharp.Lite.Indexers.ForCollection(odcmClass)
             };
         }

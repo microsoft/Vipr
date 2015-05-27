@@ -24,16 +24,13 @@ namespace CSharpLiteWriterUnitTests
                 NavigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = Class;
-                    p.Projection = new OdcmProjection()
-                    {
-                        Type = NavTargetClass
-                    };
+                    p.Projection = NavTargetClass.DefaultProjection;
                 });
                 Class.Properties.Add(NavigationProperty);
 
                 var serviceClass = Model.EntityContainer;
 
-                var projection = new OdcmProjection() { Type = NavTargetClass };
+                var projection = NavTargetClass.DefaultProjection;
 
                 serviceClass.Properties.Add(new OdcmProperty(NavTargetClass.Name) { Class = serviceClass, Projection = projection });
 

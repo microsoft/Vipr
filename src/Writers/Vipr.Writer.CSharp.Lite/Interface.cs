@@ -30,9 +30,10 @@ namespace Vipr.Writer.CSharp.Lite
             Properties = new List<InterfaceProperty>();
         }
 
-        public static Interface ForConcrete(OdcmClass odcmClass)
+        public static IEnumerable<Interface> ForConcrete(OdcmClass odcmClass)
         {
-            return new Interface
+
+            var @interface =  new Interface
             {
                 Attributes = global::Vipr.Writer.CSharp.Lite.Attributes.ForConcreteInterface,
                 Identifier = NamesService.GetConcreteInterfaceName(odcmClass),
@@ -41,32 +42,50 @@ namespace Vipr.Writer.CSharp.Lite
                 Properties = global::Vipr.Writer.CSharp.Lite.Properties.ForConcreteInterface(odcmClass),
                 Interfaces = global::Vipr.Writer.CSharp.Lite.ImplementedInterfaces.ForConcreteInterface(odcmClass)
             };
+
+            return new List<Interface>() { @interface };
         }
 
-        public static Interface ForFetcher(OdcmClass odcmClass)
+        public static IEnumerable<Interface> ForFetcher(OdcmClass odcmClass)
         {
-            return new Interface
+            var interfaces = new List<Interface>();
+            foreach (var projection in odcmClass.Projections)
             {
-                Attributes = global::Vipr.Writer.CSharp.Lite.Attributes.ForFetcherInterface,
-                Identifier = NamesService.GetFetcherInterfaceName(odcmClass),
-                Interfaces = global::Vipr.Writer.CSharp.Lite.ImplementedInterfaces.ForFetcherInterface(odcmClass),
-                Methods = global::Vipr.Writer.CSharp.Lite.Methods.ForFetcherInterface(odcmClass),
-                Namespace = NamesService.GetNamespaceName(odcmClass.Namespace),
-                Properties = global::Vipr.Writer.CSharp.Lite.Properties.ForFetcherInterface(odcmClass)
-            };
+                var @interface = new Interface
+                {
+                    Attributes = global::Vipr.Writer.CSharp.Lite.Attributes.ForFetcherInterface,
+                    Identifier = NamesService.GetFetcherInterfaceName(odcmClass, projection),
+                    Interfaces = global::Vipr.Writer.CSharp.Lite.ImplementedInterfaces.ForFetcherInterface(odcmClass),
+                    Methods = global::Vipr.Writer.CSharp.Lite.Methods.ForFetcherInterface(odcmClass, projection),
+                    Namespace = NamesService.GetNamespaceName(odcmClass.Namespace),
+                    Properties = global::Vipr.Writer.CSharp.Lite.Properties.ForFetcherInterface(odcmClass)
+                };
+
+                interfaces.Add(@interface);
+            }
+
+            return interfaces;
         }
 
-        public static Interface ForCollection(OdcmEntityClass odcmClass)
+        public static IEnumerable<Interface> ForCollection(OdcmEntityClass odcmClass)
         {
-            return new Interface
+            var interfaces = new List<Interface>();
+            foreach (var projection in odcmClass.Projections)
             {
-                Attributes = global::Vipr.Writer.CSharp.Lite.Attributes.ForCollectionInterface,
-                Identifier = NamesService.GetCollectionInterfaceName(odcmClass),
-                Namespace = NamesService.GetNamespaceName(odcmClass.Namespace),
-                Methods = global::Vipr.Writer.CSharp.Lite.Methods.ForCollectionInterface(odcmClass),
-                Indexers = IndexerSignature.ForCollectionInterface(odcmClass),
-                Interfaces = new[] { new Type(NamesService.GetExtensionTypeName("IReadOnlyQueryableSetBase"), new Type(NamesService.GetConcreteInterfaceName(odcmClass))) }
-            };
+                var @interface = new Interface
+                {
+                    Attributes = global::Vipr.Writer.CSharp.Lite.Attributes.ForCollectionInterface,
+                    Identifier = NamesService.GetCollectionInterfaceName(odcmClass, projection),
+                    Namespace = NamesService.GetNamespaceName(odcmClass.Namespace),
+                    Methods = global::Vipr.Writer.CSharp.Lite.Methods.ForCollectionInterface(odcmClass, projection),
+                    Indexers = IndexerSignature.ForCollectionInterface(odcmClass, projection),
+                    Interfaces = new[] { new Type(NamesService.GetExtensionTypeName("IReadOnlyQueryableSetBase"), new Type(NamesService.GetConcreteInterfaceName(odcmClass))) }
+                };
+
+                interfaces.Add(@interface);
+            }
+
+            return interfaces;
         }
 
         public static Interface ForEntityContainer(OdcmClass odcmContainer)

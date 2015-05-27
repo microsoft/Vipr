@@ -6,9 +6,16 @@ namespace Vipr.Writer.CSharp.Lite
 {
     public class ImplementedInterfaces
     {
-        public static IEnumerable<Type> ForFetcher(OdcmClass odcmClass)
+        public static IEnumerable<Type> ForFetcherClass(OdcmClass odcmClass)
         {
-            return new List<Type> { new Type(NamesService.GetFetcherInterfaceName(odcmClass)) };
+            var retVal = new List<Type>();
+
+            foreach (var projection in odcmClass.Projections)
+            {
+                retVal.Add(new Type(NamesService.GetFetcherInterfaceName(odcmClass, projection)));
+            }
+
+            return retVal;
         }
 
         public static IEnumerable<Type> ForConcrete(OdcmClass odcmClass)
@@ -21,9 +28,16 @@ namespace Vipr.Writer.CSharp.Lite
             return retVal;
         }
 
-        public static IEnumerable<Type> ForCollection(OdcmClass odcmClass)
+        public static IEnumerable<Type> ForCollectionClass(OdcmClass odcmClass)
         {
-            return new List<Type> { new Type(NamesService.GetCollectionInterfaceName(odcmClass)) };
+            var retVal = new List<Type>();
+
+            foreach (var projection in odcmClass.Projections)
+            {
+                retVal.Add(new Type(NamesService.GetCollectionInterfaceName(odcmClass, projection)));
+            }
+
+            return retVal;
         }
 
         public static IEnumerable<Type> ForEntityContainer(OdcmClass odcmContainer)

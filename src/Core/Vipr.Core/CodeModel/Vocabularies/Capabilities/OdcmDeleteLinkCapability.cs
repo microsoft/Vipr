@@ -10,6 +10,11 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
             get { return "Org.OData.Capabilities.V1.DeleteRestrictions/NonDeletableNavigationProperties"; }
         }
 
+        public override string ShortName
+        {
+            get { return "Dlk"; }
+        }
+
         /// <summary>
         /// Reference/link to an entity can be deleted
         /// </summary>

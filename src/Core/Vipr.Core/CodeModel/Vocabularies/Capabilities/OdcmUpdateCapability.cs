@@ -10,6 +10,11 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
             get { return "Org.OData.Capabilities.V1.UpdateRestrictions"; }
         }
 
+        public override string ShortName
+        {
+            get { return "Upd"; }
+        }
+
         /// <summary>
         /// Entities can be updated
         /// </summary>

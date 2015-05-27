@@ -10,7 +10,7 @@ namespace Vipr.Writer.CSharp.Lite
     {
         public OdcmClass OdcmClass { get; private set; }
 
-        private FetcherExpandMethod(OdcmClass odcmClass)
+        private FetcherExpandMethod(OdcmClass odcmClass, OdcmProjection projection = null)
         {
             Visibility = Visibility.Public;
             Name = "Expand";
@@ -21,20 +21,20 @@ namespace Vipr.Writer.CSharp.Lite
                     new Type(new Identifier("System", "Func"), new Type(NamesService.GetConcreteInterfaceName(odcmClass)),
                         new Type(new Identifier(null, "TTarget")))), "navigationPropertyAccessor"),
             };
-            ReturnType = new Type(NamesService.GetFetcherInterfaceName(odcmClass));
+            ReturnType = new Type(NamesService.GetFetcherInterfaceName(odcmClass, projection));
             OdcmClass = odcmClass;
         }
 
-        public static FetcherExpandMethod ForFetcher(OdcmClass odcmClass)
+        public static FetcherExpandMethod ForFetcherInterface(OdcmClass odcmClass, OdcmProjection projection)
         {
-            return new FetcherExpandMethod(odcmClass);
+            return new FetcherExpandMethod(odcmClass, projection);
         }
 
-        public static FetcherExpandMethod ForConcrete(OdcmClass odcmClass)
+        public static FetcherExpandMethod ForFetcherClass(OdcmClass odcmClass, OdcmProjection projection)
         {
-            return new FetcherExpandMethod(odcmClass)
+            return new FetcherExpandMethod(odcmClass, projection)
             {
-                DefiningInterface = NamesService.GetFetcherInterfaceName(odcmClass)
+                DefiningInterface = NamesService.GetFetcherInterfaceName(odcmClass, projection)
             };
         }
     }

@@ -32,7 +32,7 @@ namespace CSharpLiteWriterUnitTests
                 var collection = context.CreateCollection(CollectionType, ConcreteType, Class.GetDefaultEntitySetPath());
 
                 var fetcher = collection.InvokeMethod<RestShallowObjectFetcher>("GetById",
-                    keyValues.Select(k => k.Item2).ToArray());
+                    keyValues.Select(k => k.Item2).ToArray(), @interface: CollectionInterface.Name);
 
                 var task = fetcher.ExecuteAsync();
                 task.Wait();

@@ -19,7 +19,6 @@ namespace CSharpLiteWriterUnitTests
 
         public Given_an_OdcmClass_EntityNavigation_Property_Instance()
         {
-            NavigationProperty = Any.OdcmProperty(p => p.Projection.Type = Class);
 
             base.Init(m =>
             {
@@ -31,7 +30,7 @@ namespace CSharpLiteWriterUnitTests
                 NavigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = @class;
-                    p.Projection.Type = NavTargetClass;
+                    p.Projection = NavTargetClass.DefaultProjection;
                     p.IsCollection = false;
                 });
 
@@ -72,7 +71,7 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void The_Fetcher_interface_exposes_a_readonly_FetcherInterface_property()
+        public void The_Fetcher_interface_exposes_a_readonly_FetcherInterface_property_with_default_projection()
         {
             FetcherInterface.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
@@ -82,7 +81,7 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void The_Fetcher_class_exposes_a_readonly_Fetcher_Interface_property()
+        public void The_Fetcher_class_exposes_a_readonly_Fetcher_Interface_property_with_default_projection()
         {
             FetcherType.Should().HaveProperty(
                 CSharpAccessModifiers.Public,

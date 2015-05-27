@@ -12,9 +12,9 @@ namespace Vipr.Writer.CSharp.Lite
         protected FetcherNavigationProperty(OdcmProperty odcmProperty) : base(odcmProperty)
         {
             FieldName = NamesService.GetFetcherFieldName(odcmProperty);
-            InstanceType = NamesService.GetFetcherTypeName(odcmProperty.Type);
+            InstanceType = NamesService.GetFetcherTypeName(odcmProperty.Projection.Type);
             PrivateSet = true;
-            Type = new Type(NamesService.GetFetcherInterfaceName(odcmProperty.Type));
+            Type = new Type(NamesService.GetFetcherInterfaceName(odcmProperty.Projection.Type, odcmProperty.Projection));
         }
 
         public static FetcherNavigationProperty ForConcrete(OdcmProperty odcmProperty)

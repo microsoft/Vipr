@@ -21,11 +21,19 @@ namespace Vipr.Core.CodeModel
             get { return _projections.AsEnumerable(); }
         }
 
+        public OdcmProjection DefaultProjection { get; private set; }
+
         protected OdcmType(string name, OdcmNamespace @namespace)
             : base(name)
         {
             Namespace = @namespace;
             _projections = new List<OdcmProjection>();
+            DefaultProjection = new OdcmProjection()
+            {
+                Type = this,
+                Capabilities = OdcmCapability.DefaultOdcmCapabilities
+            };
+            _projections.Add(DefaultProjection);
         }
 
         public string FullName

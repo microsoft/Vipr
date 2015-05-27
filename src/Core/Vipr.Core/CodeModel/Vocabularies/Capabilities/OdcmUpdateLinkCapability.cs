@@ -10,6 +10,11 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
             get { return "Org.OData.Capabilities.V1.UpdateRestrictions/NonUpdatableNavigationProperties"; }
         }
 
+        public override string ShortName
+        {
+            get { return "Ulk"; }
+        }
+
         /// <summary>
         /// Reference/link to an entity can be updated
         /// </summary>

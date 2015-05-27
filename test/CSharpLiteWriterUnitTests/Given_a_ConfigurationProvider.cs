@@ -344,7 +344,8 @@ namespace CSharpLiteWriterUnitTests
 
                     if (cl.Kind == OdcmClassKind.Entity)
                     {
-                        proxy.GetInterface(ns.Name, "I" + cl.Name + "Fetcher")
+                        var fetcherInterface = NamesService.GetFetcherInterfaceName(cl);
+                        proxy.GetInterface(ns.Name, fetcherInterface.Name)
                             .Properties()
                             .Select(p => p.Name.Substring(p.Name.LastIndexOf('.') + 1))
                             .Should().Contain(cl.NavigationProperties().Select(GetPascalCaseName).Where(n => n[0] != '_'), because: "Because the fetcher's navigation properties should be capitalized.")
@@ -483,10 +484,7 @@ namespace CSharpLiteWriterUnitTests
                             {
                                 Class = property.Class,
                                 ReadOnly = property.ReadOnly,
-                                Projection = new OdcmProjection()
-                                {
-                                    Type = property.Type
-                                }
+                                Projection = property.Projection
                             };
 
                         cl.Properties.Add(lowerCaseProperty);
