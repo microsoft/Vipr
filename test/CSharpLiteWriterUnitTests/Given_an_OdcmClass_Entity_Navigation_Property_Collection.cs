@@ -31,8 +31,8 @@ namespace CSharpLiteWriterUnitTests
                 var @class = @namespace.Classes.First();
                 NavigationProperty = Any.OdcmProperty(p =>
                 {
-                    p.Class = @class;
-                    p.Projection.Type = NavTargetClass;
+                    p.Class = @class;                    
+                    p.Projection = NavTargetClass.DefaultProjection;
                     p.IsCollection = true;
                 });
 
@@ -51,7 +51,7 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void The_Fetcher_interface_exposes_a_readonly_CollectionInterface_property()
+        public void The_Fetcher_interface_exposes_a_readonly_CollectionInterface_property_with_default_projection()
         {
             FetcherInterface.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
@@ -61,7 +61,7 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void The_Fetcher_class_exposes_a_readonly_CollectionInterface_property()
+        public void The_Fetcher_class_exposes_a_readonly_CollectionInterface_property_with_default_projection()
         {
             FetcherType.Should().HaveProperty(
                 CSharpAccessModifiers.Public,
@@ -186,7 +186,8 @@ public class Given_an_OdcmClass_Entity_Uninitialized : NavigationPropertyTestBas
             NavigationProperty = Any.OdcmProperty(p =>
             {
                 p.Class = @class;
-                p.Projection.Type = NavTargetClass;
+                //p.Projection.Type = NavTargetClass;
+                p.Projection = NavTargetClass.DefaultProjection;
                 p.IsCollection = true;
             });
 

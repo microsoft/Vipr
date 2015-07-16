@@ -3,27 +3,27 @@
 
 namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
 {
-    public class OdcmUpdateCapability : OdcmBooleanCapability
+    public class OdcmUpdateLinkCapability : OdcmBooleanCapability
     {
         public override string TermName
         {
-            get { return "Org.OData.Capabilities.V1.UpdateRestrictions"; }
+            get { return "Org.OData.Capabilities.V1.UpdateRestrictions/NonUpdatableNavigationProperties"; }
         }
 
         public override string ShortName
         {
-            get { return "Upd"; }
+            get { return "Ulk"; }
         }
 
         /// <summary>
-        /// Entities can be updated
+        /// Reference/link to an entity can be updated
         /// </summary>
         public bool Updatable
         {
             get { return Value; }
         }
 
-        public OdcmUpdateCapability()
+        public OdcmUpdateLinkCapability()
         {
             Value = true;
         }

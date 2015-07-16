@@ -13,12 +13,9 @@ namespace Vipr.Writer.CSharp.Lite
 
         internal static IEnumerable<Interface> ForOdcmClassEntity(OdcmEntityClass odcmClass)
         {
-            return new[]
-            {
-                Interface.ForConcrete(odcmClass),
-                Interface.ForFetcher(odcmClass),
-                Interface.ForCollection(odcmClass),
-            };
+            return Interface.ForConcrete(odcmClass)
+                .Concat(Interface.ForFetcher(odcmClass))
+                .Concat(Interface.ForCollection(odcmClass));
         }
 
         internal static IEnumerable<Interface> ForOdcmClassService(OdcmClass odcmClass)

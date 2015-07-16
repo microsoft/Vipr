@@ -11,10 +11,13 @@ namespace Vipr.Writer.CSharp.Lite
     {
         public static IEnumerable<Indexer> ForCollection(OdcmEntityClass odcmClass)
         {
-            return new Indexer[]
+            var retVal = new List<Indexer>();
+            foreach (var projection in odcmClass.Projections)
             {
-                new CollectionGetByIdIndexer(odcmClass)
-            };
+                retVal.Add(CollectionGetByIdIndexer.ForCollectionClass(odcmClass, projection));
+            }
+
+            return retVal;
         }
 
         public static IEnumerable<Indexer> Empty { get { return Enumerable.Empty<Indexer>(); } }

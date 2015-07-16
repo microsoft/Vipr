@@ -20,7 +20,7 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void The_Collection_class_is_Internal()
+        public void The_Fetcher_class_is_Internal()
         {
             FetcherType.IsInternal()
                 .Should().BeTrue("Because entity types are accessed by the Concrete, Fetcher, " +
@@ -36,7 +36,7 @@ namespace CSharpLiteWriterUnitTests
         }
 
         [Fact]
-        public void The_fetcher_proxy_class_implements_the_Fetcher_Interface()
+        public void The_fetcher_proxy_class_implements_the_default_Fetcher_Interface()
         {
             FetcherType.Should().Implement(
                 FetcherInterface,

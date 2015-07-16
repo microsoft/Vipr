@@ -10,6 +10,11 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
             get { return "Org.OData.Capabilities.V1.ExpandRestrictions"; }
         }
 
+        public override string ShortName
+        {
+            get { return "Exp"; }
+        }
+
         /// <summary>
         /// $expand is supported
         /// </summary>

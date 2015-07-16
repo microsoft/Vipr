@@ -10,6 +10,11 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
             get { return "Org.OData.Capabilities.V1.InsertRestrictions"; }
         }
 
+        public override string ShortName
+        {
+            get { return "Ins"; }
+        }
+
         /// <summary>
         /// Entities can be inserted
         /// </summary>

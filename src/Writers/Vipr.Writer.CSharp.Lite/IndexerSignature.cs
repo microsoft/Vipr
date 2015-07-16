@@ -12,11 +12,11 @@ namespace Vipr.Writer.CSharp.Lite
         public bool IsSettable { get; protected set; }
         public bool IsGettable { get; protected set; }
 
-        public static IEnumerable<IndexerSignature> ForCollectionInterface(OdcmEntityClass odcmClass)
+        public static IEnumerable<IndexerSignature> ForCollectionInterface(OdcmEntityClass odcmClass, OdcmProjection projection)
         {
             return new IndexerSignature[]
             {
-                new CollectionGetByIdIndexer(odcmClass)
+                new CollectionGetByIdIndexer(odcmClass, projection)
             };
         }
     }

@@ -20,8 +20,6 @@ namespace CSharpLiteWriterUnitTests
         private Type _baseConcreteInterface;
         private Type _baseFetcherType;
         private Type _baseFetcherInterface;
-        private Type _baseCollectionType;
-        private Type _baseCollectionInterface;
         private string _toDerivedMethodName;
 
         
@@ -46,11 +44,8 @@ namespace CSharpLiteWriterUnitTests
 
             _baseFetcherType = Proxy.GetClass(_baseClass.Namespace, _baseClass.Name + "Fetcher");
 
-            _baseFetcherInterface = Proxy.GetInterface(_baseClass.Namespace, "I" + _baseClass.Name + "Fetcher");
-
-            _baseCollectionType = Proxy.GetClass(_baseClass.Namespace, _baseClass.Name + "Collection");
-
-            _baseCollectionInterface = Proxy.GetInterface(_baseClass.Namespace, "I" + _baseClass.Name + "Collection");
+            var identifier = NamesService.GetFetcherInterfaceName(_baseClass);
+            _baseFetcherInterface = Proxy.GetInterface(_baseClass.Namespace, identifier.Name);
 
             _toDerivedMethodName = "To" + ConcreteType.Name;
         }

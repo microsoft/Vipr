@@ -22,10 +22,8 @@ namespace CSharpLiteWriterUnitTests
                 _structuralInstanceProperty = Any.PrimitiveOdcmProperty(p =>
                 {
                     p.Class = Class;
-                    p.Projection = new OdcmProjection
-                    {
-                        Type = new OdcmPrimitiveType("String", OdcmNamespace.Edm)
-                    };
+                    var type = new OdcmPrimitiveType("String", OdcmNamespace.Edm);
+                    p.Projection = type.DefaultProjection;
                 });
                 Class.Properties.Add(_structuralInstanceProperty);
             });

@@ -7,6 +7,7 @@ using Microsoft.Its.Recipes;
 using Moq;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
+using Vipr.Writer.CSharp.Lite;
 using Xunit;
 
 namespace CSharpLiteWriterUnitTests
@@ -37,11 +38,15 @@ namespace CSharpLiteWriterUnitTests
         public void The_EntityContainer_class_has_the_renamed_property()
         {
             bool isCollection = _property.IsCollection;
+            var propertyType = _property.Projection.Type;
+            var identifier = isCollection
+                ? NamesService.GetCollectionInterfaceName(propertyType)
+                : NamesService.GetFetcherInterfaceName(propertyType);
 
             EntityContainerType.Should().HaveProperty(
                 CSharpAccessModifiers.Public, 
                 isCollection ? (CSharpAccessModifiers?)null : CSharpAccessModifiers.Private,
-                Proxy.GetInterface(_property.Type.Namespace, "I" + _property.Type.Name + (isCollection ? "Collection" : "Fetcher")),
+                Proxy.GetInterface(_property.Type.Namespace, identifier.Name),
                 GetPascalCaseName(_property));
         }
 

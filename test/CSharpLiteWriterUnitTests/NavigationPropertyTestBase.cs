@@ -3,6 +3,8 @@
 
 using System;
 using Vipr.Core.CodeModel;
+using Vipr.Writer.CSharp.Lite;
+using Type = System.Type;
 
 namespace CSharpLiteWriterUnitTests
 {
@@ -32,13 +34,13 @@ namespace CSharpLiteWriterUnitTests
 
             NavTargetFetcherType = Proxy.GetClass(NavTargetClass.Namespace, NavTargetClass.Name + "Fetcher");
 
-            NavTargetFetcherInterface = Proxy.GetInterface(NavTargetClass.Namespace,
-                "I" + NavTargetClass.Name + "Fetcher");
+            var identifier = NamesService.GetFetcherInterfaceName(NavTargetClass);
+            NavTargetFetcherInterface = Proxy.GetInterface(NavTargetClass.Namespace, identifier.Name);
 
             NavTargetCollectionType = Proxy.GetClass(NavTargetClass.Namespace, NavTargetClass.Name + "Collection");
 
-            NavTargetCollectionInterface = Proxy.GetInterface(NavTargetClass.Namespace,
-                "I" + NavTargetClass.Name + "Collection");
+            identifier = NamesService.GetCollectionInterfaceName(NavTargetClass);
+            NavTargetCollectionInterface = Proxy.GetInterface(NavTargetClass.Namespace, identifier.Name);
 
             NavTargetEntity = new EntityArtifacts()
             {

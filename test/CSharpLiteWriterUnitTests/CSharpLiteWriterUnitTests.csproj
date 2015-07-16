@@ -146,6 +146,9 @@
     <Compile Include="Given_an_OdcmClass_Entity_Fetcher_SetAsync_Method.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Fetcher_UpdateAsync_Method.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Fetcher_UpdateLinkAsync_Method.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_with_multiple_OdcmProjections.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_Navigation_Property_with_OdcmProjection.cs" />
+    <Compile Include="Given_an_OdcmClass_Entity_with_OdcmProjection.cs" />
     <Compile Include="Given_an_OdcmClass_Service_Bound_Function_Collection.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Collection_Bound_Function_Collection.cs" />
     <Compile Include="Given_an_OdcmClass_Entity_Bound_Function_Collection.cs" />

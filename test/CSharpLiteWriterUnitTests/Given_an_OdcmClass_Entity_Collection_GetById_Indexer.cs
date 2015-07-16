@@ -29,7 +29,9 @@ namespace CSharpLiteWriterUnitTests
                     .GetDefaultContext(Model)
                     .CreateCollection(CollectionType, ConcreteType, Class.GetDefaultEntitySetPath());
 
-                var fetcher = collection.GetIndexerValue<RestShallowObjectFetcher>(keyValues.Select(k => k.Item2).ToArray());
+                var fetcher =
+                    collection.GetIndexerValue<RestShallowObjectFetcher>(keyValues.Select(k => k.Item2).ToArray(),
+                        @interface: CollectionInterface.Name);
 
                 var task = fetcher.ExecuteAsync();
                 task.Wait();

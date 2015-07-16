@@ -19,7 +19,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
     {
         private static List<OdcmBooleanCapability> _supportedOdcmCapabilities;
 
-        public BooleanCapabilityAnnotationParser()
+        public BooleanCapabilityAnnotationParser(PropertyCapabilitiesCache propertyCapabilitiesCache) : base(propertyCapabilitiesCache)
         {
             _supportedOdcmCapabilities = new List<OdcmBooleanCapability>();
             var viprCoreName = Assembly.GetExecutingAssembly().GetReferencedAssemblies().First(a => a.Name == "Vipr.Core");
@@ -33,7 +33,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
         }
 
         public override void  ParseCapabilityAnnotationForEntitySet(OdcmProperty odcmEntitySet,
-            IEdmValueAnnotation annotation, ODataCapabilitiesReader.PropertyCapabilitiesCache propertyCache)
+            IEdmValueAnnotation annotation)
         {
             if (!_supportedOdcmCapabilities.Any(c => c.TermName == annotation.Term.FullName()))
             {
@@ -45,19 +45,28 @@ namespace Vipr.Reader.OData.v4.Capabilities
             // First get the boolean value for this annotation on an EntitySet.
             // Then create a corresponding OdcmCapability and add it to the OdcmProperty of the EntitySet
             var boolVal = GetBooleanValue(recordExpression);
-            var odcmCapability = GetBooleanCapabiltity(boolVal, annotation.Term.FullName());
-            propertyCache.AddCapabilityToProperty(odcmEntitySet, odcmCapability);
+            SetBooleanCapability(odcmEntitySet, boolVal, annotation.Term.FullName());
 
             // Get the list of annotated navigation properties
             // Then resolve these navigation properties to OdcmProperties
             // Lastly create corresponding OdcmCapabilities and add them to OdcmProperties (of the resolved navigation Properties)
             List<OdcmProperty> navigationProperties = GetNavigationProperties(recordExpression,
                 odcmEntitySet.Type as OdcmClass);
+            string collectionName = recordExpression.Properties.Single(p => p.Value is IEdmCollectionExpression).Name;
 
             foreach (var navigationProperty in navigationProperties)
             {
-                odcmCapability = GetBooleanCapabiltity(false, annotation.Term.FullName());
-                propertyCache.AddCapabilityToProperty(navigationProperty, odcmCapability);
+                SetBooleanCapability(navigationProperty, false, annotation.Term.FullName() + "/" + collectionName);
+            }
+        }
+
+        private void SetBooleanCapability(OdcmProperty property, bool value, string annotationTerm)
+        {
+            var capabilities = _propertyCapabilitiesCache.GetCapabilities(property);
+            var capability = (OdcmBooleanCapability)capabilities.SingleOrDefault(c => c.TermName == annotationTerm);
+            if (capability != null)
+            {
+                capability.Value = value;
             }
         }
 
@@ -99,14 +108,6 @@ namespace Vipr.Reader.OData.v4.Capabilities
             }
 
             return properties;
-        }
-
-        private OdcmCapability GetBooleanCapabiltity(bool boolVal, string annotationTermName)
-        {
-            Type capabilityType = _supportedOdcmCapabilities.Single(c => c.TermName == annotationTermName).GetType();
-            var capability = (OdcmBooleanCapability)Activator.CreateInstance(capabilityType);
-            capability.Value = boolVal;
-            return capability;
         }
     }
 }

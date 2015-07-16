@@ -3,27 +3,27 @@
 
 namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
 {
-    public class OdcmUpdateCapability : OdcmBooleanCapability
+    public class OdcmDeleteLinkCapability : OdcmBooleanCapability
     {
         public override string TermName
         {
-            get { return "Org.OData.Capabilities.V1.UpdateRestrictions"; }
+            get { return "Org.OData.Capabilities.V1.DeleteRestrictions/NonDeletableNavigationProperties"; }
         }
 
         public override string ShortName
         {
-            get { return "Upd"; }
+            get { return "Dlk"; }
         }
 
         /// <summary>
-        /// Entities can be updated
+        /// Reference/link to an entity can be deleted
         /// </summary>
-        public bool Updatable
+        public bool Deletable
         {
             get { return Value; }
         }
 
-        public OdcmUpdateCapability()
+        public OdcmDeleteLinkCapability()
         {
             Value = true;
         }

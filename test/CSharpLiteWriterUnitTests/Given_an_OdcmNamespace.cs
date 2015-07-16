@@ -69,10 +69,7 @@ namespace CSharpLiteWriterUnitTests
             @class.Properties.Add(new OdcmProperty(Any.CSharpIdentifier())
             {
                 Class = @class,
-                Projection = new OdcmProjection()
-                {
-                    Type = @class
-                }
+                Projection = @class.DefaultProjection
             });
 
             _model.AddType(@class);

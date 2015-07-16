@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
+using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
 namespace Vipr.Writer.CSharp.Lite
 {
@@ -26,7 +27,7 @@ namespace Vipr.Writer.CSharp.Lite
             return Methods.ForFetcherInterfaceUpcasts(odcmClass);
         }
 
-        public static IEnumerable<Method> ForFetcherInterface(OdcmClass odcmClass)
+        public static IEnumerable<Method> ForFetcherInterface(OdcmClass odcmClass, OdcmProjection projection)
         {
             var retVal = new List<Method>();
 
@@ -35,21 +36,63 @@ namespace Vipr.Writer.CSharp.Lite
             if (!odcmClass.IsAbstract)
             {
                 retVal.Add(new FetcherExecuteAsyncMethod(odcmClass));
-                retVal.Add(FetcherExpandMethod.ForFetcher(odcmClass));
-                retVal.Add(FetcherUpdateMethod.ForFetcher(odcmClass));
-                retVal.Add(FetcherUpdateLinkMethod.ForFetcher(odcmClass));
-                retVal.Add(FetcherDeleteMethod.ForFetcher(odcmClass));
-                retVal.Add(FetcherDeleteLinkMethod.ForFetcher(odcmClass));
-                retVal.Add(FetcherSetMethod.ForFetcher(odcmClass));
+                if (projection.SupportsExpand())
+                {
+                    retVal.Add(FetcherExpandMethod.ForFetcherInterface(odcmClass, projection));
+                }
+
+                if (projection.SupportsUpdate())
+                {
+                    retVal.Add(FetcherUpdateMethod.ForFetcher(odcmClass));
+                    retVal.Add(FetcherSetMethod.ForFetcher(odcmClass));
+                }
+
+                if (projection.SupportsUpdateLink())
+                {
+                    retVal.Add(FetcherUpdateLinkMethod.ForFetcher(odcmClass));
+                }
+
+                if (projection.SupportsDelete())
+                {
+                    retVal.Add(FetcherDeleteMethod.ForFetcher(odcmClass));
+                }
+
+                if (projection.SupportsDeleteLink())
+                {
+                    retVal.Add(FetcherDeleteLinkMethod.ForFetcher(odcmClass));
+                }
+
                 retVal.Add(FetcherSaveChangesAsyncMethod.ForFetcher(odcmClass));
             }
 
             return retVal;
         }
 
-        public static IEnumerable<Method> ForFetcher(OdcmClass odcmClass)
+        public static IEnumerable<Method> ForFetcherClass(OdcmClass odcmClass)
         {
-            var retVal = Methods.ForFetcherInterface(odcmClass).ToList();
+            var retVal = new List<Method>();
+
+            retVal.AddRange(Methods.ForEntityType(odcmClass));
+
+            if (!odcmClass.IsAbstract)
+            {
+                retVal.Add(new FetcherExecuteAsyncMethod(odcmClass));
+
+                foreach (var projection in odcmClass.Projections)
+                {
+                    if (projection.SupportsExpand())
+                    {
+                        retVal.Add(FetcherExpandMethod.ForFetcherClass(odcmClass, projection));
+                    }
+                }
+
+                retVal.Add(FetcherUpdateMethod.ForFetcher(odcmClass));
+                retVal.Add(FetcherSetMethod.ForFetcher(odcmClass));
+                retVal.Add(FetcherUpdateLinkMethod.ForFetcher(odcmClass));
+                retVal.Add(FetcherDeleteMethod.ForFetcher(odcmClass));
+                retVal.Add(FetcherDeleteLinkMethod.ForFetcher(odcmClass));
+                retVal.Add(FetcherSaveChangesAsyncMethod.ForFetcher(odcmClass));
+            }
 
             if (!odcmClass.IsAbstract)
             {
@@ -59,7 +102,7 @@ namespace Vipr.Writer.CSharp.Lite
             return retVal;
         }
 
-        public static IEnumerable<Method> ForCollectionInterface(OdcmClass odcmClass)
+        public static IEnumerable<Method> ForCollectionInterface(OdcmClass odcmClass, OdcmProjection projection)
         {
             var odcmMediaClass = odcmClass as OdcmMediaClass;
             if (odcmMediaClass != null)
@@ -67,17 +110,35 @@ namespace Vipr.Writer.CSharp.Lite
                 return ForMediaCollectionInterface(odcmMediaClass);
             }
 
-            return Methods.GetMethodsBoundToCollection(odcmClass)
-                .Concat(new Method[]
-                {
-                    new CollectionGetByIdMethod(odcmClass),
-                    new CollectionExecuteAsyncMethod(odcmClass),
-                    new CollectionAddLinkAsyncMethod(odcmClass),
-                    new CollectionRemoveLinkAsyncMethod(odcmClass),
-                    new CollectionAddAsyncMethod(odcmClass),
-                    new CollectionUpdateAsyncMethod(odcmClass),
-                    new CollectionDeleteAsyncMethod(odcmClass)
-                });
+            var retVal = new List<Method>();
+            retVal.AddRange(Methods.GetMethodsBoundToCollection(odcmClass));
+
+
+            retVal.Add(new CollectionGetByIdMethod(odcmClass, projection));
+            retVal.Add(new CollectionExecuteAsyncMethod(odcmClass));
+
+            if (projection.SupportsUpdateLink())
+            {
+                retVal.Add(new CollectionAddLinkAsyncMethod(odcmClass));
+            }
+            if (projection.SupportsDeleteLink())
+            {
+                retVal.Add(new CollectionRemoveLinkAsyncMethod(odcmClass));
+            }
+            if (projection.SupportsInsert())
+            {
+                retVal.Add(new CollectionAddAsyncMethod(odcmClass));
+            }
+            if (projection.SupportsUpdate())
+            {
+                retVal.Add(new CollectionUpdateAsyncMethod(odcmClass));
+            }
+            if (projection.SupportsDelete())
+            {
+                retVal.Add(new CollectionDeleteAsyncMethod(odcmClass));
+            }
+
+            return retVal;
         }
 
         public static IEnumerable<Method> ForMediaCollectionInterface(OdcmMediaClass odcmClass)
@@ -91,9 +152,30 @@ namespace Vipr.Writer.CSharp.Lite
                 });
         }
 
-        public static IEnumerable<Method> ForCollection(OdcmClass odcmClass)
+        public static IEnumerable<Method> ForCollectionClass(OdcmClass odcmClass)
         {
-            return Methods.ForCollectionInterface(odcmClass);
+            var odcmMediaClass = odcmClass as OdcmMediaClass;
+            if (odcmMediaClass != null)
+            {
+                return ForMediaCollectionInterface(odcmMediaClass);
+            }
+
+            var retVal = new List<Method>();
+            retVal.AddRange(Methods.GetMethodsBoundToCollection(odcmClass));
+
+            foreach (var projection in odcmClass.Projections)
+            {
+                retVal.Add(CollectionGetByIdMethod.ForCollectionClass(odcmClass, projection));
+            }
+
+            retVal.Add(new CollectionExecuteAsyncMethod(odcmClass));
+            retVal.Add(new CollectionAddLinkAsyncMethod(odcmClass));
+            retVal.Add(new CollectionRemoveLinkAsyncMethod(odcmClass));
+            retVal.Add(new CollectionAddAsyncMethod(odcmClass));
+            retVal.Add(new CollectionUpdateAsyncMethod(odcmClass));
+            retVal.Add(new CollectionDeleteAsyncMethod(odcmClass));
+
+            return retVal;
         }
 
         public static IEnumerable<Method> ForEntityContainerInterface(OdcmClass odcmContainer)

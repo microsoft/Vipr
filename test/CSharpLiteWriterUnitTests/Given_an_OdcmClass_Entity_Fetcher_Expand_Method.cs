@@ -34,7 +34,10 @@ namespace CSharpLiteWriterUnitTests
                     .GetDefaultContext(Model)
                     .CreateFetcher(FetcherType, Class.GetDefaultEntitySetName());
 
-                fetcher.InvokeMethod<RestShallowObjectFetcher>("Expand", new []{lambda}, new []{ConcreteInterface}).InvokeMethod<Task>("ExecuteAsync").GetPropertyValue<EntityBase>("Result");
+                fetcher.InvokeMethod<RestShallowObjectFetcher>("Expand", new[] {lambda}, new[] {ConcreteInterface},
+                    FetcherInterface.Name)
+                    .InvokeMethod<Task>("ExecuteAsync")
+                    .GetPropertyValue<EntityBase>("Result");
             }
         }
 
@@ -58,8 +61,8 @@ namespace CSharpLiteWriterUnitTests
                     .CreateFetcher(FetcherType, Class.GetDefaultEntitySetName());
 
                 fetcher
-                    .InvokeMethod<RestShallowObjectFetcher>("Expand", new[] { lambda1 }, new[] { ConcreteInterface })
-                    .InvokeMethod<RestShallowObjectFetcher>("Expand", new[] { lambda2 }, new[] { ConcreteInterface })
+                    .InvokeMethod<RestShallowObjectFetcher>("Expand", new[] { lambda1 }, new[] { ConcreteInterface }, FetcherInterface.Name)
+                    .InvokeMethod<RestShallowObjectFetcher>("Expand", new[] { lambda2 }, new[] { ConcreteInterface }, FetcherInterface.Name)
                     .InvokeMethod<Task>("ExecuteAsync").GetPropertyValue<EntityBase>("Result");
             }
         }

@@ -28,12 +28,48 @@ namespace ODataReader.v4UnitTests
 
             odcmEntitySet.Projection.Capabilities
                 .Should()
-                .BeEquivalentTo(OdcmCapability.DefaultOdcmCapabilities,
+                .BeEquivalentTo(OdcmCapability.DefaultEntitySetCapabilities,
                 "because an entity set without any capability annotation should have default capabilities");
 
             odcmEntityType.Projections
                 .Should()
                 .Contain(odcmEntitySet.Projection, "because entity set's Projection is retrieved from its OdcmType's cache of Projections");
+
+            odcmEntityType.DefaultProjection.Capabilities
+                .Should()
+                .BeEquivalentTo(OdcmCapability.DefaultOdcmCapabilities,
+                    "because every OdcmType should have a default Projection with default capabilities");
+        }
+
+        [Fact]
+        public void When_Singleton_has_no_Capability_Annotation_Then_Its_OdcmProperty_has_all_the_default_OdcmCapabilities()
+        {
+            var entityTypeElement = _entityTypeElements.RandomElement();
+            var singletonElement = Any.Csdl.Singleton();
+            var singletonName = singletonElement.GetAttribute("Name");
+            singletonElement.AddAttribute("Type",
+                string.Format("{0}.{1}", _schemaNamespace, entityTypeElement.GetAttribute("Name")));
+            _entityContainerElement.Add(singletonElement);
+
+            var odcmModel = GetOdcmModel(_edmxElement);
+            var odcmEntityContainer = GetOdcmEntityContainer(odcmModel);
+
+            var odcmSingleton = odcmEntityContainer.As<OdcmClass>().Properties.Single(p => p.Name == singletonName);
+            OdcmType odcmEntityType = odcmSingleton.Projection.Type;
+
+            odcmSingleton.Projection.Capabilities
+                .Should()
+                .BeEquivalentTo(OdcmCapability.DefaultSingletonCapabilities,
+                "because a singleton without any capability annotation should have default capabilities");
+
+            odcmEntityType.Projections
+                .Should()
+                .Contain(odcmSingleton.Projection, "because Singleton's Projection is retrieved from its OdcmType's cache of Projections");
+
+            odcmEntityType.DefaultProjection.Capabilities
+                .Should()
+                .BeEquivalentTo(OdcmCapability.DefaultOdcmCapabilities,
+                    "because every OdcmType should have a default Projection with default capabilities");
         }
 
         [Fact]
@@ -54,12 +90,17 @@ namespace ODataReader.v4UnitTests
 
             odcmNavProperty.Projection.Capabilities
                 .Should()
-                .BeEquivalentTo(OdcmCapability.DefaultOdcmCapabilities,
+                .BeEquivalentTo(OdcmCapability.DefaultPropertyCapabilities,
                 "because a navigation property without any capability annotation should have default capabilities");
 
             odcmNavProperty.Projection.Type.Projections
                 .Should()
                 .Contain(odcmNavProperty.Projection, "because navigation property's Projection is retrieved from its OdcmType's cache of Projections");
+
+            odcmEntityType.DefaultProjection.Capabilities
+                .Should()
+                .BeEquivalentTo(OdcmCapability.DefaultOdcmCapabilities,
+                    "because every OdcmType should have a default Projection with default capabilities");
         }
 
         [Fact]
@@ -76,9 +117,9 @@ namespace ODataReader.v4UnitTests
             var odcmEntitySet = odcmEntityContainer.As<OdcmClass>().Properties.Single(p => p.Name == entitySetElementName);
             OdcmType odcmEntityType = odcmEntitySet.Projection.Type;
 
-            HasOdcmCapability<OdcmInsertCapability>(odcmEntitySet, insertable)
+            odcmEntitySet.Projection.SupportsInsert()
                 .Should()
-                .BeTrue("Because an entity set with insert annotation should have OdcmInsertCapability");
+                .Be(insertable, "Because an entity set with insert annotation should have OdcmInsertCapability");
 
             odcmEntityType.Projections
                 .Should()
@@ -99,9 +140,9 @@ namespace ODataReader.v4UnitTests
             var odcmEntitySet = odcmEntityContainer.As<OdcmClass>().Properties.Single(p => p.Name == entitySetElementName);
             OdcmType odcmEntityType = odcmEntitySet.Projection.Type;
 
-            HasOdcmCapability<OdcmUpdateCapability>(odcmEntitySet, updatable)
+            odcmEntitySet.Projection.SupportsUpdate()
                 .Should()
-                .BeTrue("Because an entity set with update annotation should have OdcmUpdateCapability");
+                .Be(updatable, "Because an entity set with update annotation should have OdcmUpdateCapability");
 
             odcmEntityType.Projections
                 .Should()
@@ -122,9 +163,9 @@ namespace ODataReader.v4UnitTests
             var odcmEntitySet = odcmEntityContainer.As<OdcmClass>().Properties.Single(p => p.Name == entitySetElementName);
             OdcmType odcmEntityType = odcmEntitySet.Projection.Type;
 
-            HasOdcmCapability<OdcmDeleteCapability>(odcmEntitySet, deletable)
+            odcmEntitySet.Projection.SupportsDelete()
                 .Should()
-                .BeTrue("Because an entity set with delete annotation should have OdcmDeleteCapability");
+                .Be(deletable, "Because an entity set with delete annotation should have OdcmDeleteCapability");
 
             odcmEntityType.Projections
                 .Should()
@@ -145,9 +186,9 @@ namespace ODataReader.v4UnitTests
             var odcmEntitySet = odcmEntityContainer.As<OdcmClass>().Properties.Single(p => p.Name == entitySetElementName);
             OdcmType odcmEntityType = odcmEntitySet.Projection.Type;
 
-            HasOdcmCapability<OdcmExpandCapability>(odcmEntitySet, expandable)
-                            .Should()
-                            .BeTrue("Because an entity set with expand annotation should have OdcmExpandCapability");
+            odcmEntitySet.Projection.SupportsExpand()
+                .Should()
+                .Be(expandable, "Because an entity set with expand annotation should have OdcmExpandCapability");
 
             odcmEntityType.Projections
                 .Should()
@@ -155,31 +196,7 @@ namespace ODataReader.v4UnitTests
         }
 
         [Fact]
-        public void When_NavigationProperty_has_InsertRestriction_Then_Its_OdcmProperty_has_OdcmInsertCapability()
-        {
-            var entitySetElement = _entitySetToEntityTypeMapping.Keys.RandomElement();
-            var entityTypeElement = _entitySetToEntityTypeMapping[entitySetElement];
-            var entityTypeElementName = entityTypeElement.GetAttribute("Name");
-            var navPropertyName = GetRandomNavigationProperty(entityTypeElement);
-
-            var insertable = Any.Bool();
-            entitySetElement.Add(Any.Csdl.InsertRestrictionAnnotation(insertable, new List<string> { navPropertyName }));
-
-            var odcmModel = GetOdcmModel(_edmxElement);
-            OdcmType odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElementName);
-            OdcmProperty odcmNavProperty = (odcmEntityType as OdcmClass).Properties.Single(p => p.Name == navPropertyName);
-
-            HasOdcmCapability<OdcmInsertCapability>(odcmNavProperty, false)
-                .Should()
-                .BeTrue("Because a navigation property with insert annotation should have OdcmInsertCapability");
-
-            odcmNavProperty.Projection.Type.Projections
-                .Should()
-                .Contain(odcmNavProperty.Projection, "because navigation property's Projection is retrieved from its OdcmType's cache of Projections");
-        }
-
-        [Fact]
-        public void When_NavigationProperty_has_UpdateRestriction_Then_Its_OdcmProperty_has_OdcmUpdateCapability()
+        public void When_NavigationProperty_is_annotated_with_NonUpdatableNavigationProperties_Then_Its_OdcmProperty_has_OdcmUpdateLinkCapability()
         {
             var entitySetElement = _entitySetToEntityTypeMapping.Keys.RandomElement();
             var entityTypeElement = _entitySetToEntityTypeMapping[entitySetElement];
@@ -193,9 +210,9 @@ namespace ODataReader.v4UnitTests
             OdcmType odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElementName);
             OdcmProperty odcmNavProperty = (odcmEntityType as OdcmClass).Properties.Single(p => p.Name == navPropertyName);
 
-            HasOdcmCapability<OdcmUpdateCapability>(odcmNavProperty, false)
+            odcmNavProperty.Projection.SupportsUpdateLink()
                 .Should()
-                .BeTrue("Because a navigation property with update annotation should have OdcmUpdateCapability");
+                .BeFalse("Because a navigation property with update annotation should not support OdcmUpdateLinkCapability");
 
             odcmNavProperty.Projection.Type.Projections
                 .Should()
@@ -203,7 +220,7 @@ namespace ODataReader.v4UnitTests
         }
 
         [Fact]
-        public void When_NavigationProperty_has_DeleteRestriction_Then_Its_OdcmProperty_has_OdcmDeleteCapability()
+        public void When_NavigationProperty_is_annotated_with_NonDeletableNavigationProperties_Then_Its_OdcmProperty_has_OdcmDeleteLinkCapability()
         {
             var entitySetElement = _entitySetToEntityTypeMapping.Keys.RandomElement();
             var entityTypeElement = _entitySetToEntityTypeMapping[entitySetElement];
@@ -217,33 +234,9 @@ namespace ODataReader.v4UnitTests
             OdcmType odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElementName);
             OdcmProperty odcmNavProperty = (odcmEntityType as OdcmClass).Properties.Single(p => p.Name == navPropertyName);
 
-            HasOdcmCapability<OdcmDeleteCapability>(odcmNavProperty, false)
+            odcmNavProperty.Projection.SupportsDeleteLink()
                 .Should()
-                .BeTrue("Because a navigation property with delete annotation should have OdcmDeleteCapability");
-
-            odcmNavProperty.Projection.Type.Projections
-                .Should()
-                .Contain(odcmNavProperty.Projection, "because navigation property's Projection is retrieved from its OdcmType's cache of Projections");
-        }
-
-        [Fact]
-        public void When_NavigationProperty_has_ExpandRestriction_Then_Its_OdcmProperty_has_OdcmExpandCapability()
-        {
-            var entitySetElement = _entitySetToEntityTypeMapping.Keys.RandomElement();
-            var entityTypeElement = _entitySetToEntityTypeMapping[entitySetElement];
-            var entityTypeElementName = entityTypeElement.GetAttribute("Name");
-            var navPropertyName = GetRandomNavigationProperty(entityTypeElement);
-
-            var expandable = Any.Bool();
-            entitySetElement.Add(Any.Csdl.ExpandRestrictionAnnotation(expandable, new List<string> { navPropertyName }));
-
-            var odcmModel = GetOdcmModel(_edmxElement);
-            OdcmType odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElementName);
-            OdcmProperty odcmNavProperty = (odcmEntityType as OdcmClass).Properties.Single(p => p.Name == navPropertyName);
-
-            HasOdcmCapability<OdcmExpandCapability>(odcmNavProperty, false)
-                .Should()
-                .BeTrue("Because a navigation property with expand annotation should have OdcmExpandCapability");
+                .BeFalse("Because a navigation property with delete annotation should not support OdcmDeleteCapability");
 
             odcmNavProperty.Projection.Type.Projections
                 .Should()
@@ -255,7 +248,6 @@ namespace ODataReader.v4UnitTests
         {
             var booleanValue = Any.Bool();
             var randomRestrictionAnnotations = GetRandomRestrictionAnnotationElements(booleanValue, null);
-            int annotationCount = randomRestrictionAnnotations.Count();
 
             var entitySetElement = _entitySetToEntityTypeMapping.Keys.RandomElement();
             var entitySetElementName = entitySetElement.GetAttribute("Name");
@@ -266,13 +258,6 @@ namespace ODataReader.v4UnitTests
 
             var odcmEntitySet = odcmEntityContainer.As<OdcmClass>().Properties.Single(p => p.Name == entitySetElementName);
             OdcmType odcmEntityType = odcmEntitySet.Projection.Type;
-
-            odcmEntitySet.Projection.Capabilities.Count
-                .Should()
-                .Be(annotationCount,
-                    string.Format(
-                        "Because an entity set with {0} restriction annotations should have {0} OdcmCapabilities",
-                        annotationCount));
 
             foreach (var restrictionAnnotation in randomRestrictionAnnotations)
             {
@@ -295,30 +280,22 @@ namespace ODataReader.v4UnitTests
             var entityTypeElementName = entityTypeElement.GetAttribute("Name");
             var navPropertyName = GetRandomNavigationProperty(entityTypeElement);
 
-            var randomRestrictionAnnotations = GetRandomRestrictionAnnotationElements(Any.Bool(),
-                new List<string> { navPropertyName });
-            int annotationCount = randomRestrictionAnnotations.Count();
-
-            entitySetElement.Add(randomRestrictionAnnotations);
+            entitySetElement.Add(Any.Csdl.UpdateRestrictionAnnotation(Any.Bool(),
+                new List<string> { navPropertyName }));
+            entitySetElement.Add(Any.Csdl.DeleteRestrictionAnnotation(Any.Bool(),
+                new List<string> { navPropertyName }));
 
             var odcmModel = GetOdcmModel(_edmxElement);
             OdcmType odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElementName);
             OdcmProperty odcmNavProperty = (odcmEntityType as OdcmClass).Properties.Single(p => p.Name == navPropertyName);
 
-            odcmNavProperty.Projection.Capabilities.Count
-               .Should()
-               .Be(annotationCount,
-                   string.Format(
-                       "Because a navigation property with {0} restriction annotations should have {0} OdcmCapabilities",
-                       annotationCount));
-
-            foreach (var restrictionAnnotation in randomRestrictionAnnotations)
-            {
-                Type capabilityType = GetCapabilityTypeForAnnotation(restrictionAnnotation);
-                HasOdcmCapability(odcmNavProperty, capabilityType, false)
+            odcmNavProperty.Projection.SupportsUpdateLink()
                     .Should()
-                    .BeTrue("Because a navigation property should have the correct OdcmCapability");
-            }
+                    .BeFalse("Because a navigation property should have the correct OdcmUpdateLinkCapability");
+
+            odcmNavProperty.Projection.SupportsDeleteLink()
+                    .Should()
+                    .BeFalse("Because a navigation property should have the correct OdcmDeleteLinkCapability");
 
             odcmNavProperty.Projection.Type.Projections
                 .Should()
@@ -353,18 +330,14 @@ namespace ODataReader.v4UnitTests
 
             // Scenario where they share one restriction annotation, but have two other different restriction annotation
             // This must create two different projections for these navigation properties
-            entitySetElement.Add(Any.Csdl.UpdateRestrictionAnnotation(Any.Bool(),
+            entitySetElement.Add(Any.Csdl.InsertRestrictionAnnotation(Any.Bool(),
                 new List<string> { navPropertyElement1Name, navPropertyElement2Name }));
-            entitySetElement.Add(Any.Csdl.ExpandRestrictionAnnotation(Any.Bool(), new List<string> { navPropertyElement1Name }));
-            entitySetElement.Add(Any.Csdl.InsertRestrictionAnnotation(Any.Bool(), new List<string> { navPropertyElement2Name }));
+            entitySetElement.Add(Any.Csdl.UpdateRestrictionAnnotation(Any.Bool(), new List<string> { navPropertyElement1Name }));
+            entitySetElement.Add(Any.Csdl.DeleteRestrictionAnnotation(Any.Bool(), new List<string> { navPropertyElement2Name }));
 
             var odcmModel = GetOdcmModel(_edmxElement);
             OdcmType odcmType = GetOdcmEntityType(odcmModel, entityTypeElementName);
             OdcmType odcmNavPropertyType = GetOdcmEntityType(odcmModel, navigationPropertyTypeName);
-
-            odcmNavPropertyType.Projections.Count()
-                .Should()
-                .Be(3, "Because the OdcmModel must create 3 propjections including the Projection with Default Capabilities");
 
             OdcmProperty odcmNavProperty1 = (odcmType as OdcmClass).Properties.Single(p => p.Name == navPropertyElement1Name);
             OdcmProperty odcmNavProperty2 = (odcmType as OdcmClass).Properties.Single(p => p.Name == navPropertyElement2Name);
@@ -411,10 +384,11 @@ namespace ODataReader.v4UnitTests
             entityTypeElement.Add(navPropertyElement1);
             entityTypeElement.Add(navPropertyElement2);
 
-            // make sure that these two navigation properites have different restriction annotation
-            var annotations = GetRandomRestrictionAnnotationElements(Any.Bool(),
-                new List<string> { navPropertyElement1Name, navPropertyElement2Name });
-            entitySetElement.Add(annotations);
+            // make sure that these two navigation properites have same restriction annotation
+            entitySetElement.Add(Any.Csdl.UpdateRestrictionAnnotation(Any.Bool(),
+                new List<string> {navPropertyElement1Name, navPropertyElement2Name}));
+            entitySetElement.Add(Any.Csdl.DeleteRestrictionAnnotation(Any.Bool(),
+                new List<string> {navPropertyElement1Name, navPropertyElement2Name}));
 
             var odcmModel = GetOdcmModel(_edmxElement);
             OdcmType odcmType = GetOdcmEntityType(odcmModel, entityTypeElementName);
@@ -422,7 +396,7 @@ namespace ODataReader.v4UnitTests
 
             odcmNavPropertyType.Projections.Count()
                 .Should()
-                .Be(2, "Because the OdcmModel must create 2 propjections including the Projection with Default Capabilities");
+                .Be(2, "Because the OdcmModel must create 2 projections including the Projection with Default Capabilities");
 
             OdcmProperty odcmNavProperty1 = (odcmType as OdcmClass).Properties.Single(p => p.Name == navPropertyElement1Name);
             OdcmProperty odcmNavProperty2 = (odcmType as OdcmClass).Properties.Single(p => p.Name == navPropertyElement2Name);
@@ -450,13 +424,15 @@ namespace ODataReader.v4UnitTests
             _entityContainerName = _entityContainerElement.Attribute("Name").Value;
 
             string entityTypesEdmx = string.Format(ENTITY_TYPES_EDMX, _schemaNamespace);
-            IEnumerable<XElement> entityTypeElements = XElement.Parse(entityTypesEdmx).Elements().Where(element => element.Name.LocalName == "EntityType");
+            _entityTypeElements =
+                XElement.Parse(entityTypesEdmx).Elements().Where(element => element.Name.LocalName == "EntityType");
 
-            foreach (var entityTypeElement in entityTypeElements)
+            foreach (var entityTypeElement in _entityTypeElements)
             {
                 _schema.Add(entityTypeElement);
                 var entitySetElement = Any.Csdl.EntitySet();
-                entitySetElement.AddAttribute("EntityType", string.Format("{0}.{1}", _schemaNamespace, entityTypeElement.GetAttribute("Name")));
+                entitySetElement.AddAttribute("EntityType",
+                    string.Format("{0}.{1}", _schemaNamespace, entityTypeElement.GetAttribute("Name")));
                 _entitySetToEntityTypeMapping.Add(entitySetElement, entityTypeElement);
                 _entityContainerElement.Add(entitySetElement);
             }
@@ -471,6 +447,7 @@ namespace ODataReader.v4UnitTests
         private XElement _schema;
         private XElement _entityContainerElement;
         private Dictionary<XElement, XElement> _entitySetToEntityTypeMapping;
+        private IEnumerable<XElement> _entityTypeElements;
 
 
         private const string ENTITY_TYPES_EDMX =
@@ -574,6 +551,13 @@ namespace ODataReader.v4UnitTests
             Type returnType = null;
             var termName = GetAnnotationTermName(annotation);
 
+            return GetCapabilityTypeForAnnotation(termName);
+        }
+
+        private Type GetCapabilityTypeForAnnotation(string termName)
+        {
+            Type returnType = null;
+
             var odcmCapability = OdcmCapability.DefaultOdcmCapabilities.SingleOrDefault(
                 capability => capability.TermName == termName);
 
@@ -593,11 +577,6 @@ namespace ODataReader.v4UnitTests
             });
 
             return odcmCapability != null;
-        }
-
-        private bool HasOdcmCapability<T>(OdcmProperty odcmProperty, bool booleanValue) where T : OdcmBooleanCapability
-        {
-            return HasOdcmCapability(odcmProperty, typeof(T), booleanValue);
         }
     }
 }

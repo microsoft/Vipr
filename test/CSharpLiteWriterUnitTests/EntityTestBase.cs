@@ -8,6 +8,8 @@ using System.Reflection;
 using Moq;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
+using Vipr.Writer.CSharp.Lite;
+using Type = System.Type;
 
 namespace CSharpLiteWriterUnitTests
 {
@@ -57,11 +59,13 @@ namespace CSharpLiteWriterUnitTests
 
             FetcherType = Proxy.GetClass(Class.Namespace, Class.Name + "Fetcher");
 
-            FetcherInterface = Proxy.GetInterface(Class.Namespace, "I" + Class.Name + "Fetcher");
+            var identifier = NamesService.GetFetcherInterfaceName(Class);
+            FetcherInterface = Proxy.GetInterface(Class.Namespace, identifier.Name);
 
             CollectionType = Proxy.GetClass(Class.Namespace, Class.Name + "Collection");
 
-            CollectionInterface = Proxy.GetInterface(Class.Namespace, "I" + Class.Name + "Collection");
+            identifier = NamesService.GetCollectionInterfaceName(Class);
+            CollectionInterface = Proxy.GetInterface(Class.Namespace, identifier.Name);
 
             EntityContainerType = Proxy.GetClass(Model.EntityContainer.Namespace, Model.EntityContainer.Name);
 

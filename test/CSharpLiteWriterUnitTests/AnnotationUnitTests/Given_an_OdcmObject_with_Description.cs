@@ -282,7 +282,8 @@ namespace CSharpLiteWriterUnitTests
             property.Class = @class;
             _model.AddType(@class);
             _model.AddType(property.Type);
-            string propertyName = string.Format("P:{0}.I{1}Fetcher.{2}", @class.Namespace.Name, @class.Name, property.Name);
+            var fetcherInterface = NamesService.GetFetcherInterfaceName(@class);
+            string propertyName = string.Format("P:{0}.{1}.{2}", @class.Namespace.Name, fetcherInterface.Name, property.Name);
 
             var xmlContent = GetProxyXmlDocumentContent(_model);
             var summary = GetSummary(xmlContent, propertyName);
@@ -365,7 +366,8 @@ namespace CSharpLiteWriterUnitTests
             _model.AddType(@class);
 
             var xmlContent = GetProxyXmlDocumentContent(_model);
-            string methodName = string.Format("M:{0}.I{1}Fetcher.{2}Async", @class.Namespace.Name, @class.Name, method.Name);
+            var fetcherInterface = NamesService.GetFetcherInterfaceName(@class);
+            string methodName = string.Format("M:{0}.{1}.{2}Async", @class.Namespace.Name, fetcherInterface.Name, method.Name);
             var summary = GetSummary(xmlContent, methodName);
             summary
                 .Should()

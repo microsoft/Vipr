@@ -26,10 +26,7 @@ namespace CSharpLiteWriterUnitTests
                 NavigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = Class;
-                    p.Projection = new OdcmProjection()
-                    {
-                        Type = NavTargetClass
-                    };
+                    p.Projection = NavTargetClass.DefaultProjection;
                 });
                 Class.Properties.Add(NavigationProperty);
             });
