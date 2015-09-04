@@ -34,6 +34,7 @@
         <!-- We need to launch nuget.exe with the mono command if we're not on windows -->
         <PackagesConfig>packages.config</PackagesConfig>
         <NuGetToolsPath>$(SolutionDir).nuget</NuGetToolsPath>
+        <PackagesConfig>packages.config</PackagesConfig>
     </PropertyGroup>
 
     <PropertyGroup>
