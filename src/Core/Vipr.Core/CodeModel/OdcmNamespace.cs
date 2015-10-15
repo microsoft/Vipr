@@ -27,11 +27,11 @@ namespace Vipr.Core.CodeModel
             }
         }
 
-        public IEnumerable<OdcmTypeDef> TypeDefs
+        public IEnumerable<OdcmTypeDefinition> TypeDefinitions
         {
             get
             {
-                return from odcmTypeDef in Types where odcmTypeDef is OdcmTypeDef select odcmTypeDef as OdcmTypeDef;
+                return from odcmTypeDefinition in Types where odcmTypeDefinition is OdcmTypeDefinition select odcmTypeDefinition as OdcmTypeDefinition;
             }
         }
 

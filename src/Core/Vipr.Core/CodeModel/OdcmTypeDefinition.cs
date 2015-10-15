@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Vipr.Core.CodeModel
 {
-    public class OdcmTypeDef : OdcmType
+    public class OdcmTypeDefinition : OdcmType
     {
         public bool IsOpen { get; set; }
 
@@ -13,7 +13,7 @@ namespace Vipr.Core.CodeModel
 
         public bool IsNullable { get; set; }
 
-        public OdcmTypeDef(string name, OdcmNamespace @namespace)
+        public OdcmTypeDefinition(string name, OdcmNamespace @namespace)
             : base(name, @namespace)
         {
         }
