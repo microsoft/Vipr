@@ -141,6 +141,9 @@ namespace Vipr.Reader.OData.v4
                 var types = from element in namespaceElements
                             where element.SchemaElementKind == EdmSchemaElementKind.TypeDefinition
                             select element as IEdmType;
+                var typeDefs = from element in types
+                               where element.TypeKind == EdmTypeKind.TypeDefinition
+                               select element as IEdmTypeDefinition;
                 var complexTypes = from element in types
                                    where element.TypeKind == EdmTypeKind.Complex
                                    select element as IEdmComplexType;
@@ -158,6 +161,11 @@ namespace Vipr.Reader.OData.v4
                 foreach (var enumType in enumTypes)
                 {
                     _odcmModel.AddType(new OdcmEnum(enumType.Name, ResolveNamespace(enumType.Namespace)));
+                }
+
+                foreach (var typeDef in typeDefs)
+                {
+                    _odcmModel.AddType(new OdcmTypeDef(typeDef.Name, ResolveNamespace(typeDef.Namespace)));
                 }
 
                 foreach (var complexType in complexTypes)
@@ -192,6 +200,9 @@ namespace Vipr.Reader.OData.v4
                 var types = from element in namespaceElements
                             where element.SchemaElementKind == EdmSchemaElementKind.TypeDefinition
                             select element as IEdmType;
+                var typeDefs = from element in types
+                               where element.TypeKind == EdmTypeKind.TypeDefinition
+                               select element as IEdmTypeDefinition;
                 var complexTypes = from element in types
                                    where element.TypeKind == EdmTypeKind.Complex
                                    select element as IEdmComplexType;
@@ -234,6 +245,17 @@ namespace Vipr.Reader.OData.v4
                             Value = ((EdmIntegerConstant)enumMember.Value).Value
                         });
                     }
+                }
+
+                foreach (var typeDef in typeDefs)
+                {
+                    OdcmTypeDef odcmTypeDef;
+                    if (!_odcmModel.TryResolveType(typeDef.Name, typeDef.Namespace, out odcmTypeDef))
+                    {
+                        throw new InvalidOperationException();
+                    } 
+                    
+                    odcmTypeDef.BaseType = ResolveType(typeDef.UnderlyingType.Name, typeDef.UnderlyingType.Namespace);
                 }
 
                 foreach (var complexType in complexTypes)
@@ -392,7 +414,7 @@ namespace Vipr.Reader.OData.v4
                 }
 
                 var bindingParameterType = operation.Parameters.First().Type;
-                
+
                 return entityType.Equals(
                     bindingParameterType.IsCollection()
                         ? bindingParameterType.AsCollection().ElementType().Definition
@@ -542,6 +564,12 @@ namespace Vipr.Reader.OData.v4
                 if (!_odcmModel.TryResolveType(name, @namespace, out type))
                 {
                     throw new InvalidOperationException();
+                }
+
+                OdcmTypeDef typeDef = type as OdcmTypeDef;
+                if (typeDef != null)
+                {
+                    type = typeDef.BaseType;
                 }
 
                 return type;
