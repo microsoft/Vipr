@@ -7,11 +7,7 @@ namespace Vipr.Core.CodeModel
 {
     public class OdcmTypeDefinition : OdcmType
     {
-        public bool IsOpen { get; set; }
-
         public OdcmType BaseType { get; set; }
-
-        public bool IsNullable { get; set; }
 
         public OdcmTypeDefinition(string name, OdcmNamespace @namespace)
             : base(name, @namespace)

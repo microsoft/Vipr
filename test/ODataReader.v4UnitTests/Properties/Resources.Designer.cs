@@ -304,5 +304,15 @@ namespace ODataReader.v4UnitTests.Properties {
                 return ResourceManager.GetString("template_edmx", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;EnumType Name=&quot;{0}&quot; xmlns=&quot;http://docs.oasis-open.org/odata/ns/edm&quot; /&gt;
+        ///.
+        /// </summary>
+        internal static string TypeDefintionType_element {
+            get {
+                return ResourceManager.GetString("TypeDefintionType_element", resourceCulture);
+            }
+        }
     }
 }
