@@ -4,7 +4,6 @@
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Vipr.Reader.OData.v4;
-using System;
 using System.Linq;
 using Vipr.Core.CodeModel;
 using Xunit;
@@ -41,6 +40,34 @@ namespace ODataReader.v4UnitTests
                 .Should()
                 .Be(underlyingType,
                     "because a typedefintion type with a underlying type in the schema should have the specified underlying type in an OdcmTypeDefinition");
+        }
+
+        [Fact]
+        public void When_Property_is_of_TypeDefinitionType_then_it_should_resolve_as_UnderlyingPrimitiveType()
+        {
+            var underlyingType = Any.Csdl.RandomPrimitiveType();
+
+            var testCase = new EdmxTestCase()
+                .AddTypeDefinitionType(EdmxTestCase.Keys.TypeDefinitionType, (_, typeDefinitionType) => typeDefinitionType.AddAttribute("UnderlyingType", underlyingType));
+
+            var typeDefinitionTypeTestNode = testCase[EdmxTestCase.Keys.TypeDefinitionType];
+
+            testCase.AddComplexType(EdmxTestCase.Keys.ComplexType, (_, complexType) => complexType.Add(Any.Csdl.Property(property => property.AddAttribute("Type", typeDefinitionTypeTestNode.FullName()))));
+
+            var complexTypeTestNode = testCase[EdmxTestCase.Keys.ComplexType];
+
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+            OdcmType odcmComplexType;
+            odcmModel.TryResolveType(complexTypeTestNode.Name, complexTypeTestNode.Namespace, out odcmComplexType)
+                .Should()
+                .BeTrue("because a complex type in the schema should result in an OdcmType");
+            odcmComplexType
+                .Should()
+                .BeOfType<OdcmComplexClass>("because complex types should result in an OdcmClass");
+            odcmComplexType.As<OdcmComplexClass>().Properties
+                .Count(property => property.Type is OdcmTypeDefinition)
+                .Should()
+                .Be(0, "because OdcmTypeDefinition type should be resolved as underlying OdcmPrimitiveType");
         }
     }
 }
