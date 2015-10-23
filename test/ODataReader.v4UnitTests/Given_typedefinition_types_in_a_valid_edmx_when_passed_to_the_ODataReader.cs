@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using System;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
 using Vipr.Reader.OData.v4;
@@ -73,6 +74,20 @@ namespace ODataReader.v4UnitTests
                 .Count(property => property.Type is OdcmTypeDefinition)
                 .Should()
                 .Be(0, "because OdcmTypeDefinition type should be resolved as underlying OdcmPrimitiveType");
+        }
+
+        [Fact]
+        public void When_TypeDefinitionType_is_declared_with_UnderlyingComplexType_then_it_should_raise_exception()
+        {
+            var testCase = new EdmxTestCase()
+                    .AddComplexType(EdmxTestCase.Keys.ComplexType);
+
+            var complexTypeTestNode = testCase[EdmxTestCase.Keys.ComplexType];
+            var underlyingType = complexTypeTestNode.FullName();
+            
+            testCase.AddTypeDefinitionType(EdmxTestCase.Keys.TypeDefinitionType, (_, typeDefinitionType) => typeDefinitionType.AddAttribute("UnderlyingType", underlyingType));
+            
+            Exception ex=Assert.Throws<InvalidOperationException>(() => _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata()));
         }
     }
 }

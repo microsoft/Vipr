@@ -253,9 +253,17 @@ namespace Vipr.Reader.OData.v4
                     if (!_odcmModel.TryResolveType(typeDefinition.Name, typeDefinition.Namespace, out odcmTypeDefinition))
                     {
                         throw new InvalidOperationException();
-                    } 
-                    
-                    odcmTypeDefinition.BaseType = ResolveType(typeDefinition.UnderlyingType.Name, typeDefinition.UnderlyingType.Namespace);
+                    }
+
+                    // Type definitions should only support primitives as their base types [http://docs.oasis-open.org/odata/odata/v4.0/odata-v4.0-part3-csdl.html]
+                    OdcmPrimitiveType baseType = ResolveType(typeDefinition.UnderlyingType.Name, typeDefinition.UnderlyingType.Namespace) as OdcmPrimitiveType;
+                    if (baseType == null)
+                    {
+                        throw new InvalidOperationException("Type definitions should only accept primitive type as their base type.");
+                    }
+
+                    odcmTypeDefinition.BaseType = baseType;
+
                 }
 
                 foreach (var complexType in complexTypes)

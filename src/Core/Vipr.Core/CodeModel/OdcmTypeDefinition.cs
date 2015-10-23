@@ -7,7 +7,7 @@ namespace Vipr.Core.CodeModel
 {
     public class OdcmTypeDefinition : OdcmType
     {
-        public OdcmType BaseType { get; set; }
+        public OdcmPrimitiveType BaseType { get; set; }
 
         public OdcmTypeDefinition(string name, OdcmNamespace @namespace)
             : base(name, @namespace)

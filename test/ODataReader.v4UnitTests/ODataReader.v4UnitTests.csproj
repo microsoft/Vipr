@@ -178,6 +178,7 @@
   <ItemGroup>
     <Content Include="Resources\Edmx\Annotation.element.xml" />
     <Content Include="Resources\Edmx\OneNoteExampleEdmx.xml" />
+    <Content Include="Resources\Edmx\TypeDefinitionType.element.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
