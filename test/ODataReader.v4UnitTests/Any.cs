@@ -244,6 +244,19 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
+            public static XElement TypeDefinitionType(Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string typeDefinitionTypeString = string.Format(ODataReader.v4UnitTests.Properties.Resources.TypeDefintionType_element,
+                    pascalCaseName);
+
+                XElement element = XElement.Parse(typeDefinitionTypeString);
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
             public static XElement Function(Action<XElement> config = null)
             {
                 string pascalCaseName = PascalCaseName(Int(1, 3));

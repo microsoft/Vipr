@@ -18,7 +18,6 @@ namespace Vipr.Writer.CSharp
         {
             var xml = XElement.Parse(edmxString);
 
-            xml.DescendantNodes().OfType<XText>().Remove();
             xml.DescendantNodes().OfType<XComment>().Remove();
 
             var stringBuilder = new StringBuilder();

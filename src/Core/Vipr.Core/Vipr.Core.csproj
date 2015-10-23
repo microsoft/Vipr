@@ -49,6 +49,7 @@
     <Compile Include="CodeModel\OdcmEntityClass.cs" />
     <Compile Include="CodeModel\OdcmMediaClass.cs" />
     <Compile Include="CodeModel\OdcmServiceClass.cs" />
+    <Compile Include="CodeModel\OdcmTypeDefinition.cs" />
     <Compile Include="CodeModel\OdcmVocabularyAnnotation.cs" />
     <Compile Include="RelativeFile.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\DeleteRestrictionsType.cs" />

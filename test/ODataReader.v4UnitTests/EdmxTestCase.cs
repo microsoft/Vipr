@@ -40,6 +40,7 @@ namespace ODataReader.v4UnitTests
             public const string EntityType = "$entityType";
             public const string EntityTypeBase = "$entityType#Base";
             public const string EnumType = "$enumType";
+            public const string TypeDefinitionType = "$typeDefinitionType";
             public const string Function = "$function";
             public const string Schema = "$schema";
         }
@@ -150,6 +151,24 @@ namespace ODataReader.v4UnitTests
                 if (config != null)
                 {
                     config(this, enumType);
+                }
+            }));
+
+            return this;
+        }
+
+        public EdmxTestCase AddTypeDefinitionType(string typeDefinitionTypeKey, Action<EdmxTestCase, XElement> config = null)
+        {
+            var schema = _testObjectMap[Keys.Schema];
+
+            schema.Element.Add(Any.Csdl.TypeDefinitionType(typeDefinitionType =>
+            {
+                var testNode = new TestNode(schema.Namespace, typeDefinitionType.GetAttribute("Name"), typeDefinitionType);
+                _testObjectMap.Add(typeDefinitionTypeKey, testNode);
+
+                if (config != null)
+                {
+                    config(this, typeDefinitionType);
                 }
             }));
 

@@ -101,6 +101,7 @@
     <Compile Include="Given_a_valid_edmx_with_annotations.cs" />
     <Compile Include="Given_a_valid_edmx_with_Description_Annotations.cs" />
     <Compile Include="Given_complex_types_in_a_valid_edmx_when_passed_to_the_ODataReader.cs" />
+    <Compile Include="Given_typedefinition_types_in_a_valid_edmx_when_passed_to_the_ODataReader.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -177,6 +178,7 @@
   <ItemGroup>
     <Content Include="Resources\Edmx\Annotation.element.xml" />
     <Content Include="Resources\Edmx\OneNoteExampleEdmx.xml" />
+    <Content Include="Resources\Edmx\TypeDefinitionType.element.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
