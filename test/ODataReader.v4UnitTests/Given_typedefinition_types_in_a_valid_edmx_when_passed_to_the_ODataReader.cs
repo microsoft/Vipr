@@ -35,7 +35,9 @@ namespace ODataReader.v4UnitTests
             odcmModel.TryResolveType(typeDefinitionTypeTestNode.Name, typeDefinitionTypeTestNode.Namespace, out odcmTypeDefinition)
                 .Should()
                 .BeTrue("because a typedefinition type in the schema should result in an OdcmType");
+
             odcmTypeDefinition.Should().BeOfType<OdcmTypeDefinition>("because a typedefinition type in the schema should result in an OdcmTypeDefinition");
+            
             odcmTypeDefinition.As<OdcmTypeDefinition>().BaseType.FullName
                 .Should()
                 .Be(underlyingType,
@@ -57,13 +59,16 @@ namespace ODataReader.v4UnitTests
             var complexTypeTestNode = testCase[EdmxTestCase.Keys.ComplexType];
 
             var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+            
             OdcmType odcmComplexType;
             odcmModel.TryResolveType(complexTypeTestNode.Name, complexTypeTestNode.Namespace, out odcmComplexType)
                 .Should()
                 .BeTrue("because a complex type in the schema should result in an OdcmType");
+
             odcmComplexType
                 .Should()
                 .BeOfType<OdcmComplexClass>("because complex types should result in an OdcmClass");
+
             odcmComplexType.As<OdcmComplexClass>().Properties
                 .Count(property => property.Type is OdcmTypeDefinition)
                 .Should()
