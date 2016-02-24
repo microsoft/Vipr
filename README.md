@@ -9,7 +9,7 @@
 [issues-closed-image]: http://www.issuestats.com/github/microsoft/vipr/badge/issue
 [issues-closed]: http://www.issuestats.com/github/microsoft/vipr
 
-VIPR is an extensable toolkit for generating Web Service Client Libraries. VIPR is 
+VIPR is an extensible toolkit for generating Web Service Client Libraries. VIPR is 
 designed to be highly extensible, enabling developers to adapt it to read new Web
 Service description languages and to create libraries for new target platforms with ease.
 
