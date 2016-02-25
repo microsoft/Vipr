@@ -3,6 +3,7 @@
 
 using ODataReader.v4UnitTests;
 using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace Microsoft.Its.Recipes
@@ -174,6 +175,99 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
+            public static XElement InsertRestrictionAnnotation(bool insertable, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
+            {
+                string insertAnnotation =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.InsertRestrictions");
+
+                XElement element = XElement.Parse(insertAnnotation);
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("Insertable", propertyVal => propertyVal.AddAttribute("Bool", insertable)));
+                    record.Add(Any.Csdl.PropertyValue("NonInsertableNavigationProperties",
+                        propertyVal => propertyVal.Add(NavigationPropertyPathCollection(navigationPropertyPaths))));
+                }));
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement DeleteRestrictionAnnotation(bool deletable, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
+            {
+                string deleteAnnotation =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.DeleteRestrictions");
+
+                XElement element = XElement.Parse(deleteAnnotation);
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("Deletable", propertyVal => propertyVal.AddAttribute("Bool", deletable)));
+                    record.Add(Any.Csdl.PropertyValue("NonDeletableNavigationProperties",
+                        propertyVal => propertyVal.Add(NavigationPropertyPathCollection(navigationPropertyPaths))));
+                }));
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement UpdateRestrictionAnnotation(bool updatable, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
+            {
+                string updateAnnotation =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.UpdateRestrictions");
+
+                XElement element = XElement.Parse(updateAnnotation);
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("Updatable", propertyVal => propertyVal.AddAttribute("Bool", updatable)));
+                    record.Add(Any.Csdl.PropertyValue("NonUpdatableNavigationProperties",
+                        propertyVal => propertyVal.Add(NavigationPropertyPathCollection(navigationPropertyPaths))));
+                }));
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement ExpandRestrictionAnnotation(bool expandable, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
+            {
+                string expandAnnotation =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.ExpandRestrictions");
+
+                XElement element = XElement.Parse(expandAnnotation);
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("Expandable", propertyVal => propertyVal.AddAttribute("Bool", expandable)));
+                    record.Add(Any.Csdl.PropertyValue("NonExpandableProperties",
+                        propertyVal => propertyVal.Add(NavigationPropertyPathCollection(navigationPropertyPaths))));
+                }));
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            private static XElement NavigationPropertyPathCollection(IEnumerable<string> navigationPropertyPaths)
+            {
+                XElement collectionElement = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Collection_element);
+
+                if (navigationPropertyPaths == null)
+                    return collectionElement;
+
+                foreach (var navigationPropertyPath in navigationPropertyPaths)
+                {
+                    XElement navigationPropertyPathElement = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.NavigationPropertyPath_element);
+                    navigationPropertyPathElement.Add(navigationPropertyPath);
+                    collectionElement.Add(navigationPropertyPathElement);
+                }
+
+                return collectionElement;
+            }
+
             public static XElement Edmx(Action<XElement> config = null)
             {
                 XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Edmx_element);
@@ -327,6 +421,22 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
+            public static XElement NavigationProperty(string type, Action<XElement> config = null)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string navigationPropertyString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.NavigationProperty_element,
+                        pascalCaseName);
+
+                XElement element = XElement.Parse(navigationPropertyString);
+
+                element.AddAttribute("Type", type);
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
             public static XElement Parameter(Action<XElement> config = null)
             {
                 string pascalCaseName = PascalCaseName(Int(1, 3));
@@ -397,6 +507,27 @@ namespace Microsoft.Its.Recipes
                     propertyRef.AddAttribute("Name", name);
                     if(config != null) config(propertyRef);
                 });
+            }
+
+            public static XElement PropertyValue(string propertyName, Action<XElement> config = null)
+            {
+                string propertyString =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.PropertyValue_element, propertyName);
+
+                XElement element = XElement.Parse(propertyString);
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement Record(Action<XElement> config = null)
+            {
+                XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Record_element);
+
+                if (config != null) config(element);
+
+                return element;
             }
 
             public static XElement ReturnType(Action<XElement> config = null)

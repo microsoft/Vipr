@@ -99,6 +99,7 @@
     <Compile Include="EdmxTestCase.cs" />
     <Compile Include="Given_an_ODataVocabularyReader.cs" />
     <Compile Include="Given_a_valid_edmx_with_annotations.cs" />
+    <Compile Include="Given_a_valid_edmx_with_Capability_Annotations.cs" />
     <Compile Include="Given_a_valid_edmx_with_Description_Annotations.cs" />
     <Compile Include="Given_complex_types_in_a_valid_edmx_when_passed_to_the_ODataReader.cs" />
     <Compile Include="Given_typedefinition_types_in_a_valid_edmx_when_passed_to_the_ODataReader.cs" />
@@ -177,8 +178,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Edmx\Annotation.element.xml" />
+    <Content Include="Resources\Edmx\Collection.element.xml" />
+    <Content Include="Resources\Edmx\NavigationPropertyPath.element.xml" />
     <Content Include="Resources\Edmx\OneNoteExampleEdmx.xml" />
     <Content Include="Resources\Edmx\TypeDefinitionType.element.xml" />
+    <Content Include="Resources\Edmx\PropertyValue.element.xml" />
+    <Content Include="Resources\Edmx\Record.element.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

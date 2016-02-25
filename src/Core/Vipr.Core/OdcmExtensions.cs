@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Vipr.Core.CodeModel;
+using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
 namespace Vipr.Core
 {
@@ -24,6 +25,21 @@ namespace Vipr.Core
         public static IEnumerable<OdcmProperty> StructuralProperties(this OdcmClass odcmClass)
         {
             return odcmClass.Properties.WhereIsNavigation(false);
+        }
+
+        public static bool TryFindProperty(this OdcmClass odcmClass, string propertyPath, out OdcmProperty odcmProperty)
+        {
+            while (odcmClass != null)
+            {
+                odcmProperty = odcmClass.Properties.SingleOrDefault(p => p.Name == propertyPath);
+                if (odcmProperty != null)
+                {
+                    return true;
+                }
+                odcmClass = odcmClass.Base;
+            }
+            odcmProperty = null;
+            return false;
         }
 
         public static IEnumerable<OdcmClass> NestedDerivedTypes(this OdcmClass odcmClass)
@@ -51,6 +67,23 @@ namespace Vipr.Core
         {
             return odcmMethod.Parameters
                 .Where(p => p.CallingConvention == OdcmCallingConvention.InHttpMessageBody);
+        }
+
+        public static string GetProjectionShortForm(this OdcmProjection projection)
+        {
+            var result = string.Empty;
+
+            var capabilities = projection.Capabilities.OrderBy(c => c.ShortName);
+
+            foreach (var capability in capabilities)
+            {
+                if (capability is OdcmBooleanCapability && ((OdcmBooleanCapability)capability).Value)
+                {
+                    result = result + "_" + capability.ShortName;
+                }
+            }
+
+            return result.Trim('_');
         }
     }
 }

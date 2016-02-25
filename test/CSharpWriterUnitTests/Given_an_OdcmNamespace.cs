@@ -66,7 +66,11 @@ namespace CSharpWriterUnitTests
 
             var @class = Any.OdcmEntityClass(@namespace, name);
 
-            @class.Properties.Add(new OdcmProperty(Any.CSharpIdentifier()) {Class = @class, Type = @class});
+            @class.Properties.Add(new OdcmProperty(Any.CSharpIdentifier())
+            {
+                Class = @class,
+                Projection = @class.DefaultProjection
+            });
 
             _model.AddType(@class);
 

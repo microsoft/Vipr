@@ -40,7 +40,7 @@ namespace CSharpWriterUnitTests
 
             EntityContainerType.Should().HaveProperty(
                 CSharpAccessModifiers.Public, 
-                isCollection ? (CSharpAccessModifiers?)null : CSharpAccessModifiers.Private, 
+                isCollection ? (CSharpAccessModifiers?)null : CSharpAccessModifiers.Private,
                 Proxy.GetInterface(_property.Type.Namespace, "I" + _property.Type.Name + (isCollection ? "Collection" : "Fetcher")),
                 GetPascalCaseName(_property));
         }

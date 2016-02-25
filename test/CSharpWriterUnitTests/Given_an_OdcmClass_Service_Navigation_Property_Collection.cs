@@ -17,7 +17,7 @@ namespace CSharpWriterUnitTests
         {
             base.Init(m =>
             {
-                NavigationProperty = Any.OdcmProperty(p => p.Type = Class);
+                NavigationProperty = Any.OdcmProperty(p => p.Projection.Type = Class);
 
                 var @namespace = m.Namespaces[0];
 
@@ -30,7 +30,7 @@ namespace CSharpWriterUnitTests
                 NavigationProperty = Any.OdcmProperty(p =>
                 {
                     p.Class = OdcmContainer;
-                    p.Type = NavTargetClass;
+                    p.Projection.Type = NavTargetClass;
                     p.IsCollection = true;
                 });
 

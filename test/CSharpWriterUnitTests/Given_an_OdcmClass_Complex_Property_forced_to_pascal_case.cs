@@ -50,7 +50,7 @@ namespace CSharpWriterUnitTests
         {
             _targetType.Should().HaveProperty(
                 CSharpAccessModifiers.Public, 
-                CSharpAccessModifiers.Public, 
+                CSharpAccessModifiers.Public,
                 Proxy.GetClass(_property.Type.Namespace, _property.Type.Name),
                 GetPascalCaseName(_property));
         }
