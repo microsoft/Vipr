@@ -15,6 +15,8 @@ namespace Microsoft.OData.ProxyExtensions
 {
     public partial class DataServiceContextWrapper : DataServiceContext
     {
+        private object _syncLock = new object();
+        private string _accessToken;
         private readonly Func<Task<string>> _accessTokenGetter;
         private readonly HashSet<EntityBase> _modifiedEntities = new HashSet<EntityBase>();
 
@@ -27,6 +29,15 @@ namespace Microsoft.OData.ProxyExtensions
             }
         }
 
+        private async Task SetToken()
+        {
+            var token = await _accessTokenGetter();
+            lock (_syncLock)
+            {
+                _accessToken = token;
+            }
+        }
+
         public DataServiceContextWrapper(Uri serviceRoot, ODataProtocolVersion maxProtocolVersion, Func<Task<string>> accessTokenGetter)
             : base(serviceRoot, maxProtocolVersion)
         {
@@ -34,7 +45,7 @@ namespace Microsoft.OData.ProxyExtensions
 
             IgnoreMissingProperties = true;
 
-            BuildingRequest += (sender, args) => args.Headers.Add("Authorization", "Bearer " + _accessTokenGetter().Result);
+            BuildingRequest += (sender, args) => args.Headers.Add("Authorization", "Bearer " + _accessToken);
 
             Configurations.RequestPipeline.OnEntryStarting(args =>
             {
@@ -92,6 +103,8 @@ namespace Microsoft.OData.ProxyExtensions
         {
             try
             {
+                await SetToken();
+
                 return await Task.Factory.FromAsync(
                     inner.BeginExecute,
                     i => inner.EndExecute(i).Cast<TInterface>().SingleOrDefault(),
@@ -115,6 +128,8 @@ namespace Microsoft.OData.ProxyExtensions
             try
             {
                 var requests = (from i in queries select (DataServiceRequest)i.Query).ToArray();
+
+                await SetToken();
 
                 var responses = await Task.Factory.FromAsync<DataServiceRequest[], DataServiceResponse>(
                     (q, callback, state) => BeginExecuteBatch(callback, state, q), // need to reorder parameters
@@ -165,9 +180,9 @@ namespace Microsoft.OData.ProxyExtensions
 
         public async Task<Stream> GetStreamAsync(Uri requestUriTmp, IDictionary<string, string> headers)
         {
-            using (var client = new System.Net.Http.HttpClient())
+            using (var client = new HttpClient())
             {
-                using (var request = new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Get, requestUriTmp))
+                using (var request = new HttpRequestMessage(HttpMethod.Get, requestUriTmp))
                 {
                     request.Headers.Add("Authorization", "Bearer " + await _accessTokenGetter());
                     request.Headers.Add("Accept", "*/*");
@@ -210,6 +225,8 @@ namespace Microsoft.OData.ProxyExtensions
             {
                 if (!string.IsNullOrEmpty(streamName))
                 {
+                    await SetToken();
+
                     var resp = await Task.Factory.FromAsync<object, string, DataServiceRequestArgs, DataServiceStreamResponse>(
                         BeginGetReadStream,
                         EndGetReadStream,
@@ -248,6 +265,8 @@ namespace Microsoft.OData.ProxyExtensions
         {
             try
             {
+                await SetToken();
+
                 return await Task.Factory.FromAsync(
                     inner.BeginExecute,
                     new Func<IAsyncResult, IPagedCollection<TInterface>>(
@@ -380,6 +399,8 @@ namespace Microsoft.OData.ProxyExtensions
         {
             try
             {
+                await SetToken();
+
                 return await Task.Factory.FromAsync(
                     (callback, state) => BeginExecute(token, callback, state),
                     i => (QueryOperationResponse<TSource>)EndExecute<TSource>(i),
@@ -402,6 +423,8 @@ namespace Microsoft.OData.ProxyExtensions
         {
             try
             {
+                await SetToken();
+
                 var result = await Task.Factory.FromAsync(
                     BeginSaveChanges,
                     new Func<IAsyncResult, DataServiceResponse>(EndSaveChanges),
@@ -440,6 +463,8 @@ namespace Microsoft.OData.ProxyExtensions
         {
             try
             {
+                await SetToken();
+
                 return await Task.Factory.FromAsync(
                     (callback, state) => BeginLoadProperty(entity, path, callback, state),
                     new Func<IAsyncResult, IPagedCollection<TInterface>>(
@@ -521,7 +546,7 @@ namespace Microsoft.OData.ProxyExtensions
             return null;
         }
 
-        private static async Task<Exception> ProcessErrorAsync(System.Net.Http.HttpResponseMessage response)
+        private static async Task<Exception> ProcessErrorAsync(HttpResponseMessage response)
         {
             if (response.Content == null)
             {
@@ -530,7 +555,7 @@ namespace Microsoft.OData.ProxyExtensions
 
             if (response.Content.Headers.ContentType == null)
             {
-                return new System.Net.Http.HttpRequestException(await response.Content.ReadAsStringAsync());
+                return new HttpRequestException(await response.Content.ReadAsStringAsync());
             }
 
             using (var stream = await response.Content.ReadAsStreamAsync())

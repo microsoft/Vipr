@@ -50,6 +50,7 @@
     <Compile Include="CodeModel\OdcmMediaClass.cs" />
     <Compile Include="CodeModel\OdcmProjection.cs" />
     <Compile Include="CodeModel\OdcmServiceClass.cs" />
+    <Compile Include="CodeModel\OdcmTypeDefinition.cs" />
     <Compile Include="CodeModel\OdcmVocabularyAnnotation.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmBooleanCapability.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmCapability.cs" />
