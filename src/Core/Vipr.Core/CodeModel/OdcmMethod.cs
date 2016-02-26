@@ -23,6 +23,8 @@ namespace Vipr.Core.CodeModel
 
         public OdcmType ReturnType { get; set; }
 
+        public bool IsFunction { get; set; }
+
         public OdcmMethod(string name, OdcmNamespace @namespace)
             : base(name, @namespace)
         {

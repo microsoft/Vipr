@@ -499,6 +499,7 @@ namespace Vipr.Reader.OData.v4
                 var odcmMethod = new OdcmMethod(operation.Name, odcmClass.Namespace)
                 {
                     IsComposable = operation.IsFunction() && ((IEdmFunction)operation).IsComposable,
+                    IsFunction = operation.IsFunction(),
                     IsBoundToCollection = isBoundToCollection,
                     Verbs = operation.IsAction() ? OdcmAllowedVerbs.Post : OdcmAllowedVerbs.Any,
                     Class = odcmClass
