@@ -39,7 +39,7 @@
       <HintPath>$(SolutionDir)packages\docopt.net.0.6.1.6\lib\net40\DocoptNet.dll</HintPath>
     </Reference>
     <Reference Include="Its.Configuration">
-      <HintPath>$(SolutionDir)packages\Its.Configuration.0.10.1\lib\net40\Its.Configuration.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Its.Configuration.1.0.6\lib\net40\Its.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
