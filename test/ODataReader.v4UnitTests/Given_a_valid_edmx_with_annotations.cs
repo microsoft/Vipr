@@ -8,8 +8,8 @@ using FluentAssertions;
 using Vipr.Reader.OData.v4;
 
 using Vipr.Core.CodeModel;
-using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 using Vipr.Core;
+using Vipr.Core.CodeModel.Vocabularies.Restrictions;
 
 namespace ODataReader.v4UnitTests
 {

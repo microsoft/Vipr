@@ -112,7 +112,10 @@ namespace Vipr.Reader.OData.v4
                         }
 
                         IEdmExpression valueExpression = valueAnnotation.Value;
+
                         var result = MapToClr(valueType, valueExpression);
+
+                        if (result == null) continue;
 
                         odcmAnnotation.Value = result;
                         yield return odcmAnnotation;
@@ -137,6 +140,9 @@ namespace Vipr.Reader.OData.v4
             if (valueType.Definition.TypeKind == EdmTypeKind.Complex && value is IEdmStructuredValue)
             {
                 object instance = FetchNewInstanceOfAnnotationComplexType(valueType.Definition);
+
+                if (instance == null) return null;
+
                 var instanceType = instance.GetType();
 
                 var structuredValue = (IEdmStructuredValue)value;
@@ -147,9 +153,16 @@ namespace Vipr.Reader.OData.v4
                     var property = instanceType.GetProperty(fieldName);
                     var v = propertyValue.Value;
 
-                    var res = MapToClr(v, property.PropertyType);
+                    try
+                    {
+                        var res = MapToClr(v, property.PropertyType);
 
-                    property.SetValue(instance, res);
+                        property.SetValue(instance, res);
+                    }
+                    catch
+                    {
+                        return null;
+                    }
                 }
 
                 return instance;
@@ -196,9 +209,13 @@ namespace Vipr.Reader.OData.v4
                     // TODO: Find examples of null / none in annotations and either implement or won't fix this gap
                 case EdmValueKind.Null:
                 default:
+#if true
+                    return null;
+#else
                     throw new NotImplementedException(
                         string.Format("MapToClr for annotation values is not yet supported for IEdmValue of kind {0}",
                             value.ValueKind));
+#endif
             }
         }
 
@@ -212,8 +229,9 @@ namespace Vipr.Reader.OData.v4
         {
             if (clarifiedType == null)
             {
-                throw new ArgumentNullException("clarifiedType",
-                    "ClarifiedType must be defined to correctly return value of IEdmCollectionValue");
+                return null;
+                //throw new ArgumentNullException("clarifiedType",
+                //    "ClarifiedType must be defined to correctly return value of IEdmCollectionValue");
             }
 
             if (!clarifiedType.IsCollection())
@@ -316,9 +334,10 @@ namespace Vipr.Reader.OData.v4
                 edmValue = delayedValue.Value;
                 return MapToClr(edmValue);
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
-                // This is a painful hack to deal with the fact that parsing the navigation property returned a delayedValue that evaluates a NullException when you call .Value
+                // This is a painful hack to deal with the fact that parsing the navigation
+                // property returned a delayedValue that evaluates a NullException when you call .Value
                 // Attempt to obtain the inner expression because we don't have access to the type of the Delayed Collection 
                 var innerExpression = delayedValue.GetPropertyByName<IEdmExpression>("Expression");
 
@@ -381,13 +400,20 @@ namespace Vipr.Reader.OData.v4
                     _viprCore = Assembly.Load(viprCoreName);
                 }
 
-                // Fetch the appropriate vocabulary instance type from the Vipr.Core CodeModel
-                var t = _viprCore.GetType(string.Format("{0}.{1}", viprCodeModelNamespace, complexType.Name),
-                    throwOnError: true);
+                try
+                {
+                    // Fetch the appropriate vocabulary instance type from the Vipr.Core CodeModel
+                    var t = _viprCore.GetType(string.Format("{0}.{1}", viprCodeModelNamespace, complexType.Name),
+                        throwOnError: true);
 
-                // Cache an action to call to create this type.
-                constructor = () => CreateDefaultInstance(t);
-                _constructorCache[type] = constructor;
+                    // Cache an action to call to create this type.
+                    constructor = () => CreateDefaultInstance(t);
+                    _constructorCache[type] = constructor;
+                }
+                catch
+                {
+                    return null;
+                }
             }
 
             // Call the cached constructor and return the instance
@@ -417,7 +443,7 @@ namespace Vipr.Reader.OData.v4
         // Tracked by https://github.com/Microsoft/vipr/issues/59
         private static Dictionary<string, string> VocabularyNamespaceMappings = new Dictionary<string, string>()
         {
-            {"Org.OData.Capabilities.V1", ViprCoreVocabularyRoot + ".Capabilities"}
+            {"Org.OData.Capabilities.V1", ViprCoreVocabularyRoot + ".Restrictions"}
         };
     }
 }

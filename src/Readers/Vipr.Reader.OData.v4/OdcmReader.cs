@@ -14,6 +14,9 @@ using System.Linq;
 using System.Xml.Linq;
 using Vipr.Reader.OData.v4.Capabilities;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;
+using Microsoft.OData.Edm.Annotations;
+using System.Xml;
+using System.IO;
 
 namespace Vipr.Reader.OData.v4
 {
@@ -85,7 +88,8 @@ namespace Vipr.Reader.OData.v4
                 var edmx = XElement.Parse(edmxFile.Contents);
 
                 IEnumerable<EdmError> errors;
-                if (!EdmxReader.TryParse(edmx.CreateReader(ReaderOptions.None), out _edmModel, out errors))
+
+                if (!EdmxReader.TryParse(edmx.CreateReader(ReaderOptions.None), /*_capabilitiesModel,*/ out _edmModel, out errors))
                 {
                     Debug.Assert(errors != null, "errors != null");
 
@@ -106,6 +110,8 @@ namespace Vipr.Reader.OData.v4
 
                 _propertyCapabilitiesCache.EnsureProjectionsForProperties();
 
+                _propertyCapabilitiesCache.CreateDistinctProjectionsForWellKnownBooleanTypes();
+
                 return _odcmModel;
             }
 
@@ -119,30 +125,40 @@ namespace Vipr.Reader.OData.v4
 
             private void AddVocabularyAnnotations(OdcmObject odcmObject, IEdmVocabularyAnnotatable annotatableEdmEntity)
             {
+#if false
+                odcmObject.Annotations = ODataVocabularyReader.GetOdcmAnnotations(_edmModel, annotatableEdmEntity).ToList();
+#endif
                 odcmObject.Description = _edmModel.GetDescriptionAnnotation(annotatableEdmEntity);
                 odcmObject.LongDescription = _edmModel.GetLongDescriptionAnnotation(annotatableEdmEntity);
 
-                if(annotatableEdmEntity is IEdmEntitySet && odcmObject is OdcmProperty)
-                {
-                    ODataCapabilitiesReader.SetCapabilitiesForEntitySet((OdcmProperty) odcmObject,
-                        (IEdmEntitySet) annotatableEdmEntity, _edmModel, _propertyCapabilitiesCache);
-                }
+                var annotations = _edmModel.FindVocabularyAnnotations(annotatableEdmEntity);
 
-                if (annotatableEdmEntity is IEdmEntityContainer && odcmObject is OdcmServiceClass)
+                if (annotations.Any())
                 {
-                    ODataCapabilitiesReader.SetCapabilitiesForEntityContainer((OdcmServiceClass)odcmObject, (IEdmEntityContainer)annotatableEdmEntity, _edmModel);
+                    SetCapabilitiesForEntity(odcmObject, annotations);
                 }
             }
 
             private void WriteNamespaces()
             {
+                OdcmProjection.NameMapper = new ODataAnnotationTermMapper();
+
                 foreach (var declaredNamespace in _edmModel.DeclaredNamespaces)
                 {
                     WriteNamespaceShallow(_edmModel, declaredNamespace);
                 }
+
                 foreach (var declaredNamespace in _edmModel.DeclaredNamespaces)
                 {
                     WriteNamespaceDeep(_edmModel, declaredNamespace);
+                }
+
+                // Make sure we write functions defined in namespaces different from its entity type
+                var allEntityTypes = AllEntityTypes(AllTypes(_edmModel.SchemaElements)).ToList();
+
+                foreach (var declaredNamespace in _edmModel.DeclaredNamespaces)
+                {
+                    WriteNamespaceMethods(_edmModel, declaredNamespace, allEntityTypes);
                 }
             }
 
@@ -150,46 +166,26 @@ namespace Vipr.Reader.OData.v4
             {
                 _odcmModel.AddNamespace(@namespace);
 
-                var namespaceElements = from elements in edmModel.SchemaElements
-                                        where string.Equals(elements.Namespace, @namespace)
-                                        select elements;
+                var allElements = AllElementsByNamespace(edmModel.SchemaElements, @namespace).ToList();
 
-                var types = from element in namespaceElements
-                            where element.SchemaElementKind == EdmSchemaElementKind.TypeDefinition
-                            select element as IEdmType;
-                var typeDefinitions = from element in types
-                               where element.TypeKind == EdmTypeKind.TypeDefinition
-                               select element as IEdmTypeDefinition;
-                var complexTypes = from element in types
-                                   where element.TypeKind == EdmTypeKind.Complex
-                                   select element as IEdmComplexType;
-                var entityTypes = from element in types
-                                  where element.TypeKind == EdmTypeKind.Entity
-                                  select element as IEdmEntityType;
-                var enumTypes = from elements in types
-                                where elements.TypeKind == EdmTypeKind.Enum
-                                select elements as IEdmEnumType;
+                var types = AllTypes(allElements).ToList();
 
-                var entityContainers = from element in namespaceElements
-                                       where element.SchemaElementKind == EdmSchemaElementKind.EntityContainer
-                                       select element as IEdmEntityContainer;
-
-                foreach (var enumType in enumTypes)
+                foreach (var enumType in AllEnumTypes(types))
                 {
                     _odcmModel.AddType(new OdcmEnum(enumType.Name, ResolveNamespace(enumType.Namespace)));
                 }
 
-                foreach (var typeDefinition in typeDefinitions)
+                foreach (var typeDefinition in AllTypeDefinitions(types))
                 {
                     _odcmModel.AddType(new OdcmTypeDefinition(typeDefinition.Name, ResolveNamespace(typeDefinition.Namespace)));
                 }
 
-                foreach (var complexType in complexTypes)
+                foreach (var complexType in AllComplexTypes(types))
                 {
                     _odcmModel.AddType(new OdcmComplexClass(complexType.Name, ResolveNamespace(complexType.Namespace)));
                 }
 
-                foreach (var entityType in entityTypes)
+                foreach (var entityType in AllEntityTypes(types))
                 {
                     if (entityType.HasStream)
                     {
@@ -201,7 +197,7 @@ namespace Vipr.Reader.OData.v4
                     }
                 }
 
-                foreach (var entityContainer in entityContainers)
+                foreach (var entityContainer in AllEntityContainers(allElements))
                 {
                     _odcmModel.AddType(new OdcmServiceClass(entityContainer.Name, ResolveNamespace(entityContainer.Namespace)));
                 }
@@ -209,48 +205,15 @@ namespace Vipr.Reader.OData.v4
 
             private void WriteNamespaceDeep(IEdmModel edmModel, string @namespace)
             {
-                var namespaceElements = from elements in edmModel.SchemaElements
-                                        where string.Equals(elements.Namespace, @namespace)
-                                        select elements;
+                var allElements = AllElementsByNamespace(edmModel.SchemaElements, @namespace).ToList();
 
-                var types = from element in namespaceElements
-                            where element.SchemaElementKind == EdmSchemaElementKind.TypeDefinition
-                            select element as IEdmType;
-                var typeDefinitions = from element in types
-                               where element.TypeKind == EdmTypeKind.TypeDefinition
-                               select element as IEdmTypeDefinition;
-                var complexTypes = from element in types
-                                   where element.TypeKind == EdmTypeKind.Complex
-                                   select element as IEdmComplexType;
-                var entityTypes = from element in types
-                                  where element.TypeKind == EdmTypeKind.Entity
-                                  select element as IEdmEntityType;
-                var enumTypes = from elements in types
-                                where elements.TypeKind == EdmTypeKind.Enum
-                                select elements as IEdmEnumType;
+                var types = AllTypes(allElements).ToList();
 
-                var entityContainers = from element in namespaceElements
-                                       where element.SchemaElementKind == EdmSchemaElementKind.EntityContainer
-                                       select element as IEdmEntityContainer;
-
-                var actions = from element in namespaceElements
-                              where element.SchemaElementKind == EdmSchemaElementKind.Action && ((IEdmAction)element).IsBound
-                              select element as IEdmAction;
-
-                var functions = from element in namespaceElements
-                                where element.SchemaElementKind == EdmSchemaElementKind.Function && ((IEdmFunction)element).IsBound
-                                select element as IEdmFunction;
-
-                foreach (var enumType in enumTypes)
+                foreach (var enumType in AllEnumTypes(types))
                 {
-                    OdcmEnum odcmEnum;
-                    if (!_odcmModel.TryResolveType(enumType.Name, enumType.Namespace, out odcmEnum))
-                    {
-                        throw new InvalidOperationException();
-                    }
+                    var odcmEnum = TryResolveType<OdcmEnum>(enumType.Name, enumType.Namespace);
 
-                    odcmEnum.UnderlyingType =
-                        (OdcmPrimitiveType)ResolveType(enumType.UnderlyingType.Name, enumType.UnderlyingType.Namespace);
+                    odcmEnum.UnderlyingType = (OdcmPrimitiveType)ResolveType(enumType.UnderlyingType.Name, enumType.UnderlyingType.Namespace);
                     odcmEnum.IsFlags = enumType.IsFlags;
                     AddVocabularyAnnotations(odcmEnum, enumType);
 
@@ -263,54 +226,29 @@ namespace Vipr.Reader.OData.v4
                     }
                 }
 
-                foreach (var typeDefinition in typeDefinitions)
+                foreach (var typeDefinition in AllTypeDefinitions(types))
                 {
-                    OdcmTypeDefinition odcmTypeDefinition;
-                    if (!_odcmModel.TryResolveType(typeDefinition.Name, typeDefinition.Namespace, out odcmTypeDefinition))
-                    {
-                        throw new InvalidOperationException();
-                    }
+                    var odcmTypeDefinition = TryResolveType<OdcmTypeDefinition>(typeDefinition.Name, typeDefinition.Namespace);
 
                     // Type definitions should only support primitives as their base types [http://docs.oasis-open.org/odata/odata/v4.0/odata-v4.0-part3-csdl.html]
-                    OdcmPrimitiveType baseType = ResolveType(typeDefinition.UnderlyingType.Name, typeDefinition.UnderlyingType.Namespace) as OdcmPrimitiveType;
+                    var baseType = ResolveType(typeDefinition.UnderlyingType.Name, typeDefinition.UnderlyingType.Namespace) as OdcmPrimitiveType;
                     if (baseType == null)
                     {
                         throw new InvalidOperationException("Type definitions should only accept primitive type as their base type.");
                     }
 
                     odcmTypeDefinition.BaseType = baseType;
-
                 }
 
-                foreach (var complexType in complexTypes)
+                foreach (var complexType in AllComplexTypes(types))
                 {
-                    OdcmClass odcmClass;
-                    if (!_odcmModel.TryResolveType(complexType.Name, complexType.Namespace, out odcmClass))
-                    {
-                        throw new InvalidOperationException();
-                    }
+                    var odcmClass = TryResolveType<OdcmClass>(complexType.Name, complexType.Namespace);
 
                     odcmClass.IsAbstract = complexType.IsAbstract;
                     odcmClass.IsOpen = complexType.IsOpen;
                     AddVocabularyAnnotations(odcmClass, complexType);
 
-                    if (complexType.BaseType != null)
-                    {
-                        var baseType = (IEdmSchemaElement)complexType.BaseType;
-
-                        OdcmClass baseClass;
-                        if (!_odcmModel.TryResolveType(baseType.Name, baseType.Namespace, out baseClass))
-                        {
-                            throw new InvalidOperationException();
-                        }
-
-                        odcmClass.Base = baseClass;
-
-                        if (!baseClass.Derived.Contains(odcmClass))
-                        {
-                            baseClass.Derived.Add(odcmClass);
-                        }
-                    }
+                    ResolveBaseClass(odcmClass, complexType);
 
                     foreach (var property in complexType.DeclaredProperties)
                     {
@@ -318,35 +256,23 @@ namespace Vipr.Reader.OData.v4
                     }
                 }
 
+                var entityTypes = AllEntityTypes(types).ToList();
+
+                // First make a pass through entity types to establish their hierarchy;
+                // this is useful for cases when base entity type is defined after derived one
                 foreach (var entityType in entityTypes)
                 {
-                    OdcmEntityClass odcmClass;
-                    if (!_odcmModel.TryResolveType(entityType.Name, entityType.Namespace, out odcmClass))
-                    {
-                        throw new InvalidOperationException();
-                    }
+                    var odcmClass = TryResolveType<OdcmEntityClass>(entityType.Name, entityType.Namespace);
+
+                    ResolveBaseClass(odcmClass, entityType);
+                }
+
+                foreach (var entityType in entityTypes)
+                {
+                    var odcmClass = TryResolveType<OdcmEntityClass>(entityType.Name, entityType.Namespace);
 
                     odcmClass.IsAbstract = entityType.IsAbstract;
                     odcmClass.IsOpen = entityType.IsOpen;
-                    AddVocabularyAnnotations(odcmClass, entityType);
-
-                    if (entityType.BaseType != null)
-                    {
-                        var baseType = (IEdmSchemaElement)entityType.BaseType;
-
-                        OdcmClass baseClass;
-                        if (!_odcmModel.TryResolveType(baseType.Name, baseType.Namespace, out baseClass))
-                        {
-                            throw new InvalidOperationException();
-                        }
-
-                        odcmClass.Base = baseClass;
-
-                        if (!baseClass.Derived.Contains(odcmClass))
-                        {
-                            baseClass.Derived.Add(odcmClass);
-                        }
-                    }
 
                     foreach (var property in entityType.DeclaredProperties)
                     {
@@ -369,65 +295,169 @@ namespace Vipr.Reader.OData.v4
                         odcmClass.Key.Add(property);
                     }
 
-                    var entityTypeActions = from element in actions
-                                            where IsOperationBoundTo(element, entityType)
-                                            select element;
-                    foreach (var action in entityTypeActions)
-                    {
-                        WriteMethod(odcmClass, action);
-                    }
-
-                    var entityTypeFunctions = from element in functions
-                                              where IsOperationBoundTo(element, entityType)
-                                              select element;
-                    foreach (var function in entityTypeFunctions)
-                    {
-                        WriteMethod(odcmClass, function);
-                    }
+                    AddVocabularyAnnotations(odcmClass, entityType);
                 }
 
-                foreach (var entityContainer in entityContainers)
+                foreach (var entityContainer in AllEntityContainers(allElements))
                 {
-                    OdcmClass odcmClass;
-                    if (!_odcmModel.TryResolveType(entityContainer.Name, entityContainer.Namespace, out odcmClass))
-                    {
-                        throw new InvalidOperationException();
-                    }
+                    var odcmClass = TryResolveType<OdcmClass>(entityContainer.Name, entityContainer.Namespace);
 
+                    odcmClass.Projection = new OdcmProjection
+                    {
+                        Type = odcmClass
+                    };
+
+                    _propertyCapabilitiesCache.Add(odcmClass, new List<OdcmCapability>());
                     AddVocabularyAnnotations(odcmClass, entityContainer);
 
-                    var entitySets = from element in entityContainer.Elements
-                                     where element.ContainerElementKind == EdmContainerElementKind.EntitySet
-                                     select element as IEdmEntitySet;
+                    var entitySets = ContainerElementsByKind<IEdmEntitySet>(entityContainer, EdmContainerElementKind.EntitySet);
                     foreach (var entitySet in entitySets)
                     {
                         WriteProperty(odcmClass, entitySet);
                     }
 
-                    var singletons = from element in entityContainer.Elements
-                                     where element.ContainerElementKind == EdmContainerElementKind.Singleton
-                                     select element as IEdmSingleton;
+                    var singletons = ContainerElementsByKind<IEdmSingleton>(entityContainer, EdmContainerElementKind.Singleton);
                     foreach (var singleton in singletons)
                     {
                         WriteProperty(odcmClass, singleton);
                     }
 
-                    var actionImports = from element in entityContainer.Elements
-                                        where element.ContainerElementKind == EdmContainerElementKind.ActionImport
-                                        select element as IEdmActionImport;
+                    var actionImports = ContainerElementsByKind<IEdmActionImport>(entityContainer, EdmContainerElementKind.ActionImport);
                     foreach (var actionImport in actionImports)
                     {
                         WriteMethod(odcmClass, actionImport.Action, actionImport);
                     }
 
-                    var functionImports = from element in entityContainer.Elements
-                                          where element.ContainerElementKind == EdmContainerElementKind.FunctionImport
-                                          select element as IEdmFunctionImport;
+                    var functionImports = ContainerElementsByKind<IEdmFunctionImport>(entityContainer, EdmContainerElementKind.FunctionImport);
                     foreach (var functionImport in functionImports)
                     {
                         WriteMethod(odcmClass, functionImport.Function, functionImport);
                     }
                 }
+            }
+
+            private void WriteNamespaceMethods(IEdmModel edmModel, string @namespace, IEnumerable<IEdmEntityType> allEntityTypes)
+            {
+                var allElements = AllElementsByNamespace(edmModel.SchemaElements, @namespace).ToList();
+                var actions = AllActions(allElements).ToList();
+                var functions = AllFunctions(allElements).ToList();
+
+                if (!actions.Any() && !functions.Any())
+                {
+                    return;
+                }
+
+                foreach (var entityType in allEntityTypes)
+                {
+                    var odcmClass = TryResolveType<OdcmEntityClass>(entityType.Name, entityType.Namespace);
+
+                    foreach (var action in actions.Where(element => IsOperationBoundTo(element, entityType)))
+                    {
+                        WriteMethod(odcmClass, action);
+                    }
+
+                    foreach (var function in functions.Where(element => IsOperationBoundTo(element, entityType)))
+                    {
+                        WriteMethod(odcmClass, function);
+                    }
+                }
+            }
+
+            private void ResolveBaseClass(OdcmClass odcmClass, IEdmStructuredType structuredType)
+            {
+                if (structuredType.BaseType != null)
+                {
+                    var baseType = (IEdmSchemaElement)structuredType.BaseType;
+
+                    OdcmClass baseClass = TryResolveType<OdcmClass>(baseType.Name, baseType.Namespace);
+
+                    odcmClass.Base = baseClass;
+
+                    if (!baseClass.Derived.Contains(odcmClass))
+                    {
+                        baseClass.Derived.Add(odcmClass);
+                    }
+                }
+            }
+
+            private T TryResolveType<T>(string name, string @namespace) where T : OdcmType
+            {
+                T type;
+                if (!_odcmModel.TryResolveType(name, @namespace, out type))
+                {
+                    throw new InvalidOperationException();
+                }
+                return type;
+            }
+
+            private IEnumerable<T> ContainerElementsByKind<T>(IEdmEntityContainer entityContainer, EdmContainerElementKind kind) where T : class
+            {
+                return entityContainer
+                            .Elements
+                            .Where(element => element is T)
+                            .Select(element => element as T);
+            }
+
+            private IEnumerable<IEdmSchemaElement> AllElementsByNamespace(IEnumerable<IEdmSchemaElement> schemaElements, string @namespace)
+            {
+                return schemaElements
+                            .Where(element => element.Namespace == @namespace);
+            }
+
+            private IEnumerable<IEdmType> AllTypes(IEnumerable<IEdmSchemaElement> schemaElements)
+            {
+                return SchemaElementsByKind<IEdmType>(schemaElements, EdmSchemaElementKind.TypeDefinition);
+            }
+
+            private IEnumerable<IEdmEntityContainer> AllEntityContainers(IEnumerable<IEdmSchemaElement> schemaElements)
+            {
+                return SchemaElementsByKind<IEdmEntityContainer>(schemaElements, EdmSchemaElementKind.EntityContainer);
+            }
+
+            private IEnumerable<IEdmAction> AllActions(IEnumerable<IEdmSchemaElement> schemaElements)
+            {
+                return SchemaElementsByKind<IEdmAction>(schemaElements, EdmSchemaElementKind.Action)
+                                            .Where(action => action.IsBound);
+            }
+
+            private IEnumerable<IEdmFunction> AllFunctions(IEnumerable<IEdmSchemaElement> schemaElements)
+            {
+                return SchemaElementsByKind<IEdmFunction>(schemaElements, EdmSchemaElementKind.Function)
+                                            .Where(function => function.IsBound);
+            }
+
+            private IEnumerable<T> SchemaElementsByKind<T>(IEnumerable<IEdmSchemaElement> schemaElements, EdmSchemaElementKind kind) where T : class
+            {
+                return schemaElements
+                            .Where(element => element.SchemaElementKind == kind)
+                            .Select(element => element as T);
+            }
+
+            private IEnumerable<IEdmTypeDefinition> AllTypeDefinitions(IEnumerable<IEdmType> types)
+            {
+                return TypesByKind<IEdmTypeDefinition>(types, EdmTypeKind.TypeDefinition);
+            }
+
+            private IEnumerable<IEdmComplexType> AllComplexTypes(IEnumerable<IEdmType> types)
+            {
+                return TypesByKind<IEdmComplexType>(types, EdmTypeKind.Complex);
+            }
+
+            private IEnumerable<IEdmEntityType> AllEntityTypes(IEnumerable<IEdmType> types)
+            {
+                return TypesByKind<IEdmEntityType>(types, EdmTypeKind.Entity);
+            }
+
+            private IEnumerable<IEdmEnumType> AllEnumTypes(IEnumerable<IEdmType> types)
+            {
+                return TypesByKind<IEdmEnumType>(types, EdmTypeKind.Enum);
+            }
+
+            private IEnumerable<T> TypesByKind<T>(IEnumerable<IEdmType> types, EdmTypeKind kind) where T : class
+            {
+                return types
+                            .Where(element => element.TypeKind == kind)
+                            .Select(element => element as T);
             }
 
             private bool IsOperationBoundTo(IEdmOperation operation, IEdmEntityType entityType)
@@ -448,17 +478,19 @@ namespace Vipr.Reader.OData.v4
             private void WriteProperty(OdcmClass odcmClass, IEdmEntitySet entitySet)
             {
                 var odcmType = ResolveType(entitySet.EntityType().Name, entitySet.EntityType().Namespace);
-                var odcmProperty = new OdcmProperty(entitySet.Name)
+                var odcmProperty = new OdcmEntitySet(entitySet.Name)
                 {
                     Class = odcmClass,
-                    Projection = new OdcmProjection
-                    {
-                        Type = odcmType
-                    },
                     IsCollection = true,
                     IsLink = true
                 };
 
+                odcmProperty.Projection = new OdcmProjection
+                {
+                    Type = odcmType,
+                    BackLink = odcmProperty
+                };
+                
                 _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultEntitySetCapabilities);
 
                 AddVocabularyAnnotations(odcmProperty, entitySet);
@@ -469,14 +501,16 @@ namespace Vipr.Reader.OData.v4
             private void WriteProperty(OdcmClass odcmClass, IEdmSingleton singleton)
             {
                 var odcmType = ResolveType(singleton.EntityType().Name, singleton.EntityType().Namespace);
-                var odcmProperty = new OdcmProperty(singleton.Name)
+                var odcmProperty = new OdcmSingleton(singleton.Name)
                 {
                     Class = odcmClass,
-                    Projection = new OdcmProjection
-                    {
-                        Type = odcmType
-                    },
                     IsLink = true
+                };
+
+                odcmProperty.Projection = new OdcmProjection
+                {
+                    Type = odcmType,
+                    BackLink = odcmProperty
                 };
 
                 _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultSingletonCapabilities);
@@ -548,10 +582,6 @@ namespace Vipr.Reader.OData.v4
                 {
                     Class = odcmClass,
                     IsNullable = property.Type.IsNullable,
-                    Projection = new OdcmProjection
-                    {
-                        Type = odcmType
-                    },
                     IsCollection = property.Type.IsCollection(),
                     ContainsTarget =
                         property is IEdmNavigationProperty && ((IEdmNavigationProperty)property).ContainsTarget,
@@ -561,6 +591,13 @@ namespace Vipr.Reader.OData.v4
                             ((IEdmStructuralProperty)property).DefaultValueString :
                             null
                 };
+
+                odcmProperty.Projection = new OdcmProjection
+                {
+                    Type = odcmType,
+                    BackLink = odcmProperty
+                };
+
 
                 _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultPropertyCapabilities);
 
@@ -607,6 +644,29 @@ namespace Vipr.Reader.OData.v4
                 }
 
                 return odcmNamespace;
+            }
+
+            /// <summary>
+            /// Sets the OdcmCapabilities for the given annotated entity and also for the annotated navigation properties.
+            /// </summary>
+            public void SetCapabilitiesForEntity(OdcmObject odcmObject, IEnumerable<IEdmVocabularyAnnotation> annotations)
+            {
+                if (!(odcmObject is OdcmProperty))
+                {
+                     _propertyCapabilitiesCache.Add(odcmObject, OdcmCapability.DefaultEntitySetCapabilities);
+                }
+
+                ParseAllCapabilities(odcmObject, annotations);
+            }
+
+            private void ParseAllCapabilities(OdcmObject odcmObject, IEnumerable<IEdmVocabularyAnnotation> annotations)
+            {
+                var parser = new CapabilityAnnotationParser(_propertyCapabilitiesCache);
+
+                foreach (IEdmValueAnnotation annotation in annotations)
+                {
+                    parser.ParseCapabilityAnnotation(odcmObject, annotation);
+                }
             }
         }
     }

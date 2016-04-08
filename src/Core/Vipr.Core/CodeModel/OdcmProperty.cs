@@ -11,7 +11,7 @@ namespace Vipr.Core.CodeModel
 
         public bool ReadOnly { get; set; }
 
-        [Obsolete("This property will be retired in the future. Use 'Projection' property instead")]
+//        [Obsolete("This property will be retired in the future. Use 'Projection' property instead")]
         public OdcmType Type
         {
             get
@@ -22,8 +22,6 @@ namespace Vipr.Core.CodeModel
                 return null;
             }
         }
-
-        public OdcmProjection Projection { get; set; }
 
         public bool ContainsTarget { get; set; }
 

@@ -30,12 +30,15 @@ namespace CSharpLiteWriterUnitTests
                 NavTargetClass = Any.OdcmEntityClass(@namespace);
                 @namespace.Types.Add(NavTargetClass);
 
-                m_NavTargetProjection = Any.OdcmProjection(NavTargetClass);
+                m_NavTargetProjection = NavTargetClass.AnyOdcmProjection();
+#if false
                 if (!NavTargetClass.Projections.Contains(m_NavTargetProjection))
                 {
-                    NavTargetClass.Projections.AsList().Add(m_NavTargetProjection);
+                    NavTargetClass.Projections.Add(m_NavTargetProjection);
                 }
-
+#else
+                NavTargetClass.AddProjection(m_NavTargetProjection.Capabilities);
+#endif
                 var @class = @namespace.Classes.First();                
                 NavigationProperty = Any.OdcmProperty(p =>
                 {

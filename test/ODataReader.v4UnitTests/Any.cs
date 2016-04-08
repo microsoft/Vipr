@@ -175,7 +175,33 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
-            public static XElement InsertRestrictionAnnotation(bool insertable, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
+            public static XElement BooleanCapabilityAnnotation(bool value, string term, Action<XElement> config = null)
+            {
+                string annotation = string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, term);
+
+                XElement element = XElement.Parse(annotation);
+
+                element.AddAttribute("Bool", value);
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement StringListCapabilityAnnotation(IEnumerable<string> value, string term, Action<XElement> config = null)
+            {
+                string annotation = string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, term);
+
+                XElement element = XElement.Parse(annotation);
+
+                element.Add(StringCollection(value));
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement InsertRestrictionAnnotation(bool insertable, IEnumerable<string> navigationPropertyPaths = null, Action<XElement> config = null)
             {
                 string insertAnnotation =
                     string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.InsertRestrictions");
@@ -185,8 +211,12 @@ namespace Microsoft.Its.Recipes
                 element.Add(Any.Csdl.Record(record =>
                 {
                     record.Add(Any.Csdl.PropertyValue("Insertable", propertyVal => propertyVal.AddAttribute("Bool", insertable)));
-                    record.Add(Any.Csdl.PropertyValue("NonInsertableNavigationProperties",
-                        propertyVal => propertyVal.Add(NavigationPropertyPathCollection(navigationPropertyPaths))));
+
+                    if (navigationPropertyPaths != null)
+                    {
+                        record.Add(Any.Csdl.PropertyValue("NonInsertableNavigationProperties",
+                            propertyVal => propertyVal.Add(NavigationPropertyPathCollection(navigationPropertyPaths))));
+                    }
                 }));
 
                 if (config != null) config(element);
@@ -194,7 +224,68 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
-            public static XElement DeleteRestrictionAnnotation(bool deletable, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
+            public static XElement RecordAnnotation(string term, params string[] properties)
+            {
+                string annotation =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, term);
+
+                XElement element = XElement.Parse(annotation);
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    foreach (var property in properties)
+                    {
+                        record.Add(Any.Csdl.PropertyValue(property, propertyVal => propertyVal.Add(GetStringElement(Any.Word()))));
+                    }
+                }));
+
+                return element;
+            }
+
+            public static XElement RecordCollectionAnnotation(string term, int count, IEnumerable<string> properties)
+            {
+                string annotation =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, term);
+
+                XElement element = XElement.Parse(annotation);
+
+                XElement collectionElement = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Collection_element);
+
+                for (int i = 0; i < count; i++)
+                {
+                    collectionElement.Add(Any.Csdl.Record(record =>
+                    {
+                        foreach (var property in properties)
+                        {
+                            record.Add(Any.Csdl.PropertyValue(property, propertyVal => propertyVal.Add(GetStringElement(Any.Word()))));
+                        }
+                    }));
+                }
+
+                element.Add(collectionElement);
+
+                return element;
+            }
+
+
+            public static XElement CallbackSupportedAnnotation(int count, Action<XElement> config = null)
+            {
+                string annotation =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.CallbackSupported");
+
+                XElement element = XElement.Parse(annotation);
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("CallbackProtocols", propertyVal => propertyVal.Add(CallbackProtocolCollection(count))));
+                }));
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement DeleteRestrictionAnnotation(bool deletable, IEnumerable<string> navigationPropertyPaths = null, Action<XElement> config = null)
             {
                 string deleteAnnotation =
                     string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.DeleteRestrictions");
@@ -232,6 +323,114 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
+            public static XElement ChangeTrackingAnnotation(bool value, IEnumerable<string> propertyPaths, Action<XElement> config = null)
+            {
+                string annotation =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.ChangeTracking");
+
+                XElement element = XElement.Parse(annotation);
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("Supported", propertyVal => propertyVal.AddAttribute("Bool", value)));
+                    record.Add(Any.Csdl.PropertyValue("FilterableProperties",
+                        propertyVal => propertyVal.Add(PropertyPathCollection(propertyPaths))));
+                    record.Add(Any.Csdl.PropertyValue("ExpandableProperties",
+                        propertyVal => propertyVal.Add(PropertyPathCollection(propertyPaths))));
+                }));
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement FilterRestrictionAnnotation(bool value, IEnumerable<string> propertyPaths, Action<XElement> config = null)
+            {
+                string annotation =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.FilterRestrictions");
+
+                XElement element = XElement.Parse(annotation);
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("Filterable", propertyVal => propertyVal.AddAttribute("Bool", value)));
+                    record.Add(Any.Csdl.PropertyValue("RequiresFilter", propertyVal => propertyVal.AddAttribute("Bool", value)));
+                    record.Add(Any.Csdl.PropertyValue("NonFilterableProperties",
+                        propertyVal => propertyVal.Add(PropertyPathCollection(propertyPaths))));
+                    record.Add(Any.Csdl.PropertyValue("RequiredProperties",
+                        propertyVal => propertyVal.Add(PropertyPathCollection(propertyPaths))));
+                }));
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement CountRestrictionAnnotation(bool value, IEnumerable<string> propertyPaths, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
+            {
+                string annotation =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.CountRestrictions");
+
+                XElement element = XElement.Parse(annotation);
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("Countable", propertyVal => propertyVal.AddAttribute("Bool", value)));
+                    record.Add(Any.Csdl.PropertyValue("NonCountableProperties",
+                        propertyVal => propertyVal.Add(PropertyPathCollection(propertyPaths))));
+                    record.Add(Any.Csdl.PropertyValue("NonCountableNavigationProperties",
+                        propertyVal => propertyVal.Add(NavigationPropertyPathCollection(navigationPropertyPaths))));
+                }));
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            public static XElement NavigationRestrictionAnnotation(string value, IEnumerable<Tuple<string,string>> navigationPropertyPaths = null, Action<XElement> config = null)
+            {
+                string annotation =
+                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.NavigationRestrictions");
+
+                var element = XElement.Parse(annotation);
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    var enumElement = GetNavigationTypeElement(value);
+                    record.Add(Any.Csdl.PropertyValue("Navigability", propertyVal => propertyVal.Add(enumElement)));
+
+                    if (navigationPropertyPaths != null)
+                    {
+                        record.Add(Any.Csdl.PropertyValue("RestrictedProperties",
+                            propertyVal => propertyVal.Add(NavigationTypeCollection(navigationPropertyPaths))));
+                    }
+                }));
+
+                if (config != null) config(element);
+
+                return element;
+            }
+
+            private static XElement NavigationTypeCollection(IEnumerable<Tuple<string, string>> navigationPropertyPaths)
+            {
+                XElement collectionElement = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Collection_element);
+
+                foreach (var pair in navigationPropertyPaths)
+                {
+                    collectionElement.Add(Any.Csdl.Record(record =>
+                    {
+                        record.Add(Any.Csdl.PropertyValue("Navigability", propertyVal => propertyVal.Add(GetNavigationTypeElement(pair.Item2))));
+
+                        XElement navigationPropertyPathElement = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.NavigationPropertyPath_element);
+                        navigationPropertyPathElement.Add(pair.Item1);
+
+                        record.Add(Any.Csdl.PropertyValue("NavigationProperty", propertyVal => propertyVal.Add(navigationPropertyPathElement)));
+                    }));
+                }
+
+                return collectionElement;
+            }
+
             public static XElement ExpandRestrictionAnnotation(bool expandable, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
             {
                 string expandAnnotation =
@@ -250,6 +449,49 @@ namespace Microsoft.Its.Recipes
 
                 return element;
             }
+            private static XElement StringCollection(IEnumerable<string> values)
+            {
+                XElement collectionElement = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Collection_element);
+
+                foreach (var value in values)
+                {
+                    collectionElement.Add(GetStringElement(value));
+                }
+
+                return collectionElement;
+            }
+
+            private static XElement GetStringElement(string value)
+            {
+                string stringMember = $"<String xmlns=\"http://docs.oasis-open.org/odata/ns/edm\">{value}</String>";
+
+                return XElement.Parse(stringMember);
+            }
+
+            private static XElement GetNavigationTypeElement(string value)
+            {
+                string enumMember = $"<EnumMember xmlns=\"http://docs.oasis-open.org/odata/ns/edm\">Org.OData.Capabilities.V1.NavigationType/{value}</EnumMember>";
+
+                return XElement.Parse(enumMember);
+            }
+
+            private static XElement CallbackProtocolCollection(int count)
+            {
+                XElement collectionElement = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Collection_element);
+
+                for (int i = 0; i < count; i++)
+                {
+                    collectionElement.Add(Any.Csdl.Record(record =>
+                    {
+                        record.Add(Any.Csdl.PropertyValue("Id", propertyVal => propertyVal.Add(GetStringElement(Any.Word()))));
+                        record.Add(Any.Csdl.PropertyValue("UrlTemplate", propertyVal => propertyVal.Add(GetStringElement(Any.Word()))));
+                        record.Add(Any.Csdl.PropertyValue("DocumentationUrl", propertyVal => propertyVal.Add(GetStringElement(Any.Word()))));
+                    }
+                    ));
+                }
+
+                return collectionElement;
+            }
 
             private static XElement NavigationPropertyPathCollection(IEnumerable<string> navigationPropertyPaths)
             {
@@ -263,6 +505,23 @@ namespace Microsoft.Its.Recipes
                     XElement navigationPropertyPathElement = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.NavigationPropertyPath_element);
                     navigationPropertyPathElement.Add(navigationPropertyPath);
                     collectionElement.Add(navigationPropertyPathElement);
+                }
+
+                return collectionElement;
+            }
+
+            private static XElement PropertyPathCollection(IEnumerable<string> propertyPaths)
+            {
+                XElement collectionElement = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Collection_element);
+
+                if (propertyPaths == null)
+                    return collectionElement;
+
+                foreach (var propertyPath in propertyPaths)
+                {
+                    XElement propertyPathElement = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.PropertyPath_element);
+                    propertyPathElement.Add(propertyPath);
+                    collectionElement.Add(propertyPathElement);
                 }
 
                 return collectionElement;

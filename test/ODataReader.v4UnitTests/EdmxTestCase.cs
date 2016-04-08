@@ -4,6 +4,7 @@
 using Microsoft.Its.Recipes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using Vipr.Core;
 
@@ -22,6 +23,15 @@ namespace ODataReader.v4UnitTests
                 Namespace = @namespace;
                 Name = name;
                 Element = element;
+            }
+
+            public TestNode(string @namespace, XElement element)
+            {
+                Namespace = @namespace;
+                Element = element;
+
+                var attrName = element.Attribute("Name");
+                Name = attrName == null ? string.Empty : attrName.Value;
             }
 
             public string FullName()
@@ -43,18 +53,25 @@ namespace ODataReader.v4UnitTests
             public const string TypeDefinitionType = "$typeDefinitionType";
             public const string Function = "$function";
             public const string Schema = "$schema";
+            public const string DataServices = "$dataServices";
         }
 
         private readonly Dictionary<string, TestNode> _testObjectMap = new Dictionary<string, TestNode>();
 
         public EdmxTestCase()
         {
-            _testObjectMap.Add(Keys.Edmx, new TestNode(string.Empty, string.Empty, Any.Csdl.EdmxToSchema(schema =>
-            {
-                var @namespace = schema.Attribute("Namespace").Value;
-                _testObjectMap.Add(Keys.Schema, new TestNode(@namespace, string.Empty, schema));
-                schema.Add(Any.Csdl.EntityContainer(entityContainer => _testObjectMap.Add(Keys.EntityContainer, new TestNode(@namespace, entityContainer.Attribute("Name").Value, entityContainer))));
-            })));
+            var edmx = Any.Csdl.EdmxToSchema(element => element.Add(Any.Csdl.EntityContainer()));
+
+            var dataServices = edmx.Descendants().Single(x => x.Name.LocalName == "DataServices");
+            var schema = dataServices.Descendants().Single(x => x.Name.LocalName == "Schema");
+            var entityContainer = schema.Descendants().Single(x => x.Name.LocalName == "EntityContainer");
+
+            var @namespace = schema.Attribute("Namespace").Value;
+
+            _testObjectMap[Keys.Edmx] = new TestNode(string.Empty, string.Empty, edmx);
+            _testObjectMap[Keys.DataServices] = new TestNode(string.Empty, string.Empty, dataServices);
+            _testObjectMap[Keys.Schema] = new TestNode(@namespace, string.Empty, schema);
+            _testObjectMap[Keys.EntityContainer] = new TestNode(@namespace, entityContainer);
         }
 
         public EdmxTestCase AddEntityType(string entityTypeKey, Action<EdmxTestCase, XElement> config = null)
@@ -64,11 +81,23 @@ namespace ODataReader.v4UnitTests
 
         public EdmxTestCase AddEntityType(string entityTypeKey, bool noKey, Action<EdmxTestCase, XElement> config = null)
         {
+            _testObjectMap[Keys.Schema].Element.Add(CreateEntityType(entityTypeKey, noKey, config));
+            return this;
+        }
+
+        public EdmxTestCase AddEntityType(XElement entityTypeElement)
+        {
+            _testObjectMap[Keys.Schema].Element.Add(entityTypeElement);
+            return this;
+        }
+
+        public XElement CreateEntityType(string entityTypeKey, bool noKey, Action<EdmxTestCase, XElement> config = null)
+        {
             var schema = _testObjectMap[Keys.Schema];
 
-            schema.Element.Add(Any.Csdl.EntityType(entityType =>
+            return Any.Csdl.EntityType(entityType =>
             {
-                var testNode = new TestNode(schema.Namespace, entityType.Attribute("Name").Value, entityType);
+                var testNode = new TestNode(schema.Namespace, entityType);
                 _testObjectMap.Add(entityTypeKey, testNode);
 
                 if (!noKey)
@@ -100,9 +129,7 @@ namespace ODataReader.v4UnitTests
                 {
                     config(this, entityType);
                 }
-            }));
-
-            return this;
+            });
         }
 
         public EdmxTestCase AddComplexType(string complexTypeKey, Action<EdmxTestCase, XElement> config = null)
@@ -111,7 +138,7 @@ namespace ODataReader.v4UnitTests
 
             schema.Element.Add(Any.Csdl.ComplexType(complexType =>
             {
-                var testNode = new TestNode(schema.Namespace, complexType.Attribute("Name").Value, complexType);
+                var testNode = new TestNode(schema.Namespace, complexType);
                 _testObjectMap.Add(complexTypeKey, testNode);
 
                 foreach (
@@ -140,7 +167,7 @@ namespace ODataReader.v4UnitTests
 
             schema.Element.Add(Any.Csdl.EnumType(enumType =>
             {
-                var testNode = new TestNode(schema.Namespace, enumType.GetAttribute("Name"), enumType);
+                var testNode = new TestNode(schema.Namespace, enumType);
                 _testObjectMap.Add(enumTypeKey, testNode);
 
                 foreach (var member in Any.Sequence((i) => Any.Csdl.Member(), Any.Int(1, 5)))
@@ -163,7 +190,7 @@ namespace ODataReader.v4UnitTests
 
             schema.Element.Add(Any.Csdl.TypeDefinitionType(typeDefinitionType =>
             {
-                var testNode = new TestNode(schema.Namespace, typeDefinitionType.GetAttribute("Name"), typeDefinitionType);
+                var testNode = new TestNode(schema.Namespace, typeDefinitionType);
                 _testObjectMap.Add(typeDefinitionTypeKey, testNode);
 
                 if (config != null)
@@ -182,7 +209,7 @@ namespace ODataReader.v4UnitTests
 
             schema.Element.Add(Any.Csdl.Action(Any.Csdl.RandomPrimitiveType(), action =>
             {
-                var testNode = new TestNode(schema.Namespace, action.GetAttribute("Name"), action);
+                var testNode = new TestNode(schema.Namespace, action);
                 _testObjectMap.Add(actionKey, testNode);
 
                 action.AddAttribute("IsBound", true);
@@ -203,14 +230,20 @@ namespace ODataReader.v4UnitTests
             return this;
         }
 
-        public EdmxTestCase AddBoundFunction(string functionKey, string boundEntityTypeKey, Action<EdmxTestCase, XElement> config = null)
+        public EdmxTestCase AddBoundFunction(string functionKey, string boundEntityTypeKey, XElement schemaElement = null, Action<EdmxTestCase, XElement> config = null)
         {
             var boundEntityType = _testObjectMap[boundEntityTypeKey];
             var schema = _testObjectMap[Keys.Schema];
 
+            if (schemaElement != null)
+            {
+                var functionNamespace = schemaElement.Attribute("Namespace").Value;
+                schema = new EdmxTestCase.TestNode(functionNamespace, string.Empty, schemaElement);
+            }
+
             schema.Element.Add(Any.Csdl.Function(Any.Csdl.RandomPrimitiveType(), function =>
             {
-                var testNode = new TestNode(schema.Namespace, function.GetAttribute("Name"), function);
+                var testNode = new TestNode(schema.Namespace, function);
                 _testObjectMap.Add(functionKey, testNode);
 
                 function.AddAttribute("IsBound", true);
@@ -227,6 +260,12 @@ namespace ODataReader.v4UnitTests
                     config(this, function);
                 }
             }));
+
+            if (schemaElement != null)
+            {
+                var dataServices = _testObjectMap[Keys.DataServices];
+                dataServices.Element.Add(schemaElement);
+            }
 
             return this;
         }

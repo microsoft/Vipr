@@ -24,7 +24,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
-using global::Microsoft.OData.Core;
 using ODataV4TestClient.Extensions;
 
 namespace ODataV4TestClient.Extensions

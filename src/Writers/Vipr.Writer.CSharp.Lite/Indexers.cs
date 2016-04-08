@@ -12,7 +12,7 @@ namespace Vipr.Writer.CSharp.Lite
         public static IEnumerable<Indexer> ForCollection(OdcmEntityClass odcmClass)
         {
             var retVal = new List<Indexer>();
-            foreach (var projection in odcmClass.Projections)
+            foreach (var projection in odcmClass.DistinctProjections())
             {
                 retVal.Add(CollectionGetByIdIndexer.ForCollectionClass(odcmClass, projection));
             }

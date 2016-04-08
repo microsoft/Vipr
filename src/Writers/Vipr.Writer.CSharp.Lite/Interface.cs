@@ -49,7 +49,7 @@ namespace Vipr.Writer.CSharp.Lite
         public static IEnumerable<Interface> ForFetcher(OdcmClass odcmClass)
         {
             var interfaces = new List<Interface>();
-            foreach (var projection in odcmClass.Projections)
+            foreach (var projection in odcmClass.DistinctProjections())
             {
                 var @interface = new Interface
                 {
@@ -70,7 +70,7 @@ namespace Vipr.Writer.CSharp.Lite
         public static IEnumerable<Interface> ForCollection(OdcmEntityClass odcmClass)
         {
             var interfaces = new List<Interface>();
-            foreach (var projection in odcmClass.Projections)
+            foreach (var projection in odcmClass.DistinctProjections())
             {
                 var @interface = new Interface
                 {

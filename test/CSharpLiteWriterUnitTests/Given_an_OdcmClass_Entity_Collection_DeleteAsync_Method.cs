@@ -13,7 +13,7 @@ namespace CSharpLiteWriterUnitTests
     public class Given_an_OdcmClass_Entity_Collection_DeleteAsync_Method : EntityTestBase
     {
         private MockService _mockedService;
-        private OdcmProperty _structuralInstanceProperty;
+//        private OdcmProperty _structuralInstanceProperty;
 
         public Given_an_OdcmClass_Entity_Collection_DeleteAsync_Method()
         {

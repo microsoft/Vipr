@@ -78,7 +78,7 @@ namespace Vipr.Writer.CSharp.Lite
             {
                 retVal.Add(new FetcherExecuteAsyncMethod(odcmClass));
 
-                foreach (var projection in odcmClass.Projections)
+                foreach (var projection in odcmClass.DistinctProjections())
                 {
                     if (projection.SupportsExpand())
                     {
@@ -163,7 +163,7 @@ namespace Vipr.Writer.CSharp.Lite
             var retVal = new List<Method>();
             retVal.AddRange(Methods.GetMethodsBoundToCollection(odcmClass));
 
-            foreach (var projection in odcmClass.Projections)
+            foreach (var projection in odcmClass.DistinctProjections())
             {
                 retVal.Add(CollectionGetByIdMethod.ForCollectionClass(odcmClass, projection));
             }

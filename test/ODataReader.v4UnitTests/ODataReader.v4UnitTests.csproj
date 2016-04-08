@@ -49,6 +49,7 @@
       <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.OData.Client, Version=6.11.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.OData.Client.6.11.0\lib\net40\Microsoft.OData.Client.dll</HintPath>
       <Private>True</Private>
@@ -128,6 +129,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +186,7 @@
     <Content Include="Resources\Edmx\TypeDefinitionType.element.xml" />
     <Content Include="Resources\Edmx\PropertyValue.element.xml" />
     <Content Include="Resources\Edmx\Record.element.xml" />
+    <Content Include="Resources\Edmx\PropertyPath.element.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

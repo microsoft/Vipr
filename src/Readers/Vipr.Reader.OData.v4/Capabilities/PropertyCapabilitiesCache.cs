@@ -15,26 +15,36 @@ namespace Vipr.Reader.OData.v4.Capabilities
     /// </summary>
     public class PropertyCapabilitiesCache
     {
-        private Dictionary<OdcmProperty, IEnumerable<OdcmCapability>> _propertyCache =
-            new Dictionary<OdcmProperty, IEnumerable<OdcmCapability>>();
+        private IDictionary<OdcmObject, ICollection<OdcmCapability>> _propertyCache =
+            new Dictionary<OdcmObject, ICollection<OdcmCapability>>();
 
-        public void Add(OdcmProperty property, IEnumerable<OdcmCapability> capabilities)
+        public void Add(OdcmObject property, ICollection<OdcmCapability> capabilities)
         {
             if (property == null) throw new ArgumentNullException("property");
             if (capabilities == null) throw new ArgumentNullException("capabilities");
 
-            _propertyCache.Add(property, capabilities);
+            _propertyCache[property] = capabilities;
         }
 
-        public IEnumerable<OdcmCapability> GetCapabilities(OdcmProperty property)
+        public ICollection<OdcmCapability> GetCapabilities(OdcmObject property)
         {
             if (property == null) throw new ArgumentNullException("property");
 
-            IEnumerable<OdcmCapability> capabilities;
+            ICollection<OdcmCapability> capabilities;
             if (!_propertyCache.TryGetValue(property, out capabilities))
             {
-                throw new InvalidOperationException(string.Format("Property {0}.{1} not found in the cache",
-                    property.Class.Name, property.Name));
+                throw new InvalidOperationException($"Property {property.Name} not found in the cache");
+            }
+
+            return capabilities;
+        }
+
+        private IEnumerable<OdcmCapability> GetCapabilitiesOrEmpty(OdcmObject property)
+        {
+            ICollection<OdcmCapability> capabilities;
+            if (!_propertyCache.TryGetValue(property, out capabilities))
+            {
+                return Enumerable.Empty<OdcmCapability>();
             }
 
             return capabilities;
@@ -42,12 +52,43 @@ namespace Vipr.Reader.OData.v4.Capabilities
 
         public void EnsureProjectionsForProperties()
         {
-            foreach (var propertyPair in _propertyCache)
+            foreach (var propertyPair in _propertyCache
+                                .Where(p => p.Key is OdcmProperty || p.Key is OdcmServiceClass))
             {
-                var property = propertyPair.Key;
+                var odcmProperty = propertyPair.Key;
+
                 var capabilities = propertyPair.Value;
-                var propertyType = property.Projection.Type;
-                property.Projection = propertyType.GetProjection(capabilities);
+                var propertyType = odcmProperty.Projection.Type;
+
+                // EntityType might have some annotations defined
+                if (propertyType is OdcmEntityClass)
+                {
+                    TryToMergeWithTypeCapabilities(propertyType, capabilities);
+                }
+
+                odcmProperty.Projection.Capabilities = capabilities;
+            }
+        }
+
+        private void TryToMergeWithTypeCapabilities(OdcmType propertyType, ICollection<OdcmCapability> capabilities)
+        {
+            foreach (var typeCapability in GetCapabilitiesOrEmpty(propertyType))
+            {
+                if (capabilities.SingleOrDefault(c => c.TermName == typeCapability.TermName) == null)
+                {
+                    capabilities.Add(typeCapability);
+                }
+            }
+        }
+
+        public void CreateDistinctProjectionsForWellKnownBooleanTypes()
+        {
+            foreach (var propertyPair in _propertyCache.Where(x => x.Key is OdcmProperty))
+            {
+                var odcmProperty = propertyPair.Key;// as OdcmProperty;
+                var propertyType = odcmProperty.Projection.Type;
+
+                propertyType.AddProjection(propertyPair.Value, odcmProperty);
             }
         }
     }
