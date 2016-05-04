@@ -32,14 +32,7 @@ namespace CSharpLiteWriterUnitTests
                     projections = targetClass.AnyOdcmProjections().Distinct().ToList();
                     foreach (var projection in projections)
                     {
-#if false
-                        if (!targetClass.Projections.Contains(projection))
-                        {
-                            targetClass.Projections.Add(projection);
-                        }
-#else
                         targetClass.AddProjection(projection.Capabilities);
-#endif
                     }
                 });            
 

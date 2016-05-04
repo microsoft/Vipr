@@ -68,9 +68,9 @@ namespace Vipr.Core.CodeModel
         {
             if (this is OdcmPrimitiveType || this is OdcmMethod) return;
 
-            var allCapabilities = OdcmProjection.GetWellKnownCapabilities(odcmObject, capabilities).ToList();
+            var knownCapabilities = OdcmProjection.GetWellKnownCapabilities(odcmObject, capabilities).ToList();
 
-            var name = OdcmProjection.GetUniqueProjectionName(allCapabilities, odcmObject);
+            var name = OdcmProjection.GetUniqueProjectionName(knownCapabilities, odcmObject);
 
             OdcmProjection projection;
             if (!_projectionHash.TryGetValue(name, out projection))
@@ -78,7 +78,7 @@ namespace Vipr.Core.CodeModel
                 _projectionHash[name] = new OdcmProjection()
                 {
                     Type = this,
-                    Capabilities = allCapabilities,
+                    Capabilities = knownCapabilities,
                     BackLink = odcmObject
                 };
             }

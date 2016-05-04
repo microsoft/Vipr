@@ -85,7 +85,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
         {
             foreach (var propertyPair in _propertyCache.Where(x => x.Key is OdcmProperty))
             {
-                var odcmProperty = propertyPair.Key;// as OdcmProperty;
+                var odcmProperty = propertyPair.Key;
                 var propertyType = odcmProperty.Projection.Type;
 
                 propertyType.AddProjection(propertyPair.Value, odcmProperty);

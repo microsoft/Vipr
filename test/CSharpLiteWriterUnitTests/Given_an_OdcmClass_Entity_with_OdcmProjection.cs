@@ -29,14 +29,8 @@ namespace CSharpLiteWriterUnitTests
                     m_TargetClass.Properties.Add(Any.PrimitiveOdcmProperty(p => p.Class = Class));
                     
                     projection.Type = m_TargetClass;
-#if false
-                    if (!m_TargetClass.Projections.Contains(projection))
-                    {
-                        m_TargetClass.Projections.Add(projection);
-                    }
-#else
+
                     m_TargetClass.AddProjection(projection.Capabilities);
-#endif
                 });
 
 
@@ -49,26 +43,7 @@ namespace CSharpLiteWriterUnitTests
 
         private OdcmProjection AnyOdcmProjection(OdcmType odcmType)
         {
-#if true
             return odcmType.AnyOdcmProjection();
-#else
-            var projection = new OdcmProjection
-            {
-                Type = odcmType,
-                Capabilities = new List<OdcmCapability>()
-            };
-
-            var capabilityTerms = projection
-                    .GetBooleanCapabilityTerms().RandomSequence()
-                    .Distinct();
-
-            foreach (var term in capabilityTerms)
-            {
-                projection.Capabilities.Add(new OdcmBooleanCapability(Any.Bool(), term));
-            }
-
-            return projection;
-#endif
         }
 
         [Fact]

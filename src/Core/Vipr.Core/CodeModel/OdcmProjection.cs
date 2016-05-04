@@ -89,7 +89,7 @@ namespace Vipr.Core.CodeModel
         {
             get
             {
-                var allCapabilities = OdcmProjection.GetWellKnownCapabilities(BackLink, Capabilities)
+                var allCapabilities = GetWellKnownCapabilities(BackLink, Capabilities)
                                     .Where(x => x is OdcmBooleanCapability)
                                     .Select(x => x as OdcmBooleanCapability);
 
@@ -117,10 +117,6 @@ namespace Vipr.Core.CodeModel
 
         public bool IsOneOf(string term)
         {
-            //var func = FuncFromTerm(term);
-
-            //var xxx = Vipr.Reader.OData.v4.Capabilities.TermNames.ODataMap.Values.Where(v => func(v));
-
             return Capabilities.SingleOrDefault(FuncFromTerm(term)) != null;
         }
 
