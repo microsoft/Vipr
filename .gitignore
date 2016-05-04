@@ -187,4 +187,4 @@ FakesAssemblies/
 *.v2.ncrunchsolution
 /Vipr.sln.GhostDoc.xml
 /.vs/config
-/CSharpProxyWithNavProp.cs
+
