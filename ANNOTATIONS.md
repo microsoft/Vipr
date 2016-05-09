@@ -89,7 +89,8 @@ should be supported. It should also be possible to define custom annotations.
 Odcm model in VIPR NEW no longer provides the fixed set of capabilities in object projection; object
 projections only refer to those annotations that were explicitly specified.
   
-The name of annotation term is used as annotation identifier. 
+The name of annotation term is used as annotation identifier. For annotations defined as complex types, this identifier can be specified
+eihter in a fully qualified form (e.g. "Org.OData.Capabilities.V1.UpdateRestrictions/Updatable") or in short form (e.g. "Updatable").
 
 To get the value of annotation defined as a boolean constant (e.g. Capabilities.TopSupported), Odcm writer 
 would use this OdcmProjection method:
@@ -125,26 +126,20 @@ To get the value of annotation defined as a string collection (e.g. Capabilities
 
     IEnumerable<string> value = projection.StringCollectionValueOf(annotationTerm);
 
-To get the value of annotation defined as complex type (e.g. Capabilities.CallbackType) :
+To get the value of annotation defined as a collection of arbitrary records (i.e. complex types)
+(e.g. Capabilities.CallbackSupported/CallbackProtocols) :
 
-    dynamic value = projection.RecordValueOf(annotationTerm);
+    IEnumerable<dynamic> items = projection.CollectionValueOf(annotationTerm);
 
-After getting the dynamic value, it should be possible to get properties of the record, e.g. for
+After getting dynamic items, it should be possible to get properties of an individual item, e.g. for
 Capabilities.CallbackType:
 
-    IEnumerable<dynamic> protocols = record.CallbackProtocols;
-    string id = protocols.First().Id;
-    
-To get the value of annotation defined as a collection of arbitrary records:
+    string id = items.First().Id;
+          
+### Some common cases of annotation representation in Odcm model
 
-    IEnumerable<dynamic> value = projection.CollectionValueOf(annotationTerm);
-      
-### Special cases of annotation representation in Odcm model
-
-Some annotations are defined in Edmx as records, however their representation in Odcm model is different;
-RecordValueOf should not be used for those types. Namely, UpdateRestrictionType, ExpandRestrictionType,
-DeleteRestrictionType and InsertRestrictionType annotations
-are represented exactly the same as in VIPR MASTER;
+UpdateRestrictionType, ExpandRestrictionType, DeleteRestrictionType and InsertRestrictionType annotations
+are represented in exactly the same way as in VIPR MASTER;
 you can use BooleanValueOf for projections on EntitySet and on its navigation properties:
 
     bool isLinkUpdatable = navProperty.Projection.BooleanValueOf("NonUpdatableNavigationProperties");

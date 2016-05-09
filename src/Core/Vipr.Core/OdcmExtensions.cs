@@ -114,6 +114,11 @@ namespace Vipr.Core
             return odcmObject.Projection.BooleanValueOf(term, odcmObject);
         }
 
+        public static string StringValueOf(this OdcmObject odcmObject, string term)
+        {
+            return odcmObject.Projection.StringValueOf(term, odcmObject);
+        }
+
         public static IEnumerable<string> EnumValueOf(this OdcmObject odcmObject, string term)
         {
             return odcmObject.Projection.EnumValueOf(term, odcmObject);
@@ -122,6 +127,11 @@ namespace Vipr.Core
         public static IEnumerable<string> StringCollectionValueOf(this OdcmObject odcmObject, string term)
         {
             return odcmObject.Projection.StringCollectionValueOf(term, odcmObject);
+        }
+
+        public static IEnumerable<object> CollectionValueOf(this OdcmObject odcmObject, string term)
+        {
+            return odcmObject.Projection.CollectionValueOf(term, odcmObject);
         }
     }
 }

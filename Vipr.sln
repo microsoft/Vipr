@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{24442316-C08F-4365-9480-29A8C2809C14}"
 EndProject
@@ -84,8 +84,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpLiteWriterUnitTests", "test\CSharpLiteWriterUnitTests\CSharpLiteWriterUnitTests.csproj", "{8363235D-104C-496A-B547-A6C5B862B38D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyExtensionsLiteUnitTests", "test\ProxyExtensionsLiteUnitTests\ProxyExtensionsLiteUnitTests.csproj", "{FA0487A9-F0B6-487A-81A0-F007FDEA0016}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunVipr", "RunVipr\RunVipr.csproj", "{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -696,46 +694,6 @@ Global
 		{FA0487A9-F0B6-487A-81A0-F007FDEA0016}.Xamarin|Mixed Platforms.Build.0 = Release|Any CPU
 		{FA0487A9-F0B6-487A-81A0-F007FDEA0016}.Xamarin|x64.ActiveCfg = Release|Any CPU
 		{FA0487A9-F0B6-487A-81A0-F007FDEA0016}.Xamarin|x86.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Android|Any CPU.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Android|Any CPU.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Android|ARM.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Android|ARM.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Android|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Android|Mixed Platforms.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Android|x64.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Android|x64.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Android|x86.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Android|x86.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Debug|ARM.Build.0 = Debug|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Debug|x64.Build.0 = Debug|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Debug|x86.Build.0 = Debug|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Release|ARM.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Release|ARM.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Release|x64.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Release|x64.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Release|x86.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Release|x86.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Xamarin|Any CPU.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Xamarin|Any CPU.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Xamarin|ARM.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Xamarin|ARM.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Xamarin|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Xamarin|Mixed Platforms.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Xamarin|x64.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Xamarin|x64.Build.0 = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Xamarin|x86.ActiveCfg = Release|Any CPU
-		{A4F6772F-E5F6-44D3-BAD6-7BF87A8D7C69}.Xamarin|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

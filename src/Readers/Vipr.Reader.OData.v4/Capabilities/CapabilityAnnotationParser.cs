@@ -35,21 +35,6 @@ namespace Vipr.Reader.OData.v4.Capabilities
 
         private bool HasSpecializedParser(OdcmObject odcmObject, IEdmExpression expression, string annotationTerm)
         {
-            if (annotationTerm == "Org.OData.Capabilities.V1.CallbackSupported")
-            {
-                Debug.Assert(expression is IEdmRecordExpression);
-
-                var collectionProperty = (expression as IEdmRecordExpression).Properties.First();
-
-                var collection = ParseRecordCollection(collectionProperty.Value as IEdmCollectionExpression);
-
-                dynamic value = new ExpandoObject();
-                value.CallbackProtocols = collection;
-
-                SetRecordCapability(odcmObject, value, annotationTerm);
-                return true;
-            }
-
             return false;
         }
 
@@ -111,7 +96,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
                 {
                     // We assume that if a collection element is a record with a single path expression, the rest 
                     // of record properties should be associated with this path expression
-                    // (e.g. NavigationRestrictions).
+                    // (e.g. NavigationRestrictions/RestrictedProperties).
                     ParsePropertyCollection(odcmObject, collectionExpression, annotationTerm);
                 }
                 else
@@ -210,11 +195,6 @@ namespace Vipr.Reader.OData.v4.Capabilities
         private void SetStringCapability(OdcmObject odcmObject, string value, string annotationTerm)
         {
             AddCapability(odcmObject, new OdcmStringCapability(value, annotationTerm));
-        }
-
-        private void SetRecordCapability(OdcmObject odcmObject, object value, string annotationTerm)
-        {
-            AddCapability(odcmObject, new OdcmRecordCapability(value, annotationTerm));
         }
 
         private void SetListCapability(OdcmObject odcmObject, IEnumerable<object> value, string annotationTerm)

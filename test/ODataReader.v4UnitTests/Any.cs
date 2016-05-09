@@ -4,9 +4,11 @@
 using ODataReader.v4UnitTests;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
-using Resources = ODataReader.v4UnitTests.Properties.Resources;
+using R = ODataReader.v4UnitTests.Properties.Resources;
+using O = ODataReader.v4UnitTests.OData;
 
 namespace Microsoft.Its.Recipes
 {
@@ -79,7 +81,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement Action(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.Action_element);
+                var element = GetElement(R.Action_element);
 
                 config?.Invoke(element);
 
@@ -97,7 +99,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement ActionImport(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.ActionImport_element);
+                var element = GetElement(R.ActionImport_element);
 
                 config?.Invoke(element);
 
@@ -115,7 +117,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement ComplexType(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.ComplexType_element);
+                var element = GetElement(R.ComplexType_element);
 
                 config?.Invoke(element);
 
@@ -133,7 +135,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement DataServices(Action<XElement> config = null)
             {
-                var element = XElement.Parse(Resources.DataServices_element);
+                var element = XElement.Parse(R.DataServices_element);
 
                 config?.Invoke(element);
 
@@ -142,7 +144,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement DescriptionAnnotation(string description, Action<XElement> config = null)
             {
-                XElement element = GetAnnotationElement("Org.OData.Core.V1.Description");
+                XElement element = GetAnnotationElement(O.Core("Description"));
 
                 element.AddAttribute("String", description);
 
@@ -153,7 +155,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement LongDescriptionAnnotation(string longDescription, Action<XElement> config = null)
             {
-                XElement element = GetAnnotationElement("Org.OData.Core.V1.LongDescription");
+                XElement element = GetAnnotationElement(O.Core("LongDescription"));
 
                 element.AddAttribute("String", longDescription);
 
@@ -173,6 +175,38 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
+            public static XElement EnumCapabilityAnnotation(IEnumerable<string> values, string term, Action<XElement> config = null)
+            {
+                XElement element = GetAnnotationElement(term);
+
+                element.AddAttribute("EnumMember", string.Join(" ", values));
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
+            public static XElement SearchRestrictionsAnnotation(bool searchable, IEnumerable<string> expressions, Action<XElement> config = null)
+            {
+                XElement element = GetAnnotationElement(O.Capabilities("SearchRestrictions"));
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("Searchable", propertyVal => propertyVal.AddAttribute("Bool", searchable)));
+
+                    if (searchable)
+                    {
+                        var qualifiedExpressions = expressions.Select(x => O.Capabilities("SearchExpressions/") + x);
+                        record.Add(Any.Csdl.PropertyValue("UnsupportedExpressions",
+                                propertyVal => propertyVal.AddAttribute("EnumMember", string.Join(" ", qualifiedExpressions))));
+                    }
+                }));
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
             public static XElement StringListCapabilityAnnotation(IEnumerable<string> value, string term, Action<XElement> config = null)
             {
                 XElement element = GetAnnotationElement(term);
@@ -186,7 +220,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement InsertRestrictionAnnotation(bool insertable, IEnumerable<string> navigationPropertyPaths = null, Action<XElement> config = null)
             {
-                XElement element = GetAnnotationElement("Org.OData.Capabilities.V1.InsertRestrictions");
+                XElement element = GetAnnotationElement(O.Capabilities("InsertRestrictions"));
 
                 element.Add(Any.Csdl.Record(record =>
                 {
@@ -242,13 +276,13 @@ namespace Microsoft.Its.Recipes
             }
 
 
-            public static XElement CallbackSupportedAnnotation(int count, Action<XElement> config = null)
+            public static XElement CallbackSupportedAnnotation(IEnumerable<string> ids, Action<XElement> config = null)
             {
-                XElement element = GetAnnotationElement("Org.OData.Capabilities.V1.CallbackSupported");
+                XElement element = GetAnnotationElement(O.Capabilities("CallbackSupported"));
 
                 element.Add(Any.Csdl.Record(record =>
                 {
-                    record.Add(Any.Csdl.PropertyValue("CallbackProtocols", propertyVal => propertyVal.Add(CallbackProtocolCollection(count))));
+                    record.Add(Any.Csdl.PropertyValue("CallbackProtocols", propertyVal => propertyVal.Add(CallbackProtocolCollection(ids))));
                 }));
 
                 config?.Invoke(element);
@@ -258,7 +292,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement DeleteRestrictionAnnotation(bool deletable, IEnumerable<string> navigationPropertyPaths = null, Action<XElement> config = null)
             {
-                XElement element = GetAnnotationElement("Org.OData.Capabilities.V1.DeleteRestrictions");
+                XElement element = GetAnnotationElement(O.Capabilities("DeleteRestrictions"));
 
                 element.Add(Any.Csdl.Record(record =>
                 {
@@ -274,7 +308,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement UpdateRestrictionAnnotation(bool updatable, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
             {
-                XElement element = GetAnnotationElement("Org.OData.Capabilities.V1.UpdateRestrictions");
+                XElement element = GetAnnotationElement(O.Capabilities("UpdateRestrictions"));
 
                 element.Add(Any.Csdl.Record(record =>
                 {
@@ -290,7 +324,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement ChangeTrackingAnnotation(bool value, IEnumerable<string> propertyPaths, Action<XElement> config = null)
             {
-                XElement element = GetAnnotationElement("Org.OData.Capabilities.V1.ChangeTracking");
+                XElement element = GetAnnotationElement(O.Capabilities("ChangeTracking"));
 
                 element.Add(Any.Csdl.Record(record =>
                 {
@@ -306,9 +340,9 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
-            public static XElement FilterRestrictionAnnotation(bool value, IEnumerable<string> propertyPaths, Action<XElement> config = null)
+            public static XElement FilterRestrictionsAnnotation(bool value, IEnumerable<string> propertyPaths, Action<XElement> config = null)
             {
-                XElement element = GetAnnotationElement("Org.OData.Capabilities.V1.FilterRestrictions");
+                XElement element = GetAnnotationElement(O.Capabilities("FilterRestrictions"));
 
                 element.Add(Any.Csdl.Record(record =>
                 {
@@ -327,7 +361,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement CountRestrictionAnnotation(bool value, IEnumerable<string> propertyPaths, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
             {
-                XElement element = GetAnnotationElement("Org.OData.Capabilities.V1.CountRestrictions");
+                XElement element = GetAnnotationElement(O.Capabilities("CountRestrictions"));
 
                 element.Add(Any.Csdl.Record(record =>
                 {
@@ -345,7 +379,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement NavigationRestrictionAnnotation(string value, IEnumerable<Tuple<string,string>> navigationPropertyPaths = null, Action<XElement> config = null)
             {
-                XElement element = GetAnnotationElement("Org.OData.Capabilities.V1.NavigationRestrictions");
+                XElement element = GetAnnotationElement(O.Capabilities("NavigationRestrictions"));
 
                 element.Add(Any.Csdl.Record(record =>
                 {
@@ -374,7 +408,7 @@ namespace Microsoft.Its.Recipes
                     {
                         record.Add(Any.Csdl.PropertyValue("Navigability", propertyVal => propertyVal.Add(GetNavigationTypeElement(pair.Item2))));
 
-                        XElement navigationPropertyPathElement = XElement.Parse(Resources.NavigationPropertyPath_element);
+                        XElement navigationPropertyPathElement = XElement.Parse(R.NavigationPropertyPath_element);
                         navigationPropertyPathElement.Add(pair.Item1);
 
                         record.Add(Any.Csdl.PropertyValue("NavigationProperty", propertyVal => propertyVal.Add(navigationPropertyPathElement)));
@@ -386,7 +420,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement ExpandRestrictionAnnotation(bool expandable, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
             {
-                XElement element = GetAnnotationElement("Org.OData.Capabilities.V1.ExpandRestrictions");
+                XElement element = GetAnnotationElement(O.Capabilities("ExpandRestrictions"));
 
                 element.Add(Any.Csdl.Record(record =>
                 {
@@ -420,20 +454,20 @@ namespace Microsoft.Its.Recipes
 
             private static XElement GetNavigationTypeElement(string value)
             {
-                string enumMember = $"<EnumMember xmlns=\"http://docs.oasis-open.org/odata/ns/edm\">Org.OData.Capabilities.V1.NavigationType/{value}</EnumMember>";
+                string enumMember = $"<EnumMember xmlns=\"http://docs.oasis-open.org/odata/ns/edm\">{O.Capabilities()}NavigationType/{value}</EnumMember>";
 
                 return XElement.Parse(enumMember);
             }
 
-            private static XElement CallbackProtocolCollection(int count)
+            private static XElement CallbackProtocolCollection(IEnumerable<string> ids)
             {
                 XElement collectionElement = GetCollectionElement();
 
-                for (int i = 0; i < count; i++)
+                foreach (var id in ids)
                 {
                     collectionElement.Add(Any.Csdl.Record(record =>
                     {
-                        record.Add(Any.Csdl.PropertyValue("Id", propertyVal => propertyVal.Add(GetStringElement(Any.Word()))));
+                        record.Add(Any.Csdl.PropertyValue("Id", propertyVal => propertyVal.Add(GetStringElement(id))));
                         record.Add(Any.Csdl.PropertyValue("UrlTemplate", propertyVal => propertyVal.Add(GetStringElement(Any.Word()))));
                         record.Add(Any.Csdl.PropertyValue("DocumentationUrl", propertyVal => propertyVal.Add(GetStringElement(Any.Word()))));
                     }
@@ -452,7 +486,7 @@ namespace Microsoft.Its.Recipes
 
                 foreach (var navigationPropertyPath in navigationPropertyPaths)
                 {
-                    XElement navigationPropertyPathElement = XElement.Parse(Resources.NavigationPropertyPath_element);
+                    XElement navigationPropertyPathElement = XElement.Parse(R.NavigationPropertyPath_element);
                     navigationPropertyPathElement.Add(navigationPropertyPath);
                     collectionElement.Add(navigationPropertyPathElement);
                 }
@@ -469,7 +503,7 @@ namespace Microsoft.Its.Recipes
 
                 foreach (var propertyPath in propertyPaths)
                 {
-                    XElement propertyPathElement = XElement.Parse(Resources.PropertyPath_element);
+                    XElement propertyPathElement = XElement.Parse(R.PropertyPath_element);
                     propertyPathElement.Add(propertyPath);
                     collectionElement.Add(propertyPathElement);
                 }
@@ -479,19 +513,19 @@ namespace Microsoft.Its.Recipes
 
             private static XElement GetAnnotationElement(string term)
             {
-                string annotation = string.Format(Resources.Annotation_element, term);
+                string annotation = string.Format(R.Annotation_element, term);
 
                 return XElement.Parse(annotation);
             }
 
             private static XElement GetCollectionElement()
             {
-                return XElement.Parse(Resources.Collection_element);
+                return XElement.Parse(R.Collection_element);
             }
 
             public static XElement Edmx(Action<XElement> config = null)
             {
-                XElement element = XElement.Parse(Resources.Edmx_element);
+                XElement element = XElement.Parse(R.Edmx_element);
 
                 config?.Invoke(element);
 
@@ -500,7 +534,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement EntityContainer(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.EntityContainer_element);
+                var element = GetElement(R.EntityContainer_element);
 
                 config?.Invoke(element);
 
@@ -509,7 +543,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement EntitySet(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.EntitySet_element);
+                var element = GetElement(R.EntitySet_element);
 
                 config?.Invoke(element);
 
@@ -518,7 +552,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement EntityType(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.EntityType_element);
+                var element = GetElement(R.EntityType_element);
 
                 config?.Invoke(element);
 
@@ -536,7 +570,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement EnumType(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.EnumType_element);
+                var element = GetElement(R.EnumType_element);
 
                 config?.Invoke(element);
 
@@ -545,7 +579,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement TypeDefinitionType(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.TypeDefintionType_element);
+                var element = GetElement(R.TypeDefintionType_element);
 
                 config?.Invoke(element);
 
@@ -555,7 +589,7 @@ namespace Microsoft.Its.Recipes
             public static XElement Function(Action<XElement> config = null)
             {
                 string pascalCaseName = PascalCaseName(Int(1, 3));
-                string functionString = string.Format(Resources.Function_element, pascalCaseName);
+                string functionString = string.Format(R.Function_element, pascalCaseName);
 
                 XElement element = XElement.Parse(functionString);
 
@@ -574,7 +608,7 @@ namespace Microsoft.Its.Recipes
             }
             public static XElement FunctionImport(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.FunctionImport_element);
+                var element = GetElement(R.FunctionImport_element);
 
                 config?.Invoke(element);
 
@@ -583,7 +617,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement Key(Action<XElement> config = null)
             {
-                XElement element = XElement.Parse(Resources.Key_element);
+                XElement element = XElement.Parse(R.Key_element);
 
                 config?.Invoke(element);
 
@@ -592,7 +626,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement Member(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.Member_element);
+                var element = GetElement(R.Member_element);
 
                 config?.Invoke(element);
 
@@ -601,7 +635,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement NavigationProperty(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.NavigationProperty_element);
+                var element = GetElement(R.NavigationProperty_element);
 
                 config?.Invoke(element);
 
@@ -610,7 +644,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement NavigationProperty(string type, Action<XElement> config = null)
             {
-                var element = GetElement(Resources.NavigationProperty_element);
+                var element = GetElement(R.NavigationProperty_element);
 
                 element.AddAttribute("Type", type);
 
@@ -621,7 +655,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement Parameter(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.Parameter_element);
+                var element = GetElement(R.Parameter_element);
 
                 config?.Invoke(element);
 
@@ -639,7 +673,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement Property(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.Property_element);
+                var element = GetElement(R.Property_element);
 
                 config?.Invoke(element);
 
@@ -667,7 +701,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement PropertyRef(Action<XElement> config = null)
             {
-                XElement element = XElement.Parse(Resources.PropertyRef_element);
+                XElement element = XElement.Parse(R.PropertyRef_element);
 
                 config?.Invoke(element);
 
@@ -685,7 +719,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement PropertyValue(string propertyName, Action<XElement> config = null)
             {
-                string propertyString = string.Format(Resources.PropertyValue_element, propertyName);
+                string propertyString = string.Format(R.PropertyValue_element, propertyName);
 
                 XElement element = XElement.Parse(propertyString);
 
@@ -696,7 +730,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement Record(Action<XElement> config = null)
             {
-                XElement element = XElement.Parse(Resources.Record_element);
+                XElement element = XElement.Parse(R.Record_element);
 
                 config?.Invoke(element);
 
@@ -705,7 +739,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement ReturnType(Action<XElement> config = null)
             {
-                XElement element = XElement.Parse(Resources.ReturnType_element);
+                XElement element = XElement.Parse(R.ReturnType_element);
 
                 config?.Invoke(element);
 
@@ -724,7 +758,7 @@ namespace Microsoft.Its.Recipes
             public static XElement Schema(Action<XElement> config = null)
             {
                 string pascalCaseName = PascalCaseName(Int(1, 3));
-                var element = GetElement(Resources.Schema_element);
+                var element = GetElement(R.Schema_element);
 
                 config?.Invoke(element);
 
@@ -740,7 +774,7 @@ namespace Microsoft.Its.Recipes
 
             public static XElement Singleton(Action<XElement> config = null)
             {
-                var element = GetElement(Resources.Singleton_element);
+                var element = GetElement(R.Singleton_element);
 
                 config?.Invoke(element);
 

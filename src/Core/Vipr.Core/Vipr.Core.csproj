@@ -56,7 +56,6 @@
     <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmBooleanCapability.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmEnumCapability.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmCollectionCapability.cs" />
-    <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmRecordCapability.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\OdcmStringCapability.cs" />
     <Compile Include="CodeModel\Vocabularies\Capabilities\TermNames.cs" />
     <Compile Include="RelativeFile.cs" />

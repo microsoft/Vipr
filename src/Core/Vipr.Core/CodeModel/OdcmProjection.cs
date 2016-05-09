@@ -146,11 +146,6 @@ namespace Vipr.Core.CodeModel
             return capability?.Value.Select(x => x as string);
         }
 
-        public dynamic RecordValueOf(string term, OdcmObject odcmObject = null)
-        {
-            return FindCapability<OdcmRecordCapability>(term, odcmObject)?.Value;
-        }
-
         public bool? Supports(string term, OdcmObject odcmObject = null)
         {
             return BooleanValueOf(term, odcmObject);
@@ -224,7 +219,6 @@ namespace Vipr.Core.CodeModel
             var searchTerm = ToExternal(term);
 
             return (cap) => cap.TermName.EndsWith(searchTerm);
-
         }
 
         private static string ToExternal(string term)
