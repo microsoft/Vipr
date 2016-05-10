@@ -79,7 +79,7 @@ namespace Vipr.Core.CodeModel
 
             foreach (OdcmBooleanCapability c in allCapabilities)
             {
-                name += c.TermName + c.Value.ToString();
+                name += ToInternal(c.TermName) + c.Value.ToString();
             }
 
             return name;
@@ -109,7 +109,7 @@ namespace Vipr.Core.CodeModel
         {
             foreach (var term in _wellKnownCapabilities.Keys)
             {
-                var c = capabilities.SingleOrDefault(x => x.TermName == term);
+                var c = capabilities.SingleOrDefault(FuncFromTerm(term));
 
                 yield return c ?? DefaultCapability(odcmProperty, term);
             }
@@ -214,7 +214,7 @@ namespace Vipr.Core.CodeModel
             return capability;
         }
 
-        private Func<OdcmCapability, bool> FuncFromTerm(string term)
+        private static Func<OdcmCapability, bool> FuncFromTerm(string term)
         {
             var searchTerm = ToExternal(term);
 
@@ -226,6 +226,16 @@ namespace Vipr.Core.CodeModel
             if (NameMapper != null)
             {
                 term = NameMapper.ToExternal(term);
+            }
+
+            return term;
+        }
+
+        public static string ToInternal(string term)
+        {
+            if (NameMapper != null)
+            {
+                term = NameMapper.ToInternal(term);
             }
 
             return term;

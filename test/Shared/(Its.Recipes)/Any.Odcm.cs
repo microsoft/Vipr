@@ -114,40 +114,6 @@ namespace Microsoft.Its.Recipes
 
             return retVal;
         }
-#if false
-        public static OdcmProjection OdcmProjection(OdcmType odcmType, Action<OdcmProjection> config = null)
-        {
-            var projection = new OdcmProjection
-            {
-                Type = odcmType,
-                Capabilities = new List<OdcmCapability>()
-            };
-
-            var capabilityTerms = Vipr.Core.CodeModel.OdcmProjection
-                    .BooleanCapabilityTerms.RandomSequence()
-                    .Distinct();
-
-            foreach (var term in capabilityTerms)
-            {
-                projection.Capabilities.Add(new OdcmBooleanCapability(Any.Bool(), term));
-            }
-
-            if (config != null) config(projection);
-
-            return projection;
-        }
-        public static IEnumerable<OdcmProjection> OdcmProjections(OdcmType odcmType, int count = 5, Action<OdcmProjection> config = null)
-        {
-            List<OdcmProjection> projections = new List<OdcmProjection>();
-
-            for (int i = 0; i < count; i++)
-            {
-                projections.Add(Any.OdcmProjection(odcmType, config));
-            }
-
-            return projections;
-        }
-#endif
 
         private static OdcmType PrimitiveOdcmType(Action<OdcmType> config = null)
         {

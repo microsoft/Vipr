@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using OdcmTerms = Vipr.Core.CodeModel.Vocabularies.Capabilities.TermNames;
 
@@ -29,6 +30,14 @@ namespace Vipr.Reader.OData.v4.Capabilities
 
         public string ToInternal(string name)
         {
+            foreach (var pair in ODataMap)
+            {
+                if (pair.Value == name)
+                {
+                    return pair.Key;
+                }
+            }
+
             return name;
         }
     }

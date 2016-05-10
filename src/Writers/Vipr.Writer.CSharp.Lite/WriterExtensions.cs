@@ -118,7 +118,7 @@ namespace Vipr.Writer.CSharp.Lite
 
         public static string GetShortName(this OdcmCapability capability)
         {
-            return _wellKnownCapabilityNames[capability.TermName];
+            return _wellKnownCapabilityNames[OdcmProjection.ToInternal(capability.TermName)];
         }
     }
 }
