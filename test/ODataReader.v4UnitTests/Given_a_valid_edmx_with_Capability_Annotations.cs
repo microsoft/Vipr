@@ -227,9 +227,16 @@ namespace ODataReader.v4UnitTests
 
                 entityTypeElement.SetAnnotation(Any.Csdl.InsertRestrictionAnnotation(insertable));
 
-                var odcmEntitySet = GetOdcmEntitySet(GetOdcmModel(), entitySetElement.GetName());
+                var odcmModel = GetOdcmModel();
 
-                odcmEntitySet.Projection.SupportsInsert()
+                var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElement.GetName());
+                var odcmEntitySet = GetOdcmEntitySet(odcmModel, entitySetElement.GetName());
+
+                odcmEntityType.SupportsInsert()
+                    .Should()
+                    .Be(insertable, "Because an entity type with insert annotation should have OdcmInsertCapability");
+
+                odcmEntitySet.SupportsInsert()
                     .Should()
                     .Be(insertable, "Because an entity set with insert annotation should have OdcmInsertCapability");
 
@@ -407,10 +414,10 @@ namespace ODataReader.v4UnitTests
             (protocols[1].Id as string).Should().BeEquivalentTo(id2);
 
             // Verify existence of all properties
-            string UrlTemplate = protocols[0].UrlTemplate;
-            string DocumentationUrl = protocols[0].DocumentationUrl;
-            string UrlTemplate2 = protocols[1].UrlTemplate;
-            string DocumentationUrl2 = protocols[1].DocumentationUrl;
+            (protocols[0].UrlTemplate as string).Should().NotBeNull();
+            (protocols[0].DocumentationUrl as string).Should().NotBeNull();
+            (protocols[1].UrlTemplate as string).Should().NotBeNull();
+            (protocols[1].DocumentationUrl as string).Should().NotBeNull();
         }
 
         [Fact]
@@ -603,6 +610,10 @@ namespace ODataReader.v4UnitTests
                 var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElement.GetName());
                 var odcmProperty = GetOdcmProperty(odcmEntityType, propertyName);
                 var odcmNavProperty = GetOdcmProperty(odcmEntityType, navPropertyName);
+
+                odcmEntityType.BooleanValueOf("Countable")
+                    .Should()
+                    .Be(value, "Because entity type should support the specified capability");
 
                 odcmEntitySet.BooleanValueOf("Countable")
                     .Should()

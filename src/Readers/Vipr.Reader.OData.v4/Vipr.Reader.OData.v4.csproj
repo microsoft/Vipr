@@ -54,7 +54,6 @@
     <Compile Include="Capabilities\ODataAnnotationTermMapper.cs" />
     <Compile Include="Capabilities\PropertyCapabilitiesCache.cs" />
     <Compile Include="Capabilities\TermNames.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="ODataVocabularyReader.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

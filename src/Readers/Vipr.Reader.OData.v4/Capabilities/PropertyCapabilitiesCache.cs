@@ -53,7 +53,6 @@ namespace Vipr.Reader.OData.v4.Capabilities
         public void EnsureProjectionsForProperties()
         {
             foreach (var propertyPair in _propertyCache)
-//                                .Where(p => p.Key is OdcmProperty || p.Key is OdcmServiceClass))
             {
                 var odcmProperty = propertyPair.Key;
                 if (odcmProperty.Projection == null)

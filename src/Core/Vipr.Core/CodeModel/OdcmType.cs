@@ -43,8 +43,6 @@ namespace Vipr.Core.CodeModel
                 Capabilities = new List<OdcmCapability>()
             };
 
-            //            Projection = GetProjection(new List<OdcmCapability>()); ;
-
             AddProjection(OdcmCapability.DefaultOdcmCapabilities);
         }
 

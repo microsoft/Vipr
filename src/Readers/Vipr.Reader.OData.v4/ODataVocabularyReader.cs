@@ -209,13 +209,8 @@ namespace Vipr.Reader.OData.v4
                     // TODO: Find examples of null / none in annotations and either implement or won't fix this gap
                 case EdmValueKind.Null:
                 default:
-#if true
+                    Logger.Log($"MapToClr for annotation values is not yet supported for IEdmValue of kind {value.ValueKind}");
                     return null;
-#else
-                    throw new NotImplementedException(
-                        string.Format("MapToClr for annotation values is not yet supported for IEdmValue of kind {0}",
-                            value.ValueKind));
-#endif
             }
         }
 

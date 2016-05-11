@@ -156,8 +156,8 @@ Other standard "restriction" types are handled in a very similar way. For instan
 capabilities for annotated EntitySet ("Filterable" and "RequiresFilter") and one of 2 boolean capabilities for its annotated properties
 ("RequiredProperties" and "NonFilterableProperties").
 
-    bool requiresFilter = projection.BooleanValueOf("RequiresFilter");
-    bool required = projection.IsOneOf("RequiredProperties");
+    bool? requiresFilter = projection.BooleanValueOf("RequiresFilter");
+    bool? required = projection.IsOneOf("RequiredProperties");
     
 ### Annotation "inheritance"
 

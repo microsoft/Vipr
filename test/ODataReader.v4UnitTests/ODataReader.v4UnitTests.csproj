@@ -98,7 +98,6 @@
     <Compile Include="Any.cs" />
     <Compile Include="EdmxTestCase.cs" />
     <Compile Include="Given_an_ODataVocabularyReader.cs" />
-    <Compile Include="Given_a_valid_edmx_with_annotations.cs" />
     <Compile Include="Given_a_valid_edmx_with_Capability_Annotations.cs" />
     <Compile Include="Given_a_valid_edmx_with_Description_Annotations.cs" />
     <Compile Include="Given_complex_types_in_a_valid_edmx_when_passed_to_the_ODataReader.cs" />
