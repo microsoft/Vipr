@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
+namespace Vipr.Core.CodeModel.Vocabularies.Restrictions
 {
     // TODO: These classes shouldn't need to be handwritten. Make sure VIPR can output them in a nice way. 
     // This was generated from this XML: 

@@ -6,10 +6,8 @@ using System.Collections.Generic;
 using System.Security.AccessControl;
 using FluentAssertions;
 using Microsoft.Its.Recipes;
-using Microsoft.OData.ProxyExtensions.Lite;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Vipr.Core.CodeModel;
 using Vipr.Writer.CSharp.Lite;
 using Xunit;
@@ -31,13 +29,10 @@ namespace CSharpLiteWriterUnitTests
                 {
                     targetClass = m.Namespaces[0].Classes.First();
                     targetClass.Properties.Add(Any.PrimitiveOdcmProperty(p => p.Class = Class));
-                    projections = Any.OdcmProjections(targetClass).Distinct();
+                    projections = targetClass.AnyOdcmProjections().Distinct().ToList();
                     foreach (var projection in projections)
                     {
-                        if (!targetClass.Projections.Contains(projection))
-                        {
-                            targetClass.Projections.AsList().Add(projection);
-                        }
+                        targetClass.AddProjection(projection.Capabilities);
                     }
                 });            
 

@@ -1,41 +1,40 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
 {
-    public abstract class OdcmCapability : IEquatable<OdcmCapability>
+    public class OdcmCapability<T> : OdcmCapability
     {
-        public abstract string TermName { get; }
+        public T Value { get; set; }
 
-        public abstract string ShortName { get; }
-
-        public abstract bool Equals(OdcmCapability otherCapability);
-
-        public abstract int GetHashCode();
-
-        private static List<OdcmCapability> GetAllOdcmCapabilities()
+        public OdcmCapability(T value, string termName) : base(termName)
         {
-            var defaultOdcmCapabilities = new List<OdcmCapability>();
-            var capabilityTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsSubclassOf(typeof(OdcmCapability)) && !t.IsAbstract);
+            Value = value;
+        }
+    }
 
-            foreach (var capabilityType in capabilityTypes)
-            {
-                var capability = (OdcmCapability)Activator.CreateInstance(capabilityType);
-                defaultOdcmCapabilities.Add(capability);
-            }
+    public class OdcmCapability
+    {
+        public string TermName { get; private set; }
 
-            return defaultOdcmCapabilities;
+        public string ExternalTermName { get; private set; }
+
+        public OdcmCapability(string termName)
+        {
+            TermName = termName;
+        }
+
+        private static ICollection<OdcmCapability> GetAllOdcmCapabilities()
+        {
+            return new List<OdcmCapability>();
         }
 
         /// <summary>
         /// Default list of OdcmCapabilities supported in the OdcmModel.
         /// </summary>
-        public static IEnumerable<OdcmCapability> DefaultOdcmCapabilities
+        public static ICollection<OdcmCapability> DefaultOdcmCapabilities
         {
             get
             {
@@ -43,7 +42,7 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
             }
         }
 
-        public static IEnumerable<OdcmCapability> DefaultPropertyCapabilities
+        public static ICollection<OdcmCapability> DefaultPropertyCapabilities
         {
             get
             {
@@ -51,41 +50,19 @@ namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
             }
         }
 
-        public static IEnumerable<OdcmCapability> DefaultSingletonCapabilities
+        public static ICollection<OdcmCapability> DefaultSingletonCapabilities
         {
             get
             {
-                var defaultSingletonCapabilities = GetAllOdcmCapabilities();
-
-                foreach (var capability in defaultSingletonCapabilities)
-                {
-                    if (capability is OdcmDeleteCapability || capability is OdcmUpdateLinkCapability ||
-                        capability is OdcmDeleteLinkCapability)
-                    {
-                        (capability as OdcmBooleanCapability).Value = false;
-                    }
-                }
-
-                return defaultSingletonCapabilities;
+                return new List<OdcmCapability>();
             }
         }
 
-        public static IEnumerable<OdcmCapability> DefaultEntitySetCapabilities
+        public static ICollection<OdcmCapability> DefaultEntitySetCapabilities
         {
             get
             {
-                var defaultEntitySetCapabilities = GetAllOdcmCapabilities();
-
-                foreach (var capability in defaultEntitySetCapabilities)
-                {
-                    if (capability is OdcmUpdateLinkCapability ||
-                        capability is OdcmDeleteLinkCapability)
-                    {
-                        (capability as OdcmBooleanCapability).Value = false;
-                    }
-                }
-
-                return defaultEntitySetCapabilities;
+                return new List<OdcmCapability>();
             }
         }
     }

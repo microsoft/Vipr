@@ -366,11 +366,11 @@ namespace Microsoft.Its.Recipes
         /// <remarks>
         /// Note that the returned elements are not distinct (the same element may be returned multiple times).
         /// </remarks>
-        public static IEnumerable<T> RandomSequence<T>(this IEnumerable<T> source, int numberOfElements)
+        public static IEnumerable<T> RandomSequence<T>(this IEnumerable<T> source, int numberOfElements = -1)
         {
             var sourceAsList = source.AsList();
             var lastItemIndex = sourceAsList.Count - 1;
-            return Enumerable.Range(1, numberOfElements)
+            return Enumerable.Range(1, numberOfElements > 0 ? numberOfElements : sourceAsList.Count)
                              .Select(_ => sourceAsList[Int(min: 0, max: lastItemIndex)]);
         }
 

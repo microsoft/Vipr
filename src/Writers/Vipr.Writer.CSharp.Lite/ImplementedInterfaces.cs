@@ -10,7 +10,7 @@ namespace Vipr.Writer.CSharp.Lite
         {
             var retVal = new List<Type>();
 
-            foreach (var projection in odcmClass.Projections)
+            foreach (var projection in odcmClass.DistinctProjections())
             {
                 retVal.Add(new Type(NamesService.GetFetcherInterfaceName(odcmClass, projection)));
             }
@@ -32,7 +32,7 @@ namespace Vipr.Writer.CSharp.Lite
         {
             var retVal = new List<Type>();
 
-            foreach (var projection in odcmClass.Projections)
+            foreach (var projection in odcmClass.DistinctProjections())
             {
                 retVal.Add(new Type(NamesService.GetCollectionInterfaceName(odcmClass, projection)));
             }

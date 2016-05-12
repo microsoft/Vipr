@@ -9,16 +9,21 @@ namespace Vipr.Core.CodeModel
 {
     public abstract class OdcmType : OdcmObject
     {
-        private List<OdcmProjection> _projections;
+        private IDictionary<string, OdcmProjection> _projectionHash = new Dictionary<string, OdcmProjection>();
 
         public OdcmNamespace Namespace { get; set; }
 
         /// <summary>
-        /// Cache of OdcmProjections for this OdcmType
+        /// Cache of distinct OdcmProjections for this OdcmType
         /// </summary>
         public IEnumerable<OdcmProjection> Projections
         {
-            get { return _projections.AsEnumerable(); }
+              get { return _projectionHash.Values; }
+        }
+
+        public IEnumerable<string> ProjectionKeys
+        {
+            get { return _projectionHash.Keys; }
         }
 
         public OdcmProjection DefaultProjection { get; private set; }
@@ -27,13 +32,18 @@ namespace Vipr.Core.CodeModel
             : base(name)
         {
             Namespace = @namespace;
-            _projections = new List<OdcmProjection>();
             DefaultProjection = new OdcmProjection()
             {
                 Type = this,
                 Capabilities = OdcmCapability.DefaultOdcmCapabilities
             };
-            _projections.Add(DefaultProjection);
+
+            Projection = new OdcmProjection()
+            {
+                Capabilities = new List<OdcmCapability>()
+            };
+
+            AddProjection(OdcmCapability.DefaultOdcmCapabilities);
         }
 
         public string FullName
@@ -47,30 +57,36 @@ namespace Vipr.Core.CodeModel
         }
 
         /// <summary>
-        /// OdcmType maintains a cache of its Projections. 
-        /// This method will return a Projection from the cache with the same capabilities.
-        /// If the cache does not have the required Projection, a new Projection is created and add to the cache.
         /// </summary>
         /// <param name="capabilities">A list of capabilities</param>
         /// <returns>A Projection of this OdcmType with the given capabilities</returns>
-        public OdcmProjection GetProjection(IEnumerable<OdcmCapability> capabilities)
+        public OdcmProjection GetProjection(ICollection<OdcmCapability> capabilities)
         {
-            //Find if we already have a 'Projection' for the given capabilities.
-            OdcmProjection projection =
-                _projections.SingleOrDefault(
-                    odcmProjection => odcmProjection.ContainsAllCapabilities(capabilities));
-
-            if (projection == null)
+            return new OdcmProjection()
             {
-                projection = new OdcmProjection()
+                Type = this,
+                Capabilities = capabilities
+            };
+        }
+
+        public void AddProjection(ICollection<OdcmCapability> capabilities, OdcmObject odcmObject = null)
+        {
+            if (this is OdcmPrimitiveType || this is OdcmMethod) return;
+
+            var knownCapabilities = OdcmProjection.GetWellKnownCapabilities(odcmObject, capabilities).ToList();
+
+            var name = OdcmProjection.GetUniqueProjectionName(knownCapabilities, odcmObject);
+
+            OdcmProjection projection;
+            if (!_projectionHash.TryGetValue(name, out projection))
+            {
+                _projectionHash[name] = new OdcmProjection()
                 {
                     Type = this,
-                    Capabilities = capabilities
+                    Capabilities = knownCapabilities,
+                    BackLink = odcmObject
                 };
-                _projections.Add(projection);
             }
-
-            return projection;
         }
     }
 }

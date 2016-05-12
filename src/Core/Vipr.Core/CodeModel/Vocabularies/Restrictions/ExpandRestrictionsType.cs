@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
+namespace Vipr.Core.CodeModel.Vocabularies.Restrictions
 {
     /*      <ComplexType Name="ExpandRestrictionsType">
         <Property Name="Expandable" Type="Edm.Boolean" DefaultValue="true">

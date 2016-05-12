@@ -49,6 +49,7 @@
       <HintPath>..\..\packages\FluentAssertions.3.3.0\lib\net45\FluentAssertions.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.OData.Client, Version=6.11.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.OData.Client.6.11.0\lib\net40\Microsoft.OData.Client.dll</HintPath>
       <Private>True</Private>
@@ -65,7 +66,6 @@
       <HintPath>..\..\packages\Microsoft.Spatial.6.11.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.Spatial.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
@@ -98,11 +98,11 @@
     <Compile Include="Any.cs" />
     <Compile Include="EdmxTestCase.cs" />
     <Compile Include="Given_an_ODataVocabularyReader.cs" />
-    <Compile Include="Given_a_valid_edmx_with_annotations.cs" />
     <Compile Include="Given_a_valid_edmx_with_Capability_Annotations.cs" />
     <Compile Include="Given_a_valid_edmx_with_Description_Annotations.cs" />
     <Compile Include="Given_complex_types_in_a_valid_edmx_when_passed_to_the_ODataReader.cs" />
     <Compile Include="Given_typedefinition_types_in_a_valid_edmx_when_passed_to_the_ODataReader.cs" />
+    <Compile Include="OData.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -128,6 +128,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -184,6 +185,7 @@
     <Content Include="Resources\Edmx\TypeDefinitionType.element.xml" />
     <Content Include="Resources\Edmx\PropertyValue.element.xml" />
     <Content Include="Resources\Edmx\Record.element.xml" />
+    <Content Include="Resources\Edmx\PropertyPath.element.xml" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

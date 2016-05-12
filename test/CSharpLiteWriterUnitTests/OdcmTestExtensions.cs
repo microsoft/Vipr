@@ -5,6 +5,8 @@ using System.Reflection;
 using Microsoft.Its.Recipes;
 using Newtonsoft.Json.Linq;
 using Vipr.Core.CodeModel;
+using Vipr.Core.CodeModel.Vocabularies.Capabilities;
+using Vipr.Writer.CSharp.Lite;
 
 namespace CSharpLiteWriterUnitTests
 {
@@ -135,6 +137,34 @@ namespace CSharpLiteWriterUnitTests
             };
 
             return retVal;
+        }
+
+        public static OdcmProjection AnyOdcmProjection(this OdcmType odcmType)
+        {
+            var projection = new OdcmProjection
+            {
+                Type = odcmType,
+                Capabilities = new List<OdcmCapability>()
+            };
+
+            var capabilityTerms = OdcmProjection
+                    .WellKnowCapabilityTerms
+                    .Distinct();
+
+            foreach (var term in capabilityTerms)
+            {
+                projection.Capabilities.Add(new OdcmBooleanCapability(Any.Bool(), term));
+            }
+
+            return projection;
+        }
+
+        public static IEnumerable<OdcmProjection> AnyOdcmProjections(this OdcmType odcmType, int count = 5)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                yield return odcmType.AnyOdcmProjection();
+            }
         }
     }
 }

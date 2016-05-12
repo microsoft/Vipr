@@ -4,7 +4,11 @@
 using ODataReader.v4UnitTests;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
+
+using R = ODataReader.v4UnitTests.Properties.Resources;
+using O = ODataReader.v4UnitTests.OData;
 
 namespace Microsoft.Its.Recipes
 {
@@ -77,12 +81,9 @@ namespace Microsoft.Its.Recipes
 
             public static XElement Action(Action<XElement> config = null)
             {
-                var pascalCaseName = PascalCaseName(Int(1, 3));
-                var actionString = string.Format(ODataReader.v4UnitTests.Properties.Resources.Action_element, pascalCaseName);
+                var element = GetElement(R.Action_element);
 
-                var element = XElement.Parse(actionString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
@@ -92,19 +93,15 @@ namespace Microsoft.Its.Recipes
                 return Action(action =>
                 {
                     action.Add(ReturnType(returnType));
-                    if (config != null) config(action);
+                    config?.Invoke(action);
                 });
             }
 
             public static XElement ActionImport(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string actionImportString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.ActionImport_element, pascalCaseName);
+                var element = GetElement(R.ActionImport_element);
 
-                XElement element = XElement.Parse(actionImportString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
@@ -114,19 +111,15 @@ namespace Microsoft.Its.Recipes
                 return ActionImport(actionImport =>
                 {
                     actionImport.AddAttribute("Action", action);
-                    if (config != null) config(actionImport);
+                    config?.Invoke(actionImport);
                 });
             }
 
             public static XElement ComplexType(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string complexTypeString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.ComplexType_element, pascalCaseName);
+                var element = GetElement(R.ComplexType_element);
 
-                XElement element = XElement.Parse(complexTypeString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
@@ -136,70 +129,170 @@ namespace Microsoft.Its.Recipes
                 return ComplexType(complexType =>
                 {
                     complexType.AddAttribute("BaseType", baseType);
-                    if (config != null) config(complexType);
+                    config?.Invoke(complexType);
                 });
             }
 
             public static XElement DataServices(Action<XElement> config = null)
             {
-                var element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.DataServices_element);
+                var element = XElement.Parse(R.DataServices_element);
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement DescriptionAnnotation(string description, Action<XElement> config = null)
             {
-                string descriptionAnnotationString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Core.V1.Description");
+                XElement element = GetAnnotationElement(O.Core("Description"));
 
-                XElement element = XElement.Parse(descriptionAnnotationString);
                 element.AddAttribute("String", description);
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement LongDescriptionAnnotation(string longDescription, Action<XElement> config = null)
             {
-                string longDescriptionAnnotationString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Core.V1.LongDescription");
+                XElement element = GetAnnotationElement(O.Core("LongDescription"));
 
-                XElement element = XElement.Parse(longDescriptionAnnotationString);
                 element.AddAttribute("String", longDescription);
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
-            public static XElement InsertRestrictionAnnotation(bool insertable, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
+            public static XElement BooleanCapabilityAnnotation(bool value, string term, Action<XElement> config = null)
             {
-                string insertAnnotation =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.InsertRestrictions");
+                XElement element = GetAnnotationElement(term);
 
-                XElement element = XElement.Parse(insertAnnotation);
+                element.AddAttribute("Bool", value);
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
+            public static XElement EnumCapabilityAnnotation(IEnumerable<string> values, string term, Action<XElement> config = null)
+            {
+                XElement element = GetAnnotationElement(term);
+
+                element.AddAttribute("EnumMember", string.Join(" ", values));
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
+            public static XElement SearchRestrictionsAnnotation(bool searchable, IEnumerable<string> expressions, Action<XElement> config = null)
+            {
+                XElement element = GetAnnotationElement(O.Capabilities("SearchRestrictions"));
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("Searchable", propertyVal => propertyVal.AddAttribute("Bool", searchable)));
+
+                    if (searchable)
+                    {
+                        var qualifiedExpressions = expressions.Select(x => O.Capabilities("SearchExpressions/") + x);
+                        record.Add(Any.Csdl.PropertyValue("UnsupportedExpressions",
+                                propertyVal => propertyVal.AddAttribute("EnumMember", string.Join(" ", qualifiedExpressions))));
+                    }
+                }));
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
+            public static XElement StringListCapabilityAnnotation(IEnumerable<string> value, string term, Action<XElement> config = null)
+            {
+                XElement element = GetAnnotationElement(term);
+
+                element.Add(StringCollection(value));
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
+            public static XElement InsertRestrictionAnnotation(bool insertable, IEnumerable<string> navigationPropertyPaths = null, Action<XElement> config = null)
+            {
+                XElement element = GetAnnotationElement(O.Capabilities("InsertRestrictions"));
 
                 element.Add(Any.Csdl.Record(record =>
                 {
                     record.Add(Any.Csdl.PropertyValue("Insertable", propertyVal => propertyVal.AddAttribute("Bool", insertable)));
-                    record.Add(Any.Csdl.PropertyValue("NonInsertableNavigationProperties",
-                        propertyVal => propertyVal.Add(NavigationPropertyPathCollection(navigationPropertyPaths))));
+
+                    if (navigationPropertyPaths != null)
+                    {
+                        record.Add(Any.Csdl.PropertyValue("NonInsertableNavigationProperties",
+                            propertyVal => propertyVal.Add(NavigationPropertyPathCollection(navigationPropertyPaths))));
+                    }
                 }));
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
-            public static XElement DeleteRestrictionAnnotation(bool deletable, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
+            public static XElement RecordAnnotation(string term, params string[] properties)
             {
-                string deleteAnnotation =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.DeleteRestrictions");
+                XElement element = GetAnnotationElement(term);
 
-                XElement element = XElement.Parse(deleteAnnotation);
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    foreach (var property in properties)
+                    {
+                        record.Add(Any.Csdl.PropertyValue(property, propertyVal => propertyVal.Add(GetStringElement(Any.Word()))));
+                    }
+                }));
+
+                return element;
+            }
+
+            public static XElement RecordCollectionAnnotation(string term, int count, IEnumerable<string> properties)
+            {
+                XElement element = GetAnnotationElement(term);
+
+                XElement collectionElement = GetCollectionElement();
+
+                for (int i = 0; i < count; i++)
+                {
+                    collectionElement.Add(Any.Csdl.Record(record =>
+                    {
+                        foreach (var property in properties)
+                        {
+                            record.Add(Any.Csdl.PropertyValue(property, propertyVal => propertyVal.Add(GetStringElement(Any.Word()))));
+                        }
+                    }));
+                }
+
+                element.Add(collectionElement);
+
+                return element;
+            }
+
+
+            public static XElement CallbackSupportedAnnotation(IEnumerable<string> ids, Action<XElement> config = null)
+            {
+                XElement element = GetAnnotationElement(O.Capabilities("CallbackSupported"));
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("CallbackProtocols", propertyVal => propertyVal.Add(CallbackProtocolCollection(ids))));
+                }));
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
+            public static XElement DeleteRestrictionAnnotation(bool deletable, IEnumerable<string> navigationPropertyPaths = null, Action<XElement> config = null)
+            {
+                XElement element = GetAnnotationElement(O.Capabilities("DeleteRestrictions"));
 
                 element.Add(Any.Csdl.Record(record =>
                 {
@@ -208,17 +301,14 @@ namespace Microsoft.Its.Recipes
                         propertyVal => propertyVal.Add(NavigationPropertyPathCollection(navigationPropertyPaths))));
                 }));
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement UpdateRestrictionAnnotation(bool updatable, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
             {
-                string updateAnnotation =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.UpdateRestrictions");
-
-                XElement element = XElement.Parse(updateAnnotation);
+                XElement element = GetAnnotationElement(O.Capabilities("UpdateRestrictions"));
 
                 element.Add(Any.Csdl.Record(record =>
                 {
@@ -227,17 +317,110 @@ namespace Microsoft.Its.Recipes
                         propertyVal => propertyVal.Add(NavigationPropertyPathCollection(navigationPropertyPaths))));
                 }));
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
+            public static XElement ChangeTrackingAnnotation(bool value, IEnumerable<string> propertyPaths, Action<XElement> config = null)
+            {
+                XElement element = GetAnnotationElement(O.Capabilities("ChangeTracking"));
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("Supported", propertyVal => propertyVal.AddAttribute("Bool", value)));
+                    record.Add(Any.Csdl.PropertyValue("FilterableProperties",
+                        propertyVal => propertyVal.Add(PropertyPathCollection(propertyPaths))));
+                    record.Add(Any.Csdl.PropertyValue("ExpandableProperties",
+                        propertyVal => propertyVal.Add(PropertyPathCollection(propertyPaths))));
+                }));
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
+            public static XElement FilterRestrictionsAnnotation(bool value, IEnumerable<string> propertyPaths, Action<XElement> config = null)
+            {
+                XElement element = GetAnnotationElement(O.Capabilities("FilterRestrictions"));
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("Filterable", propertyVal => propertyVal.AddAttribute("Bool", value)));
+                    record.Add(Any.Csdl.PropertyValue("RequiresFilter", propertyVal => propertyVal.AddAttribute("Bool", value)));
+                    record.Add(Any.Csdl.PropertyValue("NonFilterableProperties",
+                        propertyVal => propertyVal.Add(PropertyPathCollection(propertyPaths))));
+                    record.Add(Any.Csdl.PropertyValue("RequiredProperties",
+                        propertyVal => propertyVal.Add(PropertyPathCollection(propertyPaths))));
+                }));
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
+            public static XElement CountRestrictionAnnotation(bool value, IEnumerable<string> propertyPaths, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
+            {
+                XElement element = GetAnnotationElement(O.Capabilities("CountRestrictions"));
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("Countable", propertyVal => propertyVal.AddAttribute("Bool", value)));
+                    record.Add(Any.Csdl.PropertyValue("NonCountableProperties",
+                        propertyVal => propertyVal.Add(PropertyPathCollection(propertyPaths))));
+                    record.Add(Any.Csdl.PropertyValue("NonCountableNavigationProperties",
+                        propertyVal => propertyVal.Add(NavigationPropertyPathCollection(navigationPropertyPaths))));
+                }));
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
+            public static XElement NavigationRestrictionAnnotation(string value, IEnumerable<Tuple<string,string>> navigationPropertyPaths = null, Action<XElement> config = null)
+            {
+                XElement element = GetAnnotationElement(O.Capabilities("NavigationRestrictions"));
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    var enumElement = GetNavigationTypeElement(value);
+                    record.Add(Any.Csdl.PropertyValue("Navigability", propertyVal => propertyVal.Add(enumElement)));
+
+                    if (navigationPropertyPaths != null)
+                    {
+                        record.Add(Any.Csdl.PropertyValue("RestrictedProperties",
+                            propertyVal => propertyVal.Add(NavigationTypeCollection(navigationPropertyPaths))));
+                    }
+                }));
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
+            private static XElement NavigationTypeCollection(IEnumerable<Tuple<string, string>> navigationPropertyPaths)
+            {
+                XElement collectionElement = GetCollectionElement();
+
+                foreach (var pair in navigationPropertyPaths)
+                {
+                    collectionElement.Add(Any.Csdl.Record(record =>
+                    {
+                        record.Add(Any.Csdl.PropertyValue("Navigability", propertyVal => propertyVal.Add(GetNavigationTypeElement(pair.Item2))));
+
+                        XElement navigationPropertyPathElement = XElement.Parse(R.NavigationPropertyPath_element);
+                        navigationPropertyPathElement.Add(pair.Item1);
+
+                        record.Add(Any.Csdl.PropertyValue("NavigationProperty", propertyVal => propertyVal.Add(navigationPropertyPathElement)));
+                    }));
+                }
+
+                return collectionElement;
+            }
+
             public static XElement ExpandRestrictionAnnotation(bool expandable, IEnumerable<string> navigationPropertyPaths, Action<XElement> config = null)
             {
-                string expandAnnotation =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Annotation_element, "Org.OData.Capabilities.V1.ExpandRestrictions");
-
-                XElement element = XElement.Parse(expandAnnotation);
+                XElement element = GetAnnotationElement(O.Capabilities("ExpandRestrictions"));
 
                 element.Add(Any.Csdl.Record(record =>
                 {
@@ -246,21 +429,64 @@ namespace Microsoft.Its.Recipes
                         propertyVal => propertyVal.Add(NavigationPropertyPathCollection(navigationPropertyPaths))));
                 }));
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
+            }
+            private static XElement StringCollection(IEnumerable<string> values)
+            {
+                XElement collectionElement = GetCollectionElement();
+
+                foreach (var value in values)
+                {
+                    collectionElement.Add(GetStringElement(value));
+                }
+
+                return collectionElement;
+            }
+
+            private static XElement GetStringElement(string value)
+            {
+                string stringMember = $"<String xmlns=\"http://docs.oasis-open.org/odata/ns/edm\">{value}</String>";
+
+                return XElement.Parse(stringMember);
+            }
+
+            private static XElement GetNavigationTypeElement(string value)
+            {
+                string enumMember = $"<EnumMember xmlns=\"http://docs.oasis-open.org/odata/ns/edm\">{O.Capabilities()}NavigationType/{value}</EnumMember>";
+
+                return XElement.Parse(enumMember);
+            }
+
+            private static XElement CallbackProtocolCollection(IEnumerable<string> ids)
+            {
+                XElement collectionElement = GetCollectionElement();
+
+                foreach (var id in ids)
+                {
+                    collectionElement.Add(Any.Csdl.Record(record =>
+                    {
+                        record.Add(Any.Csdl.PropertyValue("Id", propertyVal => propertyVal.Add(GetStringElement(id))));
+                        record.Add(Any.Csdl.PropertyValue("UrlTemplate", propertyVal => propertyVal.Add(GetStringElement(Any.Word()))));
+                        record.Add(Any.Csdl.PropertyValue("DocumentationUrl", propertyVal => propertyVal.Add(GetStringElement(Any.Word()))));
+                    }
+                    ));
+                }
+
+                return collectionElement;
             }
 
             private static XElement NavigationPropertyPathCollection(IEnumerable<string> navigationPropertyPaths)
             {
-                XElement collectionElement = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Collection_element);
+                XElement collectionElement = GetCollectionElement();
 
                 if (navigationPropertyPaths == null)
                     return collectionElement;
 
                 foreach (var navigationPropertyPath in navigationPropertyPaths)
                 {
-                    XElement navigationPropertyPathElement = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.NavigationPropertyPath_element);
+                    XElement navigationPropertyPathElement = XElement.Parse(R.NavigationPropertyPath_element);
                     navigationPropertyPathElement.Add(navigationPropertyPath);
                     collectionElement.Add(navigationPropertyPathElement);
                 }
@@ -268,50 +494,67 @@ namespace Microsoft.Its.Recipes
                 return collectionElement;
             }
 
+            private static XElement PropertyPathCollection(IEnumerable<string> propertyPaths)
+            {
+                XElement collectionElement = GetCollectionElement();
+
+                if (propertyPaths == null)
+                    return collectionElement;
+
+                foreach (var propertyPath in propertyPaths)
+                {
+                    XElement propertyPathElement = XElement.Parse(R.PropertyPath_element);
+                    propertyPathElement.Add(propertyPath);
+                    collectionElement.Add(propertyPathElement);
+                }
+
+                return collectionElement;
+            }
+
+            private static XElement GetAnnotationElement(string term)
+            {
+                string annotation = string.Format(R.Annotation_element, term);
+
+                return XElement.Parse(annotation);
+            }
+
+            private static XElement GetCollectionElement()
+            {
+                return XElement.Parse(R.Collection_element);
+            }
+
             public static XElement Edmx(Action<XElement> config = null)
             {
-                XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Edmx_element);
+                XElement element = XElement.Parse(R.Edmx_element);
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement EntityContainer(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string entityContainerString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.EntityContainer_element, pascalCaseName);
+                var element = GetElement(R.EntityContainer_element);
 
-                XElement element = XElement.Parse(entityContainerString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement EntitySet(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string entitySetString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.EntitySet_element, pascalCaseName);
+                var element = GetElement(R.EntitySet_element);
 
-                XElement element = XElement.Parse(entitySetString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement EntityType(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string entityTypeString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.EntityType_element, pascalCaseName);
+                var element = GetElement(R.EntityType_element);
 
-                XElement element = XElement.Parse(entityTypeString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
@@ -321,32 +564,24 @@ namespace Microsoft.Its.Recipes
                 return EntityType(entityType =>
                 {
                     entityType.AddAttribute("BaseType", baseType);
-                    if (config != null) config(entityType);
+                    config?.Invoke(entityType);
                 });
             }
 
             public static XElement EnumType(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string enumTypeString = string.Format(ODataReader.v4UnitTests.Properties.Resources.EnumType_element,
-                    pascalCaseName);
+                var element = GetElement(R.EnumType_element);
 
-                XElement element = XElement.Parse(enumTypeString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement TypeDefinitionType(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string typeDefinitionTypeString = string.Format(ODataReader.v4UnitTests.Properties.Resources.TypeDefintionType_element,
-                    pascalCaseName);
+                var element = GetElement(R.TypeDefintionType_element);
 
-                XElement element = XElement.Parse(typeDefinitionTypeString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
@@ -354,12 +589,11 @@ namespace Microsoft.Its.Recipes
             public static XElement Function(Action<XElement> config = null)
             {
                 string pascalCaseName = PascalCaseName(Int(1, 3));
-                string functionString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Function_element, pascalCaseName);
+                string functionString = string.Format(R.Function_element, pascalCaseName);
 
                 XElement element = XElement.Parse(functionString);
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
@@ -369,83 +603,61 @@ namespace Microsoft.Its.Recipes
                 return Function(function =>
                 {
                     function.Add(ReturnType(returnType));
-                    if (config != null) config(function);
+                    config?.Invoke(function);
                 });
             }
             public static XElement FunctionImport(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string functionImportString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.FunctionImport_element, pascalCaseName);
+                var element = GetElement(R.FunctionImport_element);
 
-                XElement element = XElement.Parse(functionImportString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement Key(Action<XElement> config = null)
             {
-                XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Key_element);
+                XElement element = XElement.Parse(R.Key_element);
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement Member(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string memberString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Member_element, pascalCaseName);
+                var element = GetElement(R.Member_element);
 
-                XElement element = XElement.Parse(memberString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement NavigationProperty(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string navigationPropertyString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.NavigationProperty_element,
-                        pascalCaseName);
+                var element = GetElement(R.NavigationProperty_element);
 
-                XElement element = XElement.Parse(navigationPropertyString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement NavigationProperty(string type, Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string navigationPropertyString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.NavigationProperty_element,
-                        pascalCaseName);
-
-                XElement element = XElement.Parse(navigationPropertyString);
+                var element = GetElement(R.NavigationProperty_element);
 
                 element.AddAttribute("Type", type);
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement Parameter(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string parameterString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Parameter_element, pascalCaseName);
+                var element = GetElement(R.Parameter_element);
 
-                XElement element = XElement.Parse(parameterString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
@@ -455,19 +667,15 @@ namespace Microsoft.Its.Recipes
                 return Parameter(parameter =>
                 {
                     parameter.AddAttribute("Type", type);
-                    if (config != null) config(parameter);
+                    config?.Invoke(parameter);
                 });
             }
 
             public static XElement Property(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string propertyString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Property_element, pascalCaseName);
+                var element = GetElement(R.Property_element);
 
-                XElement element = XElement.Parse(propertyString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
@@ -477,7 +685,7 @@ namespace Microsoft.Its.Recipes
                 return Property(property =>
                 {
                     property.AddAttribute("Type", type);
-                    if (config != null) config(property);
+                    config?.Invoke(property);
                 });
             }
 
@@ -487,15 +695,15 @@ namespace Microsoft.Its.Recipes
                 {
                     property.AddAttribute("Type", type);
                     property.AddAttribute("Nullable", isNullable);
-                    if (config != null) config(property);
+                    config?.Invoke(property);
                 });
             }
 
             public static XElement PropertyRef(Action<XElement> config = null)
             {
-                XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.PropertyRef_element);
+                XElement element = XElement.Parse(R.PropertyRef_element);
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
@@ -505,36 +713,35 @@ namespace Microsoft.Its.Recipes
                 return PropertyRef(propertyRef =>
                 {
                     propertyRef.AddAttribute("Name", name);
-                    if(config != null) config(propertyRef);
+                    config?.Invoke(propertyRef);
                 });
             }
 
             public static XElement PropertyValue(string propertyName, Action<XElement> config = null)
             {
-                string propertyString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.PropertyValue_element, propertyName);
+                string propertyString = string.Format(R.PropertyValue_element, propertyName);
 
                 XElement element = XElement.Parse(propertyString);
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement Record(Action<XElement> config = null)
             {
-                XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.Record_element);
+                XElement element = XElement.Parse(R.Record_element);
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
 
             public static XElement ReturnType(Action<XElement> config = null)
             {
-                XElement element = XElement.Parse(ODataReader.v4UnitTests.Properties.Resources.ReturnType_element);
+                XElement element = XElement.Parse(R.ReturnType_element);
 
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
@@ -544,19 +751,16 @@ namespace Microsoft.Its.Recipes
                 return ReturnType(returnType =>
                 {
                     returnType.AddAttribute("Type", type);
-                    if (config != null) config(returnType);
+                    config?.Invoke(returnType);
                 });
             }
 
             public static XElement Schema(Action<XElement> config = null)
             {
                 string pascalCaseName = PascalCaseName(Int(1, 3));
-                string schemaString = string.Format(ODataReader.v4UnitTests.Properties.Resources.Schema_element,
-                    pascalCaseName);
+                var element = GetElement(R.Schema_element);
 
-                XElement element = XElement.Parse(schemaString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
             }
@@ -570,15 +774,19 @@ namespace Microsoft.Its.Recipes
 
             public static XElement Singleton(Action<XElement> config = null)
             {
-                string pascalCaseName = PascalCaseName(Int(1, 3));
-                string singletonString =
-                    string.Format(ODataReader.v4UnitTests.Properties.Resources.Singleton_element, pascalCaseName);
+                var element = GetElement(R.Singleton_element);
 
-                XElement element = XElement.Parse(singletonString);
-
-                if (config != null) config(element);
+                config?.Invoke(element);
 
                 return element;
+            }
+
+            private static XElement GetElement(string elementFormat)
+            {
+                string pascalCaseName = PascalCaseName(Int(1, 3));
+                string elementString = string.Format(elementFormat, pascalCaseName);
+
+                return XElement.Parse(elementString);
             }
         }
     }

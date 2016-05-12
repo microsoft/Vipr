@@ -20,15 +20,11 @@ namespace Vipr.Core.CodeModel
         /// </summary>
         public string LongDescription { get; set; }
 
-        /// <summary>
-        /// A collection of VocabularyAnnotations that have been applied to this OdcmAnnotatedObject.
-        /// </summary>
-        public List<OdcmVocabularyAnnotation> Annotations { get; set; }
+        public OdcmProjection Projection { get; set; }
 
         public OdcmObject(string name)
         {
             Name = name;
-            Annotations = new List<OdcmVocabularyAnnotation>();
         }
 
         public virtual string CanonicalName()

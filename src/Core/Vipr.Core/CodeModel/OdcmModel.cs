@@ -49,15 +49,9 @@ namespace Vipr.Core.CodeModel
         public void AddType(OdcmType type)
         {
             string @namespace = type.Namespace.Name;
-            OdcmNamespace odcmNamespace = null;
-            foreach (OdcmNamespace candidate in Namespaces)
-            {
-                if (string.Equals(candidate.Name, @namespace))
-                {
-                    odcmNamespace = candidate;
-                    break;
-                }
-            }
+
+            OdcmNamespace odcmNamespace = Namespaces.FirstOrDefault(x => x.Name == @namespace);
+
             if (odcmNamespace == null)
             {
                 odcmNamespace = new OdcmNamespace(@namespace);
@@ -73,34 +67,16 @@ namespace Vipr.Core.CodeModel
         {
             string canonicalName = OdcmObject.MakeCanonicalName(name, @namespace);
 
-            foreach (OdcmType candidate in _Types)
-            {
-                if (candidate.CanonicalName().Equals(canonicalName, StringComparison.InvariantCulture))
-                {
-                    type = candidate as T;
-                    return true;
-                }
-            }
+            var odcmType = _Types.FirstOrDefault(t => t.CanonicalName().Equals(canonicalName, StringComparison.InvariantCulture));
 
-            type = null;
-
-            return false;
+            type = odcmType as T;
+            return type != null;
         }
 
         public bool TryResolveNamespace(string @namespace, out OdcmNamespace odcmNamespace)
         {
-            foreach (OdcmNamespace candidate in Namespaces)
-            {
-                if (candidate.CanonicalName().Equals(@namespace, StringComparison.InvariantCulture))
-                {
-                    odcmNamespace = candidate;
-                    return true;
-                }
-            }
-
-            odcmNamespace = null;
-
-            return false;
+            odcmNamespace = Namespaces.FirstOrDefault(x => x.CanonicalName().Equals(@namespace, StringComparison.InvariantCulture));
+            return odcmNamespace != null;
         }
     }
 

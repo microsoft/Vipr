@@ -4,14 +4,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Vipr.Core.CodeModel;
+using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
 namespace Vipr.Writer.CSharp.Lite
 {
     public static class WriterExtensions
     {
+        private static IDictionary<string, string> _wellKnownCapabilityNames = new Dictionary<string, string>()
+        {
+            [TermNames.Update] = "Upd",
+            [TermNames.UpdateLink] = "Ulk",
+            [TermNames.Delete] = "Del",
+            [TermNames.DeleteLink] = "Dlk",
+            [TermNames.Insert] = "Ins",
+//            [TermNames.OdcmInsertLinkTerm] = "Ilk",    // not used by the writer
+            [TermNames.Expand] = "Exp",
+//            [TermNames.OdcmExpandLinkTerm] = "Elk",    // not used by the writer
+        };
+
         public static string ToParametersString(this IEnumerable<Parameter> parameters)
         {
             if (parameters == null)
@@ -58,6 +69,56 @@ namespace Vipr.Writer.CSharp.Lite
             }
 
             return String.Join(" && ", sb);
+        }
+
+        public static OdcmBooleanCapability SetBooleanCapability(this OdcmProjection projection, string term, bool value)
+        {
+            var capability = projection.Capabilities
+                                    .SingleOrDefault(c => c.TermName == term)
+                                    as OdcmBooleanCapability;
+
+            if (capability != null)
+            {
+                capability.Value = value;
+                return capability;
+            }
+
+            capability = new OdcmBooleanCapability(value, term);
+
+            if (!value)
+            {
+                projection.Capabilities.Add(capability);
+            }
+
+            return capability;
+        }
+
+        public static string GetProjectionShortForm(this OdcmProjection projection)
+        {
+            var result = string.Empty;
+
+            var capabilities = projection.WellKnownCapabilities
+                                                .OrderBy(c => c.GetShortName());
+
+            foreach (OdcmBooleanCapability capability in capabilities)
+            {
+                if (capability.Value == true)
+                {
+                    result = result + "_" + capability.GetShortName();
+                }
+            }
+
+            return result.Trim('_');
+        }
+
+        public static IEnumerable<OdcmProjection> DistinctProjections(this OdcmType odcmType)
+        {
+            return odcmType.Projections;
+        }
+
+        public static string GetShortName(this OdcmCapability capability)
+        {
+            return _wellKnownCapabilityNames[OdcmProjection.ToInternal(capability.TermName)];
         }
     }
 }

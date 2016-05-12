@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Vipr.Core.CodeModel.Vocabularies.Capabilities
+namespace Vipr.Core.CodeModel.Vocabularies.Restrictions
 {
     /*      <Term Name="UpdateRestrictions" Type="Capabilities.UpdateRestrictionsType" AppliesTo="EntitySet">
         <Annotation Term="Core.Description" String="Restrictions on update operations" />

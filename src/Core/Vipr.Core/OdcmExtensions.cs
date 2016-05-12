@@ -69,21 +69,69 @@ namespace Vipr.Core
                 .Where(p => p.CallingConvention == OdcmCallingConvention.InHttpMessageBody);
         }
 
-        public static string GetProjectionShortForm(this OdcmProjection projection)
+        public static bool SupportsInsert(this OdcmObject odcmObject)
         {
-            var result = string.Empty;
+            return odcmObject.Projection.SupportsInsert();
+        }
 
-            var capabilities = projection.Capabilities.OrderBy(c => c.ShortName);
+        public static bool SupportsUpdate(this OdcmObject odcmObject)
+        {
+            return odcmObject.Projection.SupportsUpdate();
+        }
 
-            foreach (var capability in capabilities)
-            {
-                if (capability is OdcmBooleanCapability && ((OdcmBooleanCapability)capability).Value)
-                {
-                    result = result + "_" + capability.ShortName;
-                }
-            }
+        public static bool SupportsUpdateLink(this OdcmObject odcmObject)
+        {
+            return odcmObject.Projection.SupportsUpdateLink();
+        }
 
-            return result.Trim('_');
+        public static bool SupportsDelete(this OdcmObject odcmObject)
+        {
+            return odcmObject.Projection.SupportsDelete();
+        }
+
+        public static bool SupportsDeleteLink(this OdcmObject odcmObject)
+        {
+            return odcmObject.Projection.SupportsDeleteLink();
+        }
+
+        public static bool SupportsExpand(this OdcmObject odcmObject)
+        {
+            return odcmObject.Projection.SupportsExpand();
+        }
+
+        public static bool? Supports(this OdcmObject odcmObject, string term)
+        {
+            return odcmObject.Projection.Supports(term);
+        }
+
+        public static bool IsOneOf(this OdcmObject odcmObject, string term)
+        {
+            return odcmObject.Projection.IsOneOf(term);
+        }
+
+        public static bool? BooleanValueOf(this OdcmObject odcmObject, string term)
+        {
+            return odcmObject.Projection.BooleanValueOf(term, odcmObject);
+        }
+
+        public static string StringValueOf(this OdcmObject odcmObject, string term)
+        {
+            return odcmObject.Projection.StringValueOf(term, odcmObject);
+        }
+
+        public static IEnumerable<string> EnumValueOf(this OdcmObject odcmObject, string term)
+        {
+            return odcmObject.Projection.EnumValueOf(term, odcmObject);
+        }
+
+        public static IEnumerable<string> StringCollectionValueOf(this OdcmObject odcmObject, string term)
+        {
+            return odcmObject.Projection.StringCollectionValueOf(term, odcmObject);
+        }
+
+        public static IEnumerable<object> CollectionValueOf(this OdcmObject odcmObject, string term)
+        {
+            return odcmObject.Projection.CollectionValueOf(term, odcmObject);
         }
     }
 }
