@@ -325,13 +325,13 @@ namespace Vipr.Reader.OData.v4
                     var actionImports = ContainerElementsByKind<IEdmActionImport>(entityContainer, EdmContainerElementKind.ActionImport);
                     foreach (var actionImport in actionImports)
                     {
-                        WriteMethod(odcmClass, actionImport.Action, actionImport);
+                        WriteMethodImport(odcmClass, actionImport.Action, actionImport);
                     }
 
                     var functionImports = ContainerElementsByKind<IEdmFunctionImport>(entityContainer, EdmContainerElementKind.FunctionImport);
                     foreach (var functionImport in functionImports)
                     {
-                        WriteMethod(odcmClass, functionImport.Function, functionImport);
+                        WriteMethodImport(odcmClass, functionImport.Function, functionImport);
                     }
                 }
             }
@@ -351,14 +351,14 @@ namespace Vipr.Reader.OData.v4
                 {
                     var odcmClass = TryResolveType<OdcmEntityClass>(entityType.Name, entityType.Namespace);
 
-                    foreach (var action in actions.Where(element => IsOperationBoundTo(element, entityType)))
+                    foreach (var action in actions.Where(element => IsOperationBoundTo(element, entityType)).GroupBy(e => e.Name))
                     {
-                        WriteMethod(odcmClass, action);
+                        WriteMethodGroup(odcmClass, action);
                     }
 
-                    foreach (var function in functions.Where(element => IsOperationBoundTo(element, entityType)))
+                    foreach (var function in functions.Where(element => IsOperationBoundTo(element, entityType)).GroupBy(e => e.Name))
                     {
-                        WriteMethod(odcmClass, function);
+                        WriteMethodGroup(odcmClass, function);
                     }
                 }
             }
@@ -520,7 +520,27 @@ namespace Vipr.Reader.OData.v4
                 odcmClass.Properties.Add(odcmProperty);
             }
 
-            private void WriteMethod(OdcmClass odcmClass, IEdmOperation operation, IEdmOperationImport operationImport = null)
+            private void WriteMethodGroup(OdcmClass odcmClass, IGrouping<string, IEdmOperation> operations)
+            {
+                var odcmMethod = WriteMethod(odcmClass, operations.First());
+
+                foreach (var operation in operations.Skip(1))
+                {
+                    odcmMethod.Overloads.Add(WriteMethod(odcmClass, operation));
+                }
+
+                odcmClass.Methods.Add(odcmMethod);
+            }
+            private void WriteMethodImport(OdcmClass odcmClass, IEdmOperation operation, IEdmOperationImport operationImport)
+            {
+                var odcmMethod = WriteMethod(odcmClass, operation);
+
+                AddVocabularyAnnotations(odcmMethod, operationImport);
+
+                odcmClass.Methods.Add(odcmMethod);
+            }
+
+            private OdcmMethod WriteMethod(OdcmClass odcmClass, IEdmOperation operation)
             {
                 var parameters = operation.IsBound
                     ? (from parameter in operation.Parameters
@@ -540,13 +560,6 @@ namespace Vipr.Reader.OData.v4
                 };
 
                 AddVocabularyAnnotations(odcmMethod, operation);
-
-                if (operationImport != null)
-                {
-                    AddVocabularyAnnotations(odcmMethod, operationImport);
-                }
-
-                odcmClass.Methods.Add(odcmMethod);
 
                 if (operation.ReturnType != null)
                 {
@@ -573,6 +586,8 @@ namespace Vipr.Reader.OData.v4
 
                     odcmMethod.Parameters.Add(odcmParameter);
                 }
+
+                return odcmMethod;
             }
 
             private void WriteProperty(OdcmClass odcmClass, IEdmProperty property)
