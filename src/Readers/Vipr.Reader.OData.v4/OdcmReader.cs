@@ -219,10 +219,13 @@ namespace Vipr.Reader.OData.v4
 
                     foreach (var enumMember in enumType.Members)
                     {
-                        odcmEnum.Members.Add(new OdcmEnumMember(enumMember.Name)
+                        var odcmEnumMember = new OdcmEnumMember(enumMember.Name)
                         {
                             Value = ((EdmIntegerConstant)enumMember.Value).Value
-                        });
+                        };
+
+                        AddVocabularyAnnotations(odcmEnumMember, enumMember);
+                        odcmEnum.Members.Add(odcmEnumMember);
                     }
                 }
 
