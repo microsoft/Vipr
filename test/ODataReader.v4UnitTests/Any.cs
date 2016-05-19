@@ -175,6 +175,17 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
+            public static XElement StringCapabilityAnnotation(string value, string term, Action<XElement> config = null)
+            {
+                var element = GetAnnotationElement(term);
+
+                element.AddAttribute("String", value);
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
             public static XElement EnumCapabilityAnnotation(IEnumerable<string> values, string term, Action<XElement> config = null)
             {
                 XElement element = GetAnnotationElement(term);
@@ -433,6 +444,42 @@ namespace Microsoft.Its.Recipes
 
                 return element;
             }
+
+            public static XElement OptimisticConcurrencyAnnotation(IEnumerable<string> propertyPaths, Action<XElement> config = null)
+            {
+                var element = GetAnnotationElement(O.Capabilities("OptimisticConcurrency"));
+
+                element.Add(PropertyPathCollection(propertyPaths));
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
+            public static XElement SortRestrictionsAnnotation(bool sortable, 
+                                                    IEnumerable<string> ascendingPropertyPaths, 
+                                                    IEnumerable<string> descendingPropertyPaths,
+                                                    IEnumerable<string> nonSortablePropertyPaths,
+                                                    Action<XElement> config = null)
+            {
+                var element = GetAnnotationElement(O.Capabilities("SortRestrictions"));
+
+                element.Add(Any.Csdl.Record(record =>
+                {
+                    record.Add(Any.Csdl.PropertyValue("Sortable", propertyVal => propertyVal.AddAttribute("Bool", sortable)));
+                    record.Add(Any.Csdl.PropertyValue("AscendingOnlyProperties",
+                        propertyVal => propertyVal.Add(PropertyPathCollection(ascendingPropertyPaths))));
+                    record.Add(Any.Csdl.PropertyValue("DescendingOnlyProperties",
+                        propertyVal => propertyVal.Add(PropertyPathCollection(descendingPropertyPaths))));
+                    record.Add(Any.Csdl.PropertyValue("NonSortableProperties",
+                        propertyVal => propertyVal.Add(PropertyPathCollection(nonSortablePropertyPaths))));
+                }));
+
+                config?.Invoke(element);
+
+                return element;
+            }
+
             private static XElement StringCollection(IEnumerable<string> values)
             {
                 XElement collectionElement = GetCollectionElement();
