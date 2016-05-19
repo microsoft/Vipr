@@ -187,6 +187,9 @@ namespace ODataReader.v4UnitTests
         public void When_Property_has_Annotation_Then_its_OdcmProperty_has_matching_Capability()
         {
             string term = OData.Core("Computed");
+            string enumType = OData.Capabilities("Permission/");
+            string enumTerm = OData.Core("Permissions");
+            string stringTerm = OData.Core("MediaType");
 
             foreach (bool value in FalseTrue())
             {
@@ -194,8 +197,14 @@ namespace ODataReader.v4UnitTests
 
                 var propertyElement = Any.Csdl.Property("Collection(Edm.String)");
 
-                propertyElement.Add(Any.Csdl.InsertRestrictionAnnotation(value));
-                propertyElement.Add(Any.Csdl.BooleanCapabilityAnnotation(value, term));
+                propertyElement.SetAnnotation(Any.Csdl.InsertRestrictionAnnotation(value));
+                propertyElement.SetAnnotation(Any.Csdl.BooleanCapabilityAnnotation(value, term));
+
+                var memberName = Any.Word();
+                propertyElement.SetAnnotation(Any.Csdl.EnumCapabilityAnnotation(new List<string> { enumType + memberName }, enumTerm));
+
+                var stringValue = Any.Word();
+                propertyElement.SetAnnotation(Any.Csdl.StringCapabilityAnnotation(stringValue, stringTerm));
 
                 entityTypeElement.Add(propertyElement);
 
@@ -214,6 +223,15 @@ namespace ODataReader.v4UnitTests
                 odcmProperty.BooleanValueOf(term)
                     .Should()
                     .Be(value, "Because this property was appropriately annotated");
+
+                odcmProperty.EnumValueOf(enumTerm)
+                    .First()
+                    .Should()
+                    .BeEquivalentTo(memberName, "Because this property was appropriately annotated");
+
+                odcmProperty.StringValueOf(stringTerm)
+                    .Should()
+                    .Be(stringValue, "Because this property was appropriately annotated");
             }
         }
 
@@ -285,6 +303,23 @@ namespace ODataReader.v4UnitTests
 
                 VerifyTypeProjections(odcmEntitySet);
             }
+        }
+
+        [Fact]
+        public void When_EntitySet_has_StringCapability_Then_OdcmEntitySet_has_same_Capability()
+        {
+            string term = OData.Capabilities("ResourcePath");
+            string value = Any.Word();
+
+            var entitySetElement = GetRandomEntitySetElement();
+
+            entitySetElement.SetAnnotation(Any.Csdl.StringCapabilityAnnotation(value, term));
+
+            var odcmEntitySet = GetOdcmEntitySet(GetOdcmModel(), entitySetElement.GetName());
+
+            odcmEntitySet.StringValueOf(term)
+            .Should()
+            .Be(value, "Because an entity set with this annotation should have matching capability");
         }
 
         [Fact]
@@ -493,6 +528,69 @@ namespace ODataReader.v4UnitTests
                     .BeTrue("Because a navigation property should belong to the specified restriction collection");
 
                 odcmProperty.IsOneOf("NonFilterableProperties")
+                    .Should()
+                    .BeTrue("Because a navigation property should belong to the specified restriction collection");
+            }
+        }
+
+        [Fact]
+        public void When_EntitySet_is_annotated_with_OptimisticConcurrency_Then_Its_OdcmProperty_has_matching_Capabilities()
+        {
+            var entitySetElement = _entitySetToEntityTypeMapping.Keys.RandomElement();
+            var entityTypeElement = _entitySetToEntityTypeMapping[entitySetElement];
+            var propertyName = GetRandomProperty(entityTypeElement);
+
+            entitySetElement.SetAnnotation(Any.Csdl.OptimisticConcurrencyAnnotation(new List<string> { propertyName }));
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntitySet = GetOdcmEntitySet(odcmModel, entitySetElement.GetName());
+            var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElement.GetName());
+            var odcmProperty = GetOdcmProperty(odcmEntityType, propertyName);
+
+            odcmProperty.IsOneOf("OptimisticConcurrency")
+                .Should()
+                .BeTrue("Because a navigation property should belong to the specified restriction collection");
+        }
+
+        [Fact]
+        public void When_EntitySet_is_annotated_with_SortRestrictions_Then_Its_OdcmProperty_has_matching_Capabilities()
+        {
+            foreach (bool value in FalseTrue())
+            {
+                var entitySetElement = _entitySetToEntityTypeMapping.Keys.RandomElement();
+                var entityTypeElement = _entitySetToEntityTypeMapping[entitySetElement];
+                var propertyName1 = GetRandomProperty(entityTypeElement);
+                var propertyName2 = GetRandomProperty(entityTypeElement);
+                var propertyName3 = GetRandomProperty(entityTypeElement);
+
+                entitySetElement.SetAnnotation(Any.Csdl.SortRestrictionsAnnotation(value,
+                                                                    new List<string> { propertyName1 },
+                                                                    new List<string> { propertyName2 },
+                                                                    new List<string> { propertyName3 }
+                                                                    ));
+
+                var odcmModel = GetOdcmModel();
+
+                var odcmEntitySet = GetOdcmEntitySet(odcmModel, entitySetElement.GetName());
+                var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElement.GetName());
+                var odcmProperty1 = GetOdcmProperty(odcmEntityType, propertyName1);
+                var odcmProperty2 = GetOdcmProperty(odcmEntityType, propertyName2);
+                var odcmProperty3 = GetOdcmProperty(odcmEntityType, propertyName3);
+
+                odcmEntitySet.BooleanValueOf("Sortable")
+                    .Should()
+                    .Be(value, "Because entity set should support the specified capability");
+
+                odcmProperty1.IsOneOf("AscendingOnlyProperties")
+                    .Should()
+                    .BeTrue("Because a navigation property should belong to the specified restriction collection");
+
+                odcmProperty2.IsOneOf("DescendingOnlyProperties")
+                    .Should()
+                    .BeTrue("Because a navigation property should belong to the specified restriction collection");
+
+                odcmProperty3.IsOneOf("NonSortableProperties")
                     .Should()
                     .BeTrue("Because a navigation property should belong to the specified restriction collection");
             }
