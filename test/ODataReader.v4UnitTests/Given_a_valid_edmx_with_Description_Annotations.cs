@@ -29,15 +29,24 @@ namespace ODataReader.v4UnitTests
             var enumName = string.Empty;            
             var description = Any.Paragraph(Any.Int(10, 20));
             var longDescription = Any.Paragraph(Any.Int(15, 25));
+            var memberDescription = Any.Paragraph(Any.Int(10, 20));
+            var memberLongDescription = Any.Paragraph(Any.Int(15, 25));
 
             var edmxElement = Any.Csdl.EdmxToSchema(schema =>
             {
                 schema.Add(Any.Csdl.EnumType(enumType =>
-                {                    
+                {
                     enumName = enumType.Attribute("Name").Value;
                     enumType.Add(Any.Csdl.DescriptionAnnotation(description));
                     enumType.Add(Any.Csdl.LongDescriptionAnnotation(longDescription));
+
+                    enumType.Add(Any.Csdl.Member(enumMember =>
+                    {
+                        enumMember.Add(Any.Csdl.DescriptionAnnotation(memberDescription));
+                        enumMember.Add(Any.Csdl.LongDescriptionAnnotation(memberLongDescription));
+                    }));
                 }));
+
                 schema.Add(Any.Csdl.EntityContainer());
                 schemaNamespace = schema.Attribute("Namespace").Value;
             });            
@@ -54,6 +63,15 @@ namespace ODataReader.v4UnitTests
             odcmEnum.LongDescription.
                 Should().
                 BeEquivalentTo(longDescription, "because EnumType long description annotation should be captured in OdcmObject");
+
+            var odcEnumMember = odcmEnum.Members[0];
+
+            odcEnumMember.Description.
+                Should().
+                BeEquivalentTo(memberDescription, "because EnumType member description annotation should be captured in OdcmObject");
+            odcEnumMember.LongDescription.
+                Should().
+                BeEquivalentTo(memberLongDescription, "because EnumType member long description annotation should be captured in OdcmObject");
         }
 
         [Fact]
