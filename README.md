@@ -9,6 +9,10 @@
 [issues-closed-image]: http://www.issuestats.com/github/microsoft/vipr/badge/issue
 [issues-closed]: http://www.issuestats.com/github/microsoft/vipr
 
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact
+[opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
 VIPR is an extensible toolkit for generating Web Service Client Libraries. VIPR is 
 designed to be highly extensible, enabling developers to adapt it to read new Web
 Service description languages and to create libraries for new target platforms with ease.
