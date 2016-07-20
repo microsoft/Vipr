@@ -931,6 +931,52 @@ namespace ODataReader.v4UnitTests
         }
 
         [Fact]
+        public void When_EntityType_has_same_annotation_as_its_base_it_overrides_this_annotation()
+        {
+            var entityTypeElement = GetRandomEntityTypeElement();
+
+            var derivedTypeElement = Any.Csdl.EntityType(OdcmObject.MakeCanonicalName(entityTypeElement.GetName(), _schemaNamespace));
+            var derivedTypeElement2 = Any.Csdl.EntityType(OdcmObject.MakeCanonicalName(derivedTypeElement.GetName(), _schemaNamespace));
+
+            _schema.Add(derivedTypeElement);
+            _schema.Add(derivedTypeElement2);
+
+            var baseValue = Any.Bool();
+            var baseValue2 = Any.Bool();
+
+            entityTypeElement.Add(Any.Csdl.UpdateRestrictionAnnotation(baseValue, null));
+            entityTypeElement.Add(Any.Csdl.DeleteRestrictionAnnotation(baseValue2, null));
+
+            derivedTypeElement.Add(Any.Csdl.UpdateRestrictionAnnotation(!baseValue, null));
+            derivedTypeElement2.Add(Any.Csdl.UpdateRestrictionAnnotation(baseValue, null));
+
+            var odcmModel = GetOdcmModel();
+
+            OdcmType odcmDerivedEntityType = GetOdcmEntityType(odcmModel, derivedTypeElement.GetName());
+            OdcmType odcmDerivedEntityType2 = GetOdcmEntityType(odcmModel, derivedTypeElement2.GetName());
+
+            odcmDerivedEntityType.Projection.Capabilities.Count
+                .Should()
+                .Be(2, "Because derived type should have all of the base type annotations");
+
+            odcmDerivedEntityType2.Projection.Capabilities.Count
+                .Should()
+                .Be(2, "Because derived type should have all of the base type annotations");
+
+            odcmDerivedEntityType.SupportsUpdate()
+                .Should()
+                .Be(!baseValue, "Because derived type annotation overrides base one");
+
+            odcmDerivedEntityType2.SupportsUpdate()
+                .Should()
+                .Be(baseValue, "Because derived type annotation overrides base one");
+
+            odcmDerivedEntityType.SupportsDelete()
+                .Should()
+                .Be(baseValue2, "Because derived type inherits base annotations");
+        }
+
+        [Fact]
         public void When_EntitySet_has_multiple_Capability_Annotations_Then_Its_OdcmProperty_has_corresponding_OdcmCapabilities()
         {
             var booleanValue = Any.Bool();

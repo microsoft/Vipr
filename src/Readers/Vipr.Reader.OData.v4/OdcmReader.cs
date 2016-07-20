@@ -131,7 +131,8 @@ namespace Vipr.Reader.OData.v4
                 odcmObject.Description = _edmModel.GetDescriptionAnnotation(annotatableEdmEntity);
                 odcmObject.LongDescription = _edmModel.GetLongDescriptionAnnotation(annotatableEdmEntity);
 
-                var annotations = _edmModel.FindVocabularyAnnotations(annotatableEdmEntity);
+                var annotations = _edmModel.FindVocabularyAnnotations(annotatableEdmEntity)
+                                      .Where(x => x.Term.Name != "Description" && x.Term.Name != "LongDescription");
 
                 if (annotations.Any())
                 {
@@ -681,10 +682,40 @@ namespace Vipr.Reader.OData.v4
             {
                 var parser = new CapabilityAnnotationParser(_propertyCapabilitiesCache);
 
-                foreach (IEdmValueAnnotation annotation in annotations)
+                // Sort annotations by distance of their target from this odcmObject;
+                // as a result, overridden annotations always precede the inherited ones.
+                // This logic supports EntityType inheritance hierarchy.
+                var annotationsOrdered = annotations.OrderBy(x => GetTargetDepth(x.Target as IEdmSchemaElement, odcmObject as OdcmClass));
+
+                foreach (var annotation in annotationsOrdered)
                 {
-                    parser.ParseCapabilityAnnotation(odcmObject, annotation);
+                    if (!(annotation is IEdmValueAnnotation))
+                    {
+                        throw new NotImplementedException($"Annotation of type {annotation.GetType().Name} is not supported");
+                    }
+                    parser.ParseCapabilityAnnotation(odcmObject, annotation as IEdmValueAnnotation);
                 }
+            }
+
+            private static int GetTargetDepth(IEdmSchemaElement target, OdcmClass odcmClass)
+            {
+                int depth = 0;
+
+                if (target != null && odcmClass != null)
+                {
+                    for (; odcmClass.FullName != target.FullName(); odcmClass = odcmClass.Base)
+                    {
+                        if (odcmClass.Base == null)
+                        {
+                            throw new InvalidOperationException($"Could not find target {target.FullName()}");
+                        }
+
+                        ++depth;
+                    }
+
+                }
+
+                return depth;
             }
         }
     }
