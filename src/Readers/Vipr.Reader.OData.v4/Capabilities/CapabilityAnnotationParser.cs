@@ -27,10 +27,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
 
         public void  ParseCapabilityAnnotation(OdcmObject odcmObject, IEdmValueAnnotation annotation)
         {
-            if (annotation.Term.Name != "Description" && annotation.Term.Name != "LongDescription")
-            {
-                TryParseCapability(odcmObject, annotation.Value, annotation.Term.FullName());
-            }
+            TryParseCapability(odcmObject, annotation.Value, annotation.Term.FullName());
         }
 
         private bool HasSpecializedParser(OdcmObject odcmObject, IEdmExpression expression, string annotationTerm)
@@ -205,7 +202,14 @@ namespace Vipr.Reader.OData.v4.Capabilities
         private void AddCapability(OdcmObject odcmObject, OdcmCapability capability)
         {
             var capabilities = _propertyCapabilitiesCache.GetCapabilities(odcmObject);
-            capabilities.Add(capability);
+
+            // Check if this annotation was overridden by the object
+            bool overridden = capabilities.Any(x => x.TermName == capability.TermName);
+
+            if (!overridden)
+            {
+                capabilities.Add(capability);
+            }
         }
 
         private OdcmProperty PropertyFromPathExpression(IEdmPathExpression pathExpression, OdcmObject odcmObject)
