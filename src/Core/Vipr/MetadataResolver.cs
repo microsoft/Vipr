@@ -1,3 +1,4 @@
+using NLog;
 using System;
 using System.IO;
 using System.Net;
@@ -7,19 +8,21 @@ namespace Vipr
 {
     internal class MetadataResolver
     {
+        internal static Logger Logger => LogManager.GetLogger("MetadataResolver");
+
         public static string GetMetadata(string metadataPath)
         {
             string edmxContents = "";
 
             if (Uri.IsWellFormedUriString(metadataPath, UriKind.Absolute))
             {
-                Console.WriteLine("Downloading metadata from {0}.", metadataPath);
+                Logger.Info("Downloading metadata from {0}.", metadataPath);
 
                 edmxContents = LoadEdmxFromWeb(metadataPath);
             }
             else
             {
-                Console.WriteLine("Loading metadata from {0}.", metadataPath);
+                Logger.Info("Loading metadata from {0}.", metadataPath);
 
                 edmxContents = LoadEdmxFromFile(metadataPath);
             }

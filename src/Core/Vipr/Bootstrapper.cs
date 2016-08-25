@@ -8,6 +8,7 @@ using DocoptNet;
 using Newtonsoft.Json;
 using Vipr.Core;
 using Vipr.Core.CodeModel;
+using NLog;
 
 namespace Vipr
 {
@@ -32,19 +33,19 @@ Options:
         private string _metadataPath = "http://services.odata.org/V4/TripPinServiceRW/$metadata";
         private string _outputPath = @".\output";
 
+        internal Logger Logger => LogManager.GetLogger("Bootstrapper");
+
         public void Start(string[] args)
         {
-            Console.WriteLine();
-
             GetCommandLineConfiguration(args);
 
             var edmxContents = MetadataResolver.GetMetadata(_metadataPath);
-
-            Console.WriteLine("Generating Client Library to {0}", Path.GetFullPath(_outputPath));
+            
+            Logger.Info("Generating Client Library to {0}", Path.GetFullPath(_outputPath));
 
             MetadataToClientSource(edmxContents, _outputPath);
 
-            Console.WriteLine("Done.");
+            Logger.Info("Done.");
         }
 
         private void GetCommandLineConfiguration(string[] args)

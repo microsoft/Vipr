@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-using System.Collections.Generic;
-using System.IO;
+using NLog;
+using System;
+
 namespace Vipr
 {
     internal class Program
@@ -11,7 +12,14 @@ namespace Vipr
         {
             var bootstrapper = new Bootstrapper();
 
-            bootstrapper.Start(args);
+            try
+            {
+                bootstrapper.Start(args);
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetLogger("VIPR").Error(ex);
+            }
         }
     }
 }

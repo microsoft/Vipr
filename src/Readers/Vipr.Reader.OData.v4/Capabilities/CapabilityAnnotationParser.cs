@@ -12,13 +12,14 @@ using Microsoft.OData.Edm.Expressions;
 using Vipr.Core;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 using System.Dynamic;
-using System.Diagnostics;
+using NLog;
 
 namespace Vipr.Reader.OData.v4.Capabilities
 {
     public class CapabilityAnnotationParser
     {
         private readonly PropertyCapabilitiesCache _propertyCapabilitiesCache;
+        internal Logger Logger => LogManager.GetLogger("CapabilityAnnotationParser");
 
         public CapabilityAnnotationParser(PropertyCapabilitiesCache propertyCapabilitiesCache)
         {
@@ -73,7 +74,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
             }
             else
             {
-                Logger.Log($"Unsupported annotation expression of kind {expression.ExpressionKind.ToString()} for Term \"{annotationTerm}\"");
+                Logger.Warn($"Unsupported annotation expression of kind {expression.ExpressionKind.ToString()} for Term \"{annotationTerm}\"");
             }
         }
 
@@ -116,7 +117,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
             }
             else
             {
-                Logger.Log($"Unsupported collection of kind {elementExpression.ExpressionKind.ToString()} for Term \"{annotationTerm}\"");
+                Logger.Warn($"Unsupported collection of kind {elementExpression.ExpressionKind.ToString()} for Term \"{annotationTerm}\"");
             }
         }
 
@@ -126,13 +127,13 @@ namespace Vipr.Reader.OData.v4.Capabilities
 
             foreach (IEdmRecordExpression recordExpression in collectionExpression.Elements)
             {
-                records.Add(ParseRecord(recordExpression));
+                records.Add(ParseRecordProperties(recordExpression));
             }
 
             return records;
         }
 
-        private dynamic ParseRecord(IEdmRecordExpression recordExpression)
+        private dynamic ParseRecordProperties(IEdmRecordExpression recordExpression)
         {
             var recordObject = new ExpandoObject();
             var record = recordObject as IDictionary<String, object>;
@@ -147,7 +148,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
                 }
                 else
                 {
-                    Logger.Log($"Unsupported annotation expression of kind {expression.ExpressionKind.ToString()} in a record for property {property.Name}");
+                    Logger.Warn($"Unsupported annotation expression of kind {expression.ExpressionKind.ToString()} in a record for property {property.Name}");
                 }
             }
 
