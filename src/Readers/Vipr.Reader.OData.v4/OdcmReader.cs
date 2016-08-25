@@ -15,8 +15,7 @@ using System.Xml.Linq;
 using Vipr.Reader.OData.v4.Capabilities;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 using Microsoft.OData.Edm.Annotations;
-using System.Xml;
-using System.IO;
+using NLog;
 
 namespace Vipr.Reader.OData.v4
 {
@@ -67,6 +66,8 @@ namespace Vipr.Reader.OData.v4
 
         private class ReaderDaemon
         {
+            internal Logger Logger => LogManager.GetLogger("OdcmReader");
+
             private const string MetadataKey = "$metadata";
 
             private IEdmModel _edmModel = null;
@@ -75,6 +76,8 @@ namespace Vipr.Reader.OData.v4
 
             public OdcmModel GenerateOdcmModel(IEnumerable<TextFile> serviceMetadata)
             {
+                Logger.Info("Generating OdcmModel");
+
                 if (serviceMetadata == null)
                     throw new ArgumentNullException("serviceMetadata");
 
@@ -112,7 +115,36 @@ namespace Vipr.Reader.OData.v4
 
                 _propertyCapabilitiesCache.CreateDistinctProjectionsForWellKnownBooleanTypes();
 
+                LogModelStats();
+
                 return _odcmModel;
+            }
+
+            private void LogModelStats()
+            {
+                var namespaces = _odcmModel.Namespaces.Where(x => x.Name != "Edm");
+                Logger.Info($"Parsed {namespaces.Count()} namespace(s)");
+
+                var types = namespaces.SelectMany(x => x.Types);
+
+                Logger.Info($"Parsed {types.Count()} types overall");
+
+                Logger.Info($"Parsed {types.Count(t => t is OdcmEntityClass)} EntityTypes");
+                Logger.Info($"Parsed {types.Count(t => t is OdcmMediaClass)} EntityTypes with Stream");
+                Logger.Info($"Parsed {types.Count(t => t is OdcmComplexClass)} ComplexTypes");
+                Logger.Info($"Parsed {types.Count(t => t is OdcmEnum)} EnumTypes");
+                Logger.Info($"Parsed {types.Count(t => t is OdcmTypeDefinition)} TypeDefinitions");
+
+                var classes = namespaces.SelectMany(x => x.Classes);
+
+                Logger.Info($"Parsed {classes.Count(t => t.IsAbstract)} abstract EntityTypes");
+
+                var methods = classes.SelectMany(x => x.Methods);
+
+                Logger.Info($"Parsed {methods.Count(m => m.IsFunction)} Functions");
+                Logger.Info($"Parsed {methods.Count(m => !m.IsFunction)} Actions");
+
+                Logger.Info($"Parsed {_propertyCapabilitiesCache.AnnotatedObjects.Count()} annotated objects");
             }
 
             private void AddPrimitives()
@@ -469,6 +501,11 @@ namespace Vipr.Reader.OData.v4
                 if (!operation.IsBound)
                 {
                     return false;
+                }
+
+                if (!operation.Parameters.Any())
+                {
+                    throw new InvalidOperationException($"No parameters for bound method {operation.Name}");
                 }
 
                 var bindingParameterType = operation.Parameters.First().Type;

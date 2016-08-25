@@ -18,6 +18,14 @@ namespace Vipr.Reader.OData.v4.Capabilities
         private IDictionary<OdcmObject, ICollection<OdcmCapability>> _propertyCache =
             new Dictionary<OdcmObject, ICollection<OdcmCapability>>();
 
+        public IEnumerable<OdcmObject> AnnotatedObjects
+        {
+            get
+            {
+                return _propertyCache.Keys.Where(k => _propertyCache[k].Any());
+            }
+        }
+
         public void Add(OdcmObject property, ICollection<OdcmCapability> capabilities)
         {
             if (property == null) throw new ArgumentNullException("property");

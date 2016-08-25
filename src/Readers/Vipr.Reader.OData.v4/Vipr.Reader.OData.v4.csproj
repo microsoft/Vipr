@@ -41,6 +41,10 @@
       <HintPath>..\..\..\packages\Microsoft.Spatial.6.11.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.Spatial.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NLog.4.3.6\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -54,7 +58,6 @@
     <Compile Include="Capabilities\ODataAnnotationTermMapper.cs" />
     <Compile Include="Capabilities\PropertyCapabilitiesCache.cs" />
     <Compile Include="Capabilities\TermNames.cs" />
-    <Compile Include="Logger.cs" />
     <Compile Include="ODataVocabularyReader.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -71,7 +74,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Vipr.Reader.OData.v4.nuspec" />
   </ItemGroup>
   <ItemGroup>
