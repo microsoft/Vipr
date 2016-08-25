@@ -14,12 +14,12 @@ namespace Vipr.Core.CodeModel
 
         private static IDictionary<string, DefaultProvider> _wellKnownCapabilities = new Dictionary<string, DefaultProvider>()
         {
-            [TermNames.Update] = GetDefaultBooleanCapability,
-            [TermNames.UpdateLink] = GetDefaultNegativeLinkCapability,
-            [TermNames.Delete] = GetDefaultBooleanCapability,
-            [TermNames.DeleteLink] = GetDefaultNegativeLinkCapability,
-            [TermNames.Insert] = GetDefaultBooleanCapability,
-            [TermNames.Expand] = GetDefaultBooleanCapability,
+            { TermNames.Update, GetDefaultBooleanCapability },
+            { TermNames.UpdateLink, GetDefaultNegativeLinkCapability },
+            { TermNames.Delete, GetDefaultBooleanCapability },
+            { TermNames.DeleteLink, GetDefaultNegativeLinkCapability },
+            { TermNames.Insert, GetDefaultBooleanCapability },
+            { TermNames.Expand, GetDefaultBooleanCapability },
         };
 
         public static DefaultProvider UserDefaultCapabilityProvider { get; set; }
