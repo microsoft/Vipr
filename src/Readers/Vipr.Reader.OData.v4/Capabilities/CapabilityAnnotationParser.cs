@@ -19,7 +19,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
     public class CapabilityAnnotationParser
     {
         private readonly PropertyCapabilitiesCache _propertyCapabilitiesCache;
-        internal Logger Logger => LogManager.GetLogger("CapabilityAnnotationParser");
+        internal Logger Logger { get { return LogManager.GetLogger("CapabilityAnnotationParser"); } }
 
         public CapabilityAnnotationParser(PropertyCapabilitiesCache propertyCapabilitiesCache)
         {
