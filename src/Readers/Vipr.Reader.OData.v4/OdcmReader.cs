@@ -66,7 +66,7 @@ namespace Vipr.Reader.OData.v4
 
         private class ReaderDaemon
         {
-            internal Logger Logger => LogManager.GetLogger("OdcmReader");
+            internal Logger Logger { get { return LogManager.GetLogger("OdcmReader"); } }
 
             private const string MetadataKey = "$metadata";
 
