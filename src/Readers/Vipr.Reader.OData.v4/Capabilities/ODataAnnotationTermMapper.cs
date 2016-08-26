@@ -9,12 +9,12 @@ namespace Vipr.Reader.OData.v4.Capabilities
     {
         private static IDictionary<string, string> ODataMap = new Dictionary<string, string>
         {
-            [OdcmTerms.Update] = ODataTermNames.Updatable,
-            [OdcmTerms.UpdateLink] = ODataTermNames.NonUpdatableNavigationProperties,
-            [OdcmTerms.Delete] = ODataTermNames.Deletable,
-            [OdcmTerms.DeleteLink] = ODataTermNames.NonDeletableNavigationProperties,
-            [OdcmTerms.Insert] = ODataTermNames.Insertable,
-            [OdcmTerms.Expand] = ODataTermNames.Expandable,
+            { OdcmTerms.Update, ODataTermNames.Updatable },
+            { OdcmTerms.UpdateLink, ODataTermNames.NonUpdatableNavigationProperties },
+            { OdcmTerms.Delete, ODataTermNames.Deletable },
+            { OdcmTerms.DeleteLink, ODataTermNames.NonDeletableNavigationProperties },
+            { OdcmTerms.Insert, ODataTermNames.Insertable },
+            { OdcmTerms.Expand, ODataTermNames.Expandable },
         };
 
         public string ToExternal(string annotationTerm)
