@@ -143,7 +143,13 @@ namespace Vipr.Core.CodeModel
         public IEnumerable<string> StringCollectionValueOf(string term, OdcmObject odcmObject = null)
         {
             var capability = FindCapability<OdcmCollectionCapability>(term, odcmObject);
-            return capability?.Value.Select(x => x as string);
+            if (capability != null)
+            {
+                //return capability.Value.Select(x => x as string);
+                return capability.Value.Cast<string>();
+            }
+
+            return null;
         }
 
         public bool? Supports(string term, OdcmObject odcmObject = null)
