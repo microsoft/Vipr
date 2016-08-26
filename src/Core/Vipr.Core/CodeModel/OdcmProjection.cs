@@ -193,7 +193,8 @@ namespace Vipr.Core.CodeModel
 
         private static OdcmCapability DefaultCapability(OdcmObject odcmObject, string term)
         {
-            OdcmCapability result = UserDefaultCapabilityProvider?.Invoke(odcmObject, term);
+            var provider = UserDefaultCapabilityProvider;
+            OdcmCapability result = (provider != null) ? provider.Invoke(odcmObject, term) : null;
 
             if (result == null)
             {
@@ -203,6 +204,7 @@ namespace Vipr.Core.CodeModel
                     result = func(odcmObject, term);
                 }
             }
+
             return result;
         }
 
