@@ -145,7 +145,6 @@ namespace Vipr.Core.CodeModel
             var capability = FindCapability<OdcmCollectionCapability>(term, odcmObject);
             if (capability != null)
             {
-                //return capability.Value.Select(x => x as string);
                 return capability.Value.Cast<string>();
             }
 
