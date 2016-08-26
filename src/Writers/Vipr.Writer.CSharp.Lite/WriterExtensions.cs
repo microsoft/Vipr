@@ -13,14 +13,14 @@ namespace Vipr.Writer.CSharp.Lite
     {
         private static IDictionary<string, string> _wellKnownCapabilityNames = new Dictionary<string, string>()
         {
-            [TermNames.Update] = "Upd",
-            [TermNames.UpdateLink] = "Ulk",
-            [TermNames.Delete] = "Del",
-            [TermNames.DeleteLink] = "Dlk",
-            [TermNames.Insert] = "Ins",
-//            [TermNames.OdcmInsertLinkTerm] = "Ilk",    // not used by the writer
-            [TermNames.Expand] = "Exp",
-//            [TermNames.OdcmExpandLinkTerm] = "Elk",    // not used by the writer
+            { TermNames.Update, "Upd" },
+            { TermNames.UpdateLink, "Ulk" },
+            { TermNames.Delete, "Del" },
+            { TermNames.DeleteLink, "Dlk" },
+            { TermNames.Insert, "Ins" },
+//            { TermNames.OdcmInsertLinkTerm, "Ilk" },    // not used by the writer
+            { TermNames.Expand, "Exp" },
+//            { TermNames.OdcmExpandLinkTerm, "Elk" },    // not used by the writer
         };
 
         public static string ToParametersString(this IEnumerable<Parameter> parameters)
