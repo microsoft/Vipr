@@ -66,7 +66,7 @@ namespace Vipr.Reader.OData.v4
 
         private class ReaderDaemon
         {
-            internal Logger Logger => LogManager.GetLogger("OdcmReader");
+            internal Logger Logger { get { return LogManager.GetLogger("OdcmReader"); } }
 
             private const string MetadataKey = "$metadata";
 
@@ -123,28 +123,28 @@ namespace Vipr.Reader.OData.v4
             private void LogModelStats()
             {
                 var namespaces = _odcmModel.Namespaces.Where(x => x.Name != "Edm");
-                Logger.Info($"Parsed {namespaces.Count()} namespace(s)");
+                Logger.Info("Parsed {0} namespace(s)", namespaces.Count());
 
                 var types = namespaces.SelectMany(x => x.Types);
 
-                Logger.Info($"Parsed {types.Count()} types overall");
+                Logger.Info("Parsed {0} types overall", types.Count());
 
-                Logger.Info($"Parsed {types.Count(t => t is OdcmEntityClass)} EntityTypes");
-                Logger.Info($"Parsed {types.Count(t => t is OdcmMediaClass)} EntityTypes with Stream");
-                Logger.Info($"Parsed {types.Count(t => t is OdcmComplexClass)} ComplexTypes");
-                Logger.Info($"Parsed {types.Count(t => t is OdcmEnum)} EnumTypes");
-                Logger.Info($"Parsed {types.Count(t => t is OdcmTypeDefinition)} TypeDefinitions");
+                Logger.Info("Parsed {0} EntityTypes", types.Count(t => t is OdcmEntityClass));
+                Logger.Info("Parsed {0} EntityTypes with Stream", types.Count(t => t is OdcmMediaClass));
+                Logger.Info("Parsed {0} ComplexTypes", types.Count(t => t is OdcmComplexClass));
+                Logger.Info("Parsed {0} EnumTypes", types.Count(t => t is OdcmEnum));
+                Logger.Info("Parsed {0} TypeDefinitions", types.Count(t => t is OdcmTypeDefinition));
 
                 var classes = namespaces.SelectMany(x => x.Classes);
 
-                Logger.Info($"Parsed {classes.Count(t => t.IsAbstract)} abstract EntityTypes");
+                Logger.Info("Parsed {0} abstract EntityTypes", classes.Count(t => t.IsAbstract));
 
                 var methods = classes.SelectMany(x => x.Methods);
 
-                Logger.Info($"Parsed {methods.Count(m => m.IsFunction)} Functions");
-                Logger.Info($"Parsed {methods.Count(m => !m.IsFunction)} Actions");
+                Logger.Info("Parsed {0} Functions", methods.Count(m => m.IsFunction));
+                Logger.Info("Parsed {0} Actions", methods.Count(m => !m.IsFunction));
 
-                Logger.Info($"Parsed {_propertyCapabilitiesCache.AnnotatedObjects.Count()} annotated objects");
+                Logger.Info("Parsed {0} annotated objects", _propertyCapabilitiesCache.AnnotatedObjects.Count());
             }
 
             private void AddPrimitives()
@@ -327,7 +327,7 @@ namespace Vipr.Reader.OData.v4
                         {
                             //TODO: need to create a warning...
                         }
-                        
+
                         odcmClass.Key.Add(property);
                     }
 
@@ -505,7 +505,8 @@ namespace Vipr.Reader.OData.v4
 
                 if (!operation.Parameters.Any())
                 {
-                    throw new InvalidOperationException($"No parameters for bound method {operation.Name}");
+                    throw new InvalidOperationException(
+                        string.Format("No parameters for bound method {0}", operation.Name));
                 }
 
                 var bindingParameterType = operation.Parameters.First().Type;
@@ -531,7 +532,7 @@ namespace Vipr.Reader.OData.v4
                     Type = odcmType,
                     BackLink = odcmProperty
                 };
-                
+
                 _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultEntitySetCapabilities);
 
                 AddVocabularyAnnotations(odcmProperty, entitySet);
@@ -728,7 +729,8 @@ namespace Vipr.Reader.OData.v4
                 {
                     if (!(annotation is IEdmValueAnnotation))
                     {
-                        throw new NotImplementedException($"Annotation of type {annotation.GetType().Name} is not supported");
+                        throw new NotImplementedException(
+                            string.Format("Annotation of type {0} is not supported", annotation.GetType().Name));
                     }
                     parser.ParseCapabilityAnnotation(odcmObject, annotation as IEdmValueAnnotation);
                 }
@@ -744,7 +746,8 @@ namespace Vipr.Reader.OData.v4
                     {
                         if (odcmClass.Base == null)
                         {
-                            throw new InvalidOperationException($"Could not find target {target.FullName()}");
+                            throw new InvalidOperationException(
+                                string.Format("Could not find target {0}", target.FullName()));
                         }
 
                         ++depth;

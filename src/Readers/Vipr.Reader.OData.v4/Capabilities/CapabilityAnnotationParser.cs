@@ -19,7 +19,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
     public class CapabilityAnnotationParser
     {
         private readonly PropertyCapabilitiesCache _propertyCapabilitiesCache;
-        internal Logger Logger => LogManager.GetLogger("CapabilityAnnotationParser");
+        internal Logger Logger { get { return LogManager.GetLogger("CapabilityAnnotationParser"); } }
 
         public CapabilityAnnotationParser(PropertyCapabilitiesCache propertyCapabilitiesCache)
         {
@@ -74,7 +74,10 @@ namespace Vipr.Reader.OData.v4.Capabilities
             }
             else
             {
-                Logger.Warn($"Unsupported annotation expression of kind {expression.ExpressionKind.ToString()} for Term \"{annotationTerm}\"");
+                Logger.Warn(
+                    "Unsupported annotation expression of kind {0} for Term \"{1}\"",
+                    expression.ExpressionKind.ToString(),
+                    annotationTerm);
             }
         }
 
@@ -92,7 +95,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
             {
                 if (recordExpression.Properties.Count(p => p.Value is IEdmPathExpression) == 1)
                 {
-                    // We assume that if a collection element is a record with a single path expression, the rest 
+                    // We assume that if a collection element is a record with a single path expression, the rest
                     // of record properties should be associated with this path expression
                     // (e.g. NavigationRestrictions/RestrictedProperties).
                     ParsePropertyCollection(odcmObject, collectionExpression, annotationTerm);
@@ -117,7 +120,10 @@ namespace Vipr.Reader.OData.v4.Capabilities
             }
             else
             {
-                Logger.Warn($"Unsupported collection of kind {elementExpression.ExpressionKind.ToString()} for Term \"{annotationTerm}\"");
+                Logger.Warn(
+                    "Unsupported collection of kind {0} for Term \"{1}\"",
+                    elementExpression.ExpressionKind.ToString(),
+                    annotationTerm);
             }
         }
 
@@ -148,7 +154,10 @@ namespace Vipr.Reader.OData.v4.Capabilities
                 }
                 else
                 {
-                    Logger.Warn($"Unsupported annotation expression of kind {expression.ExpressionKind.ToString()} in a record for property {property.Name}");
+                    Logger.Warn(
+                        "Unsupported annotation expression of kind {0} in a record for property {1}",
+                        expression.ExpressionKind.ToString(),
+                        property.Name);
                 }
             }
 

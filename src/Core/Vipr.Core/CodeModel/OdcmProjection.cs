@@ -14,12 +14,12 @@ namespace Vipr.Core.CodeModel
 
         private static IDictionary<string, DefaultProvider> _wellKnownCapabilities = new Dictionary<string, DefaultProvider>()
         {
-            [TermNames.Update] = GetDefaultBooleanCapability,
-            [TermNames.UpdateLink] = GetDefaultNegativeLinkCapability,
-            [TermNames.Delete] = GetDefaultBooleanCapability,
-            [TermNames.DeleteLink] = GetDefaultNegativeLinkCapability,
-            [TermNames.Insert] = GetDefaultBooleanCapability,
-            [TermNames.Expand] = GetDefaultBooleanCapability,
+            { TermNames.Update, GetDefaultBooleanCapability },
+            { TermNames.UpdateLink, GetDefaultNegativeLinkCapability },
+            { TermNames.Delete, GetDefaultBooleanCapability },
+            { TermNames.DeleteLink, GetDefaultNegativeLinkCapability },
+            { TermNames.Insert, GetDefaultBooleanCapability },
+            { TermNames.Expand, GetDefaultBooleanCapability },
         };
 
         public static DefaultProvider UserDefaultCapabilityProvider { get; set; }
@@ -122,28 +122,33 @@ namespace Vipr.Core.CodeModel
 
         public bool? BooleanValueOf(string term, OdcmObject odcmObject = null)
         {
-            return FindCapability<OdcmBooleanCapability>(term, odcmObject)?.Value;
+            return FindCapabilityValue<OdcmBooleanCapability, bool?>(term, odcmObject);
         }
 
         public string StringValueOf(string term, OdcmObject odcmObject = null)
         {
-            return FindCapability<OdcmStringCapability>(term, odcmObject)?.Value;
+            return FindCapabilityValue<OdcmStringCapability, string>(term, odcmObject);
         }
 
         public IEnumerable<object> CollectionValueOf(string term, OdcmObject odcmObject = null)
         {
-            return FindCapability<OdcmCollectionCapability>(term, odcmObject)?.Value;
+            return FindCapabilityValue<OdcmCollectionCapability, IList<object>>(term, odcmObject);
         }
 
         public IEnumerable<string> EnumValueOf(string term, OdcmObject odcmObject = null)
         {
-            return FindCapability<OdcmEnumCapability>(term, odcmObject)?.Value;
+            return FindCapabilityValue<OdcmEnumCapability, IEnumerable<string>>(term, odcmObject);
         }
 
         public IEnumerable<string> StringCollectionValueOf(string term, OdcmObject odcmObject = null)
         {
             var capability = FindCapability<OdcmCollectionCapability>(term, odcmObject);
-            return capability?.Value.Select(x => x as string);
+            if (capability != null)
+            {
+                return capability.Value.Cast<string>();
+            }
+
+            return null;
         }
 
         public bool? Supports(string term, OdcmObject odcmObject = null)
@@ -188,7 +193,8 @@ namespace Vipr.Core.CodeModel
 
         private static OdcmCapability DefaultCapability(OdcmObject odcmObject, string term)
         {
-            OdcmCapability result = UserDefaultCapabilityProvider?.Invoke(odcmObject, term);
+            var provider = UserDefaultCapabilityProvider;
+            OdcmCapability result = (provider != null) ? provider.Invoke(odcmObject, term) : null;
 
             if (result == null)
             {
@@ -198,7 +204,19 @@ namespace Vipr.Core.CodeModel
                     result = func(odcmObject, term);
                 }
             }
+
             return result;
+        }
+
+        private U FindCapabilityValue<T, U>(string term, OdcmObject odcmObject = null) where T : OdcmCapability<U>
+        {
+            var capability = FindCapability<T>(term, odcmObject);
+            if (capability != null)
+            {
+                return capability.Value;
+            }
+
+            return default(U);
         }
 
         private T FindCapability<T>(string term, OdcmObject odcmObject = null) where T : OdcmCapability

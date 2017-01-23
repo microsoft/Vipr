@@ -456,8 +456,8 @@ namespace Microsoft.Its.Recipes
                 return element;
             }
 
-            public static XElement SortRestrictionsAnnotation(bool sortable, 
-                                                    IEnumerable<string> ascendingPropertyPaths, 
+            public static XElement SortRestrictionsAnnotation(bool sortable,
+                                                    IEnumerable<string> ascendingPropertyPaths,
                                                     IEnumerable<string> descendingPropertyPaths,
                                                     IEnumerable<string> nonSortablePropertyPaths,
                                                     Action<XElement> config = null)
@@ -494,14 +494,19 @@ namespace Microsoft.Its.Recipes
 
             private static XElement GetStringElement(string value)
             {
-                string stringMember = $"<String xmlns=\"http://docs.oasis-open.org/odata/ns/edm\">{value}</String>";
+                string stringMember = string.Format(
+                    "<String xmlns=\"http://docs.oasis-open.org/odata/ns/edm\">{0}</String>",
+                    value);
 
                 return XElement.Parse(stringMember);
             }
 
             private static XElement GetNavigationTypeElement(string value)
             {
-                string enumMember = $"<EnumMember xmlns=\"http://docs.oasis-open.org/odata/ns/edm\">{O.Capabilities()}NavigationType/{value}</EnumMember>";
+                string enumMember = string.Format(
+                    "<EnumMember xmlns=\"http://docs.oasis-open.org/odata/ns/edm\">{0}NavigationType/{1}</EnumMember>",
+                    O.Capabilities(),
+                    value);
 
                 return XElement.Parse(enumMember);
             }
@@ -814,8 +819,8 @@ namespace Microsoft.Its.Recipes
 
             public static XElement EdmxToSchema(Action<XElement> config = null)
             {
-                return Edmx(edmx => 
-                    edmx.Add(DataServices(dataServices => 
+                return Edmx(edmx =>
+                    edmx.Add(DataServices(dataServices =>
                         dataServices.Add(Schema(config)))));
             }
 

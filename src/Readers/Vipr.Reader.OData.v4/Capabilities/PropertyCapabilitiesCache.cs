@@ -41,7 +41,8 @@ namespace Vipr.Reader.OData.v4.Capabilities
             ICollection<OdcmCapability> capabilities;
             if (!_propertyCache.TryGetValue(property, out capabilities))
             {
-                throw new InvalidOperationException($"Property {property.Name} not found in the cache");
+                throw new InvalidOperationException(
+                    string.Format("Property {0} not found in the cache", property.Name));
             }
 
             return capabilities;
