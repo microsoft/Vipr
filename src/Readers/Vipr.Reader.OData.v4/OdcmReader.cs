@@ -85,7 +85,7 @@ namespace Vipr.Reader.OData.v4
 
                 if (edmxFile == null)
                     throw new ArgumentException(
-                        String.Format("Argument must contain file with RelateivePath \"{0}", MetadataKey),
+                        String.Format("Argument must contain file with RelativePath \"{0}", MetadataKey),
                         "serviceMetadata");
 
                 var edmx = XElement.Parse(edmxFile.Contents);
@@ -151,7 +151,14 @@ namespace Vipr.Reader.OData.v4
             {
                 foreach (var entry in PrimitiveTypes)
                 {
-                    _odcmModel.AddType(new OdcmPrimitiveType(entry[1], OdcmNamespace.GetWellKnownNamespace(entry[0])));
+                    try
+                    {
+                        _odcmModel.AddType(new OdcmPrimitiveType(entry[1], OdcmNamespace.GetWellKnownNamespace(entry[0])));
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                 }
             }
 
@@ -327,7 +334,7 @@ namespace Vipr.Reader.OData.v4
                         {
                             //TODO: need to create a warning...
                         }
-                        
+
                         odcmClass.Key.Add(property);
                     }
 
@@ -343,7 +350,14 @@ namespace Vipr.Reader.OData.v4
                         Type = odcmClass
                     };
 
-                    _propertyCapabilitiesCache.Add(odcmClass, new List<OdcmCapability>());
+                    try
+                    {
+                        _propertyCapabilitiesCache.Add(odcmClass, new List<OdcmCapability>());
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                     AddVocabularyAnnotations(odcmClass, entityContainer);
 
                     var entitySets = ContainerElementsByKind<IEdmEntitySet>(entityContainer, EdmContainerElementKind.EntitySet);
@@ -518,47 +532,76 @@ namespace Vipr.Reader.OData.v4
 
             private void WriteProperty(OdcmClass odcmClass, IEdmEntitySet entitySet)
             {
-                var odcmType = ResolveType(entitySet.EntityType().Name, entitySet.EntityType().Namespace);
-                var odcmProperty = new OdcmEntitySet(entitySet.Name)
+                try
                 {
-                    Class = odcmClass,
-                    IsCollection = true,
-                    IsLink = true
-                };
+                    var odcmType = ResolveType(entitySet.EntityType().Name, entitySet.EntityType().Namespace);
+                    var odcmProperty = new OdcmEntitySet(entitySet.Name)
+                    {
+                        Class = odcmClass,
+                        IsCollection = true,
+                        IsLink = true
+                    };
 
-                odcmProperty.Projection = new OdcmProjection
+                    odcmProperty.Projection = new OdcmProjection
+                    {
+                        Type = odcmType,
+                        BackLink = odcmProperty
+                    };
+
+                    try
+                    {
+                        _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultEntitySetCapabilities);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
+                    AddVocabularyAnnotations(odcmProperty, entitySet);
+
+                    odcmClass.Properties.Add(odcmProperty);
+                }
+                // If we hit an invalid type, skip this property
+                catch (Exception e)
                 {
-                    Type = odcmType,
-                    BackLink = odcmProperty
-                };
-                
-                _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultEntitySetCapabilities);
-
-                AddVocabularyAnnotations(odcmProperty, entitySet);
-
-                odcmClass.Properties.Add(odcmProperty);
+                    Console.WriteLine(e.Message);
+                }
             }
 
             private void WriteProperty(OdcmClass odcmClass, IEdmSingleton singleton)
             {
-                var odcmType = ResolveType(singleton.EntityType().Name, singleton.EntityType().Namespace);
-                var odcmProperty = new OdcmSingleton(singleton.Name)
+                try
                 {
-                    Class = odcmClass,
-                    IsLink = true
-                };
+                    var odcmType = ResolveType(singleton.EntityType().Name, singleton.EntityType().Namespace);
+                    var odcmProperty = new OdcmSingleton(singleton.Name)
+                    {
+                        Class = odcmClass,
+                        IsLink = true
+                    };
 
-                odcmProperty.Projection = new OdcmProjection
+                    odcmProperty.Projection = new OdcmProjection
+                    {
+                        Type = odcmType,
+                        BackLink = odcmProperty
+                    };
+
+                    try
+                    {
+                        _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultSingletonCapabilities);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
+                    AddVocabularyAnnotations(odcmProperty, singleton);
+
+                    odcmClass.Properties.Add(odcmProperty);
+                }
+                catch (Exception e)
                 {
-                    Type = odcmType,
-                    BackLink = odcmProperty
-                };
-
-                _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultSingletonCapabilities);
-
-                AddVocabularyAnnotations(odcmProperty, singleton);
-
-                odcmClass.Properties.Add(odcmProperty);
+                    Console.WriteLine(e.Message);
+                }
             }
 
             private void WriteMethodGroup(OdcmClass odcmClass, IGrouping<string, IEdmOperation> operations)
@@ -633,33 +676,46 @@ namespace Vipr.Reader.OData.v4
 
             private void WriteProperty(OdcmClass odcmClass, IEdmProperty property)
             {
-                var odcmType = ResolveType(property.Type);
-                var odcmProperty = new OdcmProperty(property.Name)
+                try
                 {
-                    Class = odcmClass,
-                    IsNullable = property.Type.IsNullable,
-                    IsCollection = property.Type.IsCollection(),
-                    ContainsTarget =
-                        property is IEdmNavigationProperty && ((IEdmNavigationProperty)property).ContainsTarget,
-                    IsLink = property is IEdmNavigationProperty,
-                    DefaultValue =
-                        property is IEdmStructuralProperty ?
-                            ((IEdmStructuralProperty)property).DefaultValueString :
-                            null
-                };
+                    var odcmType = ResolveType(property.Type);
+                    var odcmProperty = new OdcmProperty(property.Name)
+                    {
+                        Class = odcmClass,
+                        IsNullable = property.Type.IsNullable,
+                        IsCollection = property.Type.IsCollection(),
+                        ContainsTarget =
+                            property is IEdmNavigationProperty && ((IEdmNavigationProperty)property).ContainsTarget,
+                        IsLink = property is IEdmNavigationProperty,
+                        DefaultValue =
+                            property is IEdmStructuralProperty ?
+                                ((IEdmStructuralProperty)property).DefaultValueString :
+                                null
+                    };
 
-                odcmProperty.Projection = new OdcmProjection
+                    odcmProperty.Projection = new OdcmProjection
+                    {
+                        Type = odcmType,
+                        BackLink = odcmProperty
+                    };
+
+                    try
+                    {
+                        _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultPropertyCapabilities);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
+                    AddVocabularyAnnotations(odcmProperty, property);
+
+                    odcmClass.Properties.Add(odcmProperty);
+                }
+                catch (Exception e)
                 {
-                    Type = odcmType,
-                    BackLink = odcmProperty
-                };
-
-
-                _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultPropertyCapabilities);
-
-                AddVocabularyAnnotations(odcmProperty, property);
-
-                odcmClass.Properties.Add(odcmProperty);
+                    Console.WriteLine(e.Message);
+                }
             }
 
             private OdcmType ResolveType(IEdmTypeReference realizedType)
@@ -679,7 +735,7 @@ namespace Vipr.Reader.OData.v4
                 OdcmType type;
                 if (!_odcmModel.TryResolveType(name, @namespace, out type))
                 {
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException("Error: Invalid type \"" + name + "\"");
                 }
 
                 OdcmTypeDefinition typeDefinition = type as OdcmTypeDefinition;
@@ -709,7 +765,14 @@ namespace Vipr.Reader.OData.v4
             {
                 if (!(odcmObject is OdcmProperty))
                 {
-                     _propertyCapabilitiesCache.Add(odcmObject, OdcmCapability.DefaultEntitySetCapabilities);
+                    try
+                    {
+                        _propertyCapabilitiesCache.Add(odcmObject, OdcmCapability.DefaultEntitySetCapabilities);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                 }
 
                 ParseAllCapabilities(odcmObject, annotations);
