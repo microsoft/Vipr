@@ -173,7 +173,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Logger.Error(e, e.Message);
                 }
             }
         }
@@ -222,7 +222,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Logger.Error(e, e.Message);
             }
         }
 

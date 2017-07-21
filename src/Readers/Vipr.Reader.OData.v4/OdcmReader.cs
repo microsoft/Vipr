@@ -157,7 +157,7 @@ namespace Vipr.Reader.OData.v4
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
+                        Logger.Error(e, e.Message);
                     }
                 }
             }
@@ -356,7 +356,7 @@ namespace Vipr.Reader.OData.v4
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
+                        Logger.Error(e, e.Message);
                     }
                     AddVocabularyAnnotations(odcmClass, entityContainer);
 
@@ -554,7 +554,7 @@ namespace Vipr.Reader.OData.v4
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
+                        Logger.Error(e, e.Message);
                     }
 
                     AddVocabularyAnnotations(odcmProperty, entitySet);
@@ -564,7 +564,7 @@ namespace Vipr.Reader.OData.v4
                 // If we hit an invalid type, skip this property
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Logger.Error(e, e.Message);
                 }
             }
 
@@ -591,7 +591,7 @@ namespace Vipr.Reader.OData.v4
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
+                        Logger.Error(e, e.Message);
                     }
 
                     AddVocabularyAnnotations(odcmProperty, singleton);
@@ -600,7 +600,7 @@ namespace Vipr.Reader.OData.v4
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Logger.Error(e, e.Message);
                 }
             }
 
@@ -705,7 +705,7 @@ namespace Vipr.Reader.OData.v4
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
+                        Logger.Error(e, e.Message);
                     }
 
                     AddVocabularyAnnotations(odcmProperty, property);
@@ -714,7 +714,7 @@ namespace Vipr.Reader.OData.v4
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Logger.Error(e, e.Message);
                 }
             }
 
@@ -771,7 +771,7 @@ namespace Vipr.Reader.OData.v4
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
+                        Logger.Error(e, e.Message);
                     }
                 }
 
