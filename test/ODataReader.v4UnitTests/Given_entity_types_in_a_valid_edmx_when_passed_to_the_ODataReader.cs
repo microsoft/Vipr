@@ -7,6 +7,7 @@ using Vipr.Reader.OData.v4;
 using System.Linq;
 using Vipr.Core.CodeModel;
 using Xunit;
+using System.Xml.Linq;
 
 namespace ODataReader.v4UnitTests
 {
@@ -304,6 +305,69 @@ namespace ODataReader.v4UnitTests
                 .BeAssignableTo<OdcmEntityClass>("because entity types should result in an OdcmClass");
 
             return odcmEntityType;
+        }
+
+        [Fact]
+        public void When_property_is_invalid_it_skips_addition()
+        {
+            var entityNamespace = Any.Csdl.EntityContainer().Attribute("Name").Value.ToString();
+
+            var customPropertyName = string.Empty;
+
+            var testCase = new EdmxTestCase()
+                .AddEntityType(EdmxTestCase.Keys.EntityType, (_, entityType) =>
+                {
+                    var property = Any.Csdl.Property(entityNamespace + ".invalid");
+                    customPropertyName = property.Attribute("Name").Value;
+                    entityType.Add(property);
+                });
+
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+
+            var createdType = odcmModel.EntityContainer.Namespace.Types.Where(x => x.FullName == customPropertyName);
+
+            createdType.Should().BeEmpty("because the invalid property should have been skipped");
+        }
+
+        [Fact]
+        public void When_primitive_does_not_exist_it_skips_addition()
+        {
+            var customPropertyName = string.Empty;
+
+            var testCase = new EdmxTestCase()
+                .AddEntityType(EdmxTestCase.Keys.EntityType, (_, entityType) =>
+                {
+                    var property = Any.Csdl.Property("Edm.Boolean!");
+                    customPropertyName = property.Attribute("Name").Value;
+                    entityType.Add(property);
+                });
+
+            var odcmModel = _odcmReader.GenerateOdcmModel(testCase.ServiceMetadata());
+
+            var createdType = odcmModel.EntityContainer.Namespace.Types.Where(x => x.FullName == customPropertyName);
+
+            var createdPrimitive = odcmModel.EntityContainer.Namespace.Classes.Where(x => x.Properties.Where(y => y.Type.FullName == "Edm.Boolean!").Count() > 0);
+
+            createdType.Should().BeEmpty("because the invalid property should have been skipped");
+            createdPrimitive.Should().BeEmpty("because the invalid primitive should have been skipped");
+        }
+
+        [Fact]
+        public void When_entityset_property_is_invalid_it_skips_addition()
+        {
+
+        }
+
+        [Fact]
+        public void When_singleton_property_is_invalid_it_skips_addition()
+        {
+
+        }
+
+        [Fact]
+        public void When_property_cannot_be_written_to_cache_it_skips_addition()
+        {
+
         }
     }
 }
