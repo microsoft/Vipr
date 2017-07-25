@@ -351,23 +351,5 @@ namespace ODataReader.v4UnitTests
             createdType.Should().BeEmpty("because the invalid property should have been skipped");
             createdPrimitive.Should().BeEmpty("because the invalid primitive should have been skipped");
         }
-
-        [Fact]
-        public void When_entityset_property_is_invalid_it_skips_addition()
-        {
-
-        }
-
-        [Fact]
-        public void When_singleton_property_is_invalid_it_skips_addition()
-        {
-
-        }
-
-        [Fact]
-        public void When_property_cannot_be_written_to_cache_it_skips_addition()
-        {
-
-        }
     }
 }
