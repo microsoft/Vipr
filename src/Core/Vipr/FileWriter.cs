@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Vipr.Core;
 
@@ -35,11 +36,32 @@ namespace Vipr
             await Task.WhenAll(fileTasks);
         }
 
+        /**
+         * Write the file to disk. If the file is locked for editing,
+         * sleep until available
+         */
         public static async Task WriteToDisk(string filePath, string output)
         {
-            StreamWriter sw = new StreamWriter(filePath, false, Encoding.UTF8);
-            await sw.WriteAsync(output);
-            sw.Close();
+            for (int tries = 0; tries < 10; tries++)
+            {
+                StreamWriter sw = null;
+                try
+                {
+                    using (sw = new StreamWriter(filePath, false, Encoding.UTF8))
+                    {
+                        await sw.WriteAsync(output);
+                        break;
+                    }
+                }
+                // If the file is currently locked for editing, sleep
+                // This shouldn't be hit if the generator is running correctly,
+                // however, files are currently being overwritten several times
+                catch (IOException)
+                {
+                    Thread.Sleep(5);
+                }
+            }
+
         }
     }
 }
