@@ -1,16 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 using Vipr.Core;
 
 namespace Vipr
 {
     internal static class FileWriter
     {
-        public static void Write(IEnumerable<TextFile> textFilesToWrite, string outputDirectoryPath = null)
+        public static async void WriteAsync(IEnumerable<TextFile> textFilesToWrite, string outputDirectoryPath = null)
         {
             if (!string.IsNullOrWhiteSpace(outputDirectoryPath) && !Directory.Exists(outputDirectoryPath))
                 Directory.CreateDirectory(outputDirectoryPath);
+
+            var fileTasks = new List<Task>();
 
             foreach (var file in textFilesToWrite)
             {
@@ -26,8 +30,16 @@ namespace Vipr
                 if (!Directory.Exists(Path.GetDirectoryName(filePath)))
                     Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-                File.WriteAllText(filePath, file.Contents);
+                fileTasks.Add(WriteToDisk(filePath, file.Contents));
             }
+            await Task.WhenAll(fileTasks);
+        }
+
+        public static async Task WriteToDisk(string filePath, string output)
+        {
+            StreamWriter sw = new StreamWriter(filePath, false, Encoding.UTF8);
+            await sw.WriteAsync(output);
+            sw.Close();
         }
     }
 }

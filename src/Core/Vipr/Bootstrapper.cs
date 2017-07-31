@@ -116,7 +116,7 @@ Options:
 
         private void MetadataToClientSource(string edmxString, string outputDirectoryPath)
         {
-            FileWriter.Write(MetadataToClientSource(edmxString), outputDirectoryPath);
+            FileWriter.WriteAsync(MetadataToClientSource(edmxString), outputDirectoryPath);
         }
 
         private IEnumerable<TextFile> MetadataToClientSource(string edmxString)
