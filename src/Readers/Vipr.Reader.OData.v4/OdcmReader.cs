@@ -354,9 +354,9 @@ namespace Vipr.Reader.OData.v4
                     {
                         _propertyCapabilitiesCache.Add(odcmClass, new List<OdcmCapability>());
                     }
-                    catch (Exception e)
+                    catch (InvalidOperationException e)
                     {
-                        Logger.Error(e, e.Message);
+                        Logger.Warn("Failed to add property to cahce", e);
                     }
                     AddVocabularyAnnotations(odcmClass, entityContainer);
 
@@ -552,9 +552,9 @@ namespace Vipr.Reader.OData.v4
                     {
                         _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultEntitySetCapabilities);
                     }
-                    catch (Exception e)
+                    catch (InvalidOperationException e)
                     {
-                        Logger.Error(e, e.Message);
+                        Logger.Warn("Failed to add property to cache", e);
                     }
 
                     AddVocabularyAnnotations(odcmProperty, entitySet);
@@ -562,9 +562,9 @@ namespace Vipr.Reader.OData.v4
                     odcmClass.Properties.Add(odcmProperty);
                 }
                 // If we hit an invalid type, skip this property
-                catch (Exception e)
+                catch (InvalidOperationException e)
                 {
-                    Logger.Error(e, e.Message);
+                    Logger.Error("Could not resolve type", e);
                 }
             }
 
@@ -589,18 +589,18 @@ namespace Vipr.Reader.OData.v4
                     {
                         _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultSingletonCapabilities);
                     }
-                    catch (Exception e)
+                    catch (InvalidOperationException e)
                     {
-                        Logger.Error(e, e.Message);
+                        Logger.Warn("Failed to add property to cache", e);
                     }
 
                     AddVocabularyAnnotations(odcmProperty, singleton);
 
                     odcmClass.Properties.Add(odcmProperty);
                 }
-                catch (Exception e)
+                catch (InvalidOperationException e)
                 {
-                    Logger.Error(e, e.Message);
+                    Logger.Error("Could not resolve type", e);
                 }
             }
 
@@ -703,18 +703,18 @@ namespace Vipr.Reader.OData.v4
                     {
                         _propertyCapabilitiesCache.Add(odcmProperty, OdcmCapability.DefaultPropertyCapabilities);
                     }
-                    catch (Exception e)
+                    catch (InvalidOperationException e)
                     {
-                        Logger.Error(e, e.Message);
+                        Logger.Warn("Failed to add property to cache", e);
                     }
 
                     AddVocabularyAnnotations(odcmProperty, property);
 
                     odcmClass.Properties.Add(odcmProperty);
                 }
-                catch (Exception e)
+                catch (InvalidOperationException e)
                 {
-                    Logger.Error(e, e.Message);
+                    Logger.Error("Could not resolve type", e);
                 }
             }
 
@@ -769,9 +769,9 @@ namespace Vipr.Reader.OData.v4
                     {
                         _propertyCapabilitiesCache.Add(odcmObject, OdcmCapability.DefaultEntitySetCapabilities);
                     }
-                    catch (Exception e)
+                    catch (InvalidOperationException e)
                     {
-                        Logger.Error(e, e.Message);
+                        Logger.Warn("Failed to add property to cache", e);
                     }
                 }
 
