@@ -8,12 +8,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Vipr.Core;
+using NLog;
 
 namespace Vipr
 {
     internal static class FileWriter
     {
         private static ConcurrentDictionary<string, AsyncLock> lockDictionary = new ConcurrentDictionary<string, AsyncLock>();
+        internal static Logger Logger => LogManager.GetLogger("FileWriter");
 
         public static void WriteAsync(IEnumerable<TextFile> textFilesToWrite, string outputDirectoryPath = null)
         {
@@ -40,8 +42,15 @@ namespace Vipr
                     !Path.IsPathRooted(filePath))
                     filePath = Path.Combine(Environment.CurrentDirectory, filePath);
 
-                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
-                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                if (!Directory.Exists(Path.GetDirectoryName(filePath))) {
+                    try
+                    {
+                        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                    } catch (IOException e)
+                    {
+                        Logger.Error("Failed to create directory for file", e);
+                    }
+                }
 
                 // Create a new async task to write the file
                 tasks.Add(WriteToDisk(filePath, file.Contents));
