@@ -14,9 +14,14 @@ namespace Vipr
 {
     internal static class FileWriter
     {
-        private static ConcurrentDictionary<string, AsyncLock> lockDictionary = new ConcurrentDictionary<string, AsyncLock>();
+        private static ConcurrentDictionary<string, Lazy<AsyncLock>> lockDictionary = new ConcurrentDictionary<string, Lazy<AsyncLock>>();
         internal static Logger Logger => LogManager.GetLogger("FileWriter");
 
+        /// <summary>
+        /// Write all generated files to disk
+        /// </summary>
+        /// <param name="textFilesToWrite">A list of files to write</param>
+        /// <param name="outputDirectoryPath">The directory to store the output to</param>
         public static void WriteAsync(IEnumerable<TextFile> textFilesToWrite, string outputDirectoryPath = null)
         {
             if (!string.IsNullOrWhiteSpace(outputDirectoryPath) && !Directory.Exists(outputDirectoryPath))
@@ -26,6 +31,7 @@ namespace Vipr
             * This prevents I/O from slowing down
             * from an overload of requests
             */
+            //TODO: Allow this value to be set in the program configuration
             var batchSize = 50;
             var batchCount = 0;
             List<Task> tasks = new List<Task>();
@@ -42,11 +48,13 @@ namespace Vipr
                     !Path.IsPathRooted(filePath))
                     filePath = Path.Combine(Environment.CurrentDirectory, filePath);
 
-                if (!Directory.Exists(Path.GetDirectoryName(filePath))) {
+                if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+                {
                     try
                     {
                         Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-                    } catch (IOException e)
+                    }
+                    catch (IOException e)
                     {
                         Logger.Error("Failed to create directory for file", e);
                     }
@@ -73,11 +81,16 @@ namespace Vipr
             }
         }
 
+        /// <summary>
+        /// Asynchronous method to write a file to disk
+        /// </summary>
+        /// <param name="filePath">The file path and name to write to</param>
+        /// <param name="output">The content to write to the file</param>
+        /// <returns>A write to disk task</returns>
         public static async Task WriteToDisk(string filePath, string output)
         {
-            var lockItem = lockDictionary.GetOrAdd(filePath, new AsyncLock());
-
-            using (await lockItem.LockAsync())
+            var lockItem = lockDictionary.GetOrAdd(filePath, new Lazy<AsyncLock>());
+            using (await lockItem.Value.LockAsync())
             {
                 using (StreamWriter sw = new StreamWriter(filePath, false, Encoding.UTF8))
                 {
