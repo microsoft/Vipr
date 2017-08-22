@@ -13,7 +13,7 @@ namespace ViprCliUnitTests
         [Fact]
         public void When_no_files_are_specified_it_returns()
         {
-            FileWriter.Write(Enumerable.Empty<TextFile>());
+            FileWriter.WriteAsync(Enumerable.Empty<TextFile>());
         }
 
         [Fact]
@@ -23,7 +23,7 @@ namespace ViprCliUnitTests
 
             try
             {
-                FileWriter.Write(files);
+                FileWriter.WriteAsync(files);
                 FileSystemHelpers.ValidateTextFiles(files);
             }
             finally
@@ -41,7 +41,7 @@ namespace ViprCliUnitTests
 
             try
             {
-                FileWriter.Write(files, outputDirectoryPath);
+                FileWriter.WriteAsync(files, outputDirectoryPath);
                 FileSystemHelpers.ValidateTextFiles(files, outputDirectoryPath);
             }
             finally
@@ -59,7 +59,7 @@ namespace ViprCliUnitTests
 
             try
             {
-                FileWriter.Write(files, outputDirectoryPath);
+                FileWriter.WriteAsync(files, outputDirectoryPath);
                 FileSystemHelpers.ValidateTextFiles(files, outputDirectoryPath);
             }
             finally
@@ -87,7 +87,7 @@ namespace ViprCliUnitTests
 
                 Environment.CurrentDirectory = Path.Combine(workingDirectory);
 
-                FileWriter.Write(files, outputDirectory);
+                FileWriter.WriteAsync(files, outputDirectory);
 
                 FileSystemHelpers.ValidateTextFiles(files, outputDirectory);
             }
