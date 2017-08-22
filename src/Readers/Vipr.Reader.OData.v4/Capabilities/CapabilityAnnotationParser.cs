@@ -26,7 +26,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
             _propertyCapabilitiesCache = propertyCapabilitiesCache;
         }
 
-        public void  ParseCapabilityAnnotation(OdcmObject odcmObject, IEdmValueAnnotation annotation)
+        public void ParseCapabilityAnnotation(OdcmObject odcmObject, IEdmValueAnnotation annotation)
         {
             TryParseCapability(odcmObject, annotation.Value, annotation.Term.FullName());
         }
@@ -162,12 +162,18 @@ namespace Vipr.Reader.OData.v4.Capabilities
                 var pathExpression = (IEdmPathExpression) recordExpression.Properties
                                                 .First(p => p.Value is IEdmPathExpression)
                                                 .Value;
-
-                var odcmProperty = SetPathCapability(odcmObject, pathExpression, annotationTerm);
-
-                foreach (var propertyConstructor in recordExpression.Properties.Where(p => !(p.Value is IEdmPathExpression)))
+                try
                 {
-                    TryParseCapability(odcmProperty, propertyConstructor.Value, annotationTerm + "/" + propertyConstructor.Name);
+                    var odcmProperty = SetPathCapability(odcmObject, pathExpression, annotationTerm);
+
+                    foreach (var propertyConstructor in recordExpression.Properties.Where(p => !(p.Value is IEdmPathExpression)))
+                    {
+                        TryParseCapability(odcmProperty, propertyConstructor.Value, annotationTerm + "/" + propertyConstructor.Name);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e, e.Message);
                 }
             }
         }
@@ -202,14 +208,21 @@ namespace Vipr.Reader.OData.v4.Capabilities
 
         private void AddCapability(OdcmObject odcmObject, OdcmCapability capability)
         {
-            var capabilities = _propertyCapabilitiesCache.GetCapabilities(odcmObject);
-
-            // Check if this annotation was overridden by the object
-            bool overridden = capabilities.Any(x => x.TermName == capability.TermName);
-
-            if (!overridden)
+            try
             {
-                capabilities.Add(capability);
+                var capabilities = _propertyCapabilitiesCache.GetCapabilities(odcmObject);
+
+                // Check if this annotation was overridden by the object
+                bool overridden = capabilities.Any(x => x.TermName == capability.TermName);
+
+                if (!overridden)
+                {
+                    capabilities.Add(capability);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e, e.Message);
             }
         }
 
