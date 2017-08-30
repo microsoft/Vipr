@@ -356,7 +356,7 @@ namespace Vipr.Reader.OData.v4
                     }
                     catch (InvalidOperationException e)
                     {
-                        Logger.Warn("Failed to add property to cahce", e);
+                        Logger.Warn("Failed to add property to cache", e);
                     }
                     AddVocabularyAnnotations(odcmClass, entityContainer);
 
