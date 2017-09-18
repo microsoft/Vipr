@@ -92,7 +92,7 @@ namespace Vipr
             var lockItem = lockDictionary.GetOrAdd(filePath, new Lazy<AsyncLock>());
             using (await lockItem.Value.LockAsync())
             {
-                using (StreamWriter sw = new StreamWriter(filePath, false, Encoding.UTF8))
+                using (StreamWriter sw = new StreamWriter(filePath, false, new UTF8Encoding(false)))
                 {
                     await sw.WriteAsync(output);
                 }
