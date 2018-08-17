@@ -3,19 +3,18 @@
 
 using Microsoft.OData.Edm;
 using Microsoft.OData.Edm.Csdl;
-using Microsoft.OData.Edm.Library.Values;
 using Microsoft.OData.Edm.Validation;
-using Vipr.Core;
-using Vipr.Core.CodeModel;
+using Microsoft.OData.Edm.Vocabularies;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
-using Vipr.Reader.OData.v4.Capabilities;
+using Vipr.Core;
+using Vipr.Core.CodeModel;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;
-using Microsoft.OData.Edm.Annotations;
-using NLog;
+using Vipr.Reader.OData.v4.Capabilities;
 
 namespace Vipr.Reader.OData.v4
 {
@@ -92,7 +91,7 @@ namespace Vipr.Reader.OData.v4
 
                 IEnumerable<EdmError> errors;
 
-                if (!EdmxReader.TryParse(edmx.CreateReader(ReaderOptions.None), /*_capabilitiesModel,*/ out _edmModel, out errors))
+                if (!CsdlReader.TryParse(edmx.CreateReader(ReaderOptions.None), /*_capabilitiesModel,*/ out _edmModel, out errors))
                 {
                     Debug.Assert(errors != null, "errors != null");
 
@@ -261,7 +260,7 @@ namespace Vipr.Reader.OData.v4
                     {
                         var odcmEnumMember = new OdcmEnumMember(enumMember.Name)
                         {
-                            Value = ((EdmIntegerConstant)enumMember.Value).Value
+                            Value = (enumMember.Value).Value
                         };
 
                         AddVocabularyAnnotations(odcmEnumMember, enumMember);
@@ -534,8 +533,9 @@ namespace Vipr.Reader.OData.v4
             {
                 try
                 {
+                    var navPropBindings = GetNavigationPropertyBindings(entitySet);
                     var odcmType = ResolveType(entitySet.EntityType().Name, entitySet.EntityType().Namespace);
-                    var odcmProperty = new OdcmEntitySet(entitySet.Name)
+                    var odcmProperty = new OdcmEntitySet(entitySet.Name, navPropBindings)
                     {
                         Class = odcmClass,
                         IsCollection = true,
@@ -568,17 +568,38 @@ namespace Vipr.Reader.OData.v4
                 }
             }
 
+            /// <summary>
+            /// Gets all of the NavigationPropertyBindings from a IEdmNavigationSource. We need these for building correct $ref paths.
+            /// http://docs.oasis-open.org/odata/odata-csdl-xml/v4.01/cs01/odata-csdl-xml-v4.01-cs01.html#sec_BindingPath
+            /// </summary>
+            /// <param name="entitySetOrSingleton">An IEdmSingleton or IEdmEntitySet.</param>
+            /// <returns>A dictionary of Binding Paths and respective Binding Targets.</returns>
+            private Dictionary<string, string> GetNavigationPropertyBindings<T>(T entitySetOrSingleton) where T : IEdmNavigationSource
+            {
+                // NavigationPropertyBindings stored in a dictionary. Each Path MUST be unique.
+                Dictionary<string, string> navPropBindings = new Dictionary<string, string>();
+
+                foreach (IEdmNavigationPropertyBinding navPropBinding in entitySetOrSingleton.NavigationPropertyBindings)
+                {
+                    navPropBindings.Add(navPropBinding.Path.Path, navPropBinding.Target.Name);
+                }
+
+                return navPropBindings;
+            }
+
             private void WriteProperty(OdcmClass odcmClass, IEdmSingleton singleton)
             {
                 try
                 {
-                    var odcmType = ResolveType(singleton.EntityType().Name, singleton.EntityType().Namespace);
-                    var odcmProperty = new OdcmSingleton(singleton.Name)
+                    // Get and set the NavigationPropertyBindings on the OdcmModel that we'll use in the generator.
+                    var navPropBindings = GetNavigationPropertyBindings(singleton);
+                    var odcmProperty = new OdcmSingleton(singleton.Name, navPropBindings)
                     {
                         Class = odcmClass,
                         IsLink = true
                     };
 
+                    var odcmType = ResolveType(singleton.EntityType().Name, singleton.EntityType().Namespace);
                     odcmProperty.Projection = new OdcmProjection
                     {
                         Type = odcmType,
@@ -789,11 +810,11 @@ namespace Vipr.Reader.OData.v4
 
                 foreach (var annotation in annotationsOrdered)
                 {
-                    if (!(annotation is IEdmValueAnnotation))
+                    if (!(annotation is IEdmVocabularyAnnotation))
                     {
                         throw new NotImplementedException($"Annotation of type {annotation.GetType().Name} is not supported");
                     }
-                    parser.ParseCapabilityAnnotation(odcmObject, annotation as IEdmValueAnnotation);
+                    parser.ParseCapabilityAnnotation(odcmObject, annotation as IEdmVocabularyAnnotation);
                 }
             }
 
