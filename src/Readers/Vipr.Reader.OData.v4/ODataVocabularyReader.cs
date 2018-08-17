@@ -1,20 +1,16 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Microsoft.OData.Edm;
+using Microsoft.OData.Edm.Csdl;
+using Microsoft.OData.Edm.Validation;
+using Microsoft.OData.Edm.Vocabularies;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
-
-using Microsoft.OData.Edm;
-using Microsoft.OData.Edm.Annotations;
-using Microsoft.OData.Edm.Csdl;
-using Microsoft.OData.Edm.Evaluation;
-using Microsoft.OData.Edm.Expressions;
-using Microsoft.OData.Edm.Values;
-using Microsoft.OData.Edm.Validation;
 using Vipr.Core.CodeModel;
 
 namespace Vipr.Reader.OData.v4
@@ -42,7 +38,7 @@ namespace Vipr.Reader.OData.v4
             // TODO: As above, Extend / modify this to more clearly support custom annotation registration. 
             // Tracked by https://github.com/Microsoft/vipr/issues/59
             IEnumerable<EdmError> errors;
-            if (!CsdlReader.TryParse(new[] { XmlReader.Create(new StringReader(Vipr.Reader.OData.v4.Properties.Resources.CapabilitiesVocabularies)) }, out _capabilitiesModel, out errors))
+            if (!CsdlReader.TryParse(XmlReader.Create(new StringReader(Vipr.Reader.OData.v4.Properties.Resources.CapabilitiesVocabularies)), out _capabilitiesModel, out errors))
             {
                 throw new InvalidOperationException("Could not load capabilities vocabulary from resources");
             }
@@ -99,12 +95,12 @@ namespace Vipr.Reader.OData.v4
                     var elementType = _registeredVocabularyTypes[odcmAnnotation.Namespace][odcmAnnotation.Name];
 
                     // We have a delayedValue that will get us to the corresponding type of the annotation
-                    if (elementType.SchemaElementKind == EdmSchemaElementKind.ValueTerm && elementType is IEdmValueTerm)
+                    if (elementType.SchemaElementKind == EdmSchemaElementKind.Term && elementType is IEdmTerm)
                     {
-                        var valueTerm = (IEdmValueTerm)elementType;
+                        var valueTerm = (IEdmTerm)elementType;
                         var valueType = valueTerm.Type;
 
-                        var valueAnnotation = annotation as IEdmValueAnnotation;
+                        var valueAnnotation = annotation as IEdmVocabularyAnnotation;
 
                         if (valueAnnotation == null)
                         {

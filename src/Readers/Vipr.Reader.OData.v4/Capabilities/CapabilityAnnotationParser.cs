@@ -1,18 +1,17 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Microsoft.OData.Edm;
+using Microsoft.OData.Edm.Vocabularies;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
-using Microsoft.OData.Edm;
-using Microsoft.OData.Edm.Annotations;
-using Vipr.Core.CodeModel;
-using Microsoft.OData.Edm.Expressions;
 using Vipr.Core;
+using Vipr.Core.CodeModel;
 using Vipr.Core.CodeModel.Vocabularies.Capabilities;
-using System.Dynamic;
-using NLog;
 
 namespace Vipr.Reader.OData.v4.Capabilities
 {
@@ -26,7 +25,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
             _propertyCapabilitiesCache = propertyCapabilitiesCache;
         }
 
-        public void ParseCapabilityAnnotation(OdcmObject odcmObject, IEdmValueAnnotation annotation)
+        public void ParseCapabilityAnnotation(OdcmObject odcmObject, IEdmVocabularyAnnotation annotation)
         {
             TryParseCapability(odcmObject, annotation.Value, annotation.Term.FullName());
         }
