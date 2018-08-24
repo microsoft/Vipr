@@ -1,21 +1,18 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Microsoft.OData.Edm;
+using Microsoft.OData.Edm.Csdl;
+using Microsoft.OData.Edm.Validation;
+using Microsoft.OData.Edm.Vocabularies;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
-
-using Microsoft.OData.Edm;
-using Microsoft.OData.Edm.Annotations;
-using Microsoft.OData.Edm.Csdl;
-using Microsoft.OData.Edm.Evaluation;
-using Microsoft.OData.Edm.Expressions;
-using Microsoft.OData.Edm.Values;
-using Microsoft.OData.Edm.Validation;
 using Vipr.Core.CodeModel;
+using Vipr.Core.CodeModel.Vocabularies.Restrictions;
 
 namespace Vipr.Reader.OData.v4
 {
@@ -42,7 +39,7 @@ namespace Vipr.Reader.OData.v4
             // TODO: As above, Extend / modify this to more clearly support custom annotation registration. 
             // Tracked by https://github.com/Microsoft/vipr/issues/59
             IEnumerable<EdmError> errors;
-            if (!CsdlReader.TryParse(new[] { XmlReader.Create(new StringReader(Vipr.Reader.OData.v4.Properties.Resources.CapabilitiesVocabularies)) }, out _capabilitiesModel, out errors))
+            if (!CsdlReader.TryParse(XmlReader.Create(new StringReader(Vipr.Reader.OData.v4.Properties.Resources.CapabilitiesVocabularies)), out _capabilitiesModel, out errors))
             {
                 throw new InvalidOperationException("Could not load capabilities vocabulary from resources");
             }
@@ -99,12 +96,12 @@ namespace Vipr.Reader.OData.v4
                     var elementType = _registeredVocabularyTypes[odcmAnnotation.Namespace][odcmAnnotation.Name];
 
                     // We have a delayedValue that will get us to the corresponding type of the annotation
-                    if (elementType.SchemaElementKind == EdmSchemaElementKind.ValueTerm && elementType is IEdmValueTerm)
+                    if (elementType.SchemaElementKind == EdmSchemaElementKind.Term && elementType is IEdmTerm)
                     {
-                        var valueTerm = (IEdmValueTerm)elementType;
-                        var valueType = valueTerm.Type;
+                        var term = (IEdmTerm)elementType;
+                        var valueType = term.Type;
 
-                        var valueAnnotation = annotation as IEdmValueAnnotation;
+                        var valueAnnotation = annotation as IEdmVocabularyAnnotation;
 
                         if (valueAnnotation == null)
                         {
@@ -131,41 +128,62 @@ namespace Vipr.Reader.OData.v4
             }
         }
 
+        /// <summary>
+        /// Sets the Odcm restriction object with restriction values.
+        /// </summary>
+        /// <param name="instance">An {object} Vipr.Code.CodeModel.Vocabularies.Restrictions.* object without restrictions set on it.</param>
+        /// <param name="value">Contains the vocabulary values that will be set on the </param>
+        /// <returns>An {object} that represents a Vipr.Code.CodeModel.Vocabularies.Restrictions.* object with restrictions set on it.</returns>
+        internal static object GetInstanceWithProperties(object instance, IEdmValue value)
+        {
+            if (instance == null) return null;
+
+            var instanceType = instance.GetType();
+
+            var structuredValue = (IEdmStructuredValue)value;
+
+            foreach (var propertyValue in structuredValue.PropertyValues)
+            {
+                var fieldName = propertyValue.Name;
+                var property = instanceType.GetProperty(fieldName);
+                var v = propertyValue.Value;
+
+                try
+                {
+                    var res = MapToClr(v, property.PropertyType);
+
+                    property.SetValue(instance, res);
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+            return instance;
+        }
+
+
         // Todo: These methods can be made internal for testing purposes and then this assembly can be modified to be friendly w/ unit test assemblies 
         internal static object MapToClr(IEdmTypeReference valueType, IEdmExpression valueExpression)
         {
             // Evaluate the expression to get IEdmValues 
             var value = _edmEvaluator.Evaluate(valueExpression);
 
-            if (valueType.Definition.TypeKind == EdmTypeKind.Complex && value is IEdmStructuredValue)
+            object instance;
+
+            // Check whether the type is an AmbiguousTypeBinding meaning that it contains compound restrictions.
+            if (valueType.Definition.GetType().Name == "AmbiguousTypeBinding" && value is IEdmStructuredValue)
             {
-                object instance = FetchNewInstanceOfAnnotationComplexType(valueType.Definition);
+                instance = FetchNewInstanceOfAmbiguousBinding(valueType.Definition);
 
-                if (instance == null) return null;
+                return GetInstanceWithProperties(instance, value);
 
-                var instanceType = instance.GetType();
+            }
+            else if (valueType.Definition.TypeKind == EdmTypeKind.Complex && value is IEdmStructuredValue)
+            {
+                instance = FetchNewInstanceOfAnnotationComplexType(valueType.Definition);
 
-                var structuredValue = (IEdmStructuredValue)value;
-
-                foreach (var propertyValue in structuredValue.PropertyValues)
-                {
-                    var fieldName = propertyValue.Name;
-                    var property = instanceType.GetProperty(fieldName);
-                    var v = propertyValue.Value;
-
-                    try
-                    {
-                        var res = MapToClr(v, property.PropertyType);
-
-                        property.SetValue(instance, res);
-                    }
-                    catch
-                    {
-                        return null;
-                    }
-                }
-
-                return instance;
+                return GetInstanceWithProperties(instance, value);
             }
             else
             {
@@ -173,6 +191,8 @@ namespace Vipr.Reader.OData.v4
             }
         }
 
+
+        
         /// <summary>
         ///     Maps an IEdmValue to its corresponding CLR type as an object
         /// </summary>
@@ -399,6 +419,48 @@ namespace Vipr.Reader.OData.v4
                 {
                     // Fetch the appropriate vocabulary instance type from the Vipr.Core CodeModel
                     var t = _viprCore.GetType(string.Format("{0}.{1}", viprCodeModelNamespace, complexType.Name),
+                        throwOnError: true);
+
+                    // Cache an action to call to create this type.
+                    constructor = () => CreateDefaultInstance(t);
+                    _constructorCache[type] = constructor;
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+
+            // Call the cached constructor and return the instance
+            return constructor();
+        }
+
+        private static object FetchNewInstanceOfAmbiguousBinding(IEdmType type)
+        {
+            //We should attempt to cache these constructors so this code does not get called repeatedly
+            Func<object> constructor;
+            if (_constructorCache == null)
+            {
+                _constructorCache = new Dictionary<IEdmType, Func<object>>();
+            }
+
+            if (!_constructorCache.TryGetValue(type, out constructor))
+            {
+                var viprCodeModelNamespace = "Vipr.Core.CodeModel.Vocabularies.Restrictions";
+
+                // We should cache a reference to the assembly rather than obtaining it every time.
+                if (_viprCore == null)
+                {
+                    var viprCoreName =
+                        Assembly.GetExecutingAssembly().GetReferencedAssemblies().First(a => a.Name == "Vipr.Core");
+                    _viprCore = Assembly.Load(viprCoreName);
+                }
+
+                try
+                {
+                    var name = type.GetPropertyByName("Name").ToString();
+                    // Fetch the appropriate vocabulary instance type from the Vipr.Core CodeModel
+                    var t = _viprCore.GetType(string.Format("{0}.{1}", viprCodeModelNamespace, name),
                         throwOnError: true);
 
                     // Cache an action to call to create this type.
