@@ -104,14 +104,6 @@
       <Project>{6d8d8008-0a34-490f-8b38-21d9c8bf25c0}</Project>
       <Name>Vipr.Reader.OData.v4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Writers\Vipr.Writer.CSharp.Lite\Vipr.Writer.CSharp.Lite.csproj">
-      <Project>{d3505caf-50b1-4353-bebf-b61568e54b37}</Project>
-      <Name>Vipr.Writer.CSharp.Lite</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Writers\Vipr.Writer.CSharp\Vipr.Writer.CSharp.csproj">
-      <Project>{ea55efcf-3127-4e85-9a37-a645c06ffcc1}</Project>
-      <Name>Vipr.Writer.CSharp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Vipr.Core\Vipr.Core.csproj">
       <Project>{04c24936-006a-4fd8-a872-ee55588c1cbe}</Project>
       <Name>Vipr.Core</Name>
