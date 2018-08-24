@@ -240,7 +240,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
             }
 
             var pathBuilder = new StringBuilder();
-            foreach (var path in pathExpression.Path)
+            foreach (var path in pathExpression.PathSegments)
             {
                 pathBuilder.AppendFormat("{0}.", path);
             }
