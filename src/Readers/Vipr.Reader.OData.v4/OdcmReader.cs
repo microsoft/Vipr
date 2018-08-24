@@ -169,6 +169,7 @@ namespace Vipr.Reader.OData.v4
                 odcmObject.Description = _edmModel.GetDescriptionAnnotation(annotatableEdmEntity);
                 odcmObject.LongDescription = _edmModel.GetLongDescriptionAnnotation(annotatableEdmEntity);
 
+                // https://github.com/OData/odata.net/blob/75df8f44f2b81f984589790be4885b6ee8946ad0/src/Microsoft.OData.Edm/ExtensionMethods/ExtensionMethods.cs#L196
                 var annotations = _edmModel.FindVocabularyAnnotations(annotatableEdmEntity)
                                       .Where(x => x.Term.Name != "Description" && x.Term.Name != "LongDescription");
 
@@ -244,8 +245,10 @@ namespace Vipr.Reader.OData.v4
 
             private void WriteNamespaceDeep(IEdmModel edmModel, string @namespace)
             {
+                // Get all of the top-level elements defined in the metadata <Schema> element. This includes the EntityContainer.
                 var allElements = AllElementsByNamespace(edmModel.SchemaElements, @namespace).ToList();
 
+                // Get all of the types found in the metadata <Schema> element. No EntityContainer elements.
                 var types = AllTypes(allElements).ToList();
 
                 foreach (var enumType in AllEnumTypes(types))
@@ -316,6 +319,8 @@ namespace Vipr.Reader.OData.v4
                     odcmClass.IsAbstract = entityType.IsAbstract;
                     odcmClass.IsOpen = entityType.IsOpen;
 
+                    // Add all of the structural and navigation properties to the EntityType, which is an OdcmClass.
+                    // Capability annotations are not yet set on the OdcmClass.Properties[x].Projection.
                     foreach (var property in entityType.DeclaredProperties)
                     {
                         WriteProperty(odcmClass, property);
@@ -337,6 +342,7 @@ namespace Vipr.Reader.OData.v4
                         odcmClass.Key.Add(property);
                     }
 
+                    // Add the capability annotations to OdcmClass.Properties[x].Projection
                     AddVocabularyAnnotations(odcmClass, entityType);
                 }
 
@@ -434,7 +440,7 @@ namespace Vipr.Reader.OData.v4
                 T type;
                 if (!_odcmModel.TryResolveType(name, @namespace, out type))
                 {
-                    throw new InvalidOperationException();
+                    throw new InvalidOperationException($"Could not resolve type: {name}");
                 }
                 return type;
             }
