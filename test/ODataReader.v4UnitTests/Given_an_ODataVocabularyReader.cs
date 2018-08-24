@@ -1,27 +1,20 @@
 ﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using FluentAssertions;
+using Microsoft.OData.Edm;
+using Microsoft.OData.Edm.Csdl;
+using Microsoft.OData.Edm.Validation;
+using Microsoft.OData.Edm.Vocabularies;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
-
-using FluentAssertions;
-
-using Microsoft.OData.Edm;
-using Microsoft.OData.Edm.Csdl;
-using Microsoft.OData.Edm.Library;
-using Microsoft.OData.Edm.Library.Values;
-using Microsoft.OData.Edm.Validation;
-using Microsoft.OData.Edm.Values;
-
-using Xunit;
-
-using Vipr.Reader.OData.v4;
-
 using Vipr.Core.CodeModel;
 using Vipr.Core.CodeModel.Vocabularies.Restrictions;
+using Vipr.Reader.OData.v4;
+using Xunit;
 
 namespace ODataReader.v4UnitTests
 {
@@ -224,7 +217,7 @@ namespace ODataReader.v4UnitTests
         {
             IEdmModel edmModel;
             IEnumerable<EdmError> errors;
-            if (!EdmxReader.TryParse(XmlReader.Create(new StringReader(ODataReader.v4UnitTests.Properties.Resources.OneNoteExampleEdmx)), out edmModel, out errors))
+            if (!CsdlReader.TryParse(XmlReader.Create(new StringReader(ODataReader.v4UnitTests.Properties.Resources.OneNoteExampleEdmx)), out edmModel, out errors))
             {
                 throw new InvalidOperationException("Failed to parse Edm model");
             }

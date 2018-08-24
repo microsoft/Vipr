@@ -1,4 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<edmx:Edmx Version="4.0"
+    xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:DataServices xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
 <!--
 This helper code was provided by the OData.net team - Mark Stafford, Conyong Su and Sam Xu
 We should be able to remove this once they include it in WebApi OData
@@ -250,3 +252,5 @@ OM 1931609 - Remove ODataVocabularies helpers and CSDL files once WebApiOData in
   </ComplexType>
 
 </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>
