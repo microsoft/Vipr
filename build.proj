@@ -12,23 +12,8 @@
     <Solution Include="$(MSBuildThisFileDirectory)Vipr.sln"/>          
   </ItemGroup>
 
-  <Target Name="RestorePackages">
-    <Message Importance="High" Text="Restoring nuget packages..." />
-    <Exec Command="&quot;$(NuGetPath)&quot; restore &quot;%(Solution.Identity)&quot; -ConfigFile &quot;$(NuGetConfigFile)&quot;" />
-  </Target>
-
   <Target Name="Clean">
     <MSBuild Targets="Clean"
-             Projects="@(Solution)" />
-  </Target>
-
-  <Target Name="Build" DependsOnTargets="RestorePackages">
-    <MSBuild Targets="Build"
-             Projects="@(Solution)" />
-  </Target>
-
-  <Target Name="Rebuild" DependsOnTargets="RestorePackages">
-    <MSBuild Targets="Rebuild"
              Projects="@(Solution)" />
   </Target>
 
