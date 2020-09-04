@@ -69,6 +69,83 @@ namespace ODataReader.v4UnitTests
         }
 
         [Fact]
+        public void When_Singleton_has_Deprecation_Annotation_Then_Its_OdcmObject_has_Deprecation()
+        {
+            var entityTypeElement = _entityTypeElements.RandomElement();
+            var singletonElement = Any.Csdl.Singleton();
+            var singletonName = singletonElement.GetName();
+            singletonElement.AddAttribute("Type",
+                string.Format("{0}.{1}", _schemaNamespace, entityTypeElement.GetName()));
+            singletonElement.Add(Any.Csdl.DeprecationAnnotation());
+            _entityContainerElement.Add(singletonElement);
+
+            var odcmModel = GetOdcmModel();
+            var odcmEntityContainer = GetOdcmEntityContainer(odcmModel);
+
+            var odcmSingleton = odcmEntityContainer.As<OdcmClass>().Properties.Single(p => p.Name == singletonName);
+
+            ValidateDeprecation(odcmSingleton);
+        }
+
+        [Fact]
+        public void When_Action_has_Deprecation_Annotation_Then_Its_OdcmObject_has_Deprecation()
+        {
+            var entityTypeElement = _entityTypeElements.RandomElement();
+            var entityTypeElementName = entityTypeElement.GetName();
+            var schemaNamespace = _schema.Attribute("Namespace").Value;
+            var actionElement = Any.Csdl.Action(action =>
+            {
+                action.AddAttribute("IsBound", "true");
+                action.Add(Any.Csdl.Parameter(param =>
+                {
+                    param.SetAttributeValue("Name", "bindingParameter");
+                    param.SetAttributeValue("Type", string.Format("{0}.{1}", schemaNamespace, entityTypeElementName));
+                }));
+                action.Add(Any.Csdl.Parameter(param =>
+                {
+                    param.AddAttribute("Type", Any.Csdl.RandomPrimitiveType());
+                }));
+                action.Add(Any.Csdl.DeprecationAnnotation());
+            });
+            _schema.Add(actionElement);
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElementName);
+            var odcmMethod = odcmEntityType.As<OdcmClass>().Methods[0];
+            ValidateDeprecation(odcmMethod);
+        }
+
+        [Fact]
+        public void When_Function_has_Deprecation_Annotation_Then_Its_OdcmObject_has_Deprecation()
+        {
+            var entityTypeElement = _entityTypeElements.RandomElement();
+            var entityTypeElementName = entityTypeElement.GetName();
+            var schemaNamespace = _schema.Attribute("Namespace").Value;
+            var functionElement = Any.Csdl.Function(function =>
+            {
+                function.AddAttribute("IsBound", "true");
+                function.Add(Any.Csdl.Parameter(param =>
+                {
+                    param.SetAttributeValue("Name", "bindingParameter");
+                    param.SetAttributeValue("Type", string.Format("{0}.{1}", schemaNamespace, entityTypeElementName));
+                }));
+                function.Add(Any.Csdl.Parameter(param =>
+                {
+                    param.AddAttribute("Type", Any.Csdl.RandomPrimitiveType());
+                }));
+                function.Add(Any.Csdl.DeprecationAnnotation());
+            });
+            _schema.Add(functionElement);
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElementName);
+            var odcmMethod = odcmEntityType.As<OdcmClass>().Methods[0];
+            ValidateDeprecation(odcmMethod);
+        }
+
+        [Fact]
         public void When_NavigationProperty_has_no_Capability_Annotation_Then_Its_OdcmProperty_has_all_the_default_OdcmCapabilities()
         {
             var insertable = Any.Bool();
@@ -184,6 +261,24 @@ namespace ODataReader.v4UnitTests
         }
 
         [Fact]
+        public void When_NavigationProperty_is_Deprecated_Its_OdcmProperty_has_Deprecation()
+        {
+            var entityTypeElement = GetRandomEntityTypeElement();
+            var navPropertyElement = GetRandomNavigationPropertyElement(entityTypeElement);
+            navPropertyElement.Add(Any.Csdl.DeprecationAnnotation());
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElement.GetName());
+
+            var odcmNavProperty = (odcmEntityType as OdcmEntityClass)
+                                    .NavigationProperties()
+                                    .Single(x => x.Name == navPropertyElement.GetName());
+
+            ValidateDeprecation(odcmNavProperty);
+        }
+
+        [Fact]
         public void When_Property_has_Annotation_Then_its_OdcmProperty_has_matching_Capability()
         {
             string term = OData.Core("Computed");
@@ -233,6 +328,26 @@ namespace ODataReader.v4UnitTests
                     .Should()
                     .Be(stringValue, "Because this property was appropriately annotated");
             }
+        }
+
+        [Fact]
+        public void When_Property_is_Deprecated_Its_OdcmProperty_has_Deprecation()
+        {
+            var entityTypeElement = GetRandomEntityTypeElement();
+
+            var propertyElement = Any.Csdl.Property("Collection(Edm.String)");
+            propertyElement.Add(Any.Csdl.DeprecationAnnotation());
+            entityTypeElement.Add(propertyElement);
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElement.GetName());
+
+            var odcmProperty = (odcmEntityType as OdcmEntityClass)
+                                    .Properties
+                                    .Single(x => x.Name == propertyElement.GetName());
+
+            ValidateDeprecation(odcmProperty);
         }
 
         [Fact]
@@ -767,6 +882,20 @@ namespace ODataReader.v4UnitTests
         }
 
         [Fact]
+        public void When_EntitySet_has_Deprecation_Annotation_Then_Its_OdcmObject_has_Deprecation()
+        {
+            var entitySetElement = _entitySetToEntityTypeMapping.Keys.RandomElement();
+
+            entitySetElement.Add(Any.Csdl.DeprecationAnnotation());
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntitySet = GetOdcmEntitySet(odcmModel, entitySetElement.GetName());
+
+            ValidateDeprecation(odcmEntitySet);
+        }
+
+        [Fact]
         public void When_EntitySet_has_NavigationRestriction_Then_Its_OdcmProperty_has_appropriate_capability()
         {
             var entitySetElement = _entitySetToEntityTypeMapping.Keys.RandomElement();
@@ -974,6 +1103,34 @@ namespace ODataReader.v4UnitTests
             odcmDerivedEntityType.SupportsDelete()
                 .Should()
                 .Be(baseValue2, "Because derived type inherits base annotations");
+        }
+
+        [Fact]
+        public void When_EntityType_is_Deprecated_Its_OdcmProperty_has_Deprecation()
+        {
+            var entityTypeElement = GetRandomEntityTypeElement();
+            entityTypeElement.Add(Any.Csdl.DeprecationAnnotation());
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElement.GetName());
+
+            ValidateDeprecation(odcmEntityType);
+        }
+
+        [Fact]
+        public void When_ComplexType_is_Deprecated_Its_OdcmProperty_has_Deprecation()
+        {
+            var complexTypeElement = Any.Csdl.ComplexType();
+            complexTypeElement.Add(Any.Csdl.DeprecationAnnotation());
+
+            _schema.Add(complexTypeElement);
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmComplexType = GetOdcmEntityType(odcmModel, complexTypeElement.GetName());
+
+            ValidateDeprecation(odcmComplexType);
         }
 
         [Fact]
@@ -1385,6 +1542,14 @@ namespace ODataReader.v4UnitTests
             odcmProperty.Projection.Type.ProjectionKeys.Any(x => x == odcmProperty.Projection.Key)
                 .Should()
                 .BeTrue("because this OdcmProperty Projection is present in its OdcmType's cache of Projections");
+        }
+
+        private void ValidateDeprecation(OdcmObject odcmObject)
+        {
+            var deprecation = odcmObject.Deprecation;
+            deprecation.Should().NotBeNull("Because Deprecation should not be null");
+            deprecation.Description.Should().NotBeNull("Because Deprecation should have Description");
+            deprecation.Version.Should().NotBeNull("Because Deprecation should have Version");
         }
     }
 }
