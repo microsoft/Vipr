@@ -169,9 +169,11 @@ namespace Vipr.Reader.OData.v4
                 odcmObject.Description = _edmModel.GetDescriptionAnnotation(annotatableEdmEntity);
                 odcmObject.LongDescription = _edmModel.GetLongDescriptionAnnotation(annotatableEdmEntity);
 
+                CheckForDeprecation(odcmObject, _edmModel.FindVocabularyAnnotations(annotatableEdmEntity).FirstOrDefault(x => x.Term.Name == "Revisions"));
+
                 // https://github.com/OData/odata.net/blob/75df8f44f2b81f984589790be4885b6ee8946ad0/src/Microsoft.OData.Edm/ExtensionMethods/ExtensionMethods.cs#L196
                 var annotations = _edmModel.FindVocabularyAnnotations(annotatableEdmEntity)
-                                      .Where(x => x.Term.Name != "Description" && x.Term.Name != "LongDescription");
+                                      .Where(x => x.Term.Name != "Description" && x.Term.Name != "LongDescription" && x.Term.Name != "Revisions");
 
                 if (annotations.Any())
                 {
@@ -785,6 +787,75 @@ namespace Vipr.Reader.OData.v4
                 return odcmNamespace;
             }
 
+            private void CheckForDeprecation(OdcmObject odcmObject, IEdmVocabularyAnnotation revisionsAnnotation)
+            {
+                if (revisionsAnnotation == null)
+                {
+                    return;
+                }
+
+                IEdmCollectionExpression collectionExpression = revisionsAnnotation.Value as IEdmCollectionExpression;
+                if (collectionExpression != null)
+                {
+                    foreach (IEdmExpression versionRecord in collectionExpression.Elements)
+                    {
+                        bool isDeprecated = false;
+                        string message = string.Empty;
+                        string version = string.Empty;
+
+                        IEdmRecordExpression record = versionRecord as IEdmRecordExpression;
+                        if (record != null)
+                        {
+                            foreach (IEdmPropertyConstructor property in record.Properties)
+                            {
+                                switch (property.Name.ToLower())
+                                {
+                                    case "kind":
+                                        IEdmEnumMemberExpression enumValue = property.Value as IEdmEnumMemberExpression;
+                                        if (enumValue != null)
+                                        {
+                                            if (string.Equals(enumValue.EnumMembers.FirstOrDefault().Name, "deprecated", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                isDeprecated = true;
+                                            }
+                                            else
+                                            {
+                                                continue;
+                                            }
+                                        }
+                                        break;
+                                    case "description":
+                                        IEdmStringConstantExpression descriptionValue = property.Value as IEdmStringConstantExpression;
+                                        if (descriptionValue != null)
+                                        {
+                                            message = descriptionValue.Value;
+                                        }
+                                        break;
+                                    case "version":
+                                        IEdmStringConstantExpression versionValue = property.Value as IEdmStringConstantExpression;
+                                        if (versionValue != null)
+                                        {
+                                            version = versionValue.Value;
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+
+                            if (isDeprecated)
+                            {
+                                odcmObject.Deprecation = new OdcmDeprecation { 
+                                    Description = message,
+                                    Version = version
+                                };
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+                
             /// <summary>
             /// Sets the OdcmCapabilities for the given annotated entity and also for the annotated navigation properties.
             /// </summary>
