@@ -72,6 +72,7 @@ namespace Vipr.Reader.OData.v4
             private IEdmModel _edmModel = null;
             private OdcmModel _odcmModel;
             private PropertyCapabilitiesCache _propertyCapabilitiesCache;
+            private HashSet<OdcmObject> _checkDeprecated = new HashSet<OdcmObject>();
 
             public OdcmModel GenerateOdcmModel(IEnumerable<TextFile> serviceMetadata)
             {
@@ -169,7 +170,7 @@ namespace Vipr.Reader.OData.v4
                 odcmObject.Description = _edmModel.GetDescriptionAnnotation(annotatableEdmEntity);
                 odcmObject.LongDescription = _edmModel.GetLongDescriptionAnnotation(annotatableEdmEntity);
 
-                CheckForDeprecation(odcmObject, _edmModel.FindVocabularyAnnotations(annotatableEdmEntity).FirstOrDefault(x => x.Term.Name == "Revisions"));
+                CheckForDeprecation(odcmObject, annotatableEdmEntity);
 
                 // https://github.com/OData/odata.net/blob/75df8f44f2b81f984589790be4885b6ee8946ad0/src/Microsoft.OData.Edm/ExtensionMethods/ExtensionMethods.cs#L196
                 var annotations = _edmModel.FindVocabularyAnnotations(annotatableEdmEntity)
@@ -787,73 +788,99 @@ namespace Vipr.Reader.OData.v4
                 return odcmNamespace;
             }
 
-            private void CheckForDeprecation(OdcmObject odcmObject, IEdmVocabularyAnnotation revisionsAnnotation)
+            private void CheckForDeprecation(OdcmObject odcmObject, IEdmVocabularyAnnotatable annotatableEdmEntity)
             {
-                if (revisionsAnnotation == null)
+                if (_checkDeprecated.Add(odcmObject))
                 {
-                    return;
-                }
-
-                IEdmCollectionExpression collectionExpression = revisionsAnnotation.Value as IEdmCollectionExpression;
-                if (collectionExpression != null)
-                {
-                    foreach (IEdmExpression versionRecord in collectionExpression.Elements)
+                    if (odcmObject.Deprecation == null && !CheckForDeprecationOnType(odcmObject, _edmModel.FindVocabularyAnnotations(annotatableEdmEntity).FirstOrDefault(x => x.Term.Name == "Revisions")))
                     {
-                        bool isDeprecated = false;
-                        string message = string.Empty;
-                        string version = string.Empty;
-
-                        IEdmRecordExpression record = versionRecord as IEdmRecordExpression;
-                        if (record != null)
+                        OdcmProperty property;
+                        if (odcmObject.Deprecation == null && (property = odcmObject as OdcmProperty) != null)
                         {
-                            foreach (IEdmPropertyConstructor property in record.Properties)
+                            OdcmType propertyType = property.Projection.Type;
+                            if (!(propertyType is OdcmPrimitiveType))
                             {
-                                switch (property.Name.ToLower())
+                                IEdmVocabularyAnnotatable propertyTypeElement = _edmModel.SchemaElements.FirstOrDefault(s => s.SchemaElementKind == EdmSchemaElementKind.TypeDefinition && s.FullName() == propertyType.FullName);
+                                if (propertyTypeElement != null)
                                 {
-                                    case "kind":
-                                        IEdmEnumMemberExpression enumValue = property.Value as IEdmEnumMemberExpression;
-                                        if (enumValue != null)
-                                        {
-                                            if (string.Equals(enumValue.EnumMembers.FirstOrDefault().Name, "deprecated", StringComparison.OrdinalIgnoreCase))
-                                            {
-                                                isDeprecated = true;
-                                            }
-                                            else
-                                            {
-                                                continue;
-                                            }
-                                        }
-                                        break;
-                                    case "description":
-                                        IEdmStringConstantExpression descriptionValue = property.Value as IEdmStringConstantExpression;
-                                        if (descriptionValue != null)
-                                        {
-                                            message = descriptionValue.Value;
-                                        }
-                                        break;
-                                    case "version":
-                                        IEdmStringConstantExpression versionValue = property.Value as IEdmStringConstantExpression;
-                                        if (versionValue != null)
-                                        {
-                                            version = versionValue.Value;
-                                        }
-                                        break;
-                                    default:
-                                        break;
+                                    CheckForDeprecation(propertyType, propertyTypeElement);
+                                    odcmObject.Deprecation = property.Projection.Type.Deprecation;
                                 }
-                            }
-
-                            if (isDeprecated)
-                            {
-                                odcmObject.Deprecation = new OdcmDeprecation { 
-                                    Description = message,
-                                    Version = version
-                                };
-                                break;
                             }
                         }
                     }
                 }
+            }
+
+            private bool CheckForDeprecationOnType(OdcmObject odcmObject, IEdmVocabularyAnnotation revisionsAnnotation)
+            {
+                if (revisionsAnnotation != null)
+                {
+                    IEdmCollectionExpression collectionExpression = revisionsAnnotation.Value as IEdmCollectionExpression;
+                    if (collectionExpression != null)
+                    {
+                        foreach (IEdmExpression versionRecord in collectionExpression.Elements)
+                        {
+                            bool isDeprecated = false;
+                            string message = string.Empty;
+                            string version = string.Empty;
+
+                            IEdmRecordExpression record = versionRecord as IEdmRecordExpression;
+                            if (record != null)
+                            {
+                                foreach (IEdmPropertyConstructor property in record.Properties)
+                                {
+                                    switch (property.Name.ToLower())
+                                    {
+                                        case "kind":
+                                            IEdmEnumMemberExpression enumValue = property.Value as IEdmEnumMemberExpression;
+                                            if (enumValue != null)
+                                            {
+                                                if (string.Equals(enumValue.EnumMembers.FirstOrDefault().Name, "deprecated", StringComparison.OrdinalIgnoreCase))
+                                                {
+                                                    isDeprecated = true;
+                                                }
+                                                else
+                                                {
+                                                    continue;
+                                                }
+                                            }
+                                            break;
+                                        case "description":
+                                            IEdmStringConstantExpression descriptionValue = property.Value as IEdmStringConstantExpression;
+                                            if (descriptionValue != null)
+                                            {
+                                                message = descriptionValue.Value;
+                                            }
+                                            break;
+                                        case "version":
+                                            IEdmStringConstantExpression versionValue = property.Value as IEdmStringConstantExpression;
+                                            if (versionValue != null)
+                                            {
+                                                version = versionValue.Value;
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+
+                                if (isDeprecated)
+                                {
+                                    odcmObject.Deprecation = new OdcmDeprecation
+                                    {
+                                        Description = message,
+                                        Version = version
+                                    };
+
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return false;
             }
                 
             /// <summary>
