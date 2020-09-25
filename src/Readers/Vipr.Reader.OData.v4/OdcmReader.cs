@@ -675,10 +675,20 @@ namespace Vipr.Reader.OData.v4
 
                 AddVocabularyAnnotations(odcmMethod, operation);
 
+                if (odcmMethod.Deprecation == null && odcmClass.Deprecation != null)
+                {
+                    odcmMethod.Deprecation = odcmClass.Deprecation;
+                }
+
                 if (operation.ReturnType != null)
                 {
                     odcmMethod.ReturnType = ResolveType(operation.ReturnType);
                     odcmMethod.IsCollection = operation.ReturnType.IsCollection();
+
+                    if (odcmMethod.Deprecation == null && odcmMethod.ReturnType.Deprecation != null)
+                    {
+                        odcmMethod.Deprecation = odcmMethod.ReturnType.Deprecation;
+                    }
                 }
 
                 var callingConvention =

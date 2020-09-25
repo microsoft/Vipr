@@ -117,6 +117,138 @@ namespace ODataReader.v4UnitTests
         }
 
         [Fact]
+        public void When_A_Binding_Parameter_has_Deprecation_Annotation_Then_The_Action_has_Deprecation()
+        {
+            var entityTypeElement = GetRandomEntityTypeElement();
+            entityTypeElement.Add(Any.Csdl.DeprecationAnnotation());
+            var entityTypeElementName = entityTypeElement.GetName();
+            var schemaNamespace = _schema.Attribute("Namespace").Value;
+            var actionElement = Any.Csdl.Action(action =>
+            {
+                action.AddAttribute("IsBound", "true");
+                action.Add(Any.Csdl.Parameter(param =>
+                {
+                    param.SetAttributeValue("Name", "bindingParameter");
+                    param.SetAttributeValue("Type", string.Format("{0}.{1}", schemaNamespace, entityTypeElementName));
+                }));
+                action.Add(Any.Csdl.Parameter(param =>
+                {
+                    param.AddAttribute("Type", Any.Csdl.RandomPrimitiveType());
+                }));
+            });
+            _schema.Add(actionElement);
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElementName);
+            var odcmMethod = odcmEntityType.As<OdcmClass>().Methods[0];
+            ValidateDeprecation(odcmMethod);
+        }
+
+        [Fact]
+        public void When_A_ReturnType_has_Deprecation_Annotation_Then_The_Action_has_Deprecation()
+        {
+            var entityTypeElement = GetRandomEntityTypeElement();
+            var entityTypeElementName = entityTypeElement.GetName();
+            var schemaNamespace = _schema.Attribute("Namespace").Value;
+            var actionElement = Any.Csdl.Action(action =>
+            {
+                action.AddAttribute("IsBound", "true");
+                action.Add(Any.Csdl.Parameter(param =>
+                {
+                    param.SetAttributeValue("Name", "bindingParameter");
+                    param.SetAttributeValue("Type", string.Format("{0}.{1}", schemaNamespace, entityTypeElementName));
+                }));
+                action.Add(Any.Csdl.Parameter(param =>
+                {
+                    param.AddAttribute("Type", Any.Csdl.RandomPrimitiveType());
+                }));
+                var returnEntityTypeElement = GetRandomEntityTypeElement();
+                returnEntityTypeElement.Add(Any.Csdl.DeprecationAnnotation());
+                action.Add(Any.Csdl.ReturnType(returnType =>
+                {
+                    returnType.SetAttributeValue("Type", string.Format("{0}.{1}", schemaNamespace, returnEntityTypeElement.GetName()));
+                }));
+            });
+            _schema.Add(actionElement);
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElementName);
+            var odcmMethod = odcmEntityType.As<OdcmClass>().Methods[0];
+            ValidateDeprecation(odcmMethod);
+        }
+
+        [Fact]
+        public void When_A_Binding_Parameter_has_Deprecation_Annotation_Then_The_Function_has_Deprecation()
+        {
+            var entityTypeElement = GetRandomEntityTypeElement();
+            entityTypeElement.Add(Any.Csdl.DeprecationAnnotation()); 
+            var entityTypeElementName = entityTypeElement.GetName();
+            var schemaNamespace = _schema.Attribute("Namespace").Value;
+            var functionElement = Any.Csdl.Function(function =>
+            {
+                function.AddAttribute("IsBound", "true");
+                function.Add(Any.Csdl.Parameter(param =>
+                {
+                    param.SetAttributeValue("Name", "bindingParameter");
+                    param.SetAttributeValue("Type", string.Format("{0}.{1}", schemaNamespace, entityTypeElementName));
+                }));
+                function.Add(Any.Csdl.Parameter(param =>
+                {
+                    param.AddAttribute("Type", Any.Csdl.RandomPrimitiveType());
+                }));
+                function.Add(Any.Csdl.ReturnType(returnTypeElement =>
+                {
+                    var returnType = _entityTypeElements.RandomElement();
+                    returnTypeElement.AddAttribute("Type", Any.Csdl.RandomPrimitiveType());
+                }));
+            });
+            _schema.Add(functionElement);
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElementName);
+            var odcmMethod = odcmEntityType.As<OdcmClass>().Methods[0];
+            ValidateDeprecation(odcmMethod);
+        }
+
+        [Fact]
+        public void When_A_ReturnType_has_Deprecation_Annotation_Then_The_Function_has_Deprecation()
+        {
+            var entityTypeElement = GetRandomEntityTypeElement();
+            var entityTypeElementName = entityTypeElement.GetName();
+            var schemaNamespace = _schema.Attribute("Namespace").Value;
+            var functionElement = Any.Csdl.Function(function =>
+            {
+                function.AddAttribute("IsBound", "true");
+                function.Add(Any.Csdl.Parameter(param =>
+                {
+                    param.SetAttributeValue("Name", "bindingParameter");
+                    param.SetAttributeValue("Type", string.Format("{0}.{1}", schemaNamespace, entityTypeElementName));
+                }));
+                function.Add(Any.Csdl.Parameter(param =>
+                {
+                    param.AddAttribute("Type", Any.Csdl.RandomPrimitiveType());
+                }));
+                var returnEntityTypeElement = GetRandomEntityTypeElement();
+                returnEntityTypeElement.Add(Any.Csdl.DeprecationAnnotation());
+                function.Add(Any.Csdl.ReturnType(returnType =>
+                {
+                    returnType.SetAttributeValue("Type", string.Format("{0}.{1}", schemaNamespace, returnEntityTypeElement.GetName()));
+                }));
+
+            });
+            _schema.Add(functionElement);
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElementName);
+            var odcmMethod = odcmEntityType.As<OdcmClass>().Methods[0];
+            ValidateDeprecation(odcmMethod);
+        }
+
+        [Fact]
         public void When_Function_has_Deprecation_Annotation_Then_Its_OdcmObject_has_Deprecation()
         {
             var entityTypeElement = _entityTypeElements.RandomElement();
