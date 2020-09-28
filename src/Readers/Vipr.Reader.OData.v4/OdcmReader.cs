@@ -286,6 +286,7 @@ namespace Vipr.Reader.OData.v4
                     }
 
                     odcmTypeDefinition.BaseType = baseType;
+                    AddVocabularyAnnotations(odcmTypeDefinition, typeDefinition);
                 }
 
                 foreach (var complexType in AllComplexTypes(types))

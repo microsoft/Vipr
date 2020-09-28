@@ -1368,6 +1368,113 @@ namespace ODataReader.v4UnitTests
         }
 
         [Fact]
+        public void When_ComplexType_is_Deprecated_Then_Property_Of_That_Type_has_Deprecation()
+        {
+            var complexTypeElement = Any.Csdl.ComplexType();
+            complexTypeElement.Add(Any.Csdl.DeprecationAnnotation());
+            _schema.Add(complexTypeElement);
+
+            var propertyElement = Any.Csdl.Property(OdcmObject.MakeCanonicalName(complexTypeElement.GetName(), _schemaNamespace));
+
+            var entityTypeElement = GetRandomEntityTypeElement();
+            entityTypeElement.Add(propertyElement);
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElement.GetName());
+
+            var odcmProperty = (odcmEntityType as OdcmEntityClass)
+                                    .Properties
+                                    .Single(x => x.Name == propertyElement.GetName());
+
+            ValidateDeprecation(odcmProperty);
+        }
+
+        [Fact]
+        public void When_TypeDefinition_is_Deprecated_Its_OdcmProperty_has_Deprecation()
+        {
+            var typeDefinition = Any.Csdl.TypeDefinitionType(sd =>
+                {
+                    sd.AddAttribute("UnderlyingType", "Edm.String");
+                }
+            );
+
+            typeDefinition.Add(Any.Csdl.DeprecationAnnotation());
+            _schema.Add(typeDefinition);
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmTypeDefinitionType = GetOdcmEntityType(odcmModel, typeDefinition.GetName());
+
+            ValidateDeprecation(odcmTypeDefinitionType);
+        }
+
+        [Fact(Skip = "Annotations not currently tracked for type definitions because underlying type is used in ResolveType")]
+        public void When_TypeDefinition_is_Deprecated_Then_Property_Of_That_Type_has_Deprecation()
+        {
+            var typeDefinition = Any.Csdl.TypeDefinitionType(sd =>
+            {
+                sd.AddAttribute("UnderlyingType", "Edm.String");
+            }
+            );
+
+            typeDefinition.Add(Any.Csdl.DeprecationAnnotation());
+            _schema.Add(typeDefinition);
+
+            var propertyElement = Any.Csdl.Property(OdcmObject.MakeCanonicalName(typeDefinition.GetName(), _schemaNamespace));
+
+            var entityTypeElement = GetRandomEntityTypeElement();
+            entityTypeElement.Add(propertyElement);
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElement.GetName());
+
+            var odcmProperty = (odcmEntityType as OdcmEntityClass)
+                                    .Properties
+                                    .Single(x => x.Name == propertyElement.GetName());
+
+            ValidateDeprecation(odcmProperty);
+        }
+
+        [Fact]
+        public void When_EnumType_is_Deprecated_Its_OdcmProperty_has_Deprecation()
+        {
+            var enumType = Any.Csdl.EnumType();
+            enumType.Add(Any.Csdl.DeprecationAnnotation());
+            _schema.Add(enumType);
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEnumType = GetOdcmEntityType(odcmModel, enumType.GetName());
+
+            ValidateDeprecation(odcmEnumType);
+        }
+
+        [Fact]
+        public void When_EnumType_is_Deprecated_Then_Property_Of_That_Type_has_Deprecation()
+        {
+            var enumType = Any.Csdl.EnumType();
+            enumType.Add(Any.Csdl.DeprecationAnnotation());
+            _schema.Add(enumType);
+
+            var propertyElement = Any.Csdl.Property(OdcmObject.MakeCanonicalName(enumType.GetName(), _schemaNamespace));
+
+            var entityTypeElement = GetRandomEntityTypeElement();
+            entityTypeElement.Add(propertyElement);
+
+            var odcmModel = GetOdcmModel();
+
+            var odcmEntityType = GetOdcmEntityType(odcmModel, entityTypeElement.GetName());
+
+            var odcmProperty = (odcmEntityType as OdcmEntityClass)
+                                    .Properties
+                                    .Single(x => x.Name == propertyElement.GetName());
+
+            ValidateDeprecation(odcmProperty);
+        }
+
+        [Fact]
         public void When_EntitySet_has_multiple_Capability_Annotations_Then_Its_OdcmProperty_has_corresponding_OdcmCapabilities()
         {
             var booleanValue = Any.Bool();
