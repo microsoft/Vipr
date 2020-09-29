@@ -11,7 +11,6 @@ namespace Vipr.Core.CodeModel
         public OdcmClass Class { get; set; }
         public OdcmProperty ParentPropertyType { get; set; }
         public List<OdcmProperty> ChildPropertyTypes { get; set; } = new List<OdcmProperty>();
-        public bool IsDerivedTypeConstraint { get => ParentPropertyType != null; }
 
         public bool ReadOnly { get; set; }
 
