@@ -8,7 +8,7 @@ using Vipr.Core.CodeModel.Vocabularies.Capabilities;
 
 namespace Vipr.Core.CodeModel
 {
-    public class OdcmProjection
+    public class OdcmProjection: ICloneable
     {
         public delegate OdcmCapability DefaultProvider(OdcmObject odcmObject, string termName);
 
@@ -239,6 +239,16 @@ namespace Vipr.Core.CodeModel
             }
 
             return term;
+        }
+
+        public object Clone()
+        {
+            return new OdcmProjection
+            {
+                BackLink = BackLink,
+                Type = Type,
+                Capabilities = Capabilities,
+            };
         }
     }
 }
