@@ -56,10 +56,14 @@ namespace Vipr.Reader.OData.v4
             new[] {"Edm", "GeometryMultiPolygon"},
             new[] {"Edm", "GeometryCollection"}
         };
+        public bool AddCastPropertiesForNavigationProperties { get; set; } = false;
 
         public OdcmModel GenerateOdcmModel(IEnumerable<TextFile> serviceMetadata)
         {
-            var daemon = new ReaderDaemon();
+            var daemon = new ReaderDaemon
+            {
+                AddCastPropertiesForNavigationProperties = AddCastPropertiesForNavigationProperties
+            };
             return daemon.GenerateOdcmModel(serviceMetadata);
         }
 
@@ -743,28 +747,35 @@ namespace Vipr.Reader.OData.v4
 
                     odcmClass.Properties.Add(odcmProperty);
 
-
-                    var derivedTypes = _edmModel.GetDerivedTypeConstraints(property)?.Distinct(StringComparer.InvariantCultureIgnoreCase);
-                    if (derivedTypes != null)
+                    if (AddCastPropertiesForNavigationProperties)
                     {
-                        foreach (var derivedType in derivedTypes)
-                        {
-                            var odcmDerivedClass = TryResolveType<OdcmClass>(derivedType);
-
-                            var derivedCastProperty = odcmProperty.Clone($"{odcmProperty.Name}As{odcmDerivedClass.Name.First().ToString().ToUpper()}{odcmDerivedClass.Name.Substring(1)}");
-                            derivedCastProperty.ParentPropertyType = odcmProperty;
-                            derivedCastProperty.Projection.Type = odcmDerivedClass;
-                            odcmProperty.ChildPropertyTypes.Add(derivedCastProperty);
-                            odcmClass.Properties.Add(derivedCastProperty);
-                            _propertyCapabilitiesCache.Add(derivedCastProperty, OdcmCapability.DefaultPropertyCapabilities);
-                        }
+                        AddCastPropertiesForNavigationProperty(odcmClass, property, odcmProperty);
                     }
-
 
                 }
                 catch (InvalidOperationException e)
                 {
                     Logger.Error("Could not resolve type", e);
+                }
+            }
+            public bool AddCastPropertiesForNavigationProperties { get; set; } = false;
+
+            private void AddCastPropertiesForNavigationProperty(OdcmClass odcmClass, IEdmProperty property, OdcmProperty odcmProperty)
+            {
+                var derivedTypes = _edmModel.GetDerivedTypeConstraints(property)?.Distinct(StringComparer.InvariantCultureIgnoreCase);
+                if (derivedTypes != null)
+                {
+                    foreach (var derivedType in derivedTypes)
+                    {
+                        var odcmDerivedClass = TryResolveType<OdcmClass>(derivedType);
+
+                        var derivedCastProperty = odcmProperty.Clone($"{odcmProperty.Name}As{odcmDerivedClass.Name.First().ToString().ToUpper()}{odcmDerivedClass.Name.Substring(1)}");
+                        derivedCastProperty.ParentPropertyType = odcmProperty;
+                        derivedCastProperty.Projection.Type = odcmDerivedClass;
+                        odcmProperty.ChildPropertyTypes.Add(derivedCastProperty);
+                        odcmClass.Properties.Add(derivedCastProperty);
+                        _propertyCapabilitiesCache.Add(derivedCastProperty, OdcmCapability.DefaultPropertyCapabilities);
+                    }
                 }
             }
 
