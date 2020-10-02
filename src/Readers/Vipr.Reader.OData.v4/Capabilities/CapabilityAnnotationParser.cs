@@ -39,7 +39,9 @@ namespace Vipr.Reader.OData.v4.Capabilities
         private void TryParseCapability(OdcmObject odcmObject, IEdmExpression expression, string annotationTerm)
         {
             if (odcmObject is OdcmProperty prop && prop.ChildPropertyTypes.Any())
+            {
                 prop.ChildPropertyTypes.ForEach(x => TryParseCapability(x, expression, annotationTerm));
+            }
 
             if (HasSpecializedParser(odcmObject, expression, annotationTerm))
             {

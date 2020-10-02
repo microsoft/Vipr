@@ -746,6 +746,7 @@ namespace Vipr.Reader.OData.v4
 
                     var derivedTypes = _edmModel.GetDerivedTypeConstraints(property)?.Distinct(StringComparer.InvariantCultureIgnoreCase);
                     if (derivedTypes != null)
+                    {
                         foreach (var derivedType in derivedTypes)
                         {
                             var odcmDerivedClass = TryResolveType<OdcmClass>(derivedType);
@@ -757,6 +758,8 @@ namespace Vipr.Reader.OData.v4
                             odcmClass.Properties.Add(derivedCastProperty);
                             _propertyCapabilitiesCache.Add(derivedCastProperty, OdcmCapability.DefaultPropertyCapabilities);
                         }
+                    }
+
 
                 }
                 catch (InvalidOperationException e)
