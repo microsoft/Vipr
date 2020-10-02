@@ -3,6 +3,7 @@
 
 using Microsoft.OData.Edm;
 using Microsoft.OData.Edm.Vocabularies;
+using Microsoft.OData.UriParser;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,11 @@ namespace Vipr.Reader.OData.v4.Capabilities
 
         private void TryParseCapability(OdcmObject odcmObject, IEdmExpression expression, string annotationTerm)
         {
+            if (odcmObject is OdcmProperty prop && prop.ChildPropertyTypes.Any())
+            {
+                prop.ChildPropertyTypes.ForEach(x => TryParseCapability(x, expression, annotationTerm));
+            }
+
             if (HasSpecializedParser(odcmObject, expression, annotationTerm))
             {
                 // Do nothing
@@ -73,7 +79,7 @@ namespace Vipr.Reader.OData.v4.Capabilities
             }
             else
             {
-                Logger.Warn($"Unsupported annotation expression of kind {expression.ExpressionKind.ToString()} for Term \"{annotationTerm}\"");
+                Logger.Warn($"Unsupported annotation expression of kind {expression.ExpressionKind} for Term \"{annotationTerm}\"");
             }
         }
 

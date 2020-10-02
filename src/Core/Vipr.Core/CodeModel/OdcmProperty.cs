@@ -2,12 +2,15 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
+using System.Collections.Generic;
 
 namespace Vipr.Core.CodeModel
 {
     public class OdcmProperty : OdcmObject
     {
         public OdcmClass Class { get; set; }
+        public OdcmProperty ParentPropertyType { get; set; }
+        public List<OdcmProperty> ChildPropertyTypes { get; set; } = new List<OdcmProperty>();
 
         public bool ReadOnly { get; set; }
 
@@ -38,6 +41,25 @@ namespace Vipr.Core.CodeModel
         public OdcmProperty(string name)
             : base(name)
         {
+        }
+
+        public OdcmProperty Clone(string name)
+        {
+            return new OdcmProperty(name ?? Name?.Clone() as string)
+            {
+                ContainsTarget = ContainsTarget,
+                IsLink = IsLink,
+                IsRequired = IsRequired,
+                IsCollection = IsCollection,
+                IsNullable = IsNullable,
+                DefaultValue = DefaultValue?.Clone() as string,
+                Class = Class,
+                Description = Description?.Clone() as string,
+                LongDescription = LongDescription?.Clone() as string,
+                ParentPropertyType = ParentPropertyType,
+                Projection = Projection?.Clone() as OdcmProjection,
+                ReadOnly = ReadOnly,
+            };
         }
     }
 }

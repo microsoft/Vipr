@@ -56,10 +56,14 @@ namespace Vipr.Reader.OData.v4
             new[] {"Edm", "GeometryMultiPolygon"},
             new[] {"Edm", "GeometryCollection"}
         };
+        public bool AddCastPropertiesForNavigationProperties { get; set; } = false;
 
         public OdcmModel GenerateOdcmModel(IEnumerable<TextFile> serviceMetadata)
         {
-            var daemon = new ReaderDaemon();
+            var daemon = new ReaderDaemon
+            {
+                AddCastPropertiesForNavigationProperties = AddCastPropertiesForNavigationProperties
+            };
             return daemon.GenerateOdcmModel(serviceMetadata);
         }
 
@@ -434,7 +438,11 @@ namespace Vipr.Reader.OData.v4
                     }
                 }
             }
-
+            private T TryResolveType<T>(string fullyQualifiedName) where T : OdcmType
+            {
+                var lastDotIndex = fullyQualifiedName.LastIndexOf('.');
+                return TryResolveType<T>(fullyQualifiedName.Substring(lastDotIndex + 1), fullyQualifiedName.Substring(0, lastDotIndex));
+            }
             private T TryResolveType<T>(string name, string @namespace) where T : OdcmType
             {
                 T type;
@@ -738,10 +746,36 @@ namespace Vipr.Reader.OData.v4
                     AddVocabularyAnnotations(odcmProperty, property);
 
                     odcmClass.Properties.Add(odcmProperty);
+
+                    if (AddCastPropertiesForNavigationProperties)
+                    {
+                        AddCastPropertiesForNavigationProperty(odcmClass, property, odcmProperty);
+                    }
+
                 }
                 catch (InvalidOperationException e)
                 {
                     Logger.Error("Could not resolve type", e);
+                }
+            }
+            public bool AddCastPropertiesForNavigationProperties { get; set; } = false;
+
+            private void AddCastPropertiesForNavigationProperty(OdcmClass odcmClass, IEdmProperty property, OdcmProperty odcmProperty)
+            {
+                var derivedTypes = _edmModel.GetDerivedTypeConstraints(property)?.Distinct(StringComparer.InvariantCultureIgnoreCase);
+                if (derivedTypes != null)
+                {
+                    foreach (var derivedType in derivedTypes)
+                    {
+                        var odcmDerivedClass = TryResolveType<OdcmClass>(derivedType);
+
+                        var derivedCastProperty = odcmProperty.Clone($"{odcmProperty.Name}As{odcmDerivedClass.Name.First().ToString().ToUpper()}{odcmDerivedClass.Name.Substring(1)}");
+                        derivedCastProperty.ParentPropertyType = odcmProperty;
+                        derivedCastProperty.Projection.Type = odcmDerivedClass;
+                        odcmProperty.ChildPropertyTypes.Add(derivedCastProperty);
+                        odcmClass.Properties.Add(derivedCastProperty);
+                        _propertyCapabilitiesCache.Add(derivedCastProperty, OdcmCapability.DefaultPropertyCapabilities);
+                    }
                 }
             }
 
@@ -815,13 +849,7 @@ namespace Vipr.Reader.OData.v4
                 var annotationsOrdered = annotations.OrderBy(x => GetTargetDepth(x.Target as IEdmSchemaElement, odcmObject as OdcmClass));
 
                 foreach (var annotation in annotationsOrdered)
-                {
-                    if (!(annotation is IEdmVocabularyAnnotation))
-                    {
-                        throw new NotImplementedException($"Annotation of type {annotation.GetType().Name} is not supported");
-                    }
-                    parser.ParseCapabilityAnnotation(odcmObject, annotation as IEdmVocabularyAnnotation);
-                }
+                    parser.ParseCapabilityAnnotation(odcmObject, annotation);
             }
 
             private static int GetTargetDepth(IEdmSchemaElement target, OdcmClass odcmClass)
