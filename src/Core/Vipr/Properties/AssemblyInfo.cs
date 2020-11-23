@@ -18,6 +18,6 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("ViprCliUnitTests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 [assembly: AssemblyCompanyAttribute("Microsoft")]
-[assembly: AssemblyVersionAttribute("1.0.*")]
-[assembly: AssemblyFileVersionAttribute("1.0.*")]
+[assembly: AssemblyVersionAttribute("1.0.0")]
+[assembly: AssemblyFileVersionAttribute("1.0.0")]
 [assembly: InternalsVisibleTo("T4TemplateWriterTests")]
