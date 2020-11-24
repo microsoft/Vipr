@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{24442316-C08F-4365-9480-29A8C2809C14}"
 EndProject
@@ -9,24 +9,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{C3073783-3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{EA781C06-3F27-4F44-9128-BAABCA5420C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr", "src\Core\Vipr\Vipr.csproj", "{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vipr", "src\Core\Vipr\Vipr.csproj", "{D9E57059-BAD6-483B-985C-C7D1DA24ED7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Core", "src\Core\Vipr.Core\Vipr.Core.csproj", "{04C24936-006A-4FD8-A872-EE55588C1CBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vipr.Core", "src\Core\Vipr.Core\Vipr.Core.csproj", "{04C24936-006A-4FD8-A872-EE55588C1CBE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readers", "Readers", "{62924477-56C4-40C3-AE7B-CD2CBCB13935}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vipr.Reader.OData.v4", "src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj", "{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{63D78AF4-61E2-42F6-B21F-15B101B8A1CC}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\nuget.config = .nuget\nuget.config
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vipr.Reader.OData.v4", "src\Readers\Vipr.Reader.OData.v4\Vipr.Reader.OData.v4.csproj", "{6D8D8008-0A34-490F-8B38-21D9C8BF25C0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ODataReader.v4UnitTests", "ODataReader.v4UnitTests", "{A37C4110-002B-443A-9DEE-374F0C2E311C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ODataReader.v4UnitTests", "test\ODataReader.v4UnitTests\ODataReader.v4UnitTests.csproj", "{0FE50B4D-1BB1-4CE5-91EA-D5046F326536}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ODataReader.v4UnitTests", "test\ODataReader.v4UnitTests\ODataReader.v4UnitTests.csproj", "{0FE50B4D-1BB1-4CE5-91EA-D5046F326536}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
