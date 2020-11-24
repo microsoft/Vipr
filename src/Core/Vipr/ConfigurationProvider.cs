@@ -1,21 +1,25 @@
+using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
-using Its.Configuration;
 using Vipr.Core;
 
 namespace Vipr
 {
-    internal class ConfigurationProvider : IConfigurationProvider
+    internal class ConfigurationProvider : Core.IConfigurationProvider
     {
+        private readonly IConfiguration Configuration;
         private ConfigurationProvider()
         {
-            if (!String.IsNullOrWhiteSpace(Environment.CurrentDirectory))
-                Settings.SettingsDirectory = Path.Combine(Environment.CurrentDirectory, ".config");
+            var builder = new ConfigurationBuilder();
+            if (!string.IsNullOrWhiteSpace(Environment.CurrentDirectory))
+                builder.AddXmlFile(Path.Combine(Environment.CurrentDirectory, ".config"), true);
+
+            Configuration = builder.AddEnvironmentVariables().Build();
         }
 
         public T GetConfiguration<T>()
         {
-            return Settings.Get<T>();
+            return Configuration.Get<T>();
         }
 
         public static void SetConfigurationOn(object target)
