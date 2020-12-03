@@ -506,6 +506,13 @@ namespace Microsoft.Its.Recipes
                 return XElement.Parse(enumMember);
             }
 
+            private static XElement GetRevisionTypeElement(string value)
+            {
+                string enumMember = $"<EnumMember xmlns=\"http://docs.oasis-open.org/odata/ns/edm\">RevisionKind/{value}</EnumMember>";
+
+                return XElement.Parse(enumMember);
+            }
+
             private static XElement CallbackProtocolCollection(IEnumerable<string> ids)
             {
                 XElement collectionElement = GetCollectionElement();
@@ -823,6 +830,27 @@ namespace Microsoft.Its.Recipes
             {
                 var element = GetElement(R.Singleton_element);
 
+                config?.Invoke(element);
+
+                return element;
+            }
+
+            public static XElement DeprecationAnnotation(Action<XElement> config = null)
+            {
+                XElement element = GetAnnotationElement(O.Core("Revisions"));
+                XElement collectionElement = GetCollectionElement();
+
+                collectionElement.Add(Any.Csdl.Record(record =>
+                {
+                    var enumElement = GetRevisionTypeElement("Deprecated");
+                    record.Add(Any.Csdl.PropertyValue("Kind", propertyVal => propertyVal.Add(enumElement)));
+                    var stringElement = GetStringElement(Any.Word());
+                    record.Add(Any.Csdl.PropertyValue("Description", propertyVal => propertyVal.Add(stringElement)));
+                    stringElement = GetStringElement(Any.Word());
+                    record.Add(Any.Csdl.PropertyValue("Version", propertyVal => propertyVal.Add(stringElement)));
+                }));
+
+                element.Add(collectionElement);
                 config?.Invoke(element);
 
                 return element;

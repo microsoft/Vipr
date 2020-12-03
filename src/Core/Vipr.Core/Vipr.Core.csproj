@@ -45,6 +45,7 @@
     <Compile Include="CodeModel\OdcmClassKind.cs" />
     <Compile Include="CodeModel\OdcmAllowedVerbs.cs" />
     <Compile Include="CodeModel\OdcmComplexClass.cs" />
+    <Compile Include="CodeModel\OdcmDeprecation.cs" />
     <Compile Include="CodeModel\OdcmEntityClass.cs" />
     <Compile Include="CodeModel\OdcmEntitySet.cs" />
     <Compile Include="CodeModel\OdcmMediaClass.cs" />
