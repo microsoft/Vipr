@@ -32,6 +32,8 @@ namespace Vipr.Core.CodeModel
             return Name;
         }
 
+        public OdcmDeprecation Deprecation { get; set; }
+
         public static string MakeCanonicalName(string name, string @namespace)
         {
             return string.Format("{1}.{0}", name, @namespace);
