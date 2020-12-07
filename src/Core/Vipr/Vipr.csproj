@@ -78,7 +78,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>$(DepsPath)packages\NLog.4.7.5\lib\net45\NLog.dll</HintPath>
+      <HintPath>$(DepsPath)packages\NLog.4.7.6\lib\net45\NLog.dll</HintPath>
 
 
     </Reference>
