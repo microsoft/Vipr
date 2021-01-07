@@ -684,7 +684,7 @@ namespace Vipr.Reader.OData.v4
 
                 AddVocabularyAnnotations(odcmMethod, operation);
 
-                if (odcmMethod.Deprecation == null && odcmClass.Deprecation != null)
+                if (!odcmMethod.IsDeprecated && odcmClass.IsDeprecated)
                 {
                     odcmMethod.Deprecation = odcmClass.Deprecation;
                 }
@@ -694,7 +694,7 @@ namespace Vipr.Reader.OData.v4
                     odcmMethod.ReturnType = ResolveType(operation.ReturnType);
                     odcmMethod.IsCollection = operation.ReturnType.IsCollection();
 
-                    if (odcmMethod.Deprecation == null && odcmMethod.ReturnType.Deprecation != null)
+                    if (!odcmMethod.IsDeprecated && odcmMethod.ReturnType.IsDeprecated)
                     {
                         odcmMethod.Deprecation = odcmMethod.ReturnType.Deprecation;
                     }
@@ -837,10 +837,10 @@ namespace Vipr.Reader.OData.v4
             {
                 if (_checkDeprecated.Add(odcmObject))
                 {
-                    if (odcmObject.Deprecation == null && !CheckForDeprecationOnType(odcmObject, _edmModel.FindVocabularyAnnotations(annotatableEdmEntity).FirstOrDefault(x => x.Term.Name == "Revisions")))
+                    if (!odcmObject.IsDeprecated && !CheckForDeprecationOnType(odcmObject, _edmModel.FindVocabularyAnnotations(annotatableEdmEntity).FirstOrDefault(x => x.Term.Name == "Revisions")))
                     {
                         OdcmProperty property;
-                        if (odcmObject.Deprecation == null && (property = odcmObject as OdcmProperty) != null)
+                        if (!odcmObject.IsDeprecated && (property = odcmObject as OdcmProperty) != null)
                         {
                             OdcmType propertyType = property.Projection.Type;
                             if (!(propertyType is OdcmPrimitiveType))
