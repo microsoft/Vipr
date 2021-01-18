@@ -42,7 +42,7 @@
     <Content Include="Resources\Edmx\PropertyPath.element.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="3.0.0">
+    <PackageReference Include="coverlet.collector" Version="3.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
