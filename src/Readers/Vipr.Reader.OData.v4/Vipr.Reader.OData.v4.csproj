@@ -28,7 +28,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.OData.Client">
-      <Version>7.9.2</Version>
+      <Version>7.9.3</Version>
     </PackageReference>
     <PackageReference Include="NLog">
       <Version>4.7.11</Version>
