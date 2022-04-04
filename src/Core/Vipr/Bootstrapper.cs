@@ -12,9 +12,12 @@ using NLog;
 
 namespace Vipr
 {
-    internal class Bootstrapper
+    internal partial class Bootstrapper
     {
-        const string Usage = @"Vipr CLI Tool
+        [DocoptArguments(HelpConstName = nameof(Help))]
+        private sealed partial class Arguments
+        {
+            const string Help = @"Vipr CLI Tool
 Usage:
     vipr.exe <inputFile> [--reader=<readerName>] [--writer=<writerName>] [--outputPath=<outputPath>] [--modelExport=<modelExportPath>]
 
@@ -24,6 +27,7 @@ Options:
     --outputPath=<outputPath>           Use outputPath as the root directory for the generated proxy. Default is the current directory.
     --modelExport=<modelExportPath>     Export the OcdmModel generated from the given Edmx model as a json file.
 ";
+        }
 
         private IOdcmReader _odcmReader;
         private IOdcmWriter _odcmWriter;
@@ -40,7 +44,7 @@ Options:
             GetCommandLineConfiguration(args);
 
             var edmxContents = MetadataResolver.GetMetadata(_metadataPath);
-            
+
             Logger.Info("Generating Client Library to {0}", Path.GetFullPath(_outputPath));
 
             MetadataToClientSource(edmxContents, _outputPath);
@@ -50,30 +54,49 @@ Options:
 
         private void GetCommandLineConfiguration(string[] args)
         {
-            var docopt = new Docopt();
+            switch (Arguments.CreateParser()
+                             .EnableHelp()
+                             .Parse(args)
+                             .Match(res => (object)res,
+                                    res => (Console.Out, res.Help, 0),
+                                    res => (Console.Error, res.Usage, 1)))
+            {
+                case Arguments arguments:
+                {
+                    GetCommandLineConfiguration(arguments);
+                    break;
+                }
+                case (TextWriter writer, string message, int exitCode):
+                {
+                    writer.WriteLine(message);
+                    Environment.Exit(exitCode);
+                    break;
+                }
+            }
+        }
 
-            IDictionary<string, ValueObject> res = docopt.Apply(Usage, args, help: true, exit: true);
+        private void GetCommandLineConfiguration(Arguments res)
+        {
+            _ocdmModelExportPath = res.OptModelexport ?? _ocdmModelExportPath;
 
-            _ocdmModelExportPath = res["--modelExport"] == null ? _ocdmModelExportPath : res["--modelExport"].ToString();
+            _readerName = res.OptReader ?? _readerName;
 
-            _readerName = res["--reader"] == null ? _readerName : res["--reader"].ToString();
+            _writerName = res.OptWriter ?? _writerName;
 
-            _writerName = res["--writer"] == null ? _writerName : res["--writer"].ToString();
-
-            if (res["--outputPath"] == null)
+            if (res.OptOutputpath == null)
             {
                 // do nothing, rely on default
             }
-            else if (res["--outputPath"].ToString() == String.Empty)
+            else if (res.OptOutputpath == String.Empty)
             {
                 _outputPath = @".\";  // current working directory
             }
             else
             {
-                _outputPath = res["--outputPath"].ToString();
+                _outputPath = res.OptOutputpath;
             }
 
-            _metadataPath = res["<inputFile>"] == null ? _metadataPath : res["<inputFile>"].ToString();
+            _metadataPath = res.ArgInputfile ?? _metadataPath;
         }
 
         public IOdcmReader OdcmReader
