@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
+// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Microsoft.OData.Edm;
@@ -189,13 +189,18 @@ namespace Vipr.Reader.OData.v4
             private void WriteNamespaces()
             {
                 OdcmProjection.NameMapper = new ODataAnnotationTermMapper();
-
-                foreach (var declaredNamespace in _edmModel.DeclaredNamespaces)
+                
+                // The order of list of namespaces is dependent on the order of the namespaces in the metadata file. So we
+                // order the namespace list so that the parent namespaces are processed first to avoid inconsistencies
+                // when child namespaces reference types from parent namespaces.
+                // e.g. microsoft.graph should be processed before microsoft.graph.callRecords
+                var orderedDeclaredNamespaces = _edmModel.DeclaredNamespaces.OrderBy( namespaces => namespaces).ToList(); 
+                foreach (var declaredNamespace in orderedDeclaredNamespaces)
                 {
                     WriteNamespaceShallow(_edmModel, declaredNamespace);
                 }
 
-                foreach (var declaredNamespace in _edmModel.DeclaredNamespaces)
+                foreach (var declaredNamespace in orderedDeclaredNamespaces)
                 {
                     WriteNamespaceDeep(_edmModel, declaredNamespace);
                 }
@@ -203,7 +208,7 @@ namespace Vipr.Reader.OData.v4
                 // Make sure we write functions defined in namespaces different from its entity type
                 var allEntityTypes = AllEntityTypes(AllTypes(_edmModel.SchemaElements)).ToList();
 
-                foreach (var declaredNamespace in _edmModel.DeclaredNamespaces)
+                foreach (var declaredNamespace in orderedDeclaredNamespaces)
                 {
                     WriteNamespaceMethods(_edmModel, declaredNamespace, allEntityTypes);
                 }
