@@ -20,6 +20,7 @@
     <ProjectReference Include="..\Vipr.Core\Vipr.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AsyncKeyedLock" Version="6.3.4" />
     <PackageReference Include="docopt.net">
       <Version>0.8.1</Version>
     </PackageReference>
@@ -31,9 +32,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Xml" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
-    </PackageReference>
-    <PackageReference Include="Nito.AsyncEx">
-      <Version>5.1.2</Version>
     </PackageReference>
     <PackageReference Include="NLog">
       <Version>5.2.8</Version>

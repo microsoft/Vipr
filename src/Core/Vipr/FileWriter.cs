@@ -1,20 +1,21 @@
-using Nito.AsyncEx;
+using AsyncKeyedLock;
+using NLog;
 using System;
 using System.Collections.Generic;
-using System.Collections.Concurrent;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Vipr.Core;
-using NLog;
 
 namespace Vipr
 {
     internal static class FileWriter
     {
-        private static ConcurrentDictionary<string, Lazy<AsyncLock>> lockDictionary = new ConcurrentDictionary<string, Lazy<AsyncLock>>();
+        private static readonly AsyncKeyedLocker<string> lockDictionary = new(o =>
+        {
+            o.PoolSize = 20;
+            o.PoolInitialFill = 1;
+        });
         internal static Logger Logger => LogManager.GetLogger("FileWriter");
 
         /// <summary>
@@ -89,8 +90,7 @@ namespace Vipr
         /// <returns>A write to disk task</returns>
         public static async Task WriteToDisk(string filePath, string output)
         {
-            var lockItem = lockDictionary.GetOrAdd(filePath, new Lazy<AsyncLock>());
-            using (await lockItem.Value.LockAsync())
+            using (await lockDictionary.LockAsync(filePath))
             {
                 using (StreamWriter sw = new StreamWriter(filePath, false, new UTF8Encoding(false)))
                 {
