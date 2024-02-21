@@ -314,7 +314,8 @@ namespace Vipr.Reader.OData.v4
                     }
                 }
 
-                var entityTypes = AllEntityTypes(types).ToList();
+                // Order by elements without parent(Base Types) first
+                var entityTypes = AllEntityTypes(types).OrderBy(static type => type.BaseType != null).ToList();
 
                 // First make a pass through entity types to establish their hierarchy;
                 // this is useful for cases when base entity type is defined after derived one
