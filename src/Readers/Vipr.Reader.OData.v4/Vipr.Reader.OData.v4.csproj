@@ -5,6 +5,7 @@
     <RestorePackages>true</RestorePackages>
     <BuildPackage>true</BuildPackage>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
