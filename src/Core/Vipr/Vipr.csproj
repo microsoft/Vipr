@@ -20,7 +20,7 @@
     <ProjectReference Include="..\Vipr.Core\Vipr.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AsyncKeyedLock" Version="7.0.2" />
+    <PackageReference Include="AsyncKeyedLock" Version="7.1.2" />
     <PackageReference Include="docopt.net">
       <Version>0.8.1</Version>
     </PackageReference>
