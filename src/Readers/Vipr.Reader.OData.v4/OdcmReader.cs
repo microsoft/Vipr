@@ -358,7 +358,6 @@ namespace Vipr.Reader.OData.v4
 
                 foreach (var entityType in entityTypes)
                 {
-                    
                     var odcmClass = TryResolveType<OdcmEntityClass>(entityType.Name, entityType.Namespace);
 
                     odcmClass.IsAbstract = entityType.IsAbstract;
