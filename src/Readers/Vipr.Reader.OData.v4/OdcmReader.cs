@@ -152,7 +152,8 @@ namespace Vipr.Reader.OData.v4
             }
 
             /// <summary>
-            /// Order the entity types so that base types come before derived types.
+            /// Order the entity types so that base types come before derived types. This helps prevent processing issues
+            /// that occur when derived types need to have their base types processed before them.
             /// </summary>
             /// <param name="types"></param>
             /// <returns></returns>
@@ -341,8 +342,8 @@ namespace Vipr.Reader.OData.v4
                     }
                 }
 
-                // PROBLEM: There are types that are base types that DO NOT HAVE a base type. If they aren't processed before their derived types, we may have
-                // base types that have not added their structural and navigation properties yet.
+                // We want base types processed before their derived types to help prevent errors caused
+                // by base types that have not yet added their structural and navigation properties yet.
                 var entityTypes = TopologicalSortByBaseType(AllEntityTypes(types)).ToList();
 
 
@@ -354,8 +355,6 @@ namespace Vipr.Reader.OData.v4
 
                     ResolveBaseClass(odcmClass, entityType);
                 }
-
-                // PROBLEM: There are references to base types in other namespaces.For example, microsoft.graph.callRecords namespace has a reference to 
 
                 foreach (var entityType in entityTypes)
                 {
