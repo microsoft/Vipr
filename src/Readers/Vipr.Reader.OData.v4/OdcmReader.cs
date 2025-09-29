@@ -163,18 +163,34 @@ namespace Vipr.Reader.OData.v4
                 var result = new List<IEdmEntityType>();
                 var visited = new HashSet<IEdmEntityType>();
 
-                void Visit(IEdmEntityType type)
-                {
-                    if (type == null || visited.Contains(type))
-                        return;
-                    if (typeDict.TryGetValue(type, out var baseType))
-                        Visit(baseType);
-                    visited.Add(type);
-                    result.Add(type);
-                }
-
                 foreach (var type in types)
-                    Visit(type);
+                {
+                    var stack = new Stack<IEdmEntityType>();
+                    var current = type;
+                    // Traverse up the base type chain, pushing unvisited types onto the stack
+                    while (current != null && !visited.Contains(current))
+                    {
+                        stack.Push(current);
+                        if (typeDict.TryGetValue(current, out var baseType))
+                        {
+                            current = baseType;
+                        }
+                        else
+                        {
+                            current = null;
+                        }
+                    }
+                    // Pop and process each type, ensuring base types are added before derived types
+                    while (stack.Count > 0)
+                    {
+                        var toProcess = stack.Pop();
+                        if (!visited.Contains(toProcess))
+                        {
+                            visited.Add(toProcess);
+                            result.Add(toProcess);
+                        }
+                    }
+                }
 
                 return result;
             }
