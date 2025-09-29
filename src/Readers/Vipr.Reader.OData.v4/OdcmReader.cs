@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft. All rights reserved.
+﻿// Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Microsoft.OData.Edm;
@@ -149,6 +149,33 @@ namespace Vipr.Reader.OData.v4
                 Logger.Info($"Parsed {methods.Count(m => !m.IsFunction)} Actions");
 
                 Logger.Info($"Parsed {_propertyCapabilitiesCache.AnnotatedObjects.Count()} annotated objects");
+            }
+
+            /// <summary>
+            /// Order the entity types so that base types come before derived types.
+            /// </summary>
+            /// <param name="types"></param>
+            /// <returns></returns>
+            private static List<IEdmEntityType> TopologicalSortByBaseType(IEnumerable<IEdmEntityType> types)
+            {
+                var typeDict = types.ToDictionary(t => t, t => t.BaseType as IEdmEntityType);
+                var result = new List<IEdmEntityType>();
+                var visited = new HashSet<IEdmEntityType>();
+
+                void Visit(IEdmEntityType type)
+                {
+                    if (type == null || visited.Contains(type))
+                        return;
+                    if (typeDict.TryGetValue(type, out var baseType))
+                        Visit(baseType);
+                    visited.Add(type);
+                    result.Add(type);
+                }
+
+                foreach (var type in types)
+                    Visit(type);
+
+                return result;
             }
 
             private void AddPrimitives()
@@ -314,12 +341,10 @@ namespace Vipr.Reader.OData.v4
                     }
                 }
 
-                // Order by elements without parent(Base Types) first, then Name
-                var entityTypes = AllEntityTypes(types)
-                    .OrderBy(static type => type.BaseType != null)
-                    .ThenBy(static type => type.Name, StringComparer.OrdinalIgnoreCase)
+                // PROBLEM: There are types that are base types that DO NOT HAVE a base type. If they aren't processed before their derived types, we may have
+                // base types that have not added their structural and navigation properties yet.
+                var entityTypes = TopologicalSortByBaseType(AllEntityTypes(types)).ToList();
 
-                    .ToList();
 
                 // First make a pass through entity types to establish their hierarchy;
                 // this is useful for cases when base entity type is defined after derived one
@@ -330,8 +355,11 @@ namespace Vipr.Reader.OData.v4
                     ResolveBaseClass(odcmClass, entityType);
                 }
 
+                // PROBLEM: There are references to base types in other namespaces.For example, microsoft.graph.callRecords namespace has a reference to 
+
                 foreach (var entityType in entityTypes)
                 {
+                    
                     var odcmClass = TryResolveType<OdcmEntityClass>(entityType.Name, entityType.Namespace);
 
                     odcmClass.IsAbstract = entityType.IsAbstract;
@@ -341,6 +369,8 @@ namespace Vipr.Reader.OData.v4
                     // Capability annotations are not yet set on the OdcmClass.Properties[x].Projection.
                     foreach (var property in entityType.DeclaredProperties)
                     {
+                        if (odcmClass.Properties.Exists(p => p.Name.Equals(property.Name)))
+                            continue; // Don't write property if it already exists on odcmClass
                         WriteProperty(odcmClass, property);
                     }
 
@@ -349,7 +379,7 @@ namespace Vipr.Reader.OData.v4
                         OdcmProperty property;
                         if (!odcmClass.TryFindProperty(keyProperty.Name, out property))
                         {
-                            throw new InvalidOperationException();
+                            throw new InvalidOperationException($"Key property named {keyProperty.Name} not found for {odcmClass.Name} odcmClass.");
                         }
 
                         if (property.IsNullable)
@@ -357,7 +387,9 @@ namespace Vipr.Reader.OData.v4
                             //TODO: need to create a warning...
                         }
 
-                        odcmClass.Key.Add(property);
+                        // Don't add property to Key collection if it already exists.
+                        if (!odcmClass.Key.Exists(p => p.Name.Equals(property.Name)))
+                            odcmClass.Key.Add(property);
                     }
 
                     // Add the capability annotations to OdcmClass.Properties[x].Projection
