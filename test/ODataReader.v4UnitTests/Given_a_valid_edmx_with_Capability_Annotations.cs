@@ -1644,6 +1644,7 @@ namespace ODataReader.v4UnitTests
             {
                 _schema.Add(entityTypeElement);
                 var entitySetElement = Any.Csdl.EntitySet();
+                entitySetElement.SetAttributeValue("Name", entityTypeElement.GetName() + "Set");
                 entitySetElement.AddAttribute("EntityType",
                     string.Format("{0}.{1}", _schemaNamespace, entityTypeElement.GetName()));
                 _entitySetToEntityTypeMapping.Add(entitySetElement, entityTypeElement);
